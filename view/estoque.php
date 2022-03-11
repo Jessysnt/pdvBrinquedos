@@ -24,6 +24,14 @@ if(isset($_SESSION['usuario'])){
 
 			$result=mysqli_query($conexao,$sql);
 		?>
+		<style>
+		    td {
+		      text-align: center;
+		    }
+		    th {
+		      text-align: center;
+		    }
+		 </style>
 	</head>
 	<body>
 		<div class="container">
@@ -41,14 +49,17 @@ if(isset($_SESSION['usuario'])){
 				<div class="row">
 					<div class="col-sm">
 						<div class="table-responsive">
-							<table class="table table-hover table-condensed table-bordered" style="text-align: center;">
+							<table class="table table-hover table-bordered" id="lista">
 								<caption><label>Produtos</label></caption>
+								</br>
+								<div class="col-4"><input class="col-sm-4" id="filtro-nome" placeholder="Nome"/></div></br>
+								</br>
 								<thead>
 									<tr>
-										<td>Nome</td>
-										<td>Descrição</td>
-										<td>Quantidade</td>
-										<td>Preço Venda</td>
+										<th>Nome</th>
+										<th>Descrição</th>
+										<th>Quantidade</th>
+										<th>Preço Venda</th>
 
 										<!--<td>Editar</td>-->
 										
@@ -61,16 +72,6 @@ if(isset($_SESSION['usuario'])){
 										<td><?php echo $mostrar[1]; ?></td>
 										<td><?php echo $mostrar[2]; ?></td>
 										<td>R$<?php echo $mostrar[3]; ?></td>
-									<!--	<td>
-											<span  data-toggle="modal" data-target="#abremodal" class="btn btn-warning btn-xs" onclick="adicionar('<?php echo $mostrar[4] ?>')">
-												<span class="glyphicon glyphicon-pencil"></span>
-											</span>
-										</td>
-										<td>
-											<span class="btn btn-danger btn-xs" onclick="deletar('<?php echo $mostrar[4] ?>')">
-												<span class="glyphicon glyphicon-remove"></span>
-											</span> 
-										</td> -->
 										</tr>
 									<?php endwhile; ?>
 								</tbody>	
@@ -82,6 +83,17 @@ if(isset($_SESSION['usuario'])){
 		</div>		
 	</body>
 	</html>
+
+	<script type="text/javascript">
+		$('#filtro-nome').keyup(function() {
+		    var nomeFiltro = $(this).val().toLowerCase();
+		    $('table tbody').find('tr').each(function() {
+		        var conteudoCelula = $(this).find('td:first').text();
+		        var corresponde = conteudoCelula.toLowerCase().indexOf(nomeFiltro) >= 0;
+		        $(this).css('display', corresponde ? '' : 'none');
+		    });
+		});
+	</script>
 
 <?php 
 }else{

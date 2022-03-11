@@ -14,6 +14,15 @@ if(isset($_SESSION['usuario'])){
 		$c= new conectar();
 		$conexao=$c->conexao();
 		?>
+
+		<style>
+		    td {
+		      text-align: center;
+		    }
+		    th {
+		      text-align: center;
+		    }
+		 </style>
 	</head>
 	<body>
 
