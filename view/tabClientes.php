@@ -14,61 +14,71 @@ session_start();
 			$sql = "SELECT id_cliente, nome, sobrenome, endereco, email, telefone, cpf FROM clientes";
 			$result = mysqli_query($conexao, $sql); 
 		?>
+
+		<style>
+		    td {
+		      text-align: center;
+		    }
+		    th {
+		      text-align: center;
+		    }
+		 </style>
 	</head>
 		<body>
 			<div class="container">
 				<div id="tabelaClientesLoad">
-						<h1>Clientes</h1>
+					<h1>Clientes</h1>
 					
-							<div class="row">
-								<ul class="nav nav-tabs nav-justified">
-									<li role="presentation"><a href="clientes.php">Cadastro</a></li>
-									<li role="presentation" class="active"><a href="tabClientes.php">Lista</a></li>
-								</ul>
-							</div>
-				</br>
-							<div class="row">
+					<div class="row">
+						<ul class="nav nav-tabs nav-justified">
+							<li role="presentation"><a href="clientes.php">Cadastro</a></li>
+							<li role="presentation" class="active"><a href="tabClientes.php">Lista</a></li>
+						</ul>
+					</div>
+					</br>
 					
 						<div class="table-responsive">
-							<table class="table table-hover">
-								
-								<thead>
-								    <tr>
-								      	<th scope="col">Nome</th>
-								      	<th scope="col">Sobrenome</th>
-								      	<th scope="col">Endereço</th>
-								      	<th scope="col">E-mail</th>
-								      	<th scope="col">Telefone</th>
-								      	<th scope="col">CPF</th>
+					<div >
+						<table class="table table-hover" id="lista">
 
-								      	<th scope="col">Editar</th>
-								      	<th scope="col">Excluir</th>
-								    </tr>
-								</thead>
-							  	<tbody>
-							  		<?php while($mostrar = mysqli_fetch_row($result)): ?>
-								    <tr>
-								      	<td><?php echo $mostrar[1]; ?></td>
-								 		<td><?php echo $mostrar[2]; ?></td>
-								 		<td><?php echo $mostrar[3]; ?></td>
-								 		<td><?php echo $mostrar[4]; ?></td>
-								 		<td><?php echo $mostrar[5]; ?></td>
-								 		<td><?php echo $mostrar[6]; ?></td>
-								 		<td>
-											<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizaCliente" onclick="adicionarDados('<?php echo $mostrar[0]; ?>')">
-												<span class="glyphicon glyphicon-pencil"></span>
-											</span>
-										</td>
-										<td>
-											<span class="btn btn-danger btn-xs" onclick="deletarCliente('<?php echo $mostrar[0]; ?>')">
-												<span class="glyphicon glyphicon-remove"></span>
-											</span>
-										</td>
-								    </tr>
-								    <?php  endWhile?>
-							  	</tbody>
-							</table>
-						</div>
+							<div class="col-8"><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+							</br>
+							<thead>			
+								<tr>
+								  	<th >Nome</th>
+								   	<th >Sobrenome</th>
+								    <th>Endereço</th>
+								    <th>E-mail</th>
+								    <th>Telefone</th>
+								    <th>CPF</th>
+
+								    <th>Editar</th>
+								    <th>Excluir</th>
+								</tr>
+							</thead>
+							<tbody>
+							  	<?php while($mostrar = mysqli_fetch_row($result)): ?>
+								<tr>
+								    <td><?php echo $mostrar[1]; ?></td>
+								 	<td><?php echo $mostrar[2]; ?></td>
+								 	<td><?php echo $mostrar[3]; ?></td>
+								 	<td><?php echo $mostrar[4]; ?></td>
+								 	<td><?php echo $mostrar[5]; ?></td>
+								 	<td><?php echo $mostrar[6]; ?></td>
+								 	<td>
+										<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizaCliente" onclick="adicionarDados('<?php echo $mostrar[0]; ?>')">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</span>
+									</td>
+									<td>
+										<span class="btn btn-danger btn-xs" onclick="deletarCliente('<?php echo $mostrar[0]; ?>')">
+											<span class="glyphicon glyphicon-remove"></span>
+										</span>
+									</td>
+								</tr>
+								<?php  endWhile?>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -185,7 +195,16 @@ session_start();
 		}
 	</script>
 
-
+	<script type="text/javascript">
+		$('#filtro-nome').keyup(function() {
+		    var nomeFiltro = $(this).val().toLowerCase();
+		    $('table tbody').find('tr').each(function() {
+		        var conteudoCelula = $(this).find('td:first').text();
+		        var corresponde = conteudoCelula.toLowerCase().indexOf(nomeFiltro) >= 0;
+		        $(this).css('display', corresponde ? '' : 'none');
+		    });
+		});
+	</script>
 
 	<!-- <script type="text/javascript">
 		$(document).ready(function(){

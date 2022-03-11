@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../lib/alertifyjs/css/themes/default.css">
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="../lib/select2/css/select2.css">
-<link rel="stylesheet" type="text/css" href="">
 <link rel="stylesheet" type="text/css" href="../css/menu.css">
 
 <script src="../lib/jquery-3.2.1.min.js"></script>

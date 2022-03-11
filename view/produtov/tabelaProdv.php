@@ -18,21 +18,22 @@
 
  ?>
 
-<table class="table table-hover table-condensed table-bordered" style="text-align: center;">
+<table class="table table-hover" >
 	<caption><label>Produtos</label></caption>
+	<thead>
 	<tr>
-		<td>Nome</td>
-		<td>Lote</td>
-		<td>Quantidade</td>
-		<td>Preço compra</td>
-		<td>Preço VENDA</td>
+		<th>Nome</th>
+		<th>Lote</th>
+		<th>Quantidade</th>
+		<th>Preço compra</th>
+		<th>Preço VENDA</th>
 
-		<td>Editar</td>
-		<td>Excluir</td>
+		<th>Editar</th>
+		<th>Excluir</th>
 	</tr>
-
+	</thead>
 	<?php while($mostrar=mysqli_fetch_row($result)): ?>
-
+	<tbody>
 	<tr>
 		
 		<td><?php echo $mostrar[0]; ?></td>
@@ -52,5 +53,6 @@
 			</span>
 		</td>
 	</tr>
+	</tbody>
 <?php endwhile; ?>
 </table>
