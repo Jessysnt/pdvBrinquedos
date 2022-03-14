@@ -3,15 +3,14 @@ session_start();
 	if(isset($_SESSION['usuario'])){
 ?>
 
-<?php require_once "menu.php"; ?>
+
+
+
+	<title>Vendas</title>
+	<?php require_once "menu.php"; ?>
 	<?php require_once "../classes/conexao.php";
 	$c= new conectar();
 	$conexao=$c->conexao(); ?>
-
-
-
-<title>Vendas</title>
-	
 
 	<div class="container">
 		<h4>Vender Produto</h4>
