@@ -3,16 +3,16 @@ session_start();
 	if(isset($_SESSION['usuario'])){
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Vendas</title>
-	<?php require_once "menu.php"; ?>
+<?php require_once "menu.php"; ?>
 	<?php require_once "../classes/conexao.php";
 	$c= new conectar();
 	$conexao=$c->conexao(); ?>
-</head>
-<body>
+
+
+
+<title>Vendas</title>
+	
+
 	<div class="container">
 		<h4>Vender Produto</h4>
 		<div class="row">
@@ -79,8 +79,7 @@ session_start();
 			</div>
 		</div>
 	</div>
-</body>
-</html>
+
 
 
 <script type="text/javascript">
