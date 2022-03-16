@@ -40,6 +40,8 @@
 
            <li><a href="clientes.php" style="color: #e303fc"><span class="glyphicon glyphicon-user"></span> Clientes</a>
           </li>
+          <li><a href="vendasDeProdutos.php" style="color: #e306fc"><span class="glyphicon glyphicon-usd"></span> PDV</a>
+          </li>
           <!--
           <li><a href="vendas.php" style="color: #61e89c"><span class="glyphicon glyphicon-usd"></span>Vendas</a>
           </li> -->
@@ -48,7 +50,7 @@
             <a href="#" style="color: #61e89c" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-usd"></span> Gestão Vendas <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="pagamentos.php">Pagamentos</a></li>
-              <li><a href="vendasDeProdutos.php">Vender Produto</a></li>
+              <li><a href="comandas.php">Abrir Comanda</a></li>
               <li><a href="vendasRelatorios.php">Lista de Vendas</a></li>
             </ul>
           </li>
