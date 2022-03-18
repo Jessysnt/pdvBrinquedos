@@ -4,14 +4,9 @@ if(isset($_SESSION['usuario'])){
 
 ?>
 
-
-	<!DOCTYPE html>
-	<html>
-	<head>
 		<title>Clientes</title>
 		<?php require_once "menu.php"; ?>
-	</head>
-	<body>
+
 
 		<div class="container">
 			<h1>Clientes</h1>
@@ -57,51 +52,8 @@ if(isset($_SESSION['usuario'])){
 
 				
 				</div>
-				<!--<div class="col-sm-8">
-					<div id="tabelaClientesLoad"></div>
-				</div> -->
 			</div>
 		</div>
-
-		<!-- Button trigger modal -->
-
-
-		<!-- Modal -->
-		<!--<div class="modal fade" id="atualizaCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Atualizar Cliente</h4>
-					</div>
-					<div class="modal-body">
-						<form id="frmClientesU">
-							<input type="text" hidden="" id="idclienteU" name="idclienteU">
-							<label>Nome</label>
-							<input type="text" class="form-control input-sm" id="nomeU" name="nomeU">
-							<label>Sobrenome</label>
-							<input type="text" class="form-control input-sm" id="sobrenomeU" name="sobrenomeU">
-							<label>Endereço</label>
-							<input type="text" class="form-control input-sm" id="enderecoU" name="enderecoU">
-							<label>Email</label>
-							<input type="text" class="form-control input-sm" id="emailU" name="emailU">
-							<label>Telefone</label>
-							<input type="text" class="form-control input-sm" id="telefoneU" name="telefoneU">
-							<label>CPF</label>
-							<input type="text" class="form-control input-sm" id="cpfU" name="cpfU">
-							
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button id="btnAdicionarClienteU" class="btn btn-primary col-md" data-dismiss="modal">Atualizar</button>
-
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-	</body>
-	</html>
 
 
 	<script type="text/javascript">
@@ -217,31 +169,6 @@ if(isset($_SESSION['usuario'])){
 	</script>
 
 
-<!--	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#btnAdicionarClienteU').click(function(){
-				dados=$('#frmClientesU').serialize();
-
-				$.ajax({
-					type:"POST",
-					data:dados,
-					url:"../procedimentos/clientes/atualizarClientes.php",
-					success:function(r){
-
-						if(r==1){
-							$('#frmClientes')[0].reset();
-							$('#tabelaClientesLoad').load("tabClientes.php");
-							alertify.success("Cliente atualizado com sucesso!");
-						}else{
-							alertify.error("Não foi possível atualizar cliente");
-						}
-					}
-				});
-			})
-		})
-	</script> -->
-
-	
 
 
 <?php 

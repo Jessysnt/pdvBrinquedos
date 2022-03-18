@@ -5,9 +5,6 @@ if(isset($_SESSION['usuario'])){
 	?>
 
 
-	<!DOCTYPE html>
-	<html>
-	<head>
 		<title>Produtos</title>
 		<?php require_once "menu.php"; ?>
 		<?php require_once "../classes/conexao.php"; 
@@ -16,8 +13,7 @@ if(isset($_SESSION['usuario'])){
 		
 		
 		?>
-	</head>
-	<body>
+
 		<div class="container">
 			<h1>Produtos</h1>
 			<div class="row">

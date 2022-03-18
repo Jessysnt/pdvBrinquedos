@@ -13,12 +13,8 @@ require_once "../../classes/conexao.php";
  ?>
 
  <style>
-	td {
-	      text-align: center;
-	    }
-    th {
-	      text-align: center;
-	   }
+	td {text-align: center;}
+    th {text-align: center;}
 </style>
 
 <div class="table-responsive">

@@ -43,7 +43,7 @@ $conexao=$c->conexao(); ?>
 					</div>	
 					<div class="form-group">
 						<label>Quantidade Vendida</label>
-						<input type="text" class="form-control input-sm" id="quantV" name="quantV">
+						<input type="number" class="form-control input-sm" id="quantV" name="quantV">
 					</div>
 				</div>
 			</div>

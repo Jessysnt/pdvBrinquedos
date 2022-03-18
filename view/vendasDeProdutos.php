@@ -196,16 +196,25 @@ session_start();
 			}
 		});
 	}
+
+	function pagarVenda(){
+		$.ajax({url:"/formaPagamento.php"});
+	}
+
 </script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#clienteVenda').select2();
-		$('#produtoVenda').select2();
+		//$('#produtoVenda').select2();
 		$('#formapagV').select2();
-
+		$("#produtoVenda").select2({
+    		minimumInputLength: 3
+		});
 	});
 </script>
+
+
 
 
 <?php 

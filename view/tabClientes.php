@@ -2,9 +2,6 @@
 session_start();
 	if(isset($_SESSION['usuario'])){
 ?>
-
-	<!DOCTYPE html>
-	<html>
 	<head>
 		<title>Lista de Clientes</title>
 		<?php require_once "menu.php" ?>
@@ -16,12 +13,8 @@ session_start();
 		?>
 
 		<style>
-		    td {
-		      text-align: center;
-		    }
-		    th {
-		      text-align: center;
-		    }
+		    td {text-align: center;}
+		    th {text-align: center;}
 		 </style>
 	</head>
 		<body>
@@ -206,41 +199,7 @@ session_start();
 		});
 	</script>
 
-	<!-- <script type="text/javascript">
-		$(document).ready(function(){
 
-			$('#tabelaClientesLoad').load("tabClientes.php");
-
-			$('#btnAdicionarCliente').click(function(){
-
-				vazios=validarFormVazio('frmClientes');
-				
-				if(vazios > 0){
-					alertify.alert("Preencha os Campos!!");
-					return false;
-				}
-				
-				dados=$('#frmClientes').serialize();
-
-				$.ajax({
-					type:"POST",
-					data:dados,
-					url:"../procedimentos/clientes/adicionarClientes.php",
-					success:function(r){
-						//alert(r);
-						
-						if(r==1){
-							$('#frmClientes')[0].reset();
-							$('#tabelaClientesLoad').load("tabelaClientes.php");
-							alertify.success("Cliente Adicionado");
-						}else{
-							alertify.error("Não foi possível adicionar");
-						}
-					}
-				});
-			});
-		});
-	</script> -->
 
 
 	<script type="text/javascript">

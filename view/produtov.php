@@ -5,8 +5,6 @@ if(isset($_SESSION['usuario'])){
 ?>
 
 
-	<!DOCTYPE html>
-	<html>
 	<head>
 		<title>Brinquedos</title>
 		<?php require_once "menu.php"; ?>
@@ -16,12 +14,8 @@ if(isset($_SESSION['usuario'])){
 		?>
 
 		<style>
-		    td {
-		      text-align: center;
-		    }
-		    th {
-		      text-align: center;
-		    }
+		    td {text-align: center;}
+		    th {text-align: center;}
 		 </style>
 	</head>
 	<body>
@@ -136,7 +130,7 @@ if(isset($_SESSION['usuario'])){
 		</div> 
 
 	</body>
-	</html>
+
 
 
 	<script type="text/javascript">
@@ -203,25 +197,6 @@ if(isset($_SESSION['usuario'])){
 				alertify.error('Cancelado !')
 			});
 		}
-
-	/*	function addestoque($dados){
-			$.ajax({
-				type:"POST",
-				//data:"idprodv=" + idprodv,
-				url:"../classes/conexao.php",
-				success:function(r){
-					dado=jQuery.parseJSON(r);
-					
-					$('#produtoSelect').val(dado['id_produto']);
-					$('#idprodv').val(dado['id_prodv']);
-					$('#quantidadeU').val(dado['quantidade']);
-					$('#venU').val(dado['preco_ven']);
-				}
-			});
-		} */
-
-			
-		
 	</script>
 
 

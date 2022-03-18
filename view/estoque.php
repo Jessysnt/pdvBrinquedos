@@ -5,8 +5,7 @@ if(isset($_SESSION['usuario'])){
 ?>
 
 
-	<!DOCTYPE html>
-	<html>
+
 	<head>
 		<title>Estoque</title>
 		<?php require_once "menu.php"; ?>
@@ -25,12 +24,8 @@ if(isset($_SESSION['usuario'])){
 			$result=mysqli_query($conexao,$sql);
 		?>
 		<style>
-		    td {
-		      text-align: center;
-		    }
-		    th {
-		      text-align: center;
-		    }
+		    td {text-align: center;}
+		    th {text-align: center;}
 		 </style>
 	</head>
 	<body>
@@ -82,7 +77,7 @@ if(isset($_SESSION['usuario'])){
 			</div>
 		</div>		
 	</body>
-	</html>
+
 
 	<script type="text/javascript">
 		$('#filtro-nome').keyup(function() {

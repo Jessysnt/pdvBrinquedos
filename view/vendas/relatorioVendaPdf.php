@@ -54,8 +54,8 @@
  		<table class="table">
  			<tr>
  				<td>Produto</td>
- 				<td>Preco</td>
  				<td>Descricao</td>
+ 				<td>Preco</td>
  				<td>Quantidade</td>
  			</tr>
 

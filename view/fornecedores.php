@@ -5,13 +5,10 @@ if(isset($_SESSION['usuario'])){
 ?>
 
 
-	<!DOCTYPE html>
-	<html>
-	<head>
+	
 		<title>Fornecedores</title>
 		<?php require_once "menu.php"; ?>
-	</head>
-	<body>
+	
 		<div class="container">
 			<h1>Fornecedor</h1>
 			<div class="row">
@@ -51,50 +48,10 @@ if(isset($_SESSION['usuario'])){
 					</form>
 					
 				</div>
-			<!--	<div class="col-sm-8">
-					<div id="tabelaFornecedoresLoad"></div>
-				</div> -->
-			</div>
+
 		</div>
 
-		<!-- Button trigger modal -->
 
-
-		<!-- Modal -->
-		<!-- <div class="modal fade" id="atualizaFornecedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Atualizar Fornecedor</h4>
-					</div>
-					<div class="modal-body">
-						<form id="frmFornecedoresU">
-							<input type="text" hidden="" id="idfornecedorU" name="idfornecedorU">
-							<label>Nome</label>
-							<input type="text" class="form-control input-sm" id="nomeU" name="nomeU">
-							<label>Nome Fantasia</label>
-							<input type="text" class="form-control input-sm" id="fantasiaU" name="fantasiaU">
-							<label>Endereço</label>
-							<input type="text" class="form-control input-sm" id="enderecoU" name="enderecoU">
-							<label>Email</label>
-							<input type="text" class="form-control input-sm" id="emailU" name="emailU">
-							<label>Telefone</label>
-							<input type="text" class="form-control input-sm" id="telefoneU" name="telefoneU">
-							<label>CNPJ</label>
-							<input type="text" class="form-control input-sm" id="cnpjU" name="cnpjU">
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button id="btnAdicionarFornecedorU" type="button" class="btn btn-primary" data-dismiss="modal">Atualizar</button>
-
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-	</body>
-	</html>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -192,32 +149,8 @@ if(isset($_SESSION['usuario'])){
 		});
 	</script>
 
-<!---	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#btnAdicionarFornecedorU').click(function(){
-				dados=$('#frmFornecedoresU').serialize();
 
-				$.ajax({
-					type:"POST",
-					data:dados,
-					url:"../procedimentos/fornecedores/atualizarFornecedores.php",
-					success:function(r){
-
-						if(r==1){
-							$('#frmFornecedores')[0].reset();
-							$('#tabelaFornecedoresLoad').load("tabFornecedores.php");
-							alertify.success("Fornecedor atualizado com sucesso!");
-						}else{
-							alertify.error("Não foi possível atualizar fornecedor");
-						}
-					}
-				});
-			})
-		})
-	</script> -->
-
-
-	<?php 
+<?php 
 }else{
 	header("location:../index.php");
 }

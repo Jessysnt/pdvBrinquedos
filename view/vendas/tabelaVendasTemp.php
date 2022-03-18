@@ -2,13 +2,13 @@
 
 	session_start();
 	
- ?>
+?>
 
- <h4>Criar Venda</h4>
+ <h4>Lançamento</h4>
  <h4><strong><div id="nomeclienteVenda"></div></strong></h4>
  <table class="table table-bordered table-hover table-condensed" style="text-align: center;">
  	<caption>
- 		<span class="btn btn-success" onclick="criarVenda()"> Criar Venda
+ 		<span class="btn btn-success" onclick="pagarVenda()"> Criar Venda
  			<span class="glyphicon glyphicon-usd"></span>
  		</span>
  	</caption>
@@ -17,7 +17,6 @@
  		<td>Descrição</td>
  		<td>Preço</td>
  		<td>Quantidade</td>
- 		<td>Pagamento</td>
  		<td>Remover</td>
  	</tr>
  	<?php 
@@ -35,7 +34,6 @@
  		<td><?php echo $d[2]; ?></td>
  		<td><?php echo "R$ ".$d[3]; ?></td>
  		<td><?php echo $d[6]; ?></td>
- 		<td><?php echo $d[8]; ?></td>
  		<td>
  			<span class="btn btn-danger btn-xs" onclick="fecharP('<?php echo $i; ?>'), editarP('<?php echo $d[0]; ?>, <?php echo $d[5]; ?>') ">
  				<span class="glyphicon glyphicon-remove"></span>
@@ -65,3 +63,4 @@
  		$('#nomeclienteVenda').text("Nome do cliente: " + nome);
  	});
  </script>
+

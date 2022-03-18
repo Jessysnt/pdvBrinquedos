@@ -2,16 +2,13 @@
 session_start();
 if(isset($_SESSION['usuario'])){
 
-	?>
+?>
 
 
-	<!DOCTYPE html>
-	<html>
-	<head>
+	
 		<title>Classificação</title>
 		<?php require_once "menu.php"; ?>
-	</head>
-	<body>
+	
 
 		<div class="container">
 			<h1>Classificação dos Briquedos</h1>
@@ -61,8 +58,6 @@ if(isset($_SESSION['usuario'])){
 			</div>
 		</div>
 
-	</body>
-	</html>
 
 
 	<script type="text/javascript">
@@ -166,4 +161,4 @@ if(isset($_SESSION['usuario'])){
 <?php
 }else{
 	header("location:../index.php");
- }?>
+}?>

@@ -5,13 +5,10 @@ if(isset($_SESSION['usuario'])){
 ?>
 
 
-<!DOCTYPE html>
-	<html>
-	<head>
+
 		<title>Usuários</title>
 		<?php require_once "menu.php"; ?>
-	</head>
-	<body>
+	
 		<div class="container">
 			<h1>Administrar Usuário</h1>
 			<div class="row">
@@ -29,9 +26,9 @@ if(isset($_SESSION['usuario'])){
 						<label>Cargo</label>
 						<select class="form-control input-sm" id="cargo" name="cargo">
 							<option value="A">Selecionar Categoria</option>
-							<option value="Supervisor">Supervisor</option>
-							<option value="Vendedor">Vendedor</option>
-							<option value="admin">Admin</option>
+							<option value="2">Caixa</option>
+							<option value="3">Vendedor</option>
+							<option value="1">Admin</option>
 						</select>
 
 						<p></p>
@@ -69,9 +66,9 @@ if(isset($_SESSION['usuario'])){
 							<label>Cargo</label>
 							<select class="form-control input-sm" id="cargoU" name="cargoU">
 								<option value="A">Selecionar Categoria</option>
-								<option value="Supervisor">Supervisor</option>
-								<option value="Vendedor">Vendedor</option>
-								<option value="admin">Admin</option>
+								<option value="2">Caixa</option>
+								<option value="3">Vendedor</option>
+								<option value="1">Admin</option>
 							</select>
 
 						</form>
@@ -84,8 +81,7 @@ if(isset($_SESSION['usuario'])){
 			</div>
 		</div>
 
-	</body>
-	</html>
+	
 
 	<script type="text/javascript">
 		function adicionarDados(idusuario){
@@ -198,7 +194,7 @@ if(isset($_SESSION['usuario'])){
 
 
 
-	<?php 
+<?php 
 }else{
 	header("location:../index.php");
 }

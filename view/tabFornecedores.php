@@ -3,9 +3,7 @@ session_start();
 	if(isset($_SESSION['usuario'])){
 ?>
 
-	<!DOCTYPE html>
-	<html>
-	<head>
+
 		<title>Lista de Fornecedores</title>
 		<?php require_once "menu.php" ?>
 		<?php require_once "../classes/conexao.php";
@@ -14,8 +12,7 @@ session_start();
 			$sql = "SELECT id_fornecedor, nome, fantasia, endereco, email, telefone, cnpj FROM fornecedores";
 			$result = mysqli_query($conexao, $sql);
 		 ?>
-	</head>
-		<body>
+
 			<div class="container">
 					<h1>Fornecedores</h1>
 
@@ -109,8 +106,6 @@ session_start();
 				</div>
 			</div>
 
-		</body>
-	</html>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -176,40 +171,6 @@ session_start();
 		}
 	</script>
 
-<!---	<script type="text/javascript">
-		$(document).ready(function(){
-
-			$('#tabelaFornecedoresLoad').load("tabFornecedores.php");
-
-			$('#btnAdicionarFornecedor').click(function(){
-
-				vazios=validarFormVazio('frmFornecedores');
-
-				if(vazios > 0){
-					alertify.alert("Preencha os Campos!!");
-					return false;
-				}
-
-				dados=$('#frmFornecedores').serialize();
-
-				$.ajax({
-					type:"POST",
-					data:dados,
-					url:"../procedimentos/fornecedores/adicionarFornecedores.php",
-					success:function(r){
-						//alert(r);
-						if(r==1){
-							$('#frmFornecedores')[0].reset();
-							$('#tabelaFornecedoresLoad').load("tabFornecedores.php");
-							alertify.success("Fornecedor Adicionado");
-						}else{
-							alertify.error("Não foi possível adicionar");
-						}
-					}
-				});
-			});
-		});
-	</script> -->
 
 	<script type="text/javascript">
 		$(document).ready(function(){
