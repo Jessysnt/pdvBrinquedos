@@ -15,9 +15,6 @@ $conexao=$c->conexao(); ?>
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-						<input readonly="" class="form-control input-sm" id="numComanda" name="numComanda" >
-					</div>
-					<div class="form-group">
 						<label>Produto</label>
 						<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
 							<option value="A">Selecionar</option>
@@ -118,12 +115,12 @@ $conexao=$c->conexao(); ?>
 			$.ajax({
 				type:"POST",
 				data:dados,
-				url:"../procedimentos/comandas/addComandaTemp.php",
+				url:"../procedimentos/comandas/addComNumTemp.php",
 				success:function(r){
 					//alert(dados);
 					//limpar formulário
 					//$('#frmVendasProdutos')[0].reset();
-					$("#produtoVenda").select2('');
+					$('#produtoVenda').select2('');
 					$('#quantidadeV').val('');
 					$('#descricaoV').val('');
 					$('#precoV').val('');
