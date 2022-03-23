@@ -14,24 +14,24 @@ class usuarios{
 
 
 	public function login($dados){
+
 		$c = new conectar();
 		$conexao = $c->conexao();
 
 		$senha = sha1($dados[1]);
-
-		$_SESSION['usuario'] = $dados[0];
-		$_SESSION['iduser'] = self::trazerId($dados);
 
 		$sql = "SELECT * FROM usuarios WHERE email = '$dados[0]' and senha = '$senha'";
 
 		$result = mysqli_query($conexao, $sql);
 
 		if(mysqli_num_rows($result) > 0){
+			$_SESSION['usuario'] = $dados[0];
+			$_SESSION['iduser'] = self::trazerId($dados);
 			return 1;
 		}
 		else{
 			return 0;
-		}
+		} 
 	}
 
 	public function trazerId($dados){

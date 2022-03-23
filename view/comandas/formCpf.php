@@ -10,8 +10,9 @@ $conexao=$c->conexao(); ?>
 
 
 </br>
-
-		<form method="post" id="frmComandaCpf">
+	<div class="container">
+		<section class="direita">
+			<form method="post" id="frmComandaCpf">
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
@@ -71,12 +72,26 @@ $conexao=$c->conexao(); ?>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-6">
-					<span type="submit" class="btn btn-primary btn-block" id="btnCriarComanda">Criar</span>
+				<div class="col-sm-3">
+					<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Criar</span>
+				</div>
+				<div class="col-sm-3">
+					<span class="btn btn-danger" id="btnLimparComanda">Limpar Comanda</span>
 				</div>
 			</div>
-			
 		</form>	
+		</section>
+		
+		<section class="esquerda">
+			<div class="row">
+				<div class="col-sm-6">
+					<div id="tabComandaTempLoad"></div>
+				</div>
+			</div>
+		</section>
+
+	</div>	
+		
 
 
 <script type="text/javascript">
@@ -92,6 +107,8 @@ $conexao=$c->conexao(); ?>
 
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
 
 		$('#clienteCpf').change(function(){
 			$.ajax({
@@ -119,8 +136,22 @@ $conexao=$c->conexao(); ?>
 			});
 		});
 
-		$('#btnAddVenda').click(function(){
-			vazios=validarFormVazio('frmVendasProdutos');
+		$('#quantV').click(function(){
+
+			var quant = parseInt($('#quantV').val());
+			var quantidade = parseInt($('#quantidadeV').val()); 
+			
+			if(quant > quantidade){
+				alertify.alert("Quantidade inexistente em estoque!!");
+				quant = $('#quantV').val("");
+				return false;
+			}else{
+				quantidade = $('#quantidadeV').val();
+			}
+		});
+
+		$('#btAddTemp').click(function(){
+			vazios=validarFormVazio('frmComandaCpf');
 
 			var quant = parseInt($('#quantV').val());
 			var quantidade = parseInt($('#quantidadeV').val());
@@ -139,31 +170,37 @@ $conexao=$c->conexao(); ?>
 				return false;
 			}
 
-			dados=$('#frmVendasProdutos').serialize();
+			dados=$('#frmComandaCpf').serialize();
 			$.ajax({
 				type:"POST",
 				data:dados,
-				url:"../procedimentos/vendas/adicionarProdutoTemp.php",
+				url:"../procedimentos/comandas/addComandaTemp.php",
 				success:function(r){
+					//alert(dados);
 					//limpar formulário
-					$('#frmVendasProdutos')[0].reset();
-					$('#tabelaVendasTempLoad').load("vendas/tabelaVendasTemp.php");
+					//$('#frmVendasProdutos')[0].reset();
+					$("#produtoVenda").select2('');
+					$('#quantidadeV').val('');
+					$('#descricaoV').val('');
+					$('#precoV').val('');
+					$('#quantV').val('');
+					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
 				}
 			});
 		});
 
-		$('#btnLimparVendas').click(function(){
-
-		$.ajax({
-			url:"../procedimentos/vendas/limparTemp.php",
-			success:function(r){
-				$('#tabelaVendasTempLoad').load("vendas/tabelaVendasTemp.php");
-			}
+		$('#btnLimparComanda').click(function(){
+			$.ajax({
+				url:"../procedimentos/comandas/limparTemp.php",
+				success:function(r){
+					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+				}
+			});
 		});
-	});
 
 	});
 </script>
+
 
 <?php 
 	}else{

@@ -140,13 +140,61 @@ session_start();
 
 		$('#btnLimparVendas').click(function(){
 
-		$.ajax({
-			url:"../procedimentos/vendas/limparTemp.php",
-			success:function(r){
-				$('#tabelaVendasTempLoad').load("vendas/tabelaVendasTemp.php");
-			}
+			$.ajax({
+				url:"../procedimentos/vendas/limparTemp.php",
+				success:function(r){
+					$('#tabelaVendasTempLoad').load("vendas/tabelaVendasTemp.php");
+				}
+			});
 		});
-	});
+
+		$('#btAddTemp').click(function(){
+			vazios=validarFormVazio('frmComandaCpf');
+
+			var quant = parseInt($('#quantV').val());
+			var quantidade = parseInt($('#quantidadeV').val());
+
+			
+			if(quant > quantidade){
+				alertify.alert("Quantidade inexistente em estoque!!");
+				quant = $('#quantV').val("");
+				return false;
+			}else{
+				quantidade = $('#quantidadeV').val();
+			}
+
+			if(vazios > 0){
+				alertify.alert("Preencha os Campos!!");
+				return false;
+			}
+
+			dados=$('#frmComandaCpf').serialize();
+			$.ajax({
+				type:"POST",
+				data:dados,
+				url:"../procedimentos/comandas/addComandaTemp.php",
+				success:function(r){
+					//alert(dados);
+					//limpar formulário
+					//$('#frmVendasProdutos')[0].reset();
+					$("#produtoVenda").select2('');
+					$('#quantidadeV').val('');
+					$('#descricaoV').val('');
+					$('#precoV').val('');
+					$('#quantV').val('');
+					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+				}
+			});
+		});
+
+		$('#btnLimparComanda').click(function(){
+			$.ajax({
+				url:"../procedimentos/comandas/limparTemp.php",
+				success:function(r){
+					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+				}
+			});
+		});
 
 	});
 </script>

@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="../lib/select2/css/select2.css">
 <link rel="stylesheet" type="text/css" href="../css/menu.css">
+<link rel="stylesheet" type="text/css" href="../css/container.css">
 
 <script src="../lib/jquery-3.2.1.min.js"></script>
 <script src="../lib/jquery.mask.js"></script>

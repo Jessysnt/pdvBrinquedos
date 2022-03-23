@@ -1,5 +1,6 @@
 <?php
 	require_once "classes/conexao.php";
+	
 	$obj = new conectar();
 	$conexao = $obj->conexao();
 
