@@ -8,7 +8,7 @@
  <h4><strong><div id="numComanda"></div></strong></h4>
  <table class="table table-bordered table-hover table-condensed" style="text-align: center;">
  	<caption>
- 		<span class="btn btn-success" onclick="pagarVenda()"> Criar Venda
+ 		<span class="btn btn-success" onclick="addComandaNum()"> Criar Comanda
  			<span class="glyphicon glyphicon-usd"></span>
  		</span>
  	</caption>
@@ -21,7 +21,7 @@
  	</tr>
  	<?php 
  	$total=0;//total da venda em dinheiro
- 	$numComanda = "";//nome cliente
+ 	$numComanda = "";
  		if(isset($_SESSION['tabComprasNumTemp'])):
  			$i=0;
  			foreach (@$_SESSION['tabComprasNumTemp'] as $key) {

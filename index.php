@@ -1,11 +1,11 @@
 <?php
 	require_once "classes/conexao.php";
 	
-	$obj = new conectar();
-	$conexao = $obj->conexao();
+	$obj = new conexao();
+	$conecte = $obj->conecte();
 
 	$sql = "SELECT * from usuarios where user='admin'";
-	$result = mysqli_query($conexao, $sql);
+	$result = mysqli_query($conecte, $sql);
 
 	$validar = 0;
 	if(mysqli_num_rows($result) > 0){
@@ -84,7 +84,8 @@
 				if(r==1){
 					window.location="view/inicio.php";
 				}else{
-					alert("Acesso Negado!!");
+					alert(r);
+					alertify.error("Acesso Negado!!");
 				}
 			}
 		});

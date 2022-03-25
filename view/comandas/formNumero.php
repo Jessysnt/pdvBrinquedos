@@ -16,7 +16,7 @@ $conexao=$c->conexao(); ?>
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label>Produto</label>
-						<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
+						<select class="form-control input-sm" id="prodVenda" name="prodVenda">
 							<option value="A">Selecionar</option>
 							<?php
 								$sql="SELECT id_produto, nome from produtos";
@@ -67,7 +67,7 @@ $conexao=$c->conexao(); ?>
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$("#produtoVenda").select2({
+		$("#prodVenda").select2({
     		minimumInputLength: 3
 		});
 	});
@@ -77,10 +77,10 @@ $conexao=$c->conexao(); ?>
 	$(document).ready(function(){
 		$('#tabComNumTempLoad').load("comandas/tabComNumTemp.php");
 
-		$('#produtoVenda').change(function(){
+		$('#prodVenda').change(function(){
 			$.ajax({
 				type:"POST",
-				data:"idproduto=" + $('#produtoVenda').val(),
+				data:"idproduto=" + $('#prodVenda').val(),
 				url:"../procedimentos/vendas/obterDadosProdutos.php",
 				success:function(r){
 					dado=jQuery.parseJSON(r);
@@ -120,7 +120,7 @@ $conexao=$c->conexao(); ?>
 					//alert(dados);
 					//limpar formulário
 					//$('#frmVendasProdutos')[0].reset();
-					$('#produtoVenda').select2('');
+					$('#prodVenda').select2('');
 					$('#quantidadeV').val('');
 					$('#descricaoV').val('');
 					$('#precoV').val('');

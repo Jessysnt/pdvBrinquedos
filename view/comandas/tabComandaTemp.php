@@ -8,7 +8,7 @@
  <h4><strong><div id="nomeclienteVenda"></div></strong></h4>
  <table class="table table-bordered table-hover table-condensed" style="text-align: center;">
  	<caption>
- 		<span class="btn btn-success" onclick="pagarVenda()"> Criar Venda
+ 		<span class="btn btn-success" onclick="addComandaCpf()"> Criar Comanda
  			<span class="glyphicon glyphicon-usd"></span>
  		</span>
  	</caption>

@@ -1,28 +1,30 @@
 <?php  
 
-class conectar{
+class Conexao{
 
-	/*private $pdo;
-
-	public function conexao(){
-		try {
-		$pdo = new PDO("mysql:dbname=lojab; host=localhost", "root", "");
-		} catch (PDOException $e) {
-			echo "Erro com banco de dados: ".$e->getMessage();
-		}
-		
-		catch(Exception $e){
-			echo "Erro generico: ".$e->getMessage();
-		}
-	
-	}*/
-	
 	private $servidor = "localhost";
 	private $usuario = "root";
 	private $senha = "";
 	private $bd = "lojab";
 
-	public function conexao(){
+	public function conectar(){
+		try {
+			$pdo = new PDO("mysql:host={$servidor};dbname={$bd}", $usuario, $senha);
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			//return $pdo;
+
+		} catch (PDOException $e) {
+			$e->getMessage();
+		}
+	
+	}
+	
+	/*private $servidor = "localhost";
+	private $usuario = "root";
+	private $senha = "";
+	private $bd = "lojab";*/
+
+	public function conecte(){
 		$conexao = mysqli_connect($this->servidor, $this->usuario, $this->senha, $this->bd);
 
 		return $conexao;

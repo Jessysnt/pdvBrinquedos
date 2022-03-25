@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01-Mar-2022 às 03:31
+-- Tempo de geração: 25-Mar-2022 às 11:04
 -- Versão do servidor: 10.4.22-MariaDB
--- versão do PHP: 8.0.15
+-- versão do PHP: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -78,6 +78,17 @@ INSERT INTO `clientes` (`id_cliente`, `id_usuario`, `nome`, `sobrenome`, `endere
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `comandas`
+--
+
+CREATE TABLE `comandas` (
+  `id_comanda` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `estoque`
 --
 
@@ -94,7 +105,8 @@ CREATE TABLE `estoque` (
 
 INSERT INTO `estoque` (`id_estoque`, `id_produto`, `quantotal`, `preco_ven`) VALUES
 (1, 2, 7, '5.90'),
-(2, 3, 10, '9.90');
+(2, 3, 7, '9.90'),
+(3, 4, 10, '100.00');
 
 -- --------------------------------------------------------
 
@@ -140,7 +152,8 @@ CREATE TABLE `imagens` (
 
 INSERT INTO `imagens` (`id_imagem`, `nome`, `url`, `dataUpload`) VALUES
 (2, 'woody.jpg', '../../arquivos/woody.jpg', '2022-02-25 23:07:11'),
-(3, 'carro1.jpg', '../../arquivos/carro1.jpg', '2022-02-26 03:46:59');
+(3, 'carro1.jpg', '../../arquivos/carro1.jpg', '2022-02-26 03:46:59'),
+(4, 'naruto1.jpg', '../../arquivos/naruto1.jpg', '2022-03-14 22:22:20');
 
 -- --------------------------------------------------------
 
@@ -187,7 +200,8 @@ CREATE TABLE `produtos` (
 
 INSERT INTO `produtos` (`id_produto`, `id_imagem`, `id_usuario`, `nome`, `descricao`, `dataCaptura`) VALUES
 (2, 2, 13, 'Woody Cowboy.', 'Toy Story.', '2022-02-25 23:07:11'),
-(3, 3, 13, 'Relâmpago McQueen ', 'Disney', '2022-02-26 03:46:59');
+(3, 3, 13, 'Relâmpago McQueen ', 'Disney', '2022-02-26 03:46:59'),
+(4, 4, 6, 'Naruto', 'Anime', '2022-03-14 22:22:20');
 
 -- --------------------------------------------------------
 
@@ -214,7 +228,8 @@ INSERT INTO `produtov` (`id_prodv`, `id_usuario`, `id_produto`, `lote`, `quantid
 (1, 13, 2, '1', 2, '10.00', '4.00', '2022-02-25 23:21:15'),
 (3, 13, 2, '2', 5, '11.90', '2.90', '2022-02-26 03:43:42'),
 (4, 13, 3, '1', 2, '11.00', '9.90', '2022-02-26 18:07:10'),
-(5, 13, 3, '2', 8, '14.90', '8.90', '2022-02-26 18:09:09');
+(5, 13, 3, '2', 8, '14.90', '8.90', '2022-02-26 18:09:09'),
+(6, 6, 4, '1', 10, '50.00', '100.00', '2022-03-15 00:12:25');
 
 -- --------------------------------------------------------
 
@@ -228,7 +243,7 @@ CREATE TABLE `usuarios` (
   `user` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `senha` varchar(100) NOT NULL,
-  `cargo` varchar(150) NOT NULL,
+  `cargo` int(11) NOT NULL,
   `dataCaptura` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -237,9 +252,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `user`, `email`, `senha`, `cargo`, `dataCaptura`) VALUES
-(13, 'Admin', 'admin', 'admin@reino.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'admin', '2021-11-09'),
-(14, 'Vendedor T', 'vendedor1', 'vendas@reino.com', '88d6818710e371b461efff33d271e0d2fb6ccf47', 'Vendedor', '2021-11-09'),
-(15, 'SUper', 'teste', 'caixa@reino.com', '81dbefaf6d02f0f52d2ac05359c25385a96c7ca4', 'Supervisor', '2022-01-16');
+(13, 'Admin', 'admin', 'admin@reino.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, '2021-11-09'),
+(14, 'Vendedor T', 'vendedor1', 'vendas@reino.com', '88d6818710e371b461efff33d271e0d2fb6ccf47', 3, '2021-11-09'),
+(15, 'SUper', 'teste', 'caixa@reino.com', '81dbefaf6d02f0f52d2ac05359c25385a96c7ca4', 2, '2022-01-16');
 
 -- --------------------------------------------------------
 
@@ -252,11 +267,11 @@ CREATE TABLE `vendas` (
   `id_cliente` int(11) NOT NULL,
   `id_produto` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `preco` float NOT NULL,
+  `preco` decimal(10,2) NOT NULL,
   `quantidade` int(11) NOT NULL,
-  `total_venda` float NOT NULL,
+  `total_venda` decimal(10,2) NOT NULL,
   `nome_pagamento` varchar(150) NOT NULL,
-  `dataCompra` date NOT NULL DEFAULT current_timestamp()
+  `dataCompra` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -264,13 +279,14 @@ CREATE TABLE `vendas` (
 --
 
 INSERT INTO `vendas` (`id_venda`, `id_cliente`, `id_produto`, `id_usuario`, `preco`, `quantidade`, `total_venda`, `nome_pagamento`, `dataCompra`) VALUES
-(1, 29, 30, 13, 150, 1, 150, 'Credito', '2021-12-28'),
-(2, 39, 30, 13, 150, 1, 150, 'Débito', '2021-12-28'),
-(3, 0, 31, 13, 130, 1, 130, 'Débito', '2021-12-29'),
-(3, 0, 30, 13, 150, 1, 150, 'Débito', '2021-12-29'),
-(3, 29, 31, 13, 130, 2, 260, 'Débito', '2021-12-29'),
-(4, 0, 31, 13, 130, 1, 130, '', '2021-12-29'),
-(5, 29, 30, 13, 150, 2, 300, '', '2022-02-20');
+(1, 29, 30, 13, '150.00', 1, '150.00', 'Credito', '2021-12-28 03:00:00'),
+(2, 39, 30, 13, '150.00', 1, '150.00', 'Débito', '2021-12-28 03:00:00'),
+(3, 0, 31, 13, '130.00', 1, '130.00', 'Débito', '2021-12-29 03:00:00'),
+(3, 0, 30, 13, '150.00', 1, '150.00', 'Débito', '2021-12-29 03:00:00'),
+(3, 29, 31, 13, '130.00', 2, '260.00', 'Débito', '2021-12-29 03:00:00'),
+(4, 0, 31, 13, '130.00', 1, '130.00', '', '2021-12-29 03:00:00'),
+(5, 29, 30, 13, '150.00', 2, '300.00', '', '2022-02-20 03:00:00'),
+(6, 29, 2, 6, '5.90', 2, '11.80', '', '2022-03-14 03:00:00');
 
 --
 -- Índices para tabelas despejadas
@@ -287,6 +303,12 @@ ALTER TABLE `categorias`
 --
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id_cliente`);
+
+--
+-- Índices para tabela `comandas`
+--
+ALTER TABLE `comandas`
+  ADD PRIMARY KEY (`id_comanda`);
 
 --
 -- Índices para tabela `estoque`
@@ -347,10 +369,16 @@ ALTER TABLE `clientes`
   MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
+-- AUTO_INCREMENT de tabela `comandas`
+--
+ALTER TABLE `comandas`
+  MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de tabela `estoque`
 --
 ALTER TABLE `estoque`
-  MODIFY `id_estoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_estoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `fornecedores`
@@ -362,7 +390,7 @@ ALTER TABLE `fornecedores`
 -- AUTO_INCREMENT de tabela `imagens`
 --
 ALTER TABLE `imagens`
-  MODIFY `id_imagem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_imagem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `pagamentos`
@@ -374,13 +402,13 @@ ALTER TABLE `pagamentos`
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `produtov`
 --
 ALTER TABLE `produtov`
-  MODIFY `id_prodv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_prodv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`

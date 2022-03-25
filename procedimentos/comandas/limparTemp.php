@@ -4,4 +4,6 @@
 
 	unset($_SESSION['tabComprasTemp']);
 
+	unset($_SESSION['tabComprasNumTemp']);
+
  ?>

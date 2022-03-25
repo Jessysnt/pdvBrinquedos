@@ -1,6 +1,7 @@
 <?php 
 
-class usuarios{
+class Usuario extends Conexao{
+
 	public function registroUsuario($dados){
 		$c = new conectar();
 		$conexao = $c->conexao();
@@ -15,17 +16,21 @@ class usuarios{
 
 	public function login($dados){
 
-		$c = new conectar();
-		$conexao = $c->conexao();
+		$c = new conexao();
+		$conexao = $c->conectar();
 
 		$senha = sha1($dados[1]);
 
-		$sql = "SELECT * FROM usuarios WHERE email = '$dados[0]' and senha = '$senha'";
+		$select_stmt=$conexao->prepare("SELECT * FROM usuarios WHERE email=:email AND senha=:senha");
+		$select_stmt->execute(array(':email'=>$email));
+		$result=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-		$result = mysqli_query($conexao, $sql);
+		/*$sql = "SELECT * FROM usuarios WHERE email = '$dados[0]' and senha = '$senha'";
 
-		if(mysqli_num_rows($result) > 0){
-			$_SESSION['usuario'] = $dados[0];
+		$result = mysqli_query($conexao, $sql);*/
+
+		if($select_stmt->rowCount() > 0){
+			$_SESSION['usuario'] = $result['email'];
 			$_SESSION['iduser'] = self::trazerId($dados);
 			return 1;
 		}
