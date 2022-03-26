@@ -16,22 +16,14 @@ class Usuario extends Conexao{
 
 	public function login($dados){
 
-		$c = new conexao();
-		$conexao = $c->conectar();
-
 		$senha = sha1($dados[1]);
 
-		$select_stmt=$conexao->prepare("SELECT * FROM usuarios WHERE email=:email AND senha=:senha");
-		$select_stmt->execute(array(':email'=>$email));
+		$select_stmt=$this->conectar()->prepare("SELECT * FROM usuarios WHERE email=:email AND senha=:senha");
+		$select_stmt->execute(array(':email'=>$dados[0], ':senha'=>$senha));
 		$result=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-		/*$sql = "SELECT * FROM usuarios WHERE email = '$dados[0]' and senha = '$senha'";
-
-		$result = mysqli_query($conexao, $sql);*/
-
 		if($select_stmt->rowCount() > 0){
-			$_SESSION['usuario'] = $result['email'];
-			$_SESSION['iduser'] = self::trazerId($dados);
+			$_SESSION['usuario'] = $result;
 			return 1;
 		}
 		else{
@@ -40,69 +32,49 @@ class Usuario extends Conexao{
 	}
 
 	public function trazerId($dados){
-		$c = new conectar();
-		$conexao = $c->conexao();
 
 		$senha = sha1($dados[1]);
 
-		$sql = "SELECT id FROM usuarios WHERE email='$dados[0]' and senha='$senha' ";
+		$select_stmt=$this->conectar()->prepare("SELECT id FROM usuarios WHERE email=:email AND senha=:senha");
+		$select_stmt->execute(array(':email'=>$dados[0], ':senha'=>$senha));
+		$result=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-		$result = mysqli_query($conexao, $sql);
-
-		return mysqli_fetch_row($result)[0];
+		return $result[0];
 	}
 
 
 	public function obterUsuario($idusuario){
 
-		$c = new conectar();
-		$conexao=$c->conexao();
 
-		$sql="SELECT id, nome, user, email, cargo from usuarios where id='$idusuario'";
+		$select_stmt=$this->conectar()->prepare("SELECT id, nome, user, email, cargo FROM usuarios WHERE id=:idusuario");
+		$select_stmt->execute(array(':idusuario'=>$idusuario));
+		$result=$select_stmt->fetch(PDO::FETCH_ASSOC);
 
-		$result=mysqli_query($conexao,$sql);
-
-		$mostrar=mysqli_fetch_row($result);
-
-		$dados=array(
-						'id' => $mostrar[0],
-						'nome' => $mostrar[1],
-						'user' => $mostrar[2],
-						'email' => $mostrar[3],
-						'cargo' =>$mostrar[4]
-		);
-
-		return $dados;
+		return $result;
 
 	}
 
 
 
 	public function atualizarUsuario($dados){
-			
-		$c = new conectar();
-		$conexao=$c->conexao();
 
-		$sql="UPDATE usuarios set nome='$dados[1]', user='$dados[2]', email='$dados[3]', cargo='$dados[4]' where id='$dados[0]'";
-
+		$update_stmt=$this->conectar()->prepare("UPDATE usuarios SET nome=:nome, user=:user, email=:email, cargo=:cargo WHERE id=:id");
+		$update_stmt->execute(array(':id'=>$dados[0],':nome'=>$dados[1], ':user'=>$dados[2], ':email'=>$dados[3], ':cargo'=>$dados[4]));
+		$result=$update_stmt->fetch(PDO::FETCH_INTO);
 					
-
-		return mysqli_query($conexao,$sql);	
-
+		return $result;
 	}
 
 
 
 
 	public function deletarUsuario($idusuario){
-			
-		$c = new conectar();
-		$conexao=$c->conexao();
 
-		$sql="DELETE from usuarios where id='$idusuario'";
-			
-		return mysqli_query($conexao,$sql);
+		$delete_stmt=$this->conectar()->prepare("DELETE FROM usuarios WHERE id=:id");
+		$delete_stmt->execute(array(':id'=>$idusuario));
+		$result=$delete_stmt->fetch();
 
+		return $result;
 	}
 
 }

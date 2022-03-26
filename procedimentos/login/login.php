@@ -4,7 +4,7 @@ session_start();
 require_once "../../classes/conexao.php";
 require_once "../../classes/usuarios.php";
 
-$obj = new suario();
+$obj = new usuario();
 
 $dados = array(
 	$_POST['email'],

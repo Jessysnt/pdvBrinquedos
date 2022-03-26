@@ -5,7 +5,7 @@ require_once "../../classes/usuarios.php";
 
 
 
-$obj = new usuarios();
+$obj = new usuario();
 
 $dados = array(
 	$_POST['idUsuario'],

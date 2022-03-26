@@ -59,7 +59,7 @@
             <a href="#" style="color: #19d1cb"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Usuário   <span class="caret"></span></a>
             <ul class="dropdown-menu">
               
-              <?php if($_SESSION['usuario'] == "admin@reino.com"):  ?>
+              <?php if($_SESSION['usuario']['cargo'] == "1"):  ?>
               <li> <a href="usuarios.php">Gestão Usuários</a></li>
               <?php endif; ?>
 

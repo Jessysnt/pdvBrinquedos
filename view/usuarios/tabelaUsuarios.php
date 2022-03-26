@@ -3,8 +3,8 @@
 
 
 require_once "../../classes/conexao.php";
-	$c = new conectar();
-	$conexao = $c->conexao();
+	$c = new conexao();
+	$conexao = $c->conecte();
 
 	$sql = "SELECT id, nome, user, email, cargo FROM usuarios ORDER BY cargo";
 	

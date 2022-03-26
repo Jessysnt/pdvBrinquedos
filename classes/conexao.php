@@ -9,9 +9,9 @@ class Conexao{
 
 	public function conectar(){
 		try {
-			$pdo = new PDO("mysql:host={$servidor};dbname={$bd}", $usuario, $senha);
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			//return $pdo;
+			$conexao = new PDO("mysql:host={$this->servidor};dbname={$this->bd}", $this->usuario, $this->senha);
+			$conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			return $conexao;
 
 		} catch (PDOException $e) {
 			$e->getMessage();
