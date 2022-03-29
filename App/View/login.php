@@ -1,18 +1,3 @@
-<?php
-//	require_once "classes/conexao.php";
-	
-//	$obj = new conexao();
-//	$conecte = $obj->conecte();
-
-//	$sql = "SELECT * from usuarios where user='admin'";
-//	$result = mysqli_query($conecte, $sql);
-
-//	$validar = 0;
-//	if(mysqli_num_rows($result) > 0){
-//		$validar = 1;
-//	}
-//?> 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +32,7 @@
 							<label>Senha</label>
 							<input type="password" name="senha" id="senha" class="form-control input-sm">
 							<p></p>
-							<span class="btn btn-primary btn-block" id="entrarSistema">Entrar</span>
+							<button type="submit" class="btn btn-primary btn-block" id="entrarSistema">Entrar</button>
 							</br>
 							<?php if(!$validar):?>
 							<a href="registrar.php" class="btn btn-danger btn-sm">Registrar</a>
@@ -63,7 +48,7 @@
 </body>
 </html>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document).ready(function(){
 		$('#entrarSistema').click(function(){
 
@@ -91,4 +76,4 @@
 		});
 	});
 	});
-</script>
+</script> -->

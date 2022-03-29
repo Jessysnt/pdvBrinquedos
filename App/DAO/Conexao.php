@@ -40,6 +40,7 @@ class Conexao{
         } catch (PDOException $e) {
             $e->getMessage();
         }
+
     }
 }
 

@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\DAO\Conexao;
+use App\DAO\UsuarioDAO;
 use DateTime;
+use PDO;
 
 class Usuario {
 
@@ -118,7 +119,27 @@ class Usuario {
     }
 
 
-    public function login(){
-        $obConexao = new Conexao;
+    /**
+     * Metodo para consulta do login
+     * @return boolean
+     */
+    public function logar(){
+        $obUsuario = new UsuarioDAO;
+        $obUsuario->login([
+            'email' => $this->email,
+            'senha' => $this->senha
+        ]);
     }
+
+    public function primeiroRegistro(){
+        $obUsuario = new UsuarioDAO;
+        $obUsuario->registroUsuario([
+            'nome' => $this->nome,
+            'sobrenome' => $this->sobrenome,
+            'email' => $this->email,
+            'senha' => $this->senha,
+            'cargo' => $this->cargo
+        ]);
+    }
+
 }
