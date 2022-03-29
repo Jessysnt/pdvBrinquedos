@@ -11,11 +11,11 @@ class UsuarioDAO extends Conexao{
 
     public function login($dados)
     {
-
         try{
+            $senha = sha1($dados['senha']);
             $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE email=:email AND senha=:senha");
             $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
-            $stmt->bindParam(':senha', $dados['senha'], PDO::PARAM_STR);
+            $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
             // return $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt->execute();
             return $stmt->fetchObject('\App\Entity\Usuario');
@@ -26,12 +26,14 @@ class UsuarioDAO extends Conexao{
     }
 
     public function registroUsuario($dados){
+        $senha = sha1($dados['senha']);
+
         $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, email, senha, cargo) VALUES (:nome, :sobrenome, :email, :senha, :cargo)");
         
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
-        $stmt->bindParam(':senha', $dados['senha'], PDO::PARAM_STR);
+        $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
         $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_INT);
 
         return $stmt->execute();

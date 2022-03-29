@@ -30,7 +30,7 @@ $router->add('', ['controller' => 'LoginController', 'action' => 'sair']);
 // $router->add('{controller}/{action}');
 
 session_start();
-if(isset($_SESSION['usuario']) || in_array($_SERVER['REQUEST_URI'],['/login', '/sair'])) {
+if(isset($_SESSION['usuario']) || in_array($_SERVER['REQUEST_URI'],['/login', '/sair', '/registro'])) {
     $router->dispatch($_SERVER['REQUEST_URI']);
 }else{
     $router->dispatch('/login');
