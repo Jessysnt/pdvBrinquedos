@@ -2,10 +2,7 @@
 <html>
 <head>
 	<title>Registrar Usuário</title>
-	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
-	<script src="lib/jquery-3.2.1.min.js"></script>
-	<script src="js/funcoes.js"></script>
-	
+	<link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.css">
 
 </head>
 <body style="background-color: #818991">
@@ -20,12 +17,14 @@
 						<form id="frmRegistro">
 							<label>Nome</label>
 							<input type="text" class="form-control input-sm" name="nome" id="nome">
-							<label>Usuário</label>
-							<input type="text" class="form-control input-sm" name="usuario" id="usuario">
+							<label>Sobrenome</label>
+							<input type="text" class="form-control input-sm" name="sobrenome" id="sobrenome">
 							<label>Email</label>
 							<input type="text" class="form-control input-sm" name="email" id="email">
 							<label>Senha</label>
 							<input type="password" class="form-control input-sm" name="senha" id="senha">
+							<label>Cargo</label>
+							<input type="text" class="form-control input-sm" name="cargo" id="cargo">
 							<p></p>
 							<span class="btn btn-primary" id="registro">Registrar</span>
 							<a href="index.php" class="btn btn-default">Voltar Login</a>
@@ -36,5 +35,42 @@
 			<div class="col-sm-4"></div>
 		</div>
 	</div>
+
+	<script src="assets/lib/jquery-3.2.1.min.js"></script>
+	<script src="assets/js/funcoes.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#registro').click(function(){
+
+				vazios=validarFormVazio('frmRegistro');
+
+				if(vazios > 0){
+					alert("Preencha os Campos!!");
+					return false;
+				}
+
+				dados=$('#frmRegistro').serialize();
+
+				$.ajax({
+					type:"POST",
+					data:dados,
+					url:"registro",
+					success:function(r){
+						var resp = JSON.parse(r);
+						console.log(r);
+						if(resp){
+							//limpar formulário
+							$('#frmRegistro')[0].reset();
+							$(location).attr('href', 'login');
+						}else{
+							alert("Erro ao Inserir");
+						}
+					}
+				});
+			});
+		});
+	</script>
 </body>
 </html>
+

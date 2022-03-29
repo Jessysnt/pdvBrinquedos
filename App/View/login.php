@@ -2,9 +2,8 @@
 <html>
 <head>
 	<title>Login</title>
-	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
-	<script src="lib/jquery-3.2.1.min.js"></script>
-	<script src="js/funcoes.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.css">
+	
 	<style>
 		.imglogo{
 			display: block;
@@ -24,7 +23,7 @@
 					<div class="panel panel-heading">Reino Mágico</div>
 					<div class="panel panel-body">
 						<p justify-content= center>
-							<img class="imglogo" src="img/logo1.png">
+							<img class="imglogo" src="assets/img/logo1.png">
 						</p>
 						<form id="frmLogin">
 							<label>E-mail</label>
@@ -35,7 +34,7 @@
 							<button type="submit" class="btn btn-primary btn-block" id="entrarSistema">Entrar</button>
 							</br>
 							<?php if(!$validar):?>
-							<a href="registrar.php" class="btn btn-danger btn-sm">Registrar</a>
+							<a href="registro" class="btn btn-danger btn-sm">Registrar</a>
 							<?php endif ?>
 													
 						</form>
@@ -45,35 +44,43 @@
 			<div class="col-sm-4"></div>
 		</div>
 	</div>
+
+	<script src="assets/lib/jquery-3.2.1.min.js"></script>
+	<script src="assets/js/funcoes.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#entrarSistema').click(function(e){
+
+			e.preventDefault();
+
+			vazios=validarFormVazio('frmLogin');
+
+				if(vazios > 0){
+					alert("Preencha os campos!!");
+					return false;
+				}
+
+			dados=$('#frmLogin').serialize();
+			$.ajax({
+				type:"POST",
+				data:dados,
+				url:"login",
+				success:function(r){
+					console.log(r);
+					var resp = JSON.parse(r);
+					if(resp){
+						window.location="painel";
+					}else{
+						alert(r);
+						alertify.error("Acesso Negado!!");
+					}
+				}
+			});
+		});
+		});
+	</script>
 </body>
 </html>
 
-<!-- <script type="text/javascript">
-	$(document).ready(function(){
-		$('#entrarSistema').click(function(){
-
-		vazios=validarFormVazio('frmLogin');
-
-			if(vazios > 0){
-				alert("Preencha os campos!!");
-				return false;
-			}
-
-		dados=$('#frmLogin').serialize();
-		$.ajax({
-			type:"POST",
-			data:dados,
-			url:"procedimentos/login/login.php",
-			success:function(r){
-
-				if(r==1){
-					window.location="view/inicio.php";
-				}else{
-					alert(r);
-					alertify.error("Acesso Negado!!");
-				}
-			}
-		});
-	});
-	});
-</script> -->
+<!--  -->

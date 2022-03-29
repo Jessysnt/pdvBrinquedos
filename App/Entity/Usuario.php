@@ -119,27 +119,4 @@ class Usuario {
     }
 
 
-    /**
-     * Metodo para consulta do login
-     * @return boolean
-     */
-    public function logar(){
-        $obUsuario = new UsuarioDAO;
-        $obUsuario->login([
-            'email' => $this->email,
-            'senha' => $this->senha
-        ]);
-    }
-
-    public function primeiroRegistro(){
-        $obUsuario = new UsuarioDAO;
-        $obUsuario->registroUsuario([
-            'nome' => $this->nome,
-            'sobrenome' => $this->sobrenome,
-            'email' => $this->email,
-            'senha' => $this->senha,
-            'cargo' => $this->cargo
-        ]);
-    }
-
 }
