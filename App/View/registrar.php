@@ -58,7 +58,7 @@
 					url:"registro",
 					success:function(r){
 						var resp = JSON.parse(r);
-						console.log(r);
+						//console.log(r);
 						if(resp){
 							//limpar formulário
 							$('#frmRegistro')[0].reset();

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1>Administrar Usuário</h1>
+    <div class="row">
+        <div class="col-sm-4">
+            <form id="frmUsuario">
+                <label>Nome</label>
+                <input type="text" class="form-control input-sm" name="nome" id="nome">
+                <label>Sobrenome</label>
+                <input type="text" class="form-control input-sm" name="sobrenome" id="sobrenome">
+                <label>Email</label>
+                <input type="text" class="form-control input-sm" name="email" id="email">
+                <label>Senha</label>
+                <input type="text" class="form-control input-sm" name="senha" id="senha">
+
+                <label>Cargo</label>
+                <select class="form-control input-sm" id="cargo" name="cargo">
+                    <option value="A">Selecionar Categoria</option>
+                    <option value="2">Caixa</option>
+                    <option value="3">Vendedor</option>
+                    <option value="1">Admin</option>
+                </select>
+
+                <p></p>
+                <span class="btn btn-primary btn-block" id="usuarioF">Adicionar</span>
+
+            </form>
+        </div>
+        <div class="col-sm-7">
+            <div id="tabelaUsuariosLoad"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    function adicionarDados(idusuario){
+        //alert(idusuario);
+        $.ajax({
+            type:"POST",
+            data:"idusuario=" + idusuario,
+            url:"../procedimentos/usuarios/obterUsuarios.php",
+            success:function(r){
+                dado=jQuery.parseJSON(r);
+
+                $('#idUsuario').val(dado['id']);
+                $('#nomeU').val(dado['nome']);
+                $('#sobrenomeU').val(dado['sobrenome']);
+                $('#emailU').val(dado['email']);
+                $('#cargoU').val(dado['cargo']);
+            }
+        });
+    }
+
+    function deletarUsuario(idusuario){
+        alertify.confirm('Deseja excluir este usuario?', function(){ 
+            $.ajax({
+                type:"POST",
+                data:"idusuario=" + idusuario,
+                url:"../procedimentos/usuarios/deletarUsuarios.php",
+                success:function(r){
+                    //alert(r);
+                    if(r==1){
+                        $('#tabelaUsuariosLoad').load("usuarios/tabelaUsuarios.php");
+                        alertify.success("Excluido com sucesso!!");
+                    }else{
+                        alertify.error("Não foi possível excluir");
+                    }
+                }
+            });
+        }, function(){ 
+            alertify.error('Cancelado !')
+        });
+    }
+
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btnAtualizaUsuario').click(function(){
+
+            dados=$('#frmUsuarioU').serialize();
+            $.ajax({
+                type:"POST",
+                data:dados,
+                url:"../procedimentos/usuarios/atualizarUsuarios.php",
+                success:function(r){
+
+                    if(r==1){
+                        $('#tabelaUsuariosLoad').load('usuario/tabelaUsuario.php');
+                        alertify.success("Editado com sucesso");
+                    }else{
+                        alertify.error("Não foi possível editar");
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#tabelaUsuariosLoad').load('tabelaUsuario.php');
+
+        $('#usuarioF').click(function(){
+
+            vazios=validarFormVazio('frmUsuario');
+
+            if(vazios > 0){
+                alertify.alert("Preencha os campos!!");
+                return false;
+            }
+
+            dados=$('#frmUsuario').serialize();
+            $.ajax({
+                type:"POST",
+                data:dados,
+                url:"usuarioF",
+                success:function(r){
+                    var resp = JSON.parse(r);
+                    console.log(r);
+                    if(resp){
+                        $('#frmUsuario')[0].reset();
+                        $('#tabelaUsuariosLoad').load('/tabelaUsuario.php');
+                        alertify.success("Adicionado com sucesso");
+                    }else{
+                        alertify.error("Falha ao adicionar :(");
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#cargo').select2();
+    //$('#cargoU').select2(); 
+
+});
+</script>
+{% endblock %}

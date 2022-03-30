@@ -44,5 +44,27 @@ class UsuarioDAO extends Conexao{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    public function atualizarUsuario($dados){
+
+		$stmt=static::getConexao()->prepare("UPDATE usuario SET nome=:nome, user=:user, email=:email, cargo=:cargo WHERE id=:id");
+        $stmt->bindParam(':id', $dados['id'], PDO::PARAM_INT);
+        $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
+        $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
+        $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
+        $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+        $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_INT);
+					
+		return $stmt->execute();
+	}
+
+    public function deletarUsuario($idusuario){
+
+		$stmt=static::getConexao()->prepare("DELETE FROM usuario WHERE id=:id");
+        $stmt->bindParam(':id', $idusuario['id'], PDO::PARAM_INT);
+
+		return $stmt->execute();
+	}
+
     
 }
