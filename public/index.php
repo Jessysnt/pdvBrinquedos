@@ -27,6 +27,7 @@ $router->add('painel', ['controller' => 'PainelController', 'action' => 'painel'
 $router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
 $router->add('', ['controller' => 'LoginController', 'action' => 'sair']);
 $router->add('usuarioF', ['controller' => 'UsuarioController', 'action' => 'usuarioForm']);
+$router->add('usuarioTabela', ['controller' => 'UsuarioController', 'action' => 'usuarioTabela']);
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 // $router->add('{controller}/{action}');

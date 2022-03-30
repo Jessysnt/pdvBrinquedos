@@ -28,6 +28,9 @@ class UsuarioController
         View::renderTemplate('/usuario/usuario.html', ['validar'=>$validar]); 
     }
 
-    
+    public function usuarioTabela()
+    {
+        View::renderTemplate('/usuario/tabelaUsuario.html'); 
+    }
     
 }

@@ -67,7 +67,7 @@
                 success:function(r){
                     //alert(r);
                     if(r==1){
-                        $('#tabelaUsuariosLoad').load("usuarios/tabelaUsuarios.php");
+                        $('#tabelaUsuariosLoad').load("usuarios/tabelaUsuarios.html");
                         alertify.success("Excluido com sucesso!!");
                     }else{
                         alertify.error("Não foi possível excluir");
@@ -108,7 +108,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        $('#tabelaUsuariosLoad').load('tabelaUsuario.php');
+        $('#tabelaUsuariosLoad').load('usuarioTabela');
 
         $('#usuarioF').click(function(){
 
@@ -129,7 +129,7 @@
                     console.log(r);
                     if(resp){
                         $('#frmUsuario')[0].reset();
-                        $('#tabelaUsuariosLoad').load('/tabelaUsuario.php');
+                        $('#tabelaUsuariosLoad').load('usuarioTabela');
                         alertify.success("Adicionado com sucesso");
                     }else{
                         alertify.error("Falha ao adicionar :(");
