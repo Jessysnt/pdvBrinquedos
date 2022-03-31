@@ -28,9 +28,42 @@ class UsuarioController
         View::renderTemplate('/usuario/usuario.html', ['validar'=>$validar]); 
     }
 
-    public function usuarioTabela()
-    {
-        View::renderTemplate('/usuario/tabelaUsuario.html'); 
+    public function tababelaUsuario(){
+        $obUsuario = new UsuarioDAO();
+        $resp = $obUsuario->exibirUsuario();
+
+        View::renderTemplate('/usuario/tabelaUsuario.html', ['usuarios'=>$resp]); 
+    }
+
+    public function obterUsuario(){
+        $obUsuario = new UsuarioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    
+            $resp = $obUsuario->obterUsuario($_POST);
+                
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function apagarUsuario(){
+        $obUsuario = new UsuarioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    
+            $resp = $obUsuario->deletarUsuario($_POST);
+                
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function atualizaUsuario(){
+        $obUsuario = new UsuarioDAO();
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    
+            $resp = $obUsuario->atualizarUsuario($_POST);
+                
+            View::jsonResponse($resp);
+        }
     }
     
 }

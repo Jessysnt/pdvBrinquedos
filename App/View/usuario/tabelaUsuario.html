@@ -1,4 +1,3 @@
-{% extends "base.html" %}
 
 {% block stylesheet %}
 <style>
@@ -8,6 +7,7 @@
 {% endblock %}
 
 {% block body %}
+
 <div class="table-responsive">
 </br>
 	<caption><label>Usuários</label></caption> 
@@ -21,36 +21,35 @@
 		<thead>	
 		 	<tr>
 		 		<th>Nome</th>
-		 		<th>Usuário</th>
+		 		<th>Sobrenome</th>
 		 		<th>Email</th>
 		 		<th>Cargo</th>
 
 		 		<th>Editar</th>
 		 		<th>Excluir</th>
 		 	</tr>
+			 
  		</thead>
 
  		<tbody>	
-		 	<?php while($mostrar = mysqli_fetch_row($result)): ?>
-		 	
+			{% for usuario in usuarios %}
 		 	<tr>
-		 		<td><?php echo $mostrar[1]; ?></td>
-		 		<td><?php echo $mostrar[2]; ?></td>
-		 		<td><?php echo $mostrar[3]; ?></td>
-		 		<td><?php echo $mostrar[4] ?></td>
+		 		<td>{{usuario.nome}}</td>
+		 		<td>{{usuario.sobrenome}}</td>
+		 		<td>{{usuario.email}}</td>
+		 		<td>{{usuario.getCargoNome()}}</td>
 		 		<td>
-					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('<?php echo $mostrar[0]; ?>')">
+					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('{{usuario.id}}')">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</span>
 				</td>
 				<td>
-					<span class="btn btn-danger btn-xs" onclick="deletarUsuario('<?php echo $mostrar[0]; ?>')">
+					<span class="btn btn-danger btn-xs" onclick="deletarUsuario('{{usuario.id}}')">
 						<span class="glyphicon glyphicon-remove"></span>
 					</span>
 				</td>
 		 	</tr>
-
-			<?php  endWhile?>
+			 {% endfor %}
 	 	</tbody>
 	</table>
 </div>

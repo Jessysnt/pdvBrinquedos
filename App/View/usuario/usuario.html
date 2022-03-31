@@ -2,8 +2,44 @@
 
 {% block title %}Usuários{% endblock %}
 
-
 {% block body %}
+
+<!-- Modal -->
+<div class="modal fade" id="atualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Editar Usuário</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmUsuarioU">
+                    <input type="text" hidden="" id="idUsuario" name="idUsuario">
+                    <label>Nome</label>
+                    <input type="text" class="form-control input-sm" name="nomeU" id="nomeU">
+                    <label>Usuário</label>
+                    <input type="text" class="form-control input-sm" name="sobrenomeU" id="sobrenomeU">
+                    <label>Email</label>
+                    <input type="text" class="form-control input-sm" name="emailU" id="emailU">
+                    <label>Cargo</label>
+                    <select class="form-control input-sm" id="cargoU" name="cargoU">
+                        <option value="A">Selecionar Categoria</option>
+                        <option value="2">Caixa</option>
+                        <option value="3">Vendedor</option>
+                        <option value="1">Administrador</option>
+                    </select>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnAtualizaUsuario" type="button" class="btn btn-warning" data-dismiss="modal">Atualizar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     <h1>Administrar Usuário</h1>
     <div class="row">
@@ -36,6 +72,7 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block javascript %}
@@ -45,15 +82,14 @@
         $.ajax({
             type:"POST",
             data:"idusuario=" + idusuario,
-            url:"../procedimentos/usuarios/obterUsuarios.php",
+            url:"obtUsuario",
             success:function(r){
-                dado=jQuery.parseJSON(r);
-
-                $('#idUsuario').val(dado['id']);
-                $('#nomeU').val(dado['nome']);
-                $('#sobrenomeU').val(dado['sobrenome']);
-                $('#emailU').val(dado['email']);
-                $('#cargoU').val(dado['cargo']);
+                var resp = JSON.parse(r);
+                $('#idUsuario').val(resp['id']);
+                $('#nomeU').val(resp['nome']);
+                $('#sobrenomeU').val(resp['sobrenome']);
+                $('#emailU').val(resp['email']);
+                $('#cargoU').val(resp['cargo']);
             }
         });
     }
@@ -63,11 +99,13 @@
             $.ajax({
                 type:"POST",
                 data:"idusuario=" + idusuario,
-                url:"../procedimentos/usuarios/deletarUsuarios.php",
+                url:"apagarUsuario",
                 success:function(r){
-                    //alert(r);
-                    if(r==1){
-                        $('#tabelaUsuariosLoad').load("usuarios/tabelaUsuarios.html");
+                    var resp = JSON.parse(r);
+                    //console.log(idusuario);
+                    //console.log(r);
+                    if(resp){
+                        $('#tabelaUsuariosLoad').load("tabUsuario");
                         alertify.success("Excluido com sucesso!!");
                     }else{
                         alertify.error("Não foi possível excluir");
@@ -85,20 +123,22 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btnAtualizaUsuario').click(function(){
-
+            
             dados=$('#frmUsuarioU').serialize();
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"../procedimentos/usuarios/atualizarUsuarios.php",
+                url:"atualizaUsuario",
                 success:function(r){
-
-                    if(r==1){
-                        $('#tabelaUsuariosLoad').load('usuario/tabelaUsuario.php');
+                    var resp = JSON.parse(r);
+                    if(resp){
+                        $('#tabelaUsuariosLoad').load('tabUsuario');
                         alertify.success("Editado com sucesso");
                     }else{
                         alertify.error("Não foi possível editar");
                     }
+                }, error:function(e){
+                    console.log(e);
                 }
             });
         });
@@ -108,7 +148,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        $('#tabelaUsuariosLoad').load('usuarioTabela');
+        $('#tabelaUsuariosLoad').load('tabUsuario');
 
         $('#usuarioF').click(function(){
 
@@ -126,10 +166,10 @@
                 url:"usuarioF",
                 success:function(r){
                     var resp = JSON.parse(r);
-                    console.log(r);
+                    //console.log(r);
                     if(resp){
                         $('#frmUsuario')[0].reset();
-                        $('#tabelaUsuariosLoad').load('usuarioTabela');
+                        $('#tabelaUsuariosLoad').load('tabUsuario');
                         alertify.success("Adicionado com sucesso");
                     }else{
                         alertify.error("Falha ao adicionar :(");
@@ -144,7 +184,6 @@
 $(document).ready(function(){
     $('#cargo').select2();
     //$('#cargoU').select2(); 
-
 });
 </script>
 {% endblock %}

@@ -118,5 +118,26 @@ class Usuario {
         return $this->nome.' '.$this->sobrenome;
     }
 
+    public function getCargoNome(): ?string
+    {
+        switch ($this->cargo) {
+            case '1':
+                return 'Administrador';
+                break;
+            case '2':
+                return 'Gerente';
+                break;
+            case '3':
+                return 'Caixa';
+                break;
+            case '3':
+                return 'Vendedor';
+                break;
+            default:
+                return 'Cargo não encontrado.';
+                break;
+        }
+    }
+
 
 }
