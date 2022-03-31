@@ -32,6 +32,11 @@ class ProdutoVenda
     /**
      * @var float
      */
+    private $precoComp;
+
+    /**
+     * @var float
+     */
     private $precoVenda;
 
     public function getId(): ?int
@@ -83,6 +88,18 @@ class ProdutoVenda
     public function setQuantidade(int $quantidade): self
     {
         $this->quantidade = $quantidade;
+
+        return $this;
+    }
+
+    public function getPrecoComp(): ?float
+    {
+        return $this->precoComp;
+    }
+
+    public function setPrecoComp(float $precoComp): self
+    {
+        $this->precoComp = $precoComp;
 
         return $this;
     }
