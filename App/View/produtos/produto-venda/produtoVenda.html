@@ -26,15 +26,9 @@
                     <label>Brinquedo</label>
                     <select class="form-control input-sm" id="produtoSelectU" name="produtoSelectU">
                         <option value="A">Selecionar</option>
-                        <?php
-                            $sql="SELECT id_produto, nome
-                            from produtos";
-                            $result=mysqli_query($conexao,$sql);
-
-                            while ($produto=mysqli_fetch_row($result)):
-                        ?>
-                            <option value="<?php echo $produto[0] ?>"><?php echo $produto[1] ?></option>
-                        <?php endwhile; ?>
+                        {% for produto in produtos %}
+                        <option value="{{produto.id}}">{{produto.nome}}</option>
+                        {% endfor %}
                     </select>
                     <label>Lote</label>
                     <input type="text" class="form-control input-sm" id="loteU" name="loteU">
@@ -66,7 +60,7 @@
     <div class="row">
         <ul class="nav nav-tabs nav-justified">
             <li role="presentation" ><a href="produtoF">Cadastrar Produtos</a></li>
-            <li role="presentation" class="active"><a href="produtoL">Preço para venda</a></li>
+            <li role="presentation" class="active"><a href="produtoV">Preço para venda</a></li>
             <li role="presentation"><a href="estoque">Estoque</a></li>
         </ul>
     </div>	
@@ -76,15 +70,14 @@
             <form method="post" id="frmProdutov" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="nome">Brinquedo</label>
-                    {% for produto in produtos %}
-                    <select class="form-control input-sm" id="produtoSelect" name="produtoSelect">
-                        
+                    
+                    <select class="form-control input-sm" id="produtoSelect" name="produtoSelect" >
                         <option value="A">Selecionar</option>
-                        
+                        {% for produto in produtos %}
                         <option value="{{produto.id}}">{{produto.nome}}</option>
-                        
-                    </select>
-                    {% endfor %}
+                        {% endfor %}
+                    </select >
+                    
                 </div>
                 <div class="form-group">
                     <label for="lote">Lote</label>
@@ -169,23 +162,21 @@
     $(document).ready(function(){
         //$('#tabelaProdvLoad').load("produtov/tabelaProdv.php");
         $('#btnAddProdutov').click(function(){
-           // vazios=validarFormVazio('frmProdutov');
+            vazios=validarFormVazio('frmProdutov');
             
-            // if(vazios > 0){
-            //     alertify.alert("Preencha os Campos!!");
-            //     return false;
-            // }
+            if(vazios > 0){
+                alertify.alert("Preencha os Campos!!");
+                return false;
+            }
             
             dados=$('#frmProdutov').serialize();
-            //var formData = new FormData(document.getElementById("frmProdutov"));
+            var formData = new FormData(document.getElementById("frmProdutov"));
             //alert(formData);
             $.ajax({
                 type: "POST",
                 data: dados,
-                url:"mostrar",
+                url:"",
                 success:function(r){
-                    console.log(r);
-                    console.log(dados);
                     if(r==1){
                         $('#frmProdutov')[0].reset();
                        // $('#tabelaProdvLoad').load("produtov/tabelaProdv.php");

@@ -37,7 +37,7 @@
     <div class="row">
         <ul class="nav nav-tabs nav-justified">
             <li role="presentation" class="active"><a href="produtoF">Cadastrar Produtos</a></li>
-            <li role="presentation"><a href="produtoVAdd">Preço para venda</a></li>
+            <li role="presentation"><a href="produtoV">Preço para venda</a></li>
             <li role="presentation"><a href="estoque">Estoque</a></li>
         </ul>
     </div>	
@@ -156,8 +156,9 @@
                 processData: false,
 
                 success:function(r){
-                    var resp = JSON.parse(r);
-                    if(resp){	
+                    console.log(r);
+                   // var resp = JSON.parse(r);
+                    if(r){	
                         $('#frmProdutos')[0].reset();
                        // $('#tabelaProdutosLoad').load("produtos/tabelaProdutos.php");
                         alertify.success("Adicionado com sucesso!!");

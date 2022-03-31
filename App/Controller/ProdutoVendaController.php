@@ -8,16 +8,12 @@ use Core\View;
 
 class ProdutoVendaController
 {
-    public function produtoAdd()
-    {
-        View::renderTemplate('/produtos/produto-venda/produtoVenda.html'); 
-    }
-
-    public function mostrarProdutos()
+    public function produtoVenda()
     {
         $obProduto = new ProdutoDAO();
         $resp = $obProduto->exibirProdutos();
-
+        //die(var_dump($resp));
         View::renderTemplate('/produtos/produto-venda/produtoVenda.html', ['produtos'=>$resp]); 
     }
+    
 }

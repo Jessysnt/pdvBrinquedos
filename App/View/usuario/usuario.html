@@ -59,7 +59,7 @@
                     <option value="A">Selecionar Categoria</option>
                     <option value="2">Caixa</option>
                     <option value="3">Vendedor</option>
-                    <option value="1">Admin</option>
+                    <option value="1">Administrador</option>
                 </select>
 
                 <p></p>
@@ -150,7 +150,7 @@
 
         $('#tabelaUsuariosLoad').load('tabUsuario');
 
-        $('#usuarioF').click(function(){
+        $('#usuarioAdd').click(function(){
 
             vazios=validarFormVazio('frmUsuario');
 
@@ -163,7 +163,7 @@
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"usuarioF",
+                url:"usuarioAdd",
                 success:function(r){
                     var resp = JSON.parse(r);
                     //console.log(r);

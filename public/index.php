@@ -31,8 +31,8 @@ $router->add('painel', ['controller' => 'PainelController', 'action' => 'painel'
 $router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
 
 //Rotas de Usuario
-$router->add('usuarioF', ['controller' => 'UsuarioController', 'action' => 'usuarioForm']);
-$router->add('tabUsuario', ['controller' => 'UsuarioController', 'action' => 'tababelaUsuario']);
+$router->add('usuarioAdd', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
+$router->add('tabUsuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
 $router->add('obtUsuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
 $router->add('apagarUsuario', ['controller' => 'UsuarioController', 'action' => 'apagarUsuario']);
 $router->add('atualizaUsuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
@@ -41,7 +41,7 @@ $router->add('atualizaUsuario', ['controller' => 'UsuarioController', 'action' =
 $router->add('produtoF', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
 
 //Rotas Produtos Preço
-$router->add('produtoVAdd', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
+$router->add('produtoV', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
 $router->add('mostrar', ['controller' => 'ProdutoVendaController', 'action' => 'mostrarProdutos']);
 
 //Rotas Estoque

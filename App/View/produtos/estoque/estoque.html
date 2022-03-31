@@ -16,7 +16,7 @@
         <div class="row">
             <ul class="nav nav-tabs nav-justified">
                 <li role="presentation" ><a href="produtoF">Cadastrar Produtos</a></li>
-                <li role="presentation" ><a href="produtoVAdd">Preço para venda</a></li>
+                <li role="presentation" ><a href="produtoV">Preço para venda</a></li>
                 <li role="presentation" class="active"><a href="estoque">Estoque</a></li>
             </ul>
         </div>	
@@ -42,14 +42,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while($mostrar=mysqli_fetch_row($result)): ?>
+                            {% for estoque in estoques %}
                             <tr>
-                                <td><?php echo $mostrar[0]; ?></td>
-                                <td><?php echo $mostrar[1]; ?></td>
-                                <td><?php echo $mostrar[2]; ?></td>
-                                <td>R$<?php echo $mostrar[3]; ?></td>
-                                </tr>
-                            <?php endwhile; ?>
+                                <td>{{estoque.nome}}</td>
+                                <td>{{estoque.descricao}}</td>
+                                <td>{{estoque.quantidade}}</td>
+                                <td>{{estoque.preco_ven}}</td>
+                            </tr>
+                            {% endfor %}
                         </tbody>	
                     </table>
                 </div>

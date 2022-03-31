@@ -7,7 +7,7 @@ use Core\View;
 
 class UsuarioController
 {
-    public function usuarioForm()
+    public function usuarioAdd()
     {
         $obUsuario = new UsuarioDAO();
     
@@ -28,7 +28,7 @@ class UsuarioController
         View::renderTemplate('/usuario/usuario.html', ['validar'=>$validar]); 
     }
 
-    public function tababelaUsuario(){
+    public function tabelaUsuario(){
         $obUsuario = new UsuarioDAO();
         $resp = $obUsuario->exibirUsuario();
 
