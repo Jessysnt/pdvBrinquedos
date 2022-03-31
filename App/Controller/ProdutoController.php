@@ -9,7 +9,7 @@ class ProdutoController
 {
     public function produtoForm()
     {
-        $obProduto = new ProdutoDAO;
+        $obProduto = new ProdutoDAO();
 
         try{
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -37,9 +37,11 @@ class ProdutoController
                         $dados['idUsuario']=$iduser;
                         $dados['nome']=$_POST['nome'];
                         $dados['descricao']=$_POST['descricao'];
-                        return $obProduto->addProduto($dados);
+
+                        $obProduto->addProduto($dados);
+                        View::jsonResponse(['resp'=>true]);
                     }else{
-                        return 0;
+                        View::jsonResponse(['resp'=>false]);
                     }
                 }
             }

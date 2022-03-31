@@ -162,23 +162,27 @@
     $(document).ready(function(){
         //$('#tabelaProdvLoad').load("produtov/tabelaProdv.php");
         $('#btnAddProdutov').click(function(){
-            vazios=validarFormVazio('frmProdutov');
+            // vazios=validarFormVazio('frmProdutov');
             
-            if(vazios > 0){
-                alertify.alert("Preencha os Campos!!");
-                return false;
-            }
+            // if(vazios > 0){
+            //     alertify.alert("Preencha os Campos!!");
+            //     return false;
+            // }
             
             dados=$('#frmProdutov').serialize();
             var formData = new FormData(document.getElementById("frmProdutov"));
+            console.log(dados);
             //alert(formData);
             $.ajax({
                 type: "POST",
                 data: dados,
-                url:"",
+                url:"produtoVAdd",
                 success:function(r){
-                    if(r==1){
+                    var resp = JSON.parse(r);
+                    console.log(r);
+                    if(resp.resp){
                         $('#frmProdutov')[0].reset();
+                        $('#produtoSelect').val(null).trigger('change');
                        // $('#tabelaProdvLoad').load("produtov/tabelaProdv.php");
                         alertify.success("Brinquedo Adicionado");
                     }else{
@@ -217,7 +221,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#produtoSelect').select2();
+    $('#produtoSelect').select2({
+        minimumInputLength: 3
+    });
     //$('#produtoSelectU').select2();
 });
 </script>

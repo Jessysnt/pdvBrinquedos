@@ -1,0 +1,57 @@
+{% block body %}
+
+<table class="table table-hover" >
+	<caption><label>Produtos</label></caption>
+	<thead>
+	<tr>
+		<th>Nome</th>
+		<th>Lote</th>
+		<th>Quantidade</th>
+		<th>Preço compra</th>
+		<th>Preço VENDA</th>
+
+		<th>Editar</th>
+		<th>Excluir</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+        {% for produtovenda in produtovendas %}
+        <tr>
+            
+            <td>{{produtovenda.nome}}</td>
+            <td>{{produtovenda.descricao}}</td>
+            <td>{{produtovenda.quantidade}}</td>
+            <td>R${{produtovenda.comp}}</td>		
+            <td>R${{produtovenda.ven}}</td>		
+            
+            <td>
+                <span  data-toggle="modal" data-target="#abremodalUpdateProdutov" class="btn btn-warning btn-xs" onclick="adicionarProdutov('{{}}')">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </span>
+            </td>
+            <td>
+                <span class="btn btn-danger btn-xs" onclick="deletarProdutov('{{}}')">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </span>
+            </td>
+
+        </tr>
+    {% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	$('#filtro-nome').keyup(function() {
+		var nomeFiltro = $(this).val().toLowerCase();
+		$('table tbody').find('tr').each(function() {
+		    var conteudoCelula = $(this).find('td:first').text();
+		    var corresponde = conteudoCelula.toLowerCase().indexOf(nomeFiltro) >= 0;
+		    $(this).css('display', corresponde ? '' : 'none');
+		});
+	});
+</script>
+{% endblock %}

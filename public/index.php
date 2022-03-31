@@ -42,10 +42,10 @@ $router->add('produtoF', ['controller' => 'ProdutoController', 'action' => 'prod
 
 //Rotas Produtos Preço
 $router->add('produtoV', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
-$router->add('mostrar', ['controller' => 'ProdutoVendaController', 'action' => 'mostrarProdutos']);
+$router->add('produtoVAdd', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
 
 //Rotas Estoque
-$router->add('estoque', ['controller' => 'ProdutoController', 'action' => '']);
+$router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 // $router->add('{controller}/{action}');

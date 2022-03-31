@@ -14,61 +14,71 @@ class ProdutoVendaController
         $obProduto = new ProdutoDAO();
         $resp = $obProduto->exibirProdutos();
         //die(var_dump($resp));
-        View::renderTemplate('/produtos/produto-venda/produtoVenda.html', ['produtos'=>$resp]); 
+        View::renderTemplate('/produtos/produto-venda/produtoVenda.html', ['produtovendas'=>$resp]); 
     }
 
     public function produtoAdd()
     {
-        $obProdVenda = new ProdutoVendaDAO;
-        $obEstoque = new EstoqueDAO;
+        $obProdVendaDAO = new ProdutoVendaDAO();
+        $obEstoqueDAO = new EstoqueDAO();
+        
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
+            
             $idusuario=$_SESSION['usuario']->getId();
             
             $dadosP=array(
-                $idusuario,
-                $_POST['produtoSelect'],
-                $_POST['lote'],
-                $_POST['quantidade'],
-                $_POST['comp'],
-                $_POST['ven']
+                'idUsuario'=>$idusuario,
+                'idProduto'=>$_POST['produtoSelect'],
+                'lote'=>$_POST['lote'],
+                'quantotal'=>$_POST['quantidade'],
+                'precoComp'=>$_POST['comp'],
+                'precoVenda'=>$_POST['ven']
             );
-            $idprodv=$obProdVenda->adicionarProdVenda($dadosP);
-        
+            $resp=$obProdVendaDAO->adicionarProdVenda($dadosP);
+
             
-        
-            if($idprodv > 0){
-                
-                while ($obEstoque):
-                    if($_POST['produtoSelect'] == $obEstoque[1]){
-        
-                        $dados=array(
-                            $dados['idEstoque']=$obEstoque[0],
-                            $dados['idProduto']=$_POST['produtoSelect'],
-                            $dados['quantotal']=$_POST['quantidade'],
-                            $dados['precoVenda']=$_POST['ven'],
-                            $dados['quantEst']=$obEstoque[2]
-                        ); 
-                        return $obEstoque->atualizaProdEstoque($dados);
-                        break;
-                    } 
-                endwhile;
-                
-                if($obEstoque == null){
+            if($resp){
+                //die(var_dump('resp',$resp));
+                $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['produtoSelect']);
+
+                if($obEstoque){
+
+                    $obEstoque->acrescentaQuantidade($_POST['quantidade']);
+
                     $dados=array(
-                        $dados['idProduto']=$_POST['produtoSelect'],
-                        $dados['quantotal']=$_POST['quantidade'],
-                        $dados['precoVenda']=$_POST['ven']
+                        'idEstoque'=>$obEstoque->getId(),
+                        'quantotal'=> $obEstoque->getQuantotal(),
+                        'precoVenda'=>$_POST['ven']
+                    ); 
+                    $obEstoqueDAO->atualizaProdEstoque($dados);
+
+                    View::jsonResponse(['resp'=>true]);
+
+                }else{
+                    $dados=array(
+                        'idProduto'=>$_POST['produtoSelect'],
+                        'quantotal'=>$_POST['quantidade'],
+                        'precoVenda'=>$_POST['ven']
                     );
-                    return $obEstoque->addProdEstoque($dados);
-                }		
+                    $obEstoqueDAO->addProdEstoque($dados);
+
+                    View::jsonResponse(['resp'=>true]);
+                }
         
             }else{
-                    return 0;
+                View::jsonResponse(['resp'=>false]);
             }
                 
             //View::jsonResponse($result);
         }
+    }
+
+    public function tabelaProdutoVenda()
+    {
+        $obProdutoVenda = new ProdutoVendaDAO();
+        $resp = $obProdutoVenda->produtoVendaTabela();
+
+        View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtoVenda'=>$resp]); 
     }
     
 }
