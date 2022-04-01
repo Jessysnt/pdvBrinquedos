@@ -14,7 +14,7 @@ class ProdutoVendaController
         $obProduto = new ProdutoDAO();
         $resp = $obProduto->exibirProdutos();
         //die(var_dump($resp));
-        View::renderTemplate('/produtos/produto-venda/produtoVenda.html', ['produtovendas'=>$resp]); 
+        View::renderTemplate('/produtos/produto-venda/produtoVenda.html', ['produtos'=>$resp]); 
     }
 
     public function produtoAdd()
@@ -40,15 +40,17 @@ class ProdutoVendaController
             if($resp){
                 //die(var_dump('resp',$resp));
                 $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['produtoSelect']);
-
+                
                 if($obEstoque){
-
+                    
                     $obEstoque->acrescentaQuantidade($_POST['quantidade']);
-
+                    //die(var_dump('ak1', $obEstoque));
+                    $teste = $obEstoque->verificaPrecoVenda($_POST['ven']);
+                    
                     $dados=array(
                         'idEstoque'=>$obEstoque->getId(),
                         'quantotal'=> $obEstoque->getQuantotal(),
-                        'precoVenda'=>$_POST['ven']
+                        'precoVenda'=>$teste
                     ); 
                     $obEstoqueDAO->atualizaProdEstoque($dados);
 
@@ -77,8 +79,8 @@ class ProdutoVendaController
     {
         $obProdutoVenda = new ProdutoVendaDAO();
         $resp = $obProdutoVenda->produtoVendaTabela();
-
-        View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtoVenda'=>$resp]); 
+        
+        View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtosVenda'=>$resp]); 
     }
     
 }

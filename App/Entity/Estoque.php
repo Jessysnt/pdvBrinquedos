@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use PDOException;
+
 class Estoque
 {
     /**
@@ -12,7 +14,7 @@ class Estoque
     /**
      * @var integer
      */
-    private $idProduto;
+    private $id_produto;
 
     /**
      * @var integer
@@ -22,7 +24,7 @@ class Estoque
     /**
      * @var float
      */
-    private $precoVenda;
+    private $preco_ven;
 
 
     public function getId(): ?int
@@ -32,12 +34,12 @@ class Estoque
 
     public function getIdProduto(): ?int
     {
-        return $this->idProduto;
+        return $this->id_produto;
     }
 
-    public function setIdProduto(int $idProduto): self
+    public function setIdProduto(int $id_produto): self
     {
-        $this->idProduto = $idProduto;
+        $this->id_produto = $id_produto;
         
         return $this;
     }
@@ -54,14 +56,14 @@ class Estoque
         return $this;
     }
 
-    public function getPrecoVenda(): ?int
+    public function getPrecoVenda(): ?float
     {
-        return $this->precoVenda;
+        return $this->preco_ven;
     }
 
-    public function setPrecoVenda(int $precoVenda): self
+    public function setPrecoVenda(float $preco_ven): self
     {
-        $this->precoVenda = $precoVenda;
+        $this->preco_ven = $preco_ven;
         
         return $this;
     }
@@ -71,5 +73,14 @@ class Estoque
         $this->quantotal += $quantidade;
         
         return $this;
+    }
+    
+    public function verificaPrecoVenda(float $ven)
+    {
+            if($this->preco_ven > $ven){
+                return $this->preco_ven;
+            } else{
+                return $ven;
+            }
     }
 }

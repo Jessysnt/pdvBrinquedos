@@ -43,6 +43,7 @@ $router->add('produtoF', ['controller' => 'ProdutoController', 'action' => 'prod
 //Rotas Produtos Preço
 $router->add('produtoV', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
 $router->add('produtoVAdd', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
+$router->add('tabProdVend', ['controller' => 'ProdutoVendaController', 'action' => 'tabelaProdutoVenda']);
 
 //Rotas Estoque
 $router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);

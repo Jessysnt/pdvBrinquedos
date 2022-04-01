@@ -10,7 +10,7 @@ class EstoqueController
     public function estoque()
     {
         $obEstoque = new EstoqueDAO();
-        $resp = $obEstoque->mostraEstoque();
+        $resp = $obEstoque->mostrarEstoque();
 
         View::renderTemplate('/produtos/estoque/estoque.html', ['estoques'=>$resp]);
     }
