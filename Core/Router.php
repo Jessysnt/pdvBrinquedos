@@ -102,8 +102,11 @@ class Router
     public function dispatch($url)
     {
         $url = substr($url, 1);
-
+       // die(var_dump('ak1', $url));
         $url = $this->removeQueryStringVariables($url);
+        // $url = $this->removeQueryStringVariables($_SERVER['QUERY_STRING']);
+        //die(var_dump('ak2', $url));
+
 
         if ($this->match($url)) {
             $controller = $this->params['controller'];
@@ -182,13 +185,14 @@ class Router
     protected function removeQueryStringVariables($url)
     {
         if ($url != '') {
-            $parts = explode('&', $url, 2);
+            $parts = explode('?', $url, 2);
+            $url = $parts[0];
 
-            if (strpos($parts[0], '=') === false) {
-                $url = $parts[0];
-            } else {
-                $url = '';
-            }
+            // if (strpos($parts[0], '=') === false) {
+            //     $url = $parts[0];
+            // } else {
+            //     $url = '';
+            // }
         }
 
         return $url;

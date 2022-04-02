@@ -15,8 +15,8 @@
         <h1>Produtos</h1>
         <div class="row">
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation" ><a href="produtoF">Cadastrar Produtos</a></li>
-                <li role="presentation" ><a href="produtoV">Preço para venda</a></li>
+                <li role="presentation" ><a href="produto-form">Cadastrar Produtos</a></li>
+                <li role="presentation" ><a href="produto-venda">Preço para venda</a></li>
                 <li role="presentation" class="active"><a href="estoque">Estoque</a></li>
             </ul>
         </div>	
@@ -48,7 +48,6 @@
                                 <td>{{estoque.descricao}}</td>
                                 <td>{{estoque.quantotal}}</td>
                                 <td>{{estoque.preco_ven}}</td>
-                                <td>{{estoque.id}}</td>
                             </tr>
                             {% endfor %}
                         </tbody>	

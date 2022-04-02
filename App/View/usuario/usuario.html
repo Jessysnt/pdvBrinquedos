@@ -82,7 +82,7 @@
         $.ajax({
             type:"POST",
             data:"idusuario=" + idusuario,
-            url:"obtUsuario",
+            url:"obt-usuario",
             success:function(r){
                 var resp = JSON.parse(r);
                 $('#idUsuario').val(resp['id']);
@@ -99,13 +99,13 @@
             $.ajax({
                 type:"POST",
                 data:"idusuario=" + idusuario,
-                url:"apagarUsuario",
+                url:"apg-usuario",
                 success:function(r){
                     var resp = JSON.parse(r);
                     //console.log(idusuario);
                     //console.log(r);
                     if(resp){
-                        $('#tabelaUsuariosLoad').load("tabUsuario");
+                        $('#tabelaUsuariosLoad').load("tab-usuario");
                         alertify.success("Excluido com sucesso!!");
                     }else{
                         alertify.error("Não foi possível excluir");
@@ -128,11 +128,11 @@
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"atualizaUsuario",
+                url:"atz-usuario",
                 success:function(r){
                     var resp = JSON.parse(r);
                     if(resp){
-                        $('#tabelaUsuariosLoad').load('tabUsuario');
+                        $('#tabelaUsuariosLoad').load('tab-usuario');
                         alertify.success("Editado com sucesso");
                     }else{
                         alertify.error("Não foi possível editar");
@@ -148,9 +148,9 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        $('#tabelaUsuariosLoad').load('tabUsuario');
+        $('#tabelaUsuariosLoad').load('tab-usuario');
 
-        $('#usuarioAdd').click(function(){
+        $('#usuario-add').click(function(){
 
             vazios=validarFormVazio('frmUsuario');
 
@@ -163,13 +163,13 @@
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"usuarioAdd",
+                url:"usuario-add",
                 success:function(r){
                     var resp = JSON.parse(r);
                     //console.log(r);
                     if(resp){
                         $('#frmUsuario')[0].reset();
-                        $('#tabelaUsuariosLoad').load('tabUsuario');
+                        $('#tabelaUsuariosLoad').load('tab-usuario');
                         alertify.success("Adicionado com sucesso");
                     }else{
                         alertify.error("Falha ao adicionar :(");

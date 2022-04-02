@@ -36,8 +36,8 @@
     <h1>Produtos</h1>
     <div class="row">
         <ul class="nav nav-tabs nav-justified">
-            <li role="presentation" class="active"><a href="produtoF">Cadastrar Produtos</a></li>
-            <li role="presentation"><a href="produtoV">Preço para venda</a></li>
+            <li role="presentation" class="active"><a href="produto-form">Cadastrar Produtos</a></li>
+            <li role="presentation"><a href="produto-venda">Preço para venda</a></li>
             <li role="presentation"><a href="estoque">Estoque</a></li>
         </ul>
     </div>	
@@ -147,7 +147,7 @@
             var formData = new FormData(document.getElementById("frmProdutos"));
 
             $.ajax({
-                url: "produtoF",
+                url: "produto-form",
                 type: "post",
                 dataType: "html",
                 data: formData,

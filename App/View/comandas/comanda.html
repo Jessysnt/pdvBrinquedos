@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}Comandas{% endblock %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h3>Abrir Comanda</h3>
+ 
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="form-check form-check-inline ">
+			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cpf" value="opcao1">
+			  <label class="form-check-label" for="inlineRadio1">CPF</label>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="form-check form-check-inline ">
+			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="numero" value="opcao2">
+			  <label class="form-check-label" for="inlineRadio2">Número</label>
+			</div>
+		</div>
+	</div>
+
+    <br/>
+
+    <div class="row">
+        <section class="direita">
+			<form method="post" id="frmComandaCpf">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Numero Comanda</label>
+                        <input readonly="" type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda">
+                    </div>
+                </div>
+            </div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+				      	<label>Selecionar Cliente</label>
+						<select class="form-control input-sm" id="clienteCpf" name="clienteCpf">
+							<option value="A">Selecionar</option>
+							
+							<option value="{{produto.id}}">{{cliente.cpf}}</option>
+							
+						</select>
+				    </div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label>Nome </label>
+						<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
+					</div>
+				</div>
+			</div>
+				
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label>Produto</label>
+						<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
+							<!--<option value="A">Selecionar</option>
+                            
+							<option value="{{produto.id}}">{{produto.nome}}</option>--> 
+                            
+						</select>
+					</div>
+					<div class="form-group"></div>
+					<label>Descrição</label>
+							<textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
+					<div class="form-group">
+						<label>Quantidade Estoque</label>
+						<input readonly="" type="text" class="form-control input-sm" id="quantidadeV" name="quantidadeV">
+					</div>
+					<div class="form-group">
+						<label>Preço</label>
+						<input readonly="" type="text" class="form-control input-sm" id="precoV" name="precoV">
+					</div>	
+					<div class="form-group">
+						<label>Quantidade Vendida</label>
+						<input type="number" class="form-control input-sm" id="quantV" name="quantV">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Criar</span>
+				</div>
+				<div class="col-sm-3">
+					<span class="btn btn-danger" id="btnLimparComanda">Limpar Comanda</span>
+				</div>
+			</div>
+		</form>	
+		</section>
+    </div>
+
+	<div class="row">
+		<div class="col-sm-8">
+			<div id="comandaCpf"></div>
+			<div id="comandaNumero"></div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+	// $(document).ready(function(){
+	// 	$('#cpf').click(function(){
+	// 		esconderSessaoVenda();
+	// 			$('#comandaCpf').load('comandas/formCpf.php');
+	// 			$('#comandaCpf').show();
+	// 	});
+	// 	$('#numero').click(function(){
+	// 			esconderSessaoVenda();
+	// 			$('#comandaNumero').load('comandas/formNumero.php');
+	// 			$('#comandaNumero').show();
+	// 		});
+	// 	});
+
+    // function esconderSessaoVenda(){
+    //     $('#comandaCpf').hide();
+    //     $('#comandaNumero').hide();
+    // }
+
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#clienteCpf").select2({
+    		ajax: {
+                url: 'exibir-cliente',
+                dataType: 'json'
+                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+            }
+        });
+        $("#produtoVenda").select2({
+            minimumInputLength: 3,
+            ajax: {
+                url: 'pesquisar-produto',
+                dataType: 'json'
+                // success:function(r){
+				// 	console.log(r);
+				// }
+            }
+        });
+	});
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+
+		$('#clienteCpf').change(function(){
+			$.ajax({
+				type:"POST",
+				data:"idcliente=" + $('#clienteCpf').val(),
+				url:"../procedimentos/comandas/obterDadosC.php",
+				success:function(r){
+					dado=jQuery.parseJSON(r);
+					$('#nomeClienteComanda').val(dado['nome'] + " " + dado['sobrenome']);
+				}
+			});
+		});
+
+		$('#produtoVenda').change(function(){
+			$.ajax({
+				type:"POST",
+				data:"idproduto=" + $('#produtoVenda').val(),
+				url:"../procedimentos/vendas/obterDadosProdutos.php",
+				success:function(r){
+					dado=jQuery.parseJSON(r);
+					$('#descricaoV').val(dado['descricao']);
+					$('#quantidadeV').val(dado['quantidade']);
+					$('#precoV').val(dado['preco']);	
+				}
+			});
+		});
+
+		$('#quantV').click(function(){
+
+			var quant = parseInt($('#quantV').val());
+			var quantidade = parseInt($('#quantidadeV').val()); 
+			
+			if(quant > quantidade){
+				alertify.alert("Quantidade inexistente em estoque!!");
+				quant = $('#quantV').val("");
+				return false;
+			}else{
+				quantidade = $('#quantidadeV').val();
+			}
+		});
+
+		$('#btAddTemp').click(function(){
+			vazios=validarFormVazio('frmComandaCpf');
+
+			var quant = parseInt($('#quantV').val());
+			var quantidade = parseInt($('#quantidadeV').val());
+
+			
+			if(quant > quantidade){
+				alertify.alert("Quantidade inexistente em estoque!!");
+				quant = $('#quantV').val("");
+				return false;
+			}else{
+				quantidade = $('#quantidadeV').val();
+			}
+
+			if(vazios > 0){
+				alertify.alert("Preencha os Campos!!");
+				return false;
+			}
+
+			dados=$('#frmComandaCpf').serialize();
+			$.ajax({
+				type:"POST",
+				data:dados,
+				url:"../procedimentos/comandas/addComandaTemp.php",
+				success:function(r){
+					//alert(dados);
+					//limpar formulário
+					//$('#frmVendasProdutos')[0].reset();
+					$("#produtoVenda").select2('');
+					$('#quantidadeV').val('');
+					$('#descricaoV').val('');
+					$('#precoV').val('');
+					$('#quantV').val('');
+					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+				}
+			});
+		});
+
+		$('#btnLimparComanda').click(function(){
+			$.ajax({
+				url:"../procedimentos/comandas/limparTemp.php",
+				success:function(r){
+					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+				}
+			});
+		});
+
+	});
+</script>
+
+
+{% endblock %}

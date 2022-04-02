@@ -44,13 +44,11 @@ class ProdutoVendaController
                 if($obEstoque){
                     
                     $obEstoque->acrescentaQuantidade($_POST['quantidade']);
-                    //die(var_dump('ak1', $obEstoque));
-                    $teste = $obEstoque->verificaPrecoVenda($_POST['ven']);
                     
                     $dados=array(
                         'idEstoque'=>$obEstoque->getId(),
                         'quantotal'=> $obEstoque->getQuantotal(),
-                        'precoVenda'=>$teste
+                        'precoVenda'=>$obEstoque->verificaPrecoVenda($_POST['ven'])
                     ); 
                     $obEstoqueDAO->atualizaProdEstoque($dados);
 
@@ -81,6 +79,52 @@ class ProdutoVendaController
         $resp = $obProdutoVenda->produtoVendaTabela();
         
         View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtosVenda'=>$resp]); 
+    }
+
+    public function obterProdutoV()
+    {
+        $obProdutoVendaDAO = new ProdutoVendaDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $obProdutoVendaDAO->obterProdutoVenda($_POST);
+           
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function atualizarProdutoVenda()
+    {
+        $obProdutoVendaDAO = new ProdutoVendaDAO();
+
+        if($_SERVER['REQUEST_METHOD'] === 'PUT'){
+
+            parse_str(file_get_contents("php://input"), $post);
+
+            $resp = $obProdutoVendaDAO->atualizarProdutoV($post);
+           // die(var_dump($resp));   
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function apagarProdutoVenda()
+    {
+        $obEstoqueDAO = new EstoqueDAO();
+        $obProdutoVendaDAO = new ProdutoVendaDAO();
+
+        if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+
+            parse_str(file_get_contents("php://input"), $post);
+
+            $obEstoque = $obEstoqueDAO->retornaProdEst($post);
+            if($obEstoque){
+                $obEstoqueDAO->apagaEstoquePV($obEstoque);
+            }
+            
+            die(var_dump($post)); 
+
+            $resp = $obProdutoVendaDAO->deletarProdutoVenda($post);
+              
+            View::jsonResponse($resp);
+        }
     }
     
 }

@@ -48,8 +48,10 @@ class View
             if (\App\Config::SHOW_ERRORS) {
                 $twig = new \Twig\Environment($loader,['debug' => true]);
                 $twig->addExtension(new \Twig\Extension\DebugExtension());
+                $twig->addGlobal('session', $_SESSION);
             } else {
                 $twig = new \Twig\Environment($loader);
+                $twig->addGlobal('session', $_SESSION);
             }
         }
 

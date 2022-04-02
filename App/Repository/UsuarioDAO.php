@@ -26,7 +26,8 @@ class UsuarioDAO extends Conexao
         
     }
 
-    public function registroUsuario($dados){
+    public function registroUsuario($dados)
+    {
         $senha = sha1($dados['senha']);
 
         $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, email, senha, cargo) VALUES (:nome, :sobrenome, :email, :senha, :cargo)");
@@ -75,6 +76,5 @@ class UsuarioDAO extends Conexao
         $stmt->bindParam(':id', $dados['idusuario'], PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
-
     }
 }

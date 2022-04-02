@@ -24,7 +24,7 @@
                     <input type="text" hidden="" id="idprodvU" name="idprodvU">
                     
                     <label>Brinquedo</label>
-                    <select class="form-control input-sm" id="produtoSelectU" name="produtoSelectU">
+                    <select class="form-control input-sm" id="idProdutoU" name="idProdutoU">
                         <option value="A">Selecionar</option>
                         {% for produto in produtos %}
                         <option value="{{produto.id}}">{{produto.nome}}</option>
@@ -38,9 +38,6 @@
                     <input type="text" class="form-control input-sm" id="compU" name="compU">
                     <label>Preço vendido</label>
                     <input type="text" class="form-control input-sm" id="venU" name="venU">
-                    
-                    <input type="text" hidden="" id="idestoqueU" name="idestoqueU">
-                    <input type="text" hidden="" id="quantotalU" name="quantotalU">
 
                 </form>
             </div>
@@ -59,8 +56,8 @@
     
     <div class="row">
         <ul class="nav nav-tabs nav-justified">
-            <li role="presentation" ><a href="produtoF">Cadastrar Produtos</a></li>
-            <li role="presentation" class="active"><a href="produtoV">Preço para venda</a></li>
+            <li role="presentation" ><a href="produto-form">Cadastrar Produtos</a></li>
+            <li role="presentation" class="active"><a href="produto-venda">Preço para venda</a></li>
             <li role="presentation"><a href="estoque">Estoque</a></li>
         </ul>
     </div>	
@@ -68,16 +65,15 @@
     <div class="row">
         <div class="col-sm-4">
             <form method="post" id="frmProdutov" enctype="multipart/form-data">
+                
                 <div class="form-group">
                     <label for="nome">Brinquedo</label>
-                    
                     <select class="form-control input-sm" id="produtoSelect" name="produtoSelect" >
                         <option value="A">Selecionar</option>
                         {% for produto in produtos %}
                         <option value="{{produto.id}}">{{produto.nome}}</option>
                         {% endfor %}
                     </select >
-                    
                 </div>
                 <div class="form-group">
                     <label for="lote">Lote</label>
@@ -118,18 +114,16 @@
         $.ajax({
             type:"POST",
             data:"idprodv=" + idprodv,
-            url:"../procedimentos/produtov/obterProdutov.php",
+            url:"obt-produtov",
             success:function(r){
-                dado=jQuery.parseJSON(r);
-                
-                $('#idprodvU').val(dado['id_prodv']);
-                $('#produtoSelectU').val(dado['id_produto']);
-                $('#loteU').val(dado['lote']);
-                $('#quantidadeU').val(dado['quantidade']);
-                $('#compU').val(dado['preco_comp']);
-                $('#venU').val(dado['preco_ven']);
-                $('#idestoqueU').val(dado['id_estoque']);
-                $('#quantotalU').val(dado['quantotal']);
+                //console.log(r);
+                var resp = JSON.parse(r);
+                $('#idprodvU').val(resp['id']);
+                $('#idProdutoU').val(resp['id_produto']);
+                $('#loteU').val(resp['lote']);
+                $('#quantidadeU').val(resp['quantidade']);
+                $('#compU').val(resp['preco_comp']);
+                $('#venU').val(resp['preco_ven']);
             }
         });
     }
@@ -137,13 +131,13 @@
     function deletarProdutov(idprodv){
         alertify.confirm('Deseja excluir este Brinquedo?', function(){ 
             $.ajax({
-                type:"POST",
+                type:"DELETE",
                 data:"idprodv=" + idprodv,
-                url:"../procedimentos/produtov/deletarProdutov.php",
+                url:"apg-prod-ven",
                 success:function(r){
-                    //alert(r);
+                    console.log(r);
                     if(r==1){
-                        $('#tabelaProdvLoad').load("produtov/tabelaProdv.php");
+                        $('#tabelaProdvLoad').load("tab-prod-vend");
                         alertify.success("Excluido com sucesso!!");
                     }else{
                         alertify.error("Não foi possível excluir");
@@ -160,7 +154,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#tabelaProdvLoad').load("tabProdVend");
+        $('#tabelaProdvLoad').load("tab-prod-vend");
 
         $('#btnAddProdutov').click(function(){
             vazios=validarFormVazio('frmProdutov');
@@ -172,20 +166,17 @@
             
             dados=$('#frmProdutov').serialize();
             var formData = new FormData(document.getElementById("frmProdutov"));
-            
-            //alert(formData);
+
             $.ajax({
                 type: "POST",
                 data: dados,
-                url:"produtoVAdd",
+                url:"prod-vend-add",
                 success:function(r){
-                    console.log(dados);
-                    console.log(r);
-                    //var resp = JSON.parse(r);
-                    if(r){
+                    var resp = JSON.parse(r);
+                    if(resp.resp){
                         $('#frmProdutov')[0].reset();
-                        $('#produtoSelect').val(null).trigger('change');
-                        $('#tabelaProdvLoad').load("tabProdVend");
+                        $('#produtoSelect').val(null).trigger('change'); //reseta o select
+                        $('#tabelaProdvLoad').load("tab-prod-vend");
                         alertify.success("Brinquedo Adicionado");
                     }else{
                         alertify.error("Não foi possível adicionar :(");
@@ -203,14 +194,15 @@
             dados=$('#frmProdutovU').serialize();
 
             $.ajax({
-                type:"POST",
+                type:"PUT",
                 data:dados,
-                url:"../procedimentos/produtov/atualizarProdutov.php",
+                url:"atz-prod-venda",
                 success:function(r){
-                    //alert(r);
-                    if(r==1){
+                    console.log(r);
+                    var resp = JSON.parse(r);
+                    if(resp.resp){
                         //$('#frmProdutovU')[0].reset();
-                        $('#tabelaProdvLoad').load("produtov/tabelaProdv.php");
+                        $('#tabelaProdvLoad').load("tab-prod-vend");
                         alertify.success("Brinquedo atualizado com sucesso!");
                     }else{
                         alertify.error("Não foi possível atualizar Brinquedo!");

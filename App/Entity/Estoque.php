@@ -68,6 +68,9 @@ class Estoque
         return $this;
     }
 
+    /**
+     * Acrecenta valor ao estoque quando adiciona um novo produto venda
+     */
     public function acrescentaQuantidade(int $quantidade): self
     {
         $this->quantotal += $quantidade;
@@ -75,12 +78,16 @@ class Estoque
         return $this;
     }
     
-    public function verificaPrecoVenda(float $ven)
+    /**
+     * Sempre verifica o preço de venda maior para manter no estoque
+     */
+    public function verificaPrecoVenda(float $ven): ?float
     {
-            if($this->preco_ven > $ven){
-                return $this->preco_ven;
-            } else{
-                return $ven;
-            }
+        if($this->preco_ven > $ven){
+            return $this->preco_ven;
+        } else{
+            return $ven;
+        }
     }
+    
 }

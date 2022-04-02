@@ -38,13 +38,13 @@
                 <a href="#" style="color: #d16f4b" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Gestão Produtos <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="categorias.php">Categorias</a></li>
-                  <li><a href="produtoF">Produtos</a></li>
+                  <li><a href="produto-form">Produtos</a></li>
                   <li><a href="fornecedores.php">Fornecedores</a></li>
                 </ul>
               </li>
     
     
-               <li><a href="clientes.php" style="color: #e303fc"><span class="glyphicon glyphicon-user"></span> Clientes</a>
+               <li><a href="cliente-add" style="color: #e303fc"><span class="glyphicon glyphicon-user"></span> Clientes</a>
               </li>
               <li><a href="vendasDeProdutos.php" style="color: #e306fc"><span class="glyphicon glyphicon-usd"></span> PDV</a>
               </li>
@@ -56,7 +56,7 @@
                 <a href="#" style="color: #61e89c" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-usd"></span> Gestão Vendas <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="pagamentos.php">Pagamentos</a></li>
-                  <li><a href="comandas.php">Abrir Comanda</a></li>
+                  <li><a href="comandas">Abrir Comanda</a></li>
                   <li><a href="vendasRelatorios.php">Lista de Vendas</a></li>
                 </ul>
               </li>
@@ -65,9 +65,9 @@
                 <a href="#" style="color: #19d1cb"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Usuário   <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   
-                  <?php if($_SESSION['usuario']['cargo'] == "1"):  ?>
+                  {% if session['usuario'].getCargo() == "1" %} 
                   <li> <a href="usuarioAdd">Gestão Usuários</a></li>
-                  <?php endif; ?>
+                  {% endif %}
     
                   <li> <a style="color: red" href="sair"><span class="glyphicon glyphicon-off"></span> Sair</a></li>
                   
@@ -80,7 +80,7 @@
         <!--/.contatiner -->
       </div>
     </div>
-
+    
     {% block body %}
     {% endblock %}
 

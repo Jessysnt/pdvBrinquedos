@@ -31,29 +31,43 @@ $router->add('painel', ['controller' => 'PainelController', 'action' => 'painel'
 $router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
 
 //Rotas de Usuario
-$router->add('usuarioAdd', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
-$router->add('tabUsuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
-$router->add('obtUsuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
-$router->add('apagarUsuario', ['controller' => 'UsuarioController', 'action' => 'apagarUsuario']);
-$router->add('atualizaUsuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
+$router->add('usuario-add', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
+$router->add('tab-usuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
+$router->add('obt-usuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
+$router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'apagarUsuario']);
+$router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
+
+//Rotas de Cliente
+$router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
+
 
 //Rotas dos Produtos
-$router->add('produtoF', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
+$router->add('produto-form', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
 
 //Rotas Produtos Preço
-$router->add('produtoV', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
-$router->add('produtoVAdd', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
-$router->add('tabProdVend', ['controller' => 'ProdutoVendaController', 'action' => 'tabelaProdutoVenda']);
+$router->add('produto-venda', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
+$router->add('prod-vend-add', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
+$router->add('tab-prod-vend', ['controller' => 'ProdutoVendaController', 'action' => 'tabelaProdutoVenda']);
+$router->add('obt-produtov', ['controller' => 'ProdutoVendaController', 'action' => 'obterProdutoV']);
+$router->add('atz-prod-venda', ['controller' => 'ProdutoVendaController', 'action' => 'atualizarProdutoVenda']);
+$router->add('apg-prod-ven', ['controller' => 'ProdutoVendaController', 'action' => 'apagarProdutoVenda']);
 
 //Rotas Estoque
 $router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);
 
+//Rotas de Comandas
+$router->add('comandas', ['controller' => 'ComandaController', 'action' => 'telaInicial']);
+$router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
+$router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
+
+
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
-// $router->add('{controller}/{action}');
+$router->add('{controller}/{action}');
 
 
 //Rotas fora da sessao
 session_start();
+
 if(isset($_SESSION['usuario']) || in_array($_SERVER['REQUEST_URI'],['/login', '/sair', '/registro'])) {
     $router->dispatch($_SERVER['REQUEST_URI']);
 }else{

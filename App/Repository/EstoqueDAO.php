@@ -44,5 +44,18 @@ class EstoqueDAO extends Conexao
         $stmt->execute();
         return $stmt->fetchObject('\App\Entity\Estoque');
     }
+
+    /**
+     * Apaga a quantidade no estoque quando a tabela produto-venda apaga o produto
+     */
+    public function apagaEstoquePV($dados)
+    {
+        $stmt=static::getConexao()->prepare("DELETE FROM estoque SET quantotal=:quantotal,  WHERE id=:idProduto");
+
+        $stmt->bindParam(':idProduto', $dados['idprodv'], PDO::PARAM_INT);
+        $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);
+                        
+        return $stmt->execute();
+    }
     
 }
