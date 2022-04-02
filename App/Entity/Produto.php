@@ -27,12 +27,12 @@ class Produto
     /**
      * @var integer
      */
-    private $idImagem;
+    private $id_imagem;
 
     /**
      * @var integer
      */
-    private $idUsuario;
+    private $id_usuario;
 
 
     public function getId(): ?int
@@ -42,24 +42,24 @@ class Produto
 
     public function getIdImagem(): ?int
     {
-        return $this->idImagem;
+        return $this->id_imagem;
     }
 
-    public function setIdImagem(int $idImagem): self
+    public function setIdImagem(int $id_imagem): self
     {
-        $this->idImagem = $idImagem;
+        $this->id_imagem = $id_imagem;
         
         return $this;
     }
 
     public function getIdUsuario(): ?int
     {
-        return $this->idUsuario;
+        return $this->id_usuario;
     }
 
-    public function setIdUsuario(int $idUsuario): self
+    public function setIdUsuario(int $id_usuario): self
     {
-        $this->idUsuario = $idUsuario;
+        $this->id_usuario = $id_usuario;
         
         return $this;
     }

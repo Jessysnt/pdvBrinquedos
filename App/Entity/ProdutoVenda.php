@@ -12,12 +12,12 @@ class ProdutoVenda
     /**
      * @var integer
      */
-    private $idUsuario;
+    private $id_usuario;
 
     /**
      * @var integer
      */
-    private $idProduto;
+    private $id_produto;
 
     /**
      * @var string
@@ -32,7 +32,7 @@ class ProdutoVenda
     /**
      * @var float
      */
-    private $precoComp;
+    private $preco_comp;
 
     /**
      * @var float
@@ -46,24 +46,24 @@ class ProdutoVenda
 
     public function getIdUsuario(): ?int
     {
-        return $this->idUsuario;
+        return $this->id_usuario;
     }
 
-    public function setIdUsuario(int $idUsuario): self
+    public function setIdUsuario(int $id_usuario): self
     {
-        $this->idUsuario = $idUsuario;
+        $this->id_usuario = $id_usuario;
         
         return $this;
     }
 
     public function getIdProduto(): ?int
     {
-        return $this->idProduto;
+        return $this->id_produto;
     }
 
-    public function setIdProduto(int $idProduto): self
+    public function setIdProduto(int $id_produto): self
     {
-        $this->idProduto = $idProduto;
+        $this->id_produto = $id_produto;
         
         return $this;
     }
@@ -94,24 +94,24 @@ class ProdutoVenda
 
     public function getPrecoComp(): ?float
     {
-        return $this->precoComp;
+        return $this->preco_comp;
     }
 
-    public function setPrecoComp(float $precoComp): self
+    public function setPrecoComp(float $preco_comp): self
     {
-        $this->precoComp = $precoComp;
+        $this->preco_comp = $preco_comp;
 
         return $this;
     }
 
     public function getPrecoVenda(): ?float
     {
-        return $this->precoVenda;
+        return $this->preco_ven;
     }
 
-    public function setPrecoVenda(float $precoVenda): self
+    public function setPrecoVenda(float $preco_ven): self
     {
-        $this->precoVenda = $precoVenda;
+        $this->preco_ven = $preco_ven;
 
         return $this;
     }

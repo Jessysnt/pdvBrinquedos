@@ -135,6 +135,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#clienteCpf").select2({
+			minimumInputLength: 3,
     		ajax: {
                 url: 'exibir-cliente',
                 dataType: 'json'

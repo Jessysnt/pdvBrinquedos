@@ -69,7 +69,7 @@ class Estoque
     }
 
     /**
-     * Acrecenta valor ao estoque quando adiciona um novo produto venda
+     * Acrecenta quantidade ao estoque quando adiciona um novo produto venda
      */
     public function acrescentaQuantidade(int $quantidade): self
     {
@@ -79,7 +79,7 @@ class Estoque
     }
     
     /**
-     * Sempre verifica o preço de venda maior para manter no estoque
+     * Sempre verifica o preço de venda maior para manter no estoque na hr de dar entrada
      */
     public function verificaPrecoVenda(float $ven): ?float
     {

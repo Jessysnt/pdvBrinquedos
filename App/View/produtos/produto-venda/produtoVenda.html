@@ -70,9 +70,9 @@
                     <label for="nome">Brinquedo</label>
                     <select class="form-control input-sm" id="produtoSelect" name="produtoSelect" >
                         <option value="A">Selecionar</option>
-                        {% for produto in produtos %}
+                        <!-- {% for produto in produtos %}
                         <option value="{{produto.id}}">{{produto.nome}}</option>
-                        {% endfor %}
+                        {% endfor %} -->
                     </select >
                 </div>
                 <div class="form-group">
@@ -216,7 +216,14 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $('#produtoSelect').select2({
-        minimumInputLength: 3
+        minimumInputLength: 3,
+        ajax: {
+            url: 'pesquisar-produto',
+            dataType: 'json',
+            success:function(r){
+            	console.log(r);
+            }
+        }
     });
     //$('#produtoSelectU').select2();
 });
