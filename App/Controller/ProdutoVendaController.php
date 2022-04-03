@@ -35,7 +35,7 @@ class ProdutoVendaController
                 'precoVenda'=>$_POST['ven']
             );
             $resp=$obProdVendaDAO->adicionarProdVenda($dadosP);
-
+            
             
             if($resp){
                 //die(var_dump('resp',$resp));
