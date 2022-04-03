@@ -59,6 +59,7 @@ $router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoq
 $router->add('comandas', ['controller' => 'ComandaController', 'action' => 'telaInicial']);
 $router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
 $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
+$router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
 
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);

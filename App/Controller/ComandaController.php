@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Repository\ComandaDAO;
 use App\Repository\ClienteDAO;
 use App\Repository\ProdutoDAO;
 use Core\View;
+use PDOException;
 
 class ComandaController
 {
@@ -16,7 +18,6 @@ class ComandaController
     public function pesquisarProd()
     {   
         $obProdutoDAO = new ProdutoDAO();
-
         $prod = $obProdutoDAO->pesquisarProdutos($_GET['term']);
         //die(var_dump($prod));
         View::jsonResponse(['results'=>$prod]);
@@ -25,8 +26,20 @@ class ComandaController
     public function pesquisarCli()
     {
         $obClienteDAO = new ClienteDAO();
-        $cli = $obClienteDAO->exibirClientes();
+        $cli = $obClienteDAO->pesquisarClientes($_GET['term']);
 
-        View::jsonResponse($cli);
+        View::jsonResponse(['results'=>$cli]);
     }
+
+    public function pesquisarProEst()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $idProduto = intval($_POST['id']) ;
+            $obProdEstDAO = new ComandaDAO();
+            $res = $obProdEstDAO->pesquisarProdutoVenda($idProduto);
+
+            View::jsonResponse($res);
+        }
+    }
+    
 }
