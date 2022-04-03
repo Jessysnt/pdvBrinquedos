@@ -82,18 +82,6 @@ class Cliente {
         return $this;
     }
 
-    public function getEndereco(): ?string
-    {
-        return $this->endereco;
-    }
-
-    public function setEndereco(string $endereco): self
-    {
-        $this->endereco = $endereco;
-        
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -118,14 +106,26 @@ class Cliente {
         return $this;
     }
 
-    public function getCpf(): ?int
+    public function getCpf(): ?string
     {
         return $this->cpf;
     }
 
-    public function setCpf(int $cpf): self
+    public function setCpf(string $cpf): self
     {
         $this->cpf = $cpf;
+        
+        return $this;
+    }
+
+    public function getIdUsuario(): ?int
+    {
+        return $this->id_usuario;
+    }
+
+    public function setIdUsuario(int $id_usuario): self
+    {
+        $this->id_usuario = $id_usuario;
         
         return $this;
     }

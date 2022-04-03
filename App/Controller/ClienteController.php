@@ -10,12 +10,12 @@ class ClienteController
     public function clienteAdd()
     {
         $obClienteDAO = new ClienteDAO();
-    
+        
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    
-            $result = $obClienteDAO->adicionarCliente($_POST);
-                
             
+            $_SESSION['usuario']->getId();
+            $resp = $obClienteDAO->adicionarCliente($_POST);
+            View::jsonResponse($resp);
         }
         View::renderTemplate('/cliente/cliente.html'); 
     }
