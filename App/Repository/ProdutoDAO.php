@@ -45,9 +45,11 @@ class ProdutoDAO extends Conexao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Pesquisa produto para trazer no cadastro de ProdutoVenda 
+     */
     public function pesquisarProdutos($nomeparcial)
     {
-       // $bd = static::getConexao();
         $stmt = static::getConexao()->prepare("SELECT id, nome AS 'text' FROM produto WHERE nome LIKE :nome");
         $stmt->bindValue(':nome', '%'.$nomeparcial.'%');
         $stmt->execute();
