@@ -29,8 +29,8 @@
 
     <div class="row">
         <section class="direita">
-			<form method="post" id="frmComandaCpf">
-            <div class="row">
+			<form method="post" id="frmComanda">
+            <div class="row" id="grupoNumero">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Numero Comanda</label>
@@ -38,15 +38,13 @@
                     </div>
                 </div>
             </div>
-			<div class="row">
+			<div class="row" id="grupoCpf">
 				<div class="col-sm-6">
 					<div class="form-group">
 				      	<label>Selecionar Cliente</label>
 						<select class="form-control input-sm" id="clienteCpf" name="clienteCpf">
 							<option value="A">Selecionar</option>
-							
-							<option value="{{produto.id}}">{{cliente.cpf}}</option>
-							
+							<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 						</select>
 				    </div>
 				</div>
@@ -63,10 +61,8 @@
 					<div class="form-group">
 						<label>Produto</label>
 						<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
-							<!--<option value="A">Selecionar</option>
-                            
-							<option value="{{produto.id}}">{{produto.nome}}</option>--> 
-                            
+							<option value="A">Selecionar</option>
+							<!--<option value="{{produto.id}}">{{produto.nome}}</option>--> 
 						</select>
 					</div>
 					<div class="form-group"></div>
@@ -97,14 +93,6 @@
 		</form>	
 		</section>
     </div>
-
-	<div class="row">
-		<div class="col-sm-8">
-			<div id="comandaCpf"></div>
-			<div id="comandaNumero"></div>
-		</div>
-	</div>
-
 </div>
 
 {% endblock %}
@@ -112,34 +100,60 @@
 {% block javascript %}
 
 <script type="text/javascript">
-	// $(document).ready(function(){
-	// 	$('#cpf').click(function(){
-	// 		esconderSessaoVenda();
-	// 			$('#comandaCpf').load('comandas/formCpf.php');
-	// 			$('#comandaCpf').show();
-	// 	});
-	// 	$('#numero').click(function(){
-	// 			esconderSessaoVenda();
-	// 			$('#comandaNumero').load('comandas/formNumero.php');
-	// 			$('#comandaNumero').show();
-	// 		});
-	// 	});
+	/**
+     * Todos os campos do formulario inativos ate escolher uma opcao no RadioOptions
+     */
+	$(document).ready(function(){
+		$("#numeroComanda").prop("disabled", true);
+		$("#clienteCpf").prop("disabled", true);
+		$("#nomeClienteComanda").prop("disabled", true);
+		$("#produtoVenda").prop("disabled", true);
+		$("#quantidadeV").prop("disabled", true);
+		$("#precoV").prop("disabled", true);
+		$("#quantV").prop("disabled", true);
+	});
 
-    // function esconderSessaoVenda(){
-    //     $('#comandaCpf').hide();
-    //     $('#comandaNumero').hide();
-    // }
+	$("#cpf").on("click", function () {
+		$("#numeroComanda").prop("disabled", true);
+		$("#clienteCpf").prop("disabled", false);
+		$("#nomeClienteComanda").prop("disabled", false);
+		$("#produtoVenda").prop("disabled", false);
+		$("#quantidadeV").prop("disabled", false);
+		$("#precoV").prop("disabled", false);
+		$("#quantV").prop("disabled", false);
+		$("#grupoNumero").hide();
+		$("#grupoCpf").show();
+	});
+	$("#numero").on("click", function () {
+		$("#clienteCpf").prop("disabled", true);
+		$("#nomeClienteComanda").prop("disabled", true);
+		$("#numeroComanda").prop("disabled", false);
+		$("#produtoVenda").prop("disabled", false);
+		$("#quantidadeV").prop("disabled", false);
+		$("#precoV").prop("disabled", false);
+		$("#quantV").prop("disabled", false);
+		$("#grupoCpf").hide();
+		$("#grupoNumero").show();
+	});
 
 </script>
 
+
 <script type="text/javascript">
+	/**
+     * Tras informaçoes para o select
+     */
 	$(document).ready(function(){
 		$("#clienteCpf").select2({
 			minimumInputLength: 3,
     		ajax: {
-                url: 'exibir-cliente',
-                dataType: 'json'
-                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                url: 'pesquisar-cliente',
+                dataType: 'json',
+                success:function(r){
+					//console.log('cliente',r.results);
+					// var resp = JSON.parse(r.results);
+					$('#nomeClienteComanda').val(r.results[0]['nome'] + " " + r.results[0]['sobrenome']);
+				}
             }
         });
         $("#produtoVenda").select2({
@@ -147,9 +161,6 @@
             ajax: {
                 url: 'pesquisar-produto',
                 dataType: 'json'
-                // success:function(r){
-				// 	console.log(r);
-				// }
             }
         });
 	});
@@ -158,30 +169,34 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
-		$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+		//$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
 
-		$('#clienteCpf').change(function(){
-			$.ajax({
-				type:"POST",
-				data:"idcliente=" + $('#clienteCpf').val(),
-				url:"../procedimentos/comandas/obterDadosC.php",
-				success:function(r){
-					dado=jQuery.parseJSON(r);
-					$('#nomeClienteComanda').val(dado['nome'] + " " + dado['sobrenome']);
-				}
-			});
-		});
+		// $('#clienteCpf').change(function(){
+		// 	$.ajax({
+		// 		type:"POST",
+		// 		data:"idcliente=" + $('#clienteCpf').val(),
+		// 		url:"obter-dados-cli",
+		// 		success:function(r){
+		// 			dado=jQuery.parseJSON(r);
+		// 			$('#nomeClienteComanda').val(dado['nome'] + " " + dado['sobrenome']);
+		// 		}
+		// 	});
+		// });
 
+		/**
+		 * Completa os campos do produto de acordo com o id do select
+		 */
 		$('#produtoVenda').change(function(){
 			$.ajax({
 				type:"POST",
-				data:"idproduto=" + $('#produtoVenda').val(),
-				url:"../procedimentos/vendas/obterDadosProdutos.php",
+				data:"id=" + $('#produtoVenda').val(),
+				url:"pesquisar-prod-est",
 				success:function(r){
-					dado=jQuery.parseJSON(r);
-					$('#descricaoV').val(dado['descricao']);
-					$('#quantidadeV').val(dado['quantidade']);
-					$('#precoV').val(dado['preco']);	
+					//console.log('resposta',r);
+					var resp = JSON.parse(r);
+					$('#descricaoV').val(resp[0]['descricao']);
+					$('#quantidadeV').val(resp[0]['quantotal']);
+					$('#precoV').val(resp[0]['preco_ven']);	
 				}
 			});
 		});
