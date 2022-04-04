@@ -7,17 +7,17 @@ class Config
     /**
      * @var string
      */
-    const HOST = "";
+    const HOST = "localhost";
 
     /**
      * @var string
      */
-    const USER = "";
+    const USER = "root";
 
     /**
      * @var string
      */
-    const NAME = "";
+    const NAME = "lojab";
 
     /**
      * @var string

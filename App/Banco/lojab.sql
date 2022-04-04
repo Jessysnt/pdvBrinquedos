@@ -35,14 +35,7 @@ CREATE TABLE `categorias` (
   `dataCaptura` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Extraindo dados da tabela `categorias`
---
 
-INSERT INTO `categorias` (`id_categoria`, `id_usuario`, `nome_categoria`, `descricao`, `dataCaptura`) VALUES
-(17, 13, '0 a 5meses', 'Brinquedos com som e que possam morder', '2021-11-10'),
-(19, 13, '6meses a 1 ano', 'Brinquedos de cubos, argolas, caixas que encaixam ', '2021-11-24'),
-(29, 13, 'kkk', 'llll', '2021-12-29');
 
 -- --------------------------------------------------------
 
