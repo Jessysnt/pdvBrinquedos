@@ -43,41 +43,50 @@ CREATE TABLE `categorias` (
 -- Estrutura da tabela `clientes`
 --
 
-CREATE TABLE `clientes` (
+CREATE TABLE `cliente` (
   `id_cliente` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `sobrenome` varchar(100) NOT NULL,
-  `endereco` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `telefone` varchar(100) NOT NULL,
   `cpf` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Extraindo dados da tabela `clientes`
---
-
-INSERT INTO `clientes` (`id_cliente`, `id_usuario`, `nome`, `sobrenome`, `endereco`, `email`, `telefone`, `cpf`) VALUES
-(29, 13, 'Teste1', 'Teste1', 'rua 1', 'Teste1@gmail.com', '(12)99200-0000', '999.999.999-99'),
-(39, 13, 'Teste4', 'quatro', 'rua 4', 'quatro@gmai.com', '(12)99900-0999', '493.465.659-69'),
-(40, 13, 'Teste5', 'Teste5', 'Teste5', 'Teste5@gmail.com', '(12)98888-8888', '493.465.659-69'),
-(41, 13, 'Tatiane', 'Duarte', 'rua 10, 12', 'tatiane@gmail.com', '(12)90000-0099', '493.465.659-69'),
-(42, 13, 'Teste3', 'Teste3', 'Teste3', 'teste3@gmail.com', '(39)33333-3330', '493.465.659-69'),
-(43, 13, 'Lenovo', 'novo', 'Rua 2, n10', 'lenovo@gmail.com', '(12)90909-090', '493.465.659-69'),
-(46, 13, 'Umteste', 'Umteste', 'Umteste', 'Umteste@kk.com', '(99)99999-9999', '856.770.521-59'),
-(47, 13, 'DoisTeste', 'doisteste', 'rua 10', 'doisteste@teste.com', '(12)99200-9900', '780.469.358-32');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `comandas`
+-- Estrutura da tabela `comanda-fatura`
 --
 
-CREATE TABLE `comandas` (
-  `id_comanda` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `comandafatura` (
+  `id` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_cliente` int(11) NULL,
+  `numero` int(11) NULL,
+  `pg_forma1` int(11) NULL,
+  `valor_total1` decimal(10,2) NULL,
+  `pg_forma2` int(11) NULL,
+  `valor_total2` decimal(10,2) NULL,
+  `vzs_cartao` varchar(100) NULL,
+  `bandeira_cartao` varchar(100) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `linha-fatura`
+--
+
+CREATE TABLE `linhafatura` (
+  `id` int(11) NOT NULL,
+  `id_comanda-fatura` int(11) NOT NULL,
+  `id_produto` int(11) NULL,
+  `quantidade` int(11) NULL,
+  `valor_unitario` decimal(10,2) NULL,
+  `desconto` decimal(10,2) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -109,13 +118,6 @@ CREATE TABLE `fornecedores` (
   `cnpj` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Extraindo dados da tabela `fornecedores`
---
-
-INSERT INTO `fornecedores` (`id_fornecedor`, `id_usuario`, `nome`, `fantasia`, `endereco`, `email`, `telefone`, `cnpj`) VALUES
-(1, 6, 'Alice', 'Santos', 'Rua Girafales', 'alicesantos@gmail.com', '1234-5678', '111.222.333-99'),
-(3, 13, 'Distribuidora Bonecos', 'Bonecolandia', 'Rua2', 'bonecos@necos.com', '(99)99999-9798', '44.444.444/4409-79');
 
 -- --------------------------------------------------------
 
@@ -130,14 +132,6 @@ CREATE TABLE `imagem` (
   `registro` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Extraindo dados da tabela `imagem`
---
-
-INSERT INTO `imagem` (`id`, `nome`, `url`, `registro`) VALUES
-(1, 'relampago.jpeg', 'arquivos/relampago.jpeg', '2022-03-31 01:30:00'),
-(2, 'wood.jpeg', 'arquivos/wood.jpeg', '2022-03-31 01:32:47'),
-(3, 'naruto1.jpg', 'arquivos/naruto1.jpg', '2022-03-31 01:33:59');
 
 -- --------------------------------------------------------
 
@@ -178,14 +172,6 @@ CREATE TABLE `produto` (
   `registro` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Extraindo dados da tabela `produto`
---
-
-INSERT INTO `produto` (`id`, `id_imagem`, `id_usuario`, `nome`, `descricao`, `registro`) VALUES
-(1, 1, 2, 'Relâmpago', 'Mcqueen', '2022-03-31 01:30:00'),
-(2, 2, 2, 'Wood', 'Toystory', '2022-03-31 01:32:47'),
-(3, 3, 2, 'Naruto', 'Anime', '2022-03-31 01:33:59');
 
 -- --------------------------------------------------------
 
@@ -220,14 +206,6 @@ CREATE TABLE `usuario` (
   `registro` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
---
--- Extraindo dados da tabela `usuario`
---
-
-INSERT INTO `usuario` (`id`, `nome`, `sobrenome`, `email`, `senha`, `cargo`, `registro`) VALUES
-(2, 'Jessy', 'Santos', 'admin@reino.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, '2022-03-29 22:56:18'),
-(3, 'Ravena', 'Tita', 'ravena@reino.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', 2, '2022-03-30 00:40:32'),
-(5, 'Robin', 'Titan', 'robin@reino.com', '8abcda2dba9a5c5c674e659333828582122c5f56', 3, '2022-03-30 00:42:33');
 
 -- --------------------------------------------------------
 
@@ -247,19 +225,6 @@ CREATE TABLE `vendas` (
   `dataCompra` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Extraindo dados da tabela `vendas`
---
-
-INSERT INTO `vendas` (`id_venda`, `id_cliente`, `id_produto`, `id_usuario`, `preco`, `quantidade`, `total_venda`, `nome_pagamento`, `dataCompra`) VALUES
-(1, 29, 30, 13, '150.00', 1, '150.00', 'Credito', '2021-12-28 03:00:00'),
-(2, 39, 30, 13, '150.00', 1, '150.00', 'Débito', '2021-12-28 03:00:00'),
-(3, 0, 31, 13, '130.00', 1, '130.00', 'Débito', '2021-12-29 03:00:00'),
-(3, 0, 30, 13, '150.00', 1, '150.00', 'Débito', '2021-12-29 03:00:00'),
-(3, 29, 31, 13, '130.00', 2, '260.00', 'Débito', '2021-12-29 03:00:00'),
-(4, 0, 31, 13, '130.00', 1, '130.00', '', '2021-12-29 03:00:00'),
-(5, 29, 30, 13, '150.00', 2, '300.00', '', '2022-02-20 03:00:00'),
-(6, 29, 2, 6, '5.90', 2, '11.80', '', '2022-03-14 03:00:00');
 
 --
 -- Índices para tabelas despejadas

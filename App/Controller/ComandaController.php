@@ -41,5 +41,40 @@ class ComandaController
             View::jsonResponse($res);
         }
     }
+
+    public function gravarComanda()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obComandaDAO = new ComandaDAO;
+
+            $id_usuario=$_SESSION['usuario']->getId();
+            
+            $comandaFatura=array(
+                'id_usuario'=>$id_usuario,
+            );
+            if($_POST['numero'] != ""){
+                $comandaFatura['numero'] = $_POST['numero'];
+            }else{
+                $comandaFatura['id_cliente'] = $_POST['cliente'];
+            }
+
+            $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
+
+            if($respComandaFatura > 0){
+
+                foreach($_POST['linhas'] as $row) {
+                    $linhaFatura=array(
+                        'id_comanda_fatura'=>$respComandaFatura,
+                        'id_produto'=>$row['id_produto'],
+                        'quantidade'=>$row['quantidade'],
+                        'valor_unitario'=>$row['valor_unitario'],
+                    );
+                    $obComandaDAO->gravarLinhaFatura($linhaFatura);
+                }
+                View::jsonResponse(['resp'=>true]);
+            }
+
+        }
+    }
     
 }

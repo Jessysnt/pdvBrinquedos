@@ -60,6 +60,7 @@ $router->add('comandas', ['controller' => 'ComandaController', 'action' => 'tela
 $router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
 $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
 $router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
+$router->add('resp-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
 
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
@@ -69,10 +70,9 @@ $router->add('{controller}/{action}');
 //Rotas fora da sessao
 session_start();
 
-if(isset($_SESSION['usuario']) || in_array($_SERVER['REQUEST_URI'],['/login', '/sair', '/registro'])) {
-    $router->dispatch($_SERVER['REQUEST_URI']);
-}else{
-    $router->dispatch('/login');
+if(!isset($_SESSION['usuario']) && !in_array($_SERVER['REQUEST_URI'],['/login', '/registro'])) {
+    header('Location: /login');
+    exit;
 }
-
+$router->dispatch($_SERVER['REQUEST_URI']);
 // $router->dispatch($_SERVER['QUERY_STRING']);

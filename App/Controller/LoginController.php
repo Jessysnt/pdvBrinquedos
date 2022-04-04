@@ -23,9 +23,7 @@ class LoginController extends Controller
             }else{
                 View::jsonResponse(['Usuario nao encontrado']);
             }
-
             //View::jsonResponse($resp);
-            
         }
 
         $validar = false;
@@ -42,8 +40,9 @@ class LoginController extends Controller
         
         session_destroy();
     
-        $this->logar();
-      }
+        header('Location: /login');
+         exit;
+    }
 }
 
 // if(isset($_POST['email'], $_POST['senha'])){

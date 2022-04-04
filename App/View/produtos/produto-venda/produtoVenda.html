@@ -201,7 +201,7 @@
                     console.log(r);
                     var resp = JSON.parse(r);
                     if(resp.resp){
-                        //$('#frmProdutovU')[0].reset();
+                        $('#produtoSelect').val(null).trigger('change');
                         $('#tabelaProdvLoad').load("tab-prod-vend");
                         alertify.success("Brinquedo atualizado com sucesso!");
                     }else{
