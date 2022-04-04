@@ -27,72 +27,99 @@
 
     <br/>
 
-    <div class="row">
-        <section class="direita">
+    <section class="direita">
+		<div class="row">
 			<form method="post" id="frmComanda">
-            <div class="row" id="grupoNumero">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Numero Comanda</label>
-                        <input readonly="" type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda">
-                    </div>
-                </div>
-            </div>
-			<div class="row" id="grupoCpf">
-				<div class="col-sm-6">
-					<div class="form-group">
-				      	<label>Selecionar Cliente</label>
-						<select class="form-control input-sm" id="clienteCpf" name="clienteCpf">
-							<option value="A">Selecionar</option>
-							<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
-						</select>
-				    </div>
-				</div>
-				<div class="col-sm-6">
-					<div class="form-group">
-						<label>Nome </label>
-						<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
+				<div class="row" id="grupoNumero">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Numero Comanda</label>
+							<input readonly="" type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda">
+						</div>
 					</div>
 				</div>
-			</div>
-				
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="form-group">
-						<label>Produto</label>
-						<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
-							<option value="A">Selecionar</option>
-							<!--<option value="{{produto.id}}">{{produto.nome}}</option>--> 
-						</select>
+				<div class="row" id="grupoCpf">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Selecionar Cliente</label>
+							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf">
+								<option value="A">Selecionar</option>
+								<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
+							</select>
+						</div>
 					</div>
-					<div class="form-group"></div>
-					<label>Descrição</label>
-							<textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
-					<div class="form-group">
-						<label>Quantidade Estoque</label>
-						<input readonly="" type="text" class="form-control input-sm" id="quantidadeV" name="quantidadeV">
-					</div>
-					<div class="form-group">
-						<label>Preço</label>
-						<input readonly="" type="text" class="form-control input-sm" id="precoV" name="precoV">
-					</div>	
-					<div class="form-group">
-						<label>Quantidade Vendida</label>
-						<input type="number" class="form-control input-sm" id="quantV" name="quantV">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Nome </label>
+							<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-3">
-					<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Criar</span>
+					
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Produto</label>
+							<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
+								<option value="A">Selecionar</option>
+								<!--<option value="{{produto.id}}">{{produto.nome}}</option>--> 
+							</select>
+						</div>
+						<div class="form-group"></div>
+						<label>Descrição</label>
+								<textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
+						<div class="form-group">
+							<label>Quantidade Estoque</label>
+							<input readonly="" type="text" class="form-control input-sm" id="quantidadeV" name="quantidadeV">
+						</div>
+						<div class="form-group">
+							<label>Preço</label>
+							<input readonly="" type="text" class="form-control input-sm" id="precoV" name="precoV">
+						</div>	
+						<div class="form-group">
+							<label>Quantidade Vendida</label>
+							<input type="number" class="form-control input-sm" id="quantV" name="quantV">
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-3">
-					<span class="btn btn-danger" id="btnLimparComanda">Limpar Comanda</span>
+				<div class="row">
+					<div class="col-sm-3">
+						<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Adicionar</span>
+					</div>
+					<div class="col-sm-3">
+						<span class="btn btn-danger" id="btnLimparComanda">Limpar Comanda</span>
+					</div>
 				</div>
-			</div>
-		</form>	
-		</section>
-    </div>
+			</form>	
+		</div>
+	</section>
+    
+
+	<section class="esquerda">
+		<div class="row">
+			<table class="table table-bordered table-hover table-condensed" style="text-align: center;">
+				<thead>
+					<tr>
+					  <th scope="col">Nome</th>
+					  <th scope="col">Descrição</th>
+					  <th scope="col">Preço</th>
+					  <th scope="col">Quantidade</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for comanda in comandas %}
+					<tr>
+					  <th>{{comanda.name.produtoVenda}}</th>
+					  <td>{{comanda.descricaoV}}</td>
+					  <td>{{comanda.precoV}}</td>
+					  <td>{{comanda.quantV}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
 </div>
 
 {% endblock %}
@@ -169,6 +196,12 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
+		// $('#btAddTemp').click(function(){
+		// 	let comandas = new Array();
+		// 	//let comandas = [];
+		// });
+		
+
 		//$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
 
 		// $('#clienteCpf').change(function(){
@@ -215,8 +248,10 @@
 			}
 		});
 
+		let comandas = [];
+		
 		$('#btAddTemp').click(function(){
-			vazios=validarFormVazio('frmComandaCpf');
+			//vazios=validarFormVazio('frmComandaCpf');
 
 			var quant = parseInt($('#quantV').val());
 			var quantidade = parseInt($('#quantidadeV').val());
@@ -230,28 +265,34 @@
 				quantidade = $('#quantidadeV').val();
 			}
 
-			if(vazios > 0){
-				alertify.alert("Preencha os Campos!!");
-				return false;
-			}
+			// if(vazios > 0){
+			// 	alertify.alert("Preencha os Campos!!");
+			// 	return false;
+			// }
 
-			dados=$('#frmComandaCpf').serialize();
-			$.ajax({
-				type:"POST",
-				data:dados,
-				url:"../procedimentos/comandas/addComandaTemp.php",
-				success:function(r){
-					//alert(dados);
-					//limpar formulário
-					//$('#frmVendasProdutos')[0].reset();
-					$("#produtoVenda").select2('');
-					$('#quantidadeV').val('');
-					$('#descricaoV').val('');
-					$('#precoV').val('');
-					$('#quantV').val('');
-					$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
-				}
-			});
+			
+			dados=$('#frmComanda').serialize();
+			
+			comandas.push(dados);
+			console.log('comandas', comandas);
+
+			// dados=$('#frmComandaCpf').serialize();
+			// $.ajax({
+			// 	type:"POST",
+			// 	data:dados,
+			// 	url:"../procedimentos/comandas/addComandaTemp.php",
+			// 	success:function(r){
+			// 		//alert(dados);
+			// 		//limpar formulário
+			// 		//$('#frmVendasProdutos')[0].reset();
+			// 		$("#produtoVenda").select2('');
+			// 		$('#quantidadeV').val('');
+			// 		$('#descricaoV').val('');
+			// 		$('#precoV').val('');
+			// 		$('#quantV').val('');
+			// 		$('#tabComandaTempLoad').load("comandas/tabComandaTemp.php");
+			// 	}
+			// });
 		});
 
 		$('#btnLimparComanda').click(function(){
