@@ -20,6 +20,8 @@
                     <input type="text" class="form-control input-sm" id="nomeU" name="nomeU">
                     <label>Descrição</label>
                     <input type="text" class="form-control input-sm" id="descricaoU" name="descricaoU">
+                    <label>Código</label>
+                    <input type="text" class="form-control input-sm" id="codigoU" name="codigoU">
                     
                 </form>
             </div>
@@ -50,10 +52,8 @@
                 <input type="text" class="form-control input-sm" id="nome" name="nome">
                 <label>Descrição</label>
                 <input type="text" class="form-control input-sm" id="descricao" name="descricao">
-            <!--	<label>Quantidade</label>
-                <input type="text" class="form-control input-sm" id="quantidade" name="quantidade">
-                <label>Preço</label>
-                <input type="text" class="form-control input-sm" id="preco" name="preco"> -->
+                <label>Código</label>
+                <input type="text" class="form-control input-sm" id="codigo" name="codigo">
                 <label>Imagem</label>
                 <input type="file" id="imagem" name="imagem">
                 <p></p>
@@ -83,6 +83,7 @@
                 $('#idProduto').val(dado['id_produto']);
                 $('#nomeU').val(dado['nome']);
                 $('#descricaoU').val(dado['descricao']);
+                $('#codigoU').val(dado['codigo']);
             }
         });
     }

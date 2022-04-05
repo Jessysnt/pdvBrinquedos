@@ -29,7 +29,7 @@ class ProdutoDAO extends Conexao
 	}
 
     public function addProduto($dados){
-        $stmt=static::getConexao()->prepare("INSERT INTO produto (id_imagem, id_usuario, nome, descricao) VALUES (:idImagem, :idUsuario, :nome, :descricao)");
+        $stmt=static::getConexao()->prepare("INSERT INTO produto (id_imagem, id_usuario, nome, descricao, codigo) VALUES (:idImagem, :idUsuario, :nome, :descricao, :codigo)");
 
         $stmt->bindParam(':idImagem', $dados['idImagem'], PDO::PARAM_INT);
         $stmt->bindParam(':idUsuario', $dados['idUsuario'], PDO::PARAM_INT);

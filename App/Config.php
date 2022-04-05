@@ -22,7 +22,7 @@ class Config
     /**
      * @var string
      */
-    const PASSWORD = "";
+    const PASSWORD = "123456";
 
     /**
      * Show or hide error messages on screen

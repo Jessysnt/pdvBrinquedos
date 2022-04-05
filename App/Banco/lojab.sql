@@ -43,15 +43,19 @@ CREATE TABLE `categorias` (
 -- Estrutura da tabela `clientes`
 --
 
+DROP TABLE IF EXISTS `cliente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente` (
-  `id_cliente` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `sobrenome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `telefone` varchar(100) NOT NULL,
-  `cpf` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `cpf` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 -- --------------------------------------------------------
@@ -60,18 +64,23 @@ CREATE TABLE `cliente` (
 -- Estrutura da tabela `comanda-fatura`
 --
 
+DROP TABLE IF EXISTS `comandafatura`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comandafatura` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` int(11) NOT NULL,
-  `id_cliente` int(11) NULL,
-  `numero` int(11) NULL,
-  `pg_forma1` int(11) NULL,
-  `valor_total1` decimal(10,2) NULL,
-  `pg_forma2` int(11) NULL,
-  `valor_total2` decimal(10,2) NULL,
-  `vzs_cartao` varchar(100) NULL,
-  `bandeira_cartao` varchar(100) NULL
+  `id_cliente` int(11) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `pg_forma1` int(11) DEFAULT NULL,
+  `valor_total1` decimal(10,2) DEFAULT NULL,
+  `pg_forma2` int(11) DEFAULT NULL,
+  `valor_total2` decimal(10,2) DEFAULT NULL,
+  `vzs_cartao` varchar(100) DEFAULT NULL,
+  `bandeira_cartao` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 -- --------------------------------------------------------
 
@@ -79,14 +88,19 @@ CREATE TABLE `comandafatura` (
 -- Estrutura da tabela `linha-fatura`
 --
 
+DROP TABLE IF EXISTS `linhafatura`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `linhafatura` (
-  `id` int(11) NOT NULL,
-  `id_comanda-fatura` int(11) NOT NULL,
-  `id_produto` int(11) NULL,
-  `quantidade` int(11) NULL,
-  `valor_unitario` decimal(10,2) NULL,
-  `desconto` decimal(10,2) NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_comanda_fatura` int(11) NOT NULL,
+  `id_produto` int(11) DEFAULT NULL,
+  `quantidade` int(11) DEFAULT NULL,
+  `valor_unitario` decimal(10,2) DEFAULT NULL,
+  `desconto` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 -- --------------------------------------------------------
 
