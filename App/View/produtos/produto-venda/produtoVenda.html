@@ -166,7 +166,7 @@
             
             dados=$('#frmProdutov').serialize();
             var formData = new FormData(document.getElementById("frmProdutov"));
-            console.log(dados);
+            // console.log(dados);
             $.ajax({
                 type: "POST",
                 data: dados,
@@ -221,9 +221,9 @@ $(document).ready(function(){
         ajax: {
             url: 'pesquisar-produto',
             dataType: 'json',
-            success:function(r){
-            	console.log(r.results);
-            }
+            // success:function(r){
+            // 	console.log(r.results);
+            // }
         }
     });
     //$('#produtoSelectU').select2();
