@@ -29,21 +29,22 @@
  		</thead>
 
  		<tbody>	
-			
+			{% for categoria in categorias %}
 		 	<tr>
-		 		<td></td>
-		 		<!-- <td>
-					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('{{usuario.id}}')">
+				<td>{{categoria.categoria}}</td>
+				<td>{{categoria.descricao}}</td>
+		 		<td>
+					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('{{categoria.id}}')">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</span>
 				</td>
 				<td>
-					<span class="btn btn-danger btn-xs" onclick="deletarUsuario('{{usuario.id}}')">
+					<span class="btn btn-danger btn-xs" onclick="deletarUsuario('{{categoria.id}}')">
 						<span class="glyphicon glyphicon-remove"></span>
 					</span>
-				</td> -->
+				</td>
 		 	</tr>
-			 
+			 {% endfor %}
 	 	</tbody>
 	</table>
 	<div>
@@ -67,19 +68,25 @@
 	});
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
+	// categorias = [];
 	var tamanhoPagina = 6;
 	var pagina = 0;
 	function paginar() {
 		$('table > tbody > tr').remove();
 		var tbody = $('table > tbody');
-		for (var i = pagina * tamanhoPagina; i < dados.length && i < (pagina + 1) *  tamanhoPagina; i++) {
-			tbody.append(
-				$('<tr>')
-					.append($('<td>').append(dados[i][0]))
-					.append($('<td>').append(dados[i][1]))
-			)
-		}
+		console.log('ak2', categorias);
+		// for (var i = pagina * tamanhoPagina; i < categorias.length && i < (pagina + 1) *  tamanhoPagina; i++) {
+		// 	tbody.append(
+		// 		$('<tr>')
+		// 			.append($('<td>').append(categoria[i]))
+		// 			.append($('<td>').append(categoria[i]))
+		// 	);console.log('ak',dados);
+		// };
+		categorias.forEach(categoria => {
+			// tbody.append(`<tr> <th>${categoria.descricao}</th> </tr>`);
+			console.log(categoria);
+		});
 		$('#numeracao').text('Página ' + (pagina + 1) + ' de ' + Math.ceil(dados.length / tamanhoPagina));
 	}
 </script>
@@ -110,7 +117,7 @@
 		paginar();
 		ajustarBotoes();
 	});
-</script>
+</script> -->
 
 
 {% endblock %}

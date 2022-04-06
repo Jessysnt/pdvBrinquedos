@@ -32,6 +32,8 @@ class UsuarioController
         $obUsuario = new UsuarioDAO();
         $resp = $obUsuario->exibirUsuario();
 
+    //    die(var_dump(['usuarios'=>$resp]));
+
         View::renderTemplate('/usuario/tabelaUsuario.html', ['usuarios'=>$resp]); 
     }
 

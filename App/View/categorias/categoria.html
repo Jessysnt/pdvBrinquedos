@@ -59,7 +59,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-       // $('#tabelaCategoriaLoad').load("categorias/tabelaCategorias.php");
+        $('#tabelaCategoriaLoad').load("tabela-categoria");
 
         $('#btnAdicionarCategoria').click(function(){
 
@@ -82,7 +82,7 @@
                         //limpar formulário
                         $('#frmCategorias')[0].reset();
 
-                       // $('#tabelaCategoriaLoad').load("categorias/tabelaCategorias.php");
+                        $('#tabelaCategoriaLoad').load("tabela-categoria");
                         alertify.success("Classificação adicionada com sucesso!");
                     }else{
                         alertify.error("Não foi possível adicionar a classificaçao");

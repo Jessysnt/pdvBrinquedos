@@ -24,9 +24,10 @@ class CategoriaController
     public function tabelaCategorias()
     {
         $obCategoriaDAO = new CategoriaDAO();
-        $resp = $obCategoriaDAO->exibirCategoria();
+        $resp = $obCategoriaDAO->tabCategoria();
 
-        View::renderTemplate('/categorias/tabcategoria.html', ['categoria'=>$resp]); 
+    //    die(var_dump(['categorias'=>$resp]));
+        View::renderTemplate('/categorias/tabcategoria.html', ['categorias'=>$resp]); 
     }
 
 }

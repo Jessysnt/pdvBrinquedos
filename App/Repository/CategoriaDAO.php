@@ -19,8 +19,9 @@ class CategoriaDAO extends Conexao
         return $stmt->execute();
     }
 
-    public function exibirCategoria()
+    public function tabCategoria()
     {
-        
+        $stmt = static::getConexao()->query("SELECT * FROM categoria");
+        return $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Entity\Categoria');
     }
 }

@@ -62,8 +62,9 @@ $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action'
 $router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
 $router->add('resp-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
 
-//
+//Rotas de Categoria
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);
+$router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action' => 'tabelaCategorias']);
 
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
