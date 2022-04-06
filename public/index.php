@@ -60,6 +60,7 @@ $router->add('comandas', ['controller' => 'ComandaController', 'action' => 'tela
 $router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
 $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
 $router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
+$router->add('pesquisar-prod-est-codigo', ['controller' => 'ComandaController', 'action' => 'pesquisarProEstCod']);
 $router->add('resp-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
 
 //Rotas de Categoria

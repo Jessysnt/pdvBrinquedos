@@ -19,6 +19,18 @@ class ComandaDAO extends Conexao
     }
 
     /**
+     * Pesquisa produtos para trazer no cadastro de comandas pelo entter
+     */
+    public function pesquisarProdutoVendaCod($codigo)
+    {
+        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.descricao, es.quantotal, es.preco_ven FROM produto AS pro INNER JOIN estoque AS es ON pro.id=es.id_produto AND pro.codigo = :codigo");
+        $stmt->bindValue(':codigo', $codigo);
+        $stmt->execute();
+        // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * 
      */
     public function gravarComandaFatura($respComandaFatura)

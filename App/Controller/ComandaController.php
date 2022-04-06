@@ -42,6 +42,17 @@ class ComandaController
         }
     }
 
+    public function pesquisarProEstCod()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            // $codigo = intval($_POST['codigo']) ;
+            $obProdEst = new ComandaDAO();
+            $res = $obProdEst->pesquisarProdutoVendaCod($_POST['codigo']);
+
+            View::jsonResponse($res);
+        }
+    }
+
     public function gravarComanda()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){

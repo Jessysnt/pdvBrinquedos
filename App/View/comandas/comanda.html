@@ -60,7 +60,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Código</label>
-							<input type="text" class="form-control input-sm" id="codigo" name="codigo">
+							<input type="textbox" class="form-control input-sm" id="codigo" name="codigo">
 						</div>
 						<div class="form-group">
 							<label>Produto</label>
@@ -234,7 +234,29 @@
 </script>
 
 <script type="text/javascript">
-	
+	/**
+	* Entter para pesquisar
+	*/
+	$('#codigo').on('keypress',function(e) {
+		if(e.which == 13) {
+			$("#produtoVenda").prop("disabled", true);
+			$("#produtoVenda").hide();
+			$("#codigo").show();
+			$.ajax({
+				type:"POST",
+				data:"codigo=" + $('#codigo').val(),
+				url:"pesquisar-prod-est-codigo",
+				success:function(r){
+					// console.log('resposta',r);
+					var resp = JSON.parse(r);
+					console.log('resp',resp);
+					$('#descricaoV').val(resp[0]['descricao']);
+					$('#quantidadeV').val(resp[0]['quantotal']);
+					$('#precoV').val(resp[0]['preco_ven']);	
+				}
+			});
+		}
+	});
 </script>
 
 <script type="text/javascript">
@@ -278,12 +300,6 @@
 		console.log(comanda);
 	 }
 </script>
-
-<!-- <script type="text/javascript">
-	$('#btnLimparComanda').click(function(){
-		apagar();
-	});
-</script> -->
 
 <script type="text/javascript">
 	/**
