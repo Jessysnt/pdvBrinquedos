@@ -65,7 +65,7 @@
 						<div class="form-group">
 							<label>Produto</label>
 							<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
-								<option value="A">Selecionar</option>
+								<option value="">Selecionar</option>
 								<!--<option value="{{produto.id}}">{{produto.nome}}</option>--> 
 							</select>
 						</div>
@@ -250,14 +250,13 @@
 				success:function(r){
 					// console.log('resposta',r);
 					var resp = JSON.parse(r);
-					console.log('resp',resp);
 					if(resp.length > 0){
 						$('#codigo').attr('data-nome', resp[0]['nome']);
 						$('#descricaoV').val(resp[0]['descricao']);
 						$('#quantidadeV').val(resp[0]['quantotal']);
 						$('#precoV').val(resp[0]['preco_ven']);
 
-						// $('#btAddTemp').click();
+						$('#btAddTemp').click(); 
 					}
 				}
 			});
@@ -299,8 +298,19 @@
 			numero: null,
 			linhas:[]
 		};
-		atualizarTabela();
-		itensSoma();
+		$('#tabelaComanda').find('tbody').empty();
+		$('#tabelaComanda').find('#valorTotal').html('R$ 0,00');
+		$('#frmComanda')[0].reset();
+		$('#produtoVenda').val(null).trigger('change');//reseta o select2
+		$('#clienteCpf').val(null).trigger('change');
+		$('#quantV').val(1);
+		// $('#precoV').val('');
+		// $('#descricaoV').val('');
+		// $('#quantidadeV').val('');
+		// $('#codigo').val('');
+		$('#codigo').attr('data-nome', "");
+		$("#numero").prop("disabled", false);
+		$("#cpf").prop("disabled", false);
 	}
 </script>
 
@@ -322,6 +332,8 @@
 				valor_unitario: parseFloat(linha.precoV)
 			};
 			dados.linhas.push(novaLinha);
+			console.log(dados.linhas);
+			apagarForm();
 		});
 		// console.log(dados);
 		$.ajax({
@@ -375,9 +387,8 @@
 				data:"id=" + $('#produtoVenda').val(),
 				url:"pesquisar-prod-est",
 				success:function(r){
-					console.log('resposta',r);
 					var resp = JSON.parse(r);
-					console.log(resp);
+					// console.log(resp);
 					if(resp.length > 0){
 						$('#descricaoV').val(resp[0]['descricao']);
 						$('#quantidadeV').val(resp[0]['quantotal']);
@@ -407,83 +418,70 @@
 		* Adiciona os itens na tabela temporaria 
 		*/
 		$('#btAddTemp').click(function(){
-			// vazios=validarFormVazio('frmComandaCpf');
-
-			// var teste =  $('#clienteCpf').valid();
+			
+			//Cpf selecionado para abrir comanda.. ve se o campo esta preenchido
 			var radio = $('input[name="inlineRadioOptions"]:checked').val();
 			if((radio == 'cpf' && $('#clienteCpf')[0].checkValidity()) || radio == 'numero' ){
 				
-			
-			
-			var quant = parseInt($('#quantV').val());
-			var quantidade = parseInt($('#quantidadeV').val());
 
-			
-			if(quant > quantidade){
-				alertify.alert("Quantidade inexistente em estoque!!");
-				quant = $('#quantV').val("");
-				return false;
-			}else{
-				quantidade = $('#quantidadeV').val();
-			}
+				var quant = parseInt($('#quantV').val());
+				var quantidade = parseInt($('#quantidadeV').val());
 
-			
-			// var cpf = $('#cpf').val();
-			// console.log('ak2', cpf);
-			// if($('#cpf') > 0){
-				// console.log('ak');
-				// if($('#nomeClienteComanda').val() == ""){
-				// 	alertify.alert("Preencha o CPF do Cliente!!");
-				// 	return false;
-				// }
-			// }verificar validaçao do campo cpf
-			
-			if($('#quantV').val() == ""){
-				alertify.alert("Preencha a quantidade desejada!!");
-				return false;
-			}
-
-
-			/**
-			* Pega as informaçoes do formulario e transforma em json para adicionar no array
-			*/
-			var jsonData = {};
-			var formData = $("#frmComanda").serializeArray();
-
-			$.each(formData, function() {
-				if (jsonData[this.name]) {
-				if (!jsonData[this.name].push) {
-						jsonData[this.name] = [jsonData[this.name]];
+				
+				if(quant > quantidade){
+					alertify.alert("Quantidade inexistente em estoque!!");
+					quant = $('#quantV').val("");
+					return false;
+				}else{
+					quantidade = $('#quantidadeV').val();
 				}
-					jsonData[this.name].push(this.value || '');
-				} else {
-					jsonData[this.name] = this.value || '';
+
+				
+				
+				if($('#quantV').val() == "" || $('#quantV').val() <= 0){
+					alertify.alert("Preencha a quantidade desejada!!");
+					return false;
 				}
-			});
-			if($('#codigo').val() == ""){
-				jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
-			}else{
-				jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
-			}
-			
-			
-			/**
-			* Coloca os itens temporarios na tabela
-			*/
-			comanda.linhas.push(jsonData);
-			console.log('AQUI',comanda.linhas);
-			
-			itensSoma($('#tabelaComanda'));
-			atualizarTabela($('#tabelaComanda'));
-			
-			$('#produtoVenda').val(null).trigger('change');//reseta o select2
-			$('#quantV').val(1);
-			$('#precoV').val('');
-			$('#descricaoV').val('');
-			$('#quantidadeV').val('');
-			$('#codigo').val('');
-			$('#codigo').attr('data-nome', "");
-		}
+
+				/**
+				* Pega as informaçoes do formulario e transforma em json para adicionar no array
+				*/
+				var jsonData = {};
+				var formData = $("#frmComanda").serializeArray();
+
+				$.each(formData, function() {
+					if (jsonData[this.name]) {
+					if (!jsonData[this.name].push) {
+							jsonData[this.name] = [jsonData[this.name]];
+					}
+						jsonData[this.name].push(this.value || '');
+					} else {
+						jsonData[this.name] = this.value || '';
+					}
+				});
+				if($('#codigo').val() == ""){
+					jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
+				}else{
+					jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
+				}
+				
+				
+				/**
+				* Coloca os itens temporarios na tabela
+				*/
+				comanda.linhas.push(jsonData);
+				
+				itensSoma($('#tabelaComanda'));
+				atualizarTabela($('#tabelaComanda'));
+				
+				$('#produtoVenda').val(null).trigger('change');//reseta o select2
+				$('#quantV').val(1);
+				$('#precoV').val('');
+				$('#descricaoV').val('');
+				$('#quantidadeV').val('');
+				$('#codigo').val('');
+				$('#codigo').attr('data-nome', "");
+			}else{alertify.alert("Preencher o CPF!!");} 
 		});
 
 
@@ -497,7 +495,7 @@
 	});
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	// Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
   'use strict';
@@ -516,7 +514,7 @@
     });
   }, false);
 })();
-</script>
+</script> -->
 
 
 
