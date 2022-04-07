@@ -24,8 +24,8 @@
             <td>{{produtovenda.codigo}}</td>
             <td>{{produtovenda.lote}}</td>
             <td>{{produtovenda.quantidade}}</td>
-			<td>R${{produtovenda.preco_comp}}</td>		
-            <td>R${{produtovenda.preco_ven}}</td>		
+			<td>{{produtovenda.preco_comp |format_currency('BRL')}}</td>		
+            <td>{{produtovenda.preco_ven |format_currency('BRL')}}</td>		
             
             <td>
                 <span  data-toggle="modal" data-target="#abremodalUpdateProdutov" class="btn btn-warning btn-xs" onclick="adicionarProdutov('{{ produtovenda.id }}')">

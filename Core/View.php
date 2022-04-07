@@ -2,6 +2,7 @@
 
 namespace Core;
 
+
 class View
 {
     /**
@@ -48,6 +49,7 @@ class View
             if (\App\Config::SHOW_ERRORS) {
                 $twig = new \Twig\Environment($loader,['debug' => true]);
                 $twig->addExtension(new \Twig\Extension\DebugExtension());
+                $twig->addExtension(new \Twig\Extra\Intl\IntlExtension());
                 $twig->addGlobal('session', $_SESSION);
             } else {
                 $twig = new \Twig\Environment($loader);

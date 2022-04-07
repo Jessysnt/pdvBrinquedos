@@ -134,7 +134,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        //$('#tabelaProdutosLoad').load("produtos/tabelaProdutos.php");
+        $('#tabelaProdutosLoad').load("tab-produto");
 
         $('#btnAddProduto').click(function(){
 
@@ -160,7 +160,7 @@
                     var resp = JSON.parse(r);
                     if(resp.resp){	
                         $('#frmProdutos')[0].reset();
-                       // $('#tabelaProdutosLoad').load("produtos/tabelaProdutos.php");
+                        $('#tabelaProdutosLoad').load("tab-produto");
                         alertify.success("Adicionado com sucesso!!");
                     }else{
                         alertify.error("Falha ao Adicionar");

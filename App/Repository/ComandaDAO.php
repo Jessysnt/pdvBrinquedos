@@ -23,7 +23,7 @@ class ComandaDAO extends Conexao
      */
     public function pesquisarProdutoVendaCod($codigo)
     {
-        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.descricao, es.quantotal, es.preco_ven FROM produto AS pro INNER JOIN estoque AS es ON pro.id=es.id_produto AND pro.codigo = :codigo");
+        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome, pro.descricao, es.quantotal, es.preco_ven FROM produto AS pro INNER JOIN estoque AS es ON pro.id=es.id_produto AND pro.codigo = :codigo");
         $stmt->bindValue(':codigo', $codigo);
         $stmt->execute();
         // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));

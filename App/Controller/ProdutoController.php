@@ -55,4 +55,30 @@ class ProdutoController
         View::renderTemplate('/produtos/produto/produtoForm.html'); 
     }
 
+    public function tabelaProduto()
+    {
+        $busca= "";
+        $pagina= 1;
+        $itensPag= 1;
+
+        if(isset($_GET['busca'])){
+            $busca = $_GET['busca'];
+        }
+        if(isset($_GET['pagina'])){
+            $pagina = $_GET['pagina'];
+        }
+        if(isset($_GET['itensPag'])){
+            $itensPag = $_GET['itensPag'];
+        }
+
+        $obProduto = new ProdutoDAO();
+        $resp = $obProduto->mostrarProduto($busca, $pagina, $itensPag);
+        $total = $obProduto->qntTotalProduto($busca);
+
+        $totalpaginas =  ceil($total['total'] / $itensPag);
+
+        View::renderTemplate('/produtos/produto/tabelaProduto.html', ['produtos'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tab-produto', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
+
+    }
+
 }

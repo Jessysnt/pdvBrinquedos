@@ -9,10 +9,28 @@ use PDOException;
 
 class EstoqueDAO extends Conexao
 {
-    public function mostrarEstoque()
+    public function mostrarEstoque($busca, $pagina, $itensPag)
     {
-        $stmt = static::getConexao()->query("SELECT pro.nome, pro.descricao,es.quantotal, es.preco_ven, es.id from estoque as es inner join produto as pro on es.id_produto=pro.id");
+        $offset = $itensPag*($pagina-1);
+        // die(var_dump($offset));
+        $stmt = static::getConexao()->prepare("SELECT pro.nome, pro.descricao,es.quantotal, es.preco_ven, es.id FROM estoque AS es INNER JOIN produto AS pro ON es.id_produto=pro.id WHERE pro.nome LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function qntTotalEstoque($busca)
+    {
+        $stmt = static::getConexao()->prepare("SELECT count(es.id) AS total FROM estoque AS es INNER JOIN produto AS pro ON es.id_produto=pro.id WHERE pro.nome LIKE :busca LIMIT 1 ");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function atualizaProdEstoque($dados)

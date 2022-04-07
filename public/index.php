@@ -41,8 +41,9 @@ $router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'a
 $router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
 
 
-//Rotas dos Produtos
+//Rotas dos Produto
 $router->add('produto-form', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
+$router->add('tab-produto', ['controller' => 'ProdutoController', 'action' => 'tabelaProduto']);
 
 //Rotas Produtos Preço
 $router->add('produto-venda', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);

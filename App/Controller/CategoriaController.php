@@ -26,7 +26,7 @@ class CategoriaController
         $obCategoriaDAO = new CategoriaDAO();
         $resp = $obCategoriaDAO->tabCategoria();
 
-    //    die(var_dump(['categorias'=>$resp]));
+       die(var_dump(['categorias'=>$resp]));
         View::renderTemplate('/categorias/tabcategoria.html', ['categorias'=>$resp]); 
     }
 

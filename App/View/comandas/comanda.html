@@ -42,8 +42,8 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Selecionar Cliente</label>
-							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf">
-								<option value="A">Selecionar</option>
+							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
+								<option value="" readonly="true">Selecionar</option>
 								<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 							</select>
 						</div>
@@ -60,7 +60,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Código</label>
-							<input type="textbox" class="form-control input-sm" id="codigo" name="codigo">
+							<input type="textbox" class="form-control input-sm" id="codigo" name="codigo" data-nome="">
 						</div>
 						<div class="form-group">
 							<label>Produto</label>
@@ -83,7 +83,7 @@
 						</div>	
 						<div class="form-group">
 							<label>Quantidade Vendida</label>
-							<input type="number" class="form-control input-sm" id="quantV" name="quantV" minlength="1">
+							<input type="number" class="form-control input-sm" id="quantV" name="quantV">
 						</div>
 					</div>
 				</div>
@@ -161,8 +161,10 @@
 		$("#quantidadeV").prop("disabled", false);
 		$("#precoV").prop("disabled", false);
 		$("#quantV").prop("disabled", false);
+		$("#quantV").val(1);
 		$("#grupoNumero").hide();
 		$("#grupoCpf").show();
+		$("#numero").prop("disabled", true);
 	});
 
 	$("#numero").on("click", function () {
@@ -174,8 +176,10 @@
 		$("#quantidadeV").prop("disabled", false);
 		$("#precoV").prop("disabled", false);
 		$("#quantV").prop("disabled", false);
+		$("#quantV").val(1);
 		$("#grupoCpf").hide();
 		$("#grupoNumero").show();
+		$("#cpf").prop("disabled", true);
 	});
 
 	/**
@@ -239,9 +243,6 @@
 	*/
 	$('#codigo').on('keypress',function(e) {
 		if(e.which == 13) {
-			$("#produtoVenda").prop("disabled", true);
-			$("#produtoVenda").hide();
-			$("#codigo").show();
 			$.ajax({
 				type:"POST",
 				data:"codigo=" + $('#codigo').val(),
@@ -250,9 +251,14 @@
 					// console.log('resposta',r);
 					var resp = JSON.parse(r);
 					console.log('resp',resp);
-					$('#descricaoV').val(resp[0]['descricao']);
-					$('#quantidadeV').val(resp[0]['quantotal']);
-					$('#precoV').val(resp[0]['preco_ven']);	
+					if(resp.length > 0){
+						$('#codigo').attr('data-nome', resp[0]['nome']);
+						$('#descricaoV').val(resp[0]['descricao']);
+						$('#quantidadeV').val(resp[0]['quantotal']);
+						$('#precoV').val(resp[0]['preco_ven']);
+
+						// $('#btAddTemp').click();
+					}
 				}
 			});
 		}
@@ -287,18 +293,15 @@
 	/**
 	 * Faz a soma do subtotal
 	 */
-	 function apagarForm(tabela) {
+	 function apagarForm() {
 		comanda={
 			cliente: null,
 			numero: null,
 			linhas:[]
 		};
-		var total = tabela.find('#valorTotal');
-		total.html('R$ 0,00');
-		var tbody = tabela.find('tbody');
-		tbody.empty();
-		console.log(comanda);
-	 }
+		atualizarTabela();
+		itensSoma();
+	}
 </script>
 
 <script type="text/javascript">
@@ -333,11 +336,7 @@
 					$('#codigo').val('');
 					$('#clienteCpf').val(null).trigger('change');
 					$('#nomeClienteComanda').val('');
-					comanda={
-						cliente: null,
-						numero: null,
-						linhas:[]
-					};
+					apagarForm();
 					
 					alertify.success("Comanda criada com sucesso!!");
 				}else{
@@ -376,12 +375,14 @@
 				data:"id=" + $('#produtoVenda').val(),
 				url:"pesquisar-prod-est",
 				success:function(r){
-					// console.log('resposta',r);
+					console.log('resposta',r);
 					var resp = JSON.parse(r);
-					console.log('resp',resp);
-					$('#descricaoV').val(resp[0]['descricao']);
-					$('#quantidadeV').val(resp[0]['quantotal']);
-					$('#precoV').val(resp[0]['preco_ven']);	
+					console.log(resp);
+					if(resp.length > 0){
+						$('#descricaoV').val(resp[0]['descricao']);
+						$('#quantidadeV').val(resp[0]['quantotal']);
+						$('#precoV').val(resp[0]['preco_ven']);	
+					}
 				}
 			});
 		});
@@ -400,11 +401,20 @@
 			}
 		});
 
-		
-		
-		$('#btAddTemp').click(function(){
-			//vazios=validarFormVazio('frmComandaCpf');
 
+
+		/**
+		* Adiciona os itens na tabela temporaria 
+		*/
+		$('#btAddTemp').click(function(){
+			// vazios=validarFormVazio('frmComandaCpf');
+
+			// var teste =  $('#clienteCpf').valid();
+			var radio = $('input[name="inlineRadioOptions"]:checked').val();
+			if((radio == 'cpf' && $('#clienteCpf')[0].checkValidity()) || radio == 'numero' ){
+				
+			
+			
 			var quant = parseInt($('#quantV').val());
 			var quantidade = parseInt($('#quantidadeV').val());
 
@@ -421,11 +431,11 @@
 			// var cpf = $('#cpf').val();
 			// console.log('ak2', cpf);
 			// if($('#cpf') > 0){
-			// 	console.log('ak');
-			// 	if($('#nomeClienteComanda').val() == ""){
-			// 		alertify.alert("Preencha o CPF do Cliente!!");
-			// 		return false;
-			// 	}
+				// console.log('ak');
+				// if($('#nomeClienteComanda').val() == ""){
+				// 	alertify.alert("Preencha o CPF do Cliente!!");
+				// 	return false;
+				// }
 			// }verificar validaçao do campo cpf
 			
 			if($('#quantV').val() == ""){
@@ -450,21 +460,30 @@
 					jsonData[this.name] = this.value || '';
 				}
 			});
-			jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
+			if($('#codigo').val() == ""){
+				jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
+			}else{
+				jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
+			}
+			
 			
 			/**
 			* Coloca os itens temporarios na tabela
 			*/
 			comanda.linhas.push(jsonData);
+			console.log('AQUI',comanda.linhas);
 			
 			itensSoma($('#tabelaComanda'));
 			atualizarTabela($('#tabelaComanda'));
+			
 			$('#produtoVenda').val(null).trigger('change');//reseta o select2
-			$('#quantV').val('');
+			$('#quantV').val(1);
 			$('#precoV').val('');
 			$('#descricaoV').val('');
 			$('#quantidadeV').val('');
 			$('#codigo').val('');
+			$('#codigo').attr('data-nome', "");
+		}
 		});
 
 
@@ -472,10 +491,31 @@
 		*Botao limpar formulario
 		*/
 		$('#btnLimparComanda').click(function(){
-			apagarForm($('#tabelaComanda'));
+			apagarForm();
 		});
 
 	});
+</script>
+
+<script type="text/javascript">
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
 </script>
 
 

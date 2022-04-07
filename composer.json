@@ -1,7 +1,8 @@
 {
     "name": "jessica/loja-brinquedos", 
     "require": {
-        "twig/twig": "~3.0"
+        "twig/twig": "~3.0",
+        "twig/intl-extra": "^3.3"
     },    
     "autoload": {
         "psr-4": {
