@@ -47,7 +47,7 @@ CREATE TABLE `cliente` (
   `telefone` varchar(100) NOT NULL,
   `cpf` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_cliente_usuario_idx` (`id_usuario`),
+  KEY `fk_cliente_usuario` (`id_usuario`),
   CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -64,13 +64,13 @@ CREATE TABLE `comandafatura` (
   `id_usuario` int(11) NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
   `numero` varchar(100) DEFAULT NULL,
+  `comanda_aberta` tinyint(4) NOT NULL DEFAULT '1',
   `pg_forma1` int(11) DEFAULT NULL,
   `valor_total1` decimal(10,2) DEFAULT NULL,
   `pg_forma2` int(11) DEFAULT NULL,
   `valor_total2` decimal(10,2) DEFAULT NULL,
   `vzs_cartao` int(11) DEFAULT NULL,
   `bandeira_cartao` varchar(100) DEFAULT NULL,
-  `comanda_aberta` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `id_idx` (`id_cliente`),
   CONSTRAINT `fk_comandafatura_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
