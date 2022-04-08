@@ -63,6 +63,11 @@ $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action'
 $router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
 $router->add('pesquisar-prod-est-codigo', ['controller' => 'ComandaController', 'action' => 'pesquisarProEstCod']);
 $router->add('resp-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
+$router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'numeroAberto']);
+
+//Rotas do PDV
+$router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);
+$router->add('obter-dados-numero', ['controller' => 'PdvController', 'action' => 'obterDadosNumero']);
 
 //Rotas de Categoria
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);

@@ -37,7 +37,7 @@ class ProdutoVenda
     /**
      * @var float
      */
-    private $precoVenda;
+    private $preco_ven;
 
     public function getId(): ?int
     {

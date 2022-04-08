@@ -119,7 +119,7 @@ class ProdutoVendaController
                 $obEstoqueDAO->apagaEstoquePV($obEstoque);
             }
             
-            die(var_dump($post)); 
+            // die(var_dump($post)); 
 
             $resp = $obProdutoVendaDAO->deletarProdutoVenda($post);
               

@@ -49,9 +49,7 @@ class ProdutoController
         }catch(\Exception $e){
             return $e->getMessage();
         }
-
         
-
         View::renderTemplate('/produtos/produto/produtoForm.html'); 
     }
 

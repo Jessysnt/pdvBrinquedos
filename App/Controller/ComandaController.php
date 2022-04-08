@@ -58,6 +58,8 @@ class ComandaController
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obComandaDAO = new ComandaDAO;
 
+            // die(var_dump($_POST));
+
             $id_usuario=$_SESSION['usuario']->getId();
             
             $comandaFatura=array(
@@ -85,6 +87,17 @@ class ComandaController
                 View::jsonResponse(['resp'=>true]);
             }
 
+        }
+    }
+
+    public function numeroAberto()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obComandaDAO = new ComandaDAO;
+            
+            $respNumero=$obComandaDAO->verEstaAberta($_POST['numero']);
+
+            View::jsonResponse($respNumero);
         }
     }
     

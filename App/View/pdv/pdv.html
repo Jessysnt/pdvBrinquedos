@@ -8,7 +8,7 @@
 {% block body %}
 
 <div class="container">
-    <h3>Abrir Comanda</h3>
+    <h3>Lançar Venda</h3>
  
 	<div class="row">
 		<div class="col-sm-3">
@@ -124,13 +124,25 @@
 				</tfoot>
 			</table>
 		</div>
-		<br>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-sm-3">
-				<span class="btn btn-success" id="gravarComanda">Enviar</span>
+				<span class="btn btn-success" id="gravarComanda">GRAVAR</span>
 			</div>
+		</div> -->
+        <br>
+        <div class="row">
+			<form method="post" id="frmComanda">
+				<div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-6">
+                        <select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
+                            <option value="" readonly="true">Selecionar</option>
+                            <!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
+                        </select>
+                    </div>
+                  </div>
+			</form>
 		</div>
-
 	</section>
 	
 </div>
@@ -164,7 +176,6 @@
 		$("#quantidadeV").prop("disabled", false);
 		$("#precoV").prop("disabled", false);
 		$("#quantV").prop("disabled", false);
-		$("#descricaoV").prop("disabled", false);
 		$("#quantV").val(1);
 		$("#grupoNumero").hide();
 		$("#grupoCpf").show();
@@ -272,22 +283,27 @@
 			$.ajax({
 				type: "POST",
 				data: "numero=" + $('#numeroComanda').val(),
-				url: "ver-aberto",
+				url: "obter-dados-numero",
 				success:function(r){
+                    // console.log('r', r);
 					var resp = JSON.parse(r);
-					if(resp.length > 0){
-						$('#numeroComanda').val('');
-						alertify.error("Comanda aberta !");
-					}else{
-						comanda.numero = $('#numeroComanda').val();
-						$("#codigo").prop("disabled", false);
-						$("#produtoVenda").prop("disabled", false);
-						$("#quantidadeV").prop("disabled", false);
-						$("#precoV").prop("disabled", false);
-						$("#descricaoV").prop("disabled", false);
-						$("#quantV").prop("disabled", false);
-						$("#quantV").val(1);
-					}
+					if(resp.resp){
+                        comanda = resp.resp;
+                        itensSoma($('#tabelaComanda'));
+		                atualizarTabela($('#tabelaComanda'));
+                        console.log(comanda);
+                    }
+					// 	$('#numeroComanda').val('');
+					// 	alertify.error("Comanda aberta !");
+					// }else{
+					// 	comanda.numero = $('#numeroComanda').val();
+					// 	$("#codigo").prop("disabled", false);
+					// 	$("#produtoVenda").prop("disabled", false);
+					// 	$("#quantidadeV").prop("disabled", false);
+					// 	$("#precoV").prop("disabled", false);
+					// 	$("#quantV").prop("disabled", false);
+					// 	$("#quantV").val(1);
+					// }
 					console.log(resp);
 				}
 			});
@@ -511,7 +527,6 @@
 				* Coloca os itens temporarios na tabela
 				*/
 				comanda.linhas.push(jsonData);
-				console.log(comanda);
 				
 				itensSoma($('#tabelaComanda'));
 				atualizarTabela($('#tabelaComanda'));
@@ -537,28 +552,6 @@
 
 	});
 </script>
-
-<!-- <script type="text/javascript">
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
-</script> -->
-
 
 
 
