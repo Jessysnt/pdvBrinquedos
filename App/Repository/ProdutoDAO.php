@@ -63,7 +63,7 @@ class ProdutoDAO extends Conexao
     {
         $offset = $itensPag*($pagina-1);
         // die(var_dump($offset));
-        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome, pro.codigo, pro.descricao, img.url FROM produto AS pro INNER JOIN imagem AS img ON pro.id_imagem=img.id WHERE pro.nome LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome, pro.codigo, pro.descricao, img.url, cat.categoria FROM produto AS pro INNER JOIN imagem AS img ON pro.id_imagem=img.id INNER JOIN categoria AS cat ON pro.id_categoria=cat.id WHERE pro.nome LIKE :busca LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -75,7 +75,7 @@ class ProdutoDAO extends Conexao
 
     public function qntTotalProduto($busca)
     {
-        $stmt = static::getConexao()->prepare("SELECT count(pro.id) AS total FROM produto as pro INNER JOIN imagem as img ON pro.id_imagem=img.id WHERE pro.nome LIKE :busca LIMIT 10 ");
+        $stmt = static::getConexao()->prepare("SELECT count(pro.id) AS total FROM produto as pro INNER JOIN imagem as img ON pro.id_imagem=img.id INNER JOIN categoria AS cat ON pro.id_categoria=cat.id WHERE pro.nome LIKE :busca LIMIT 10 ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
 
         $stmt->execute();
