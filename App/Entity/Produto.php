@@ -17,6 +17,11 @@ class Produto
     /**
      * @var string
      */
+    private $codigo;
+
+    /**
+     * @var string
+     */
     private $descricao;
 
     /**
@@ -33,6 +38,11 @@ class Produto
      * @var integer
      */
     private $id_usuario;
+
+    /**
+     * @var integer
+     */
+    private $id_categoria;
 
 
     public function getId(): ?int
@@ -64,6 +74,18 @@ class Produto
         return $this;
     }
 
+    public function getIdCategoria(): ?int
+    {
+        return $this->id_categoria;
+    }
+
+    public function setIdCategoria(int $id_categoria): self
+    {
+        $this->id_categoria = $id_categoria;
+        
+        return $this;
+    }
+
     public function getNome(): ?string
     {
         return $this->nome;
@@ -72,6 +94,18 @@ class Produto
     public function setNome(string $nome): self
     {
         $this->nome = $nome;
+
+        return $this;
+    }
+
+    public function getCodigo(): ?string
+    {
+        return $this->codigo;
+    }
+
+    public function setCodig(string $codigo): self
+    {
+        $this->codigo = $codigo;
 
         return $this;
     }

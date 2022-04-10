@@ -7,3 +7,7 @@
 \public\arquivos/*
 
 \App\Config.php
+
+vendor
+
+composer.lock

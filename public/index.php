@@ -44,6 +44,7 @@ $router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'c
 //Rotas dos Produto
 $router->add('produto-form', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
 $router->add('tab-produto', ['controller' => 'ProdutoController', 'action' => 'tabelaProduto']);
+$router->add('pesquisar-categoria', ['controller' => 'ProdutoController', 'action' => 'pesquisarCategoria']);
 
 //Rotas Produtos Preço
 $router->add('produto-venda', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);

@@ -46,18 +46,22 @@
     </br>
     <div class="row">
         <div class="col-sm-4">
-            <form id="frmProdutos" enctype="multipart/form-data">
+            <form id="frmProdutos" method="post">
 
                 <label>Nome</label>
                 <input type="text" class="form-control input-sm" id="nome" name="nome">
-                <label>Descrição</label>
-                <input type="text" class="form-control input-sm" id="descricao" name="descricao">
                 <label>Código</label>
                 <input type="text" class="form-control input-sm" id="codigo" name="codigo">
+                <label>Descrição</label>
+                <input type="text" class="form-control input-sm" id="descricao" name="descricao">
+                <label>Categoria</label>
+                <select class="form-control input-sm" id="categoria" name="categoria" >
+                    <option value="A">Selecionar</option>
+                </select>
                 <label>Imagem</label>
                 <input type="file" id="imagem" name="imagem">
                 <p></p>
-                <span id="btnAddProduto" class="btn btn-primary btn-block">Adicionar</span>
+                <span type="submit" id="btnAddProduto" class="btn btn-primary btn-block">Adicionar</span>
             </form>
         </div>
         <div class="col-sm-8">
@@ -84,6 +88,7 @@
                 $('#nomeU').val(dado['nome']);
                 $('#descricaoU').val(dado['descricao']);
                 $('#codigoU').val(dado['codigo']);
+                $('#cateoriaU').val(dado['categoria']);
             }
         });
     }
@@ -144,22 +149,22 @@
                 alertify.alert("Preencha todos os campos!!");
                 return false;
             }
-
+               
             var formData = new FormData(document.getElementById("frmProdutos"));
-
+            
             $.ajax({
-                url: "produto-form",
-                type: "post",
-                dataType: "html",
+                type: "POST",
                 data: formData,
+                dataType: "html",
                 cache: false,
-                contentType: false,
-                processData: false,
+				contentType: false,
+				processData: false,
+                url: "produto-form",
                 success:function(r){
-                    console.log(r);
                     var resp = JSON.parse(r);
                     if(resp.resp){	
                         $('#frmProdutos')[0].reset();
+                        $('#categoria').val(null).trigger('change'); 
                         $('#tabelaProdutosLoad').load("tab-produto");
                         alertify.success("Adicionado com sucesso!!");
                     }else{
@@ -174,7 +179,17 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#categoriaSelect').select2();
+    $('#categoria').select2({
+        language: "pt-br",
+        minimumInputLength: 3,
+        ajax: {
+            url: 'pesquisar-categoria',
+            dataType: 'json',
+            // success:function(r){
+            // 	console.log(r.results);
+            // }
+        }
+    });
 
 });
 </script>

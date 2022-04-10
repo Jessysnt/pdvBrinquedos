@@ -13,7 +13,6 @@ class ClienteController
         
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             
-            $_SESSION['usuario']->getId();
             $resp = $obClienteDAO->adicionarCliente($_POST);
             View::jsonResponse($resp);
         }

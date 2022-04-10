@@ -28,14 +28,17 @@ class ProdutoDAO extends Conexao
 		
 	}
 
-    public function addProduto($dados){
-        $stmt=static::getConexao()->prepare("INSERT INTO produto (id_imagem, id_usuario, nome, descricao, codigo) VALUES (:idImagem, :idUsuario, :nome, :descricao, :codigo)");
+    public function addProduto($dados)
+    {
+        $stmt=static::getConexao()->prepare("INSERT INTO produto (id_imagem, id_usuario, id_categoria, nome, codigo, descricao) VALUES (:idImagem, :idUsuario, :idCategoria, :nome, :codigo, :descricao)");
 
         $stmt->bindParam(':idImagem', $dados['idImagem'], PDO::PARAM_INT);
         $stmt->bindParam(':idUsuario', $dados['idUsuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':idCategoria', $dados['idCategoria'], PDO::PARAM_INT);
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
+        $stmt->bindParam(':codigo', $dados['codigo'], PDO::PARAM_STR);
         $stmt->bindParam(':descricao', $dados['descricao'], PDO::PARAM_STR);
-
+        
         return $stmt->execute();
     }
 
@@ -60,7 +63,7 @@ class ProdutoDAO extends Conexao
     {
         $offset = $itensPag*($pagina-1);
         // die(var_dump($offset));
-        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome, pro.codigo, pro.descricao, img.url FROM produto AS pro INNER JOIN imagem AS img ON pro.id_imagem=img.id_imagem  WHERE pro.nome LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome, pro.codigo, pro.descricao, img.url FROM produto AS pro INNER JOIN imagem AS img ON pro.id_imagem=img.id WHERE pro.nome LIKE :busca LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -72,7 +75,7 @@ class ProdutoDAO extends Conexao
 
     public function qntTotalProduto($busca)
     {
-        $stmt = static::getConexao()->prepare("SELECT count(pro.id) AS total FROM produto as pro INNER JOIN imagem as img ON pro.id_imagem=img.id_imagem WHERE pro.nome LIKE :busca LIMIT 1 ");
+        $stmt = static::getConexao()->prepare("SELECT count(pro.id) AS total FROM produto as pro INNER JOIN imagem as img ON pro.id_imagem=img.id WHERE pro.nome LIKE :busca LIMIT 10 ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
 
         $stmt->execute();
