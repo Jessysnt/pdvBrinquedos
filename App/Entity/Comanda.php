@@ -185,4 +185,25 @@ class Comanda
         return $this;
     }
 
+    public function getPagamento(): ?string
+    {
+        switch ($this->setPgForma2) {
+            case '1':
+                return 'Dinheiro';
+                break;
+            case '2':
+                return 'Pix';
+                break;
+            case '3':
+                return 'Debito';
+                break;
+            case '3':
+                return 'Credito';
+                break;
+            default:
+                return 'Nao encontrado.';
+                break;
+        }
+    }
+
 }

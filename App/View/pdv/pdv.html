@@ -10,7 +10,7 @@
 <div class="container">
     <h3>Lançar Venda</h3>
  
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-sm-3">
 			<div class="form-check form-check-inline ">
 			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cpf" value="cpf">
@@ -19,11 +19,11 @@
 		</div>
 		<div class="col-sm-3">
 			<div class="form-check form-check-inline ">
-			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="numero" value="numero">
+			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="numero" value="numero" onclick="habilitarCampos()">
 			  <label class="form-check-label" for="inlineRadio2">Número</label>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
     <br/>
 
@@ -39,7 +39,7 @@
 					</div>
 				</div>
 				<div class="row" id="grupoCpf">
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="form-group">
 							<label>Selecionar Cliente</label>
 							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
@@ -48,13 +48,18 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="form-group">
 							<label>Nome </label>
 							<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
 						</div>
 					</div>
 				</div>
+				<div class="mb-3 form-check">
+					<input type="checkbox" class="form-check-input" id="anonimo" onclick="desabilitaCliente()">
+					<label class="form-check-label" for="exampleCheck1">Anônimo</label>
+				</div>
+				<br>	
 					
 				<div class="row">
 					<div class="col-sm-6">
@@ -144,11 +149,20 @@
 				  <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Forma de pagamento</label>
                     <div class="col-sm-6">
-                        <select class="form-control input-sm" id="pgDois" name="pgDois" required>
+                        <select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
                             <option value="" readonly="true">Selecionar</option>
+                            <option value="1" >Dinheiro</option>
+                           <option value="2">Pix</option>
+                            <option value="3">Debito</option>
+                            <option value="4">Credito</option> -->
                             <!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
                         </select>
                     </div>
+					
+					<div class="col-sm-3">
+						<input type="number" class="form-control input-sm" id="vzsCartao" name="vzsCartao">
+					</div>
+					
                   </div>
 			</form>
 		</div>
@@ -165,7 +179,6 @@
      * Todos os campos do formulario inativos ate escolher uma opcao no RadioOptions
      */
 	$(document).ready(function(){
-		$("#numeroComanda").prop("disabled", true);
 		$("#clienteCpf").prop("disabled", true);
 		$("#nomeClienteComanda").prop("disabled", true);
 		$("#codigo").prop("disabled", true);
@@ -174,10 +187,11 @@
 		$("#quantidadeV").prop("disabled", true);
 		$("#precoV").prop("disabled", true);
 		$("#quantV").prop("disabled", true);
+		$("#anonimo").prop("disabled", true);
+		$("#vzsCartao").hide();
 	});
 
-	$("#cpf").on("click", function () {
-		$("#numeroComanda").prop("disabled", true);
+	function habilitarCampos(){
 		$("#clienteCpf").prop("disabled", false);
 		$("#nomeClienteComanda").prop("disabled", false);
 		$("#codigo").prop("disabled", false);
@@ -185,20 +199,26 @@
 		$("#quantidadeV").prop("disabled", false);
 		$("#precoV").prop("disabled", false);
 		$("#quantV").prop("disabled", false);
+		$("#descricaoV").prop("disabled", false);
+		$("#anonimo").prop("disabled", false);
 		$("#quantV").val(1);
-		$("#grupoNumero").hide();
-		$("#grupoCpf").show();
-		$("#numero").prop("disabled", true);
-	});
+	};
 
-	$("#numero").on("click", function () {
-		$("#clienteCpf").prop("disabled", true);
-		$("#nomeClienteComanda").prop("disabled", true);
-		$("#numeroComanda").prop("disabled", false);
+	function desabilitaCliente(){
 		$("#grupoCpf").hide();
-		$("#grupoNumero").show();
-		$("#cpf").prop("disabled", true);
-	});
+		$("#clienteCpf").prop("disabled", false);
+		$("#nomeClienteComanda").prop("disabled", false);
+	}
+
+	function vezesCartao(value){
+		console.log('Ak3', value);
+		if(value == 4){
+			$("#vzsCartao").show();
+		}else{
+			$("#vzsCartao").hide();
+		}
+		
+	};
 
 	/**
 	* JSON para enviar a comanda
@@ -287,8 +307,6 @@
 	*/
 	$('#numeroComanda').on('keypress',function(e) {
 		if(e.which == 13) {
-			
-			// console.log(comanda.numero);
 			$.ajax({
 				type: "POST",
 				data: "numero=" + $('#numeroComanda').val(),
@@ -300,8 +318,11 @@
                         comanda = resp.resp;
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
+						habilitarCampos();
                         console.log(comanda);
-                    }
+                    }else{
+						habilitarCampos();
+					}
 					// 	$('#numeroComanda').val('');
 					// 	alertify.error("Comanda aberta !");
 					// }else{

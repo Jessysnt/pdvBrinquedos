@@ -10,7 +10,7 @@
 <div class="container">
     <h3>Abrir Comanda</h3>
  
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-sm-3">
 			<div class="form-check form-check-inline ">
 			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cpf" value="cpf">
@@ -23,7 +23,7 @@
 			  <label class="form-check-label" for="inlineRadio2">Número</label>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
     <br/>
 
@@ -33,29 +33,33 @@
 				<div class="row" id="grupoNumero">
 					<div class="col-sm-6">
 						<div class="form-group">
-							<label>Numero Comanda</label>
+							<label>Número Comanda</label>
 							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda">
 						</div>
 					</div>
 				</div>
 				<div class="row" id="grupoCpf">
-					<div class="col-sm-6">
+					<div class="col-sm-4">
 						<div class="form-group">
-							<label>Selecionar Cliente</label>
+							<label>Digite o CPF</label>
 							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
-								<option value="" readonly="true">Selecionar</option>
+								<option value="" readonly="true">Só números</option>
 								<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="form-group">
 							<label>Nome </label>
 							<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
 						</div>
 					</div>
 				</div>
-					
+				<div class="mb-3 form-check">
+					<input type="checkbox" class="form-check-input" id="anonimo" onclick="desabilitaCliente()">
+					<label class="form-check-label" for="exampleCheck1">Anônimo</label>
+				</div>
+				<br>	
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group">
@@ -141,10 +145,10 @@
 
 <script type="text/javascript">
 	/**
-     * Todos os campos do formulario inativos ate escolher uma opcao no RadioOptions
+     * Todos os campos do formulario inativos ate nao ter comanda aberta
      */
 	$(document).ready(function(){
-		$("#numeroComanda").prop("disabled", true);
+		$("#numeroComanda").prop("disabled", false);
 		$("#clienteCpf").prop("disabled", true);
 		$("#nomeClienteComanda").prop("disabled", true);
 		$("#codigo").prop("disabled", true);
@@ -153,10 +157,26 @@
 		$("#quantidadeV").prop("disabled", true);
 		$("#precoV").prop("disabled", true);
 		$("#quantV").prop("disabled", true);
+		$("#anonimo").prop("disabled", true);
 	});
 
-	$("#cpf").on("click", function () {
-		$("#numeroComanda").prop("disabled", true);
+	// $("#cpf").on("click", function () {
+	// 	$("#numeroComanda").prop("disabled", true);
+	// 	$("#clienteCpf").prop("disabled", false);
+	// 	$("#nomeClienteComanda").prop("disabled", false);
+	// 	$("#codigo").prop("disabled", false);
+	// 	$("#produtoVenda").prop("disabled", false);
+	// 	$("#quantidadeV").prop("disabled", false);
+	// 	$("#precoV").prop("disabled", false);
+	// 	$("#quantV").prop("disabled", false);
+	// 	$("#descricaoV").prop("disabled", false);
+	// 	$("#quantV").val(1);
+	// 	$("#grupoNumero").hide();
+	// 	$("#grupoCpf").show();
+	// 	$("#numero").prop("disabled", true);
+	// });
+
+	function habilitarCampos(){
 		$("#clienteCpf").prop("disabled", false);
 		$("#nomeClienteComanda").prop("disabled", false);
 		$("#codigo").prop("disabled", false);
@@ -165,20 +185,15 @@
 		$("#precoV").prop("disabled", false);
 		$("#quantV").prop("disabled", false);
 		$("#descricaoV").prop("disabled", false);
+		$("#anonimo").prop("disabled", false);
 		$("#quantV").val(1);
-		$("#grupoNumero").hide();
-		$("#grupoCpf").show();
-		$("#numero").prop("disabled", true);
-	});
+	};
 
-	$("#numero").on("click", function () {
-		$("#clienteCpf").prop("disabled", true);
-		$("#nomeClienteComanda").prop("disabled", true);
-		$("#numeroComanda").prop("disabled", false);
+	function desabilitaCliente(){
 		$("#grupoCpf").hide();
-		$("#grupoNumero").show();
-		$("#cpf").prop("disabled", true);
-	});
+		$("#clienteCpf").prop("disabled", false);
+		$("#nomeClienteComanda").prop("disabled", false);
+	}
 
 	/**
 	* JSON para enviar a comanda
@@ -267,8 +282,6 @@
 	*/
 	$('#numeroComanda').on('keypress',function(e) {
 		if(e.which == 13) {
-			
-			// console.log(comanda.numero);
 			$.ajax({
 				type: "POST",
 				data: "numero=" + $('#numeroComanda').val(),
@@ -280,13 +293,7 @@
 						alertify.error("Comanda aberta !");
 					}else{
 						comanda.numero = $('#numeroComanda').val();
-						$("#codigo").prop("disabled", false);
-						$("#produtoVenda").prop("disabled", false);
-						$("#quantidadeV").prop("disabled", false);
-						$("#precoV").prop("disabled", false);
-						$("#descricaoV").prop("disabled", false);
-						$("#quantV").prop("disabled", false);
-						$("#quantV").val(1);
+						habilitarCampos();
 					}
 					console.log(resp);
 				}
@@ -351,8 +358,6 @@
 		$('#quantV').val(1);
 		$('#codigo').attr('data-id', "");
 		$('#codigo').attr('data-nome', "");
-		$("#numero").prop("disabled", false);
-		$("#cpf").prop("disabled", false);
 	}
 </script>
 
