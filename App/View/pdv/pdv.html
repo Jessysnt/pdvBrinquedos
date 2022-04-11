@@ -156,6 +156,7 @@
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">Valor a pagar</label>
 					<div class="col-sm-3">
+						<!-- <input type="text"  class="form-control input-sm" id="valorUm" name="valorUm" data-thousands="." data-decimal="," data-prefix="R$ " /> -->
 						<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
 					</div>
 				</div>
@@ -212,6 +213,7 @@
 		$("#vzsCartaoUm").hide();
 		// $("#vzsCartaoDois").hide();
 		$("#pagamentoDois").hide();
+		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 	});
 
 	function habilitarCampos(){
@@ -614,20 +616,18 @@
 
 <script type="text/javascript">
 	function valorPagar(soma){
-		var valorSoma = soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-		console.log('Ak3',valorSoma);	
-		$('#valorUm').val(valorSoma);
+		var formatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+		var valorSoma = soma;
+		$('#valorUm').val(formatter.format(valorSoma));
+
 		$('#valorUm').change(function(){
-			var valorUm = $('#valorUm').val();
+			var valorUm = parseFloat($('#valorUm').val()) ;
 			if(valorUm < valorSoma){
-				console.log('entrou no if');
-				valorDois = soma - valorUm;
-				console.log('valorDoiS', valorDois);
+				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
-				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+				$('#valorDois').val(formatter.format(valorDois));
+				// console.log('valorDoiS', valorDois);
 			}
-			console.log('valorUm', valorUm);
-			console.log('valorDois', valorDois);
 		});
 	};
 </script>
