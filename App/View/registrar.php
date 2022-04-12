@@ -24,6 +24,13 @@
 							<label>Senha</label>
 							<input type="password" class="form-control input-sm" name="senha" id="senha">
 							<label>Cargo</label>
+							<select class="form-control input-sm" name="cargo" id="cargo">
+								<option value="" >Selecionar</option>
+								<option value="1" >Administrador</option>
+								<option value="2" >Gerente</option>
+								<option value="3" >Caixa</option>
+								<option value="4" >Vendedor</option>
+							</select>
 							<input type="text" class="form-control input-sm" name="cargo" id="cargo">
 							<p></p>
 							<span class="btn btn-primary" id="registro">Registrar</span>

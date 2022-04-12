@@ -69,6 +69,7 @@ $router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'nu
 //Rotas do PDV
 $router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);
 $router->add('obter-dados-numero', ['controller' => 'PdvController', 'action' => 'obterDadosNumero']);
+$router->add('gravar-venda', ['controller' => 'PdvController', 'action' => 'gravarComanda']);
 
 //Rotas de Categoria
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);

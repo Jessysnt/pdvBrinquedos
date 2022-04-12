@@ -36,23 +36,33 @@ class ComandaDAO extends Conexao
     public function gravarComandaFatura($respComandaFatura)
     {
         $bd = static::getConexao();
-        if(array_key_exists('numero', $respComandaFatura) ){
-            $stmt=$bd->prepare("INSERT INTO comandafatura (id_usuario, numero) VALUES (:idUsuario, :numero)");
-            $stmt->bindParam(':idUsuario', $respComandaFatura['id_usuario'], PDO::PARAM_INT);
-            $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_INT);
-            $stmt->execute();
-            $resp = $bd->lastInsertId();
 
-            return $resp;
-        }else{
-            $stmt=$bd->prepare("INSERT INTO comandafatura (id_usuario, id_cliente) VALUES (:idUsuario, :idCliente)");
+        $sqlNumero = ['',''];
+        if(array_key_exists('numero', $respComandaFatura)){
+            $sqlNumero = [', numero',', :numero'];
+        }
+        $sqlCliente = ['',''];
+        if(array_key_exists('cliente', $respComandaFatura)){
+            $sqlCliente = [', id_cliente',', :idCliente'];
+        }
+
+        $sql = "INSERT INTO comandafatura (id_usuario$sqlNumero[0]$sqlCliente[0]) VALUES (:idUsuario$sqlNumero[1]$sqlCliente[1])";
+
+            $stmt=$bd->prepare($sql);
+
             $stmt->bindParam(':idUsuario', $respComandaFatura['id_usuario'], PDO::PARAM_INT);
-            $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
+            
+            if(array_key_exists('numero', $respComandaFatura)){
+                $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
+            }
+            if(array_key_exists('cliente', $respComandaFatura)){
+                $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
+            }
+
             $stmt->execute();
             $resp = $bd->lastInsertId();
             
             return $resp;
-        }
     }
 
     public function gravarLinhaFatura($linhaFatura)

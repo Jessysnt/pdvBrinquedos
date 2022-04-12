@@ -35,4 +35,53 @@ class PdvController
 
         }
     }
+
+    public function gravarComanda()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obPdvDAO = new PdvDAO;
+
+            // die(var_dump($_POST));
+
+            $id_usuario=$_SESSION['usuario']->getId();
+            
+            $comandaFatura=array(
+                
+                'numero' => $_POST['numero'],
+                'cliente' => $_POST['cliente'],
+                'formaPgUm' => $_POST['pg_forma1'],
+                'valorTotalUm' => $_POST['valor_total1'],
+                'formaPgDois' => $_POST['pg_forma2'],
+                'valorTotalDois' => $_POST['valor_total2'],
+                'vzsCartao' => $_POST['vzs_cartao']
+            );
+            
+            if($_POST['cliente'] == ""){
+                unset($comandaFatura['cliente']);
+            }
+            if($_POST['pg_forma2'] == ""){
+                unset($comandaFatura['pg_forma2']);
+                unset($comandaFatura['valor_total2']);
+            }
+            if($_POST['vzs_cartao'] == ""){
+                unset($comandaFatura['vzs_cartao']);
+            }
+
+            $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
+
+            if($respComandaFatura > 0){
+
+                foreach($_POST['linhas'] as $row) {
+                    $linhaFatura=array(
+                        'id_comanda_fatura'=>$respComandaFatura,
+                        'id_produto'=>$row['id_produto'],
+                        'quantidade'=>$row['quantidade'],
+                        'valor_unitario'=>$row['valor_unitario'],
+                    );
+                    $obPdvDAO->gravarLinhaFatura($linhaFatura);
+                }
+                View::jsonResponse(['resp'=>true]);
+            }
+        }
+    }
 }

@@ -136,58 +136,60 @@
 		</div> -->
         <br>
         <div class="row">
-			<!-- <form method="post" id="formaPagamento"> -->
-				<div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Forma de pagamento</label>
-                    <div class="col-sm-3">
-                        <select class="form-control input-sm" id="pgUm" name="pgUm" required onchange="vezesCartao(value)">
-                            <option value="" readonly="true">Selecionar</option>
-							<option value="1" >Dinheiro</option>
-                            <option value="2">Pix</option>
-                            <option value="3">Debito</option>
-                            <option value="4">Credito</option>
-                            <!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
-                        </select>
-                    </div>
-					<div class="col-sm-3">
-						<input type="number" class="form-control input-sm" id="vzsCartaoUm" name="vzsCartaoUm">
-					</div>
-                </div>
-				<div class="form-group row">
-					<label class="col-sm-4 col-form-label">Valor a pagar</label>
-					<div class="col-sm-3">
-						<!-- <input type="text"  class="form-control input-sm" id="valorUm" name="valorUm" data-thousands="." data-decimal="," data-prefix="R$ " /> -->
-						<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
-					</div>
+			<div class="col-sm-4">
+				<label>1ª Forma de pagamento</label>
+				<div>
+					<select class="form-control input-sm" id="pgUm" name="pgUm" required onchange="vezesCartao(value)">
+						<option value="" readonly="true">Selecionar</option>
+						<option value="1" >Dinheiro</option>
+						<option value="2">Pix</option>
+						<option value="3">Debito</option>
+						<option value="4">Credito</option>
+						<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
+					</select>
 				</div>
+			</div>
+			<div id="vzsCartaoUm" class="col-sm-4">
+				<label>x no cartão</label>
+				<input type="number" class="form-control input-sm" name="vzsCartaoUm">
+			</div>				
+			<div class="col-sm-4">
+				<label>Valor a pagar</label>
+				<div>
+					<!-- <input type="text"  class="form-control input-sm" id="valorUm" name="valorUm" data-thousands="." data-decimal="," data-prefix="R$ " /> -->
+					<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
+				</div>
+			</div>
+		</div>		
 
-				<div id="pagamentoDois">
-					<div class="form-group row">
-						<label class="col-sm-4 col-form-label">Forma de pagamento</label>
-						<div class="col-sm-3">
-							<select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
-								<option value="" readonly="true">Selecionar</option>
-								<option value="1" >Dinheiro</option>
-								<option value="2">Pix</option>
-								<option value="3">Debito</option>
-								<option value="4">Credito</option>
-								<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
-							</select>
-						</div>
-						<div class="col-sm-3">
-							<input type="number" class="form-control input-sm" id="vzsCartaoDois" name="vzsCartaoDois">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-4 col-form-label">Valor a pagar</label>
-						<div class="col-sm-3">
-							<input type="text" class="form-control input-sm" id="valorDois" name="valorDois">
-						</div>
+		<div id="pagamentoDois">
+			<div class="row">
+				<div class="col-sm-4">
+					<label>2ª Forma de pagamento</label>
+					<div>
+						<select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
+							<option value="" readonly="true">Selecionar</option>
+							<option value="1" >Dinheiro</option>
+							<option value="2">Pix</option>
+							<option value="3">Debito</option>
+							<option value="4">Credito</option>
+							<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
+						</select>
 					</div>
 				</div>
-					
-			<!-- </form> -->
-		</div>
+				<div id="vzsCartaoDois" class="col-sm-4">
+					<label>x no cartão</label>
+					<input type="number" class="form-control input-sm" name="vzsCartaoDois">
+				</div>
+				<div class="col-sm-4">
+					<label>Valor a pagar</label>
+					<div>
+						<input type="text" class="form-control input-sm" id="valorDois" name="valorDois">
+					</div>
+				</div>
+			</div>
+		</div>			
+		<br>
 		<div class="row">
 			<div class="col-sm-3">
 				<span type="submit" class="btn btn-primary btn-block" name="gravarVenda" id="gravarVenda" >GRAVAR</span>
@@ -236,6 +238,7 @@
 		$("#quantV").val(1);
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
+		$("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
 
 	function desabilitaCliente(){
@@ -464,7 +467,7 @@
 		$.ajax({
 			type:"POST",
 			data: dados,
-			url:"",
+			url:"gravar-venda",
 			success:function(r){
 				console.log('respostaGravou1',r);
 				var resp = JSON.parse(r);
@@ -475,7 +478,7 @@
 					$('#clienteCpf').val(null).trigger('change');
 					$('#nomeClienteComanda').val('');
 					apagarForm();
-					alertify.success("Comanda criada com sucesso!!");
+					alertify.success("Venda efetuada!!");
 				}else{
 					alertify.error("Falha ao Adicionar");
 				}
