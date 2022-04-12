@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Clientes{% endblock %}
+
+{% block stylesheet %}
+<style>
+	td {text-align: center;}
+    th {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="table-responsive">
+    </br>
+        <caption><label>Categorias</label></caption> 
+            </br>
+    
+        <table class="table table-hover table-condensed table-bordered"  id="lista">
+    
+             <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+             </br>
+    
+            <thead>	
+                 <tr>
+                     <th>Faixa Etária</th>
+                     <th>Descrição</th>
+    
+                     <th>Editar</th>
+                     <th>Excluir</th>
+                 </tr>
+                 
+             </thead>
+    
+             <tbody>	
+                {% for categoria in categorias %}
+                 <tr>
+                    <td>{{categoria.categoria}}</td>
+                    <td>{{categoria.descricao}}</td>
+                     <td>
+                        <span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarCategoria" onclick="adicionarDados('{{categoria.id}}')">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="btn btn-danger btn-xs" onclick="deletarCategoria('{{categoria.id}}')">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </span>
+                    </td>
+                 </tr>
+                {% endfor %} 
+             </tbody>
+        </table>
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if pagina > 1 %} 
+                  <li class="page-item">
+                    <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina-1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% endif %}
+        
+                  {% for i in 1..totalpaginas %}
+                  <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
+                  {% endfor %}
+        
+                  {% if totalpaginas > pagina %}
+                  <li class="page-item">
+                    <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina+1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+	$('.pagination li a').click(function(event){
+        event.preventDefault();
+        $('#tabelaCategoriaLoad').load(event.currentTarget.href);
+        return false;
+    });
+
+    $('#filtro-nome').keyup(function(e) {
+        if(e.which == 13) {
+            var nomeFiltro = $(this).val().toLowerCase();
+            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabelaCategoriaLoad').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+        }
+    });
+</script>
+{% endblock %}

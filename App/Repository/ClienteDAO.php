@@ -30,11 +30,37 @@ class ClienteDAO extends Conexao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Manda os dados para o select da comanda
+     */
     public function pesquisarClientes($nomeparcial)
     {
         $stmt = static::getConexao()->prepare("SELECT id, cpf AS 'text', nome, sobrenome FROM cliente WHERE cpf LIKE :cpf");
         $stmt->bindValue(':cpf', '%'.$nomeparcial.'%');
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function tabClientes($busca, $pagina, $itensPag)
+    {
+        $offset = $itensPag*($pagina-1);
+        $stmt = static::getConexao()->prepare("SELECT * FROM cliente WHERE cliente LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function qntTotalClientes($busca)
+    {
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM cliente WHERE cliente LIKE :busca LIMIT 10 ");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
