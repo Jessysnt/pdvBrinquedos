@@ -372,7 +372,7 @@
 			numero: (comanda.numero!=null?(comanda.numero):null),
 			linhas:[]
 		};
-		console.log('numero', numero);
+		// console.log('numero', numero);
 		comanda.linhas.forEach(linha =>{
 			var novaLinha = {
 				id_produto: parseInt(linha.produtoVenda),
@@ -468,8 +468,8 @@
 		$('#btAddTemp').click(function(){
 			
 			//Cpf selecionado para abrir comanda.. ve se o campo esta preenchido
-			var radio = $('input[name="inlineRadioOptions"]:checked').val();
-			if((radio == 'cpf' && $('#clienteCpf')[0].checkValidity()) || radio == 'numero' ){
+			
+			if($('#anonimo')[0].checkValidity()){
 
 				var quant = parseInt($('#quantV').val());
 				var quantidade = parseInt($('#quantidadeV').val());

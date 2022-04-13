@@ -46,29 +46,28 @@ class PdvController
             $id_usuario=$_SESSION['usuario']->getId();
             
             $comandaFatura=array(
-                
                 'numero' => $_POST['numero'],
                 'cliente' => $_POST['cliente'],
-                'formaPgUm' => $_POST['pg_forma1'],
+                'formaPgUm' => intval($_POST['pg_forma1']),
                 'valorTotalUm' => $_POST['valor_total1'],
-                'formaPgDois' => $_POST['pg_forma2'],
+                'formaPgDois' => intval($_POST['pg_forma2']),
                 'valorTotalDois' => $_POST['valor_total2'],
-                'vzsCartao' => $_POST['vzs_cartao']
+                'vzsCartao' => intval($_POST['vzs_cartao'])
             );
             
             if($_POST['cliente'] == ""){
                 unset($comandaFatura['cliente']);
             }
             if($_POST['pg_forma2'] == ""){
-                unset($comandaFatura['pg_forma2']);
-                unset($comandaFatura['valor_total2']);
+                unset($comandaFatura['formaPgDois']);
+                unset($comandaFatura['valorTotalDois']);
             }
             if($_POST['vzs_cartao'] == ""){
-                unset($comandaFatura['vzs_cartao']);
+                unset($comandaFatura['vzsCartao']);
             }
-
+            // die(var_dump($comandaFatura));
             $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
-
+            die(var_dump($respComandaFatura));
             if($respComandaFatura > 0){
 
                 foreach($_POST['linhas'] as $row) {
