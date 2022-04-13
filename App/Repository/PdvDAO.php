@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Repository\Conexao;
+use App\Entity\Comanda;
 use PDO;
 
 class PdvDAO extends Conexao
@@ -38,25 +39,25 @@ class PdvDAO extends Conexao
         // }
         $sqlCliente = ['',''];
         if(array_key_exists('cliente', $respComandaFatura)){
-            $sqlCliente = ['id_cliente=',':cliente'];
+            $sqlCliente = ['id_cliente=',':cliente, '];
         }
 
         $sqlFormaPgDois = ['',''];
         if(array_key_exists('formaPgDois', $respComandaFatura)){
-            $sqlFormaPgDois = ['pg_forma2=',':formaPgDois'];
+            $sqlFormaPgDois = ['pg_forma2=',':formaPgDois, '];
         }
 
         $sqlValorTotalDois = ['',''];
         if(array_key_exists('valorTotalDois', $respComandaFatura)){
-            $sqlValorTotalDois = ['valor_total2=',':valorTotalDois'];
+            $sqlValorTotalDois = ['valor_total2=',':valorTotalDois, '];
         }
 
         $sqlVzsCartao = ['',''];
         if(array_key_exists('vzsCartao', $respComandaFatura)){
-            $sqlVzsCartao = ['vzs_cartao=',':vzsCartao'];
+            $sqlVzsCartao = ['vzs_cartao=',':vzsCartao, '];
         }
         // die(var_dump($respComandaFatura));
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1], pg_forma1=:formaPgUm, valor_total1=:valorTotalUm, $sqlFormaPgDois[0]$sqlFormaPgDois[1], $sqlValorTotalDois[0]$sqlValorTotalDois[1], $sqlVzsCartao[0]$sqlVzsCartao[1], comanda_aberta=0 WHERE numero = :numero";
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1] pg_forma1=:formaPgUm, valor_total1=:valorTotalUm, $sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0 WHERE numero = :numero";
 
             $stmt=$bd->prepare($sql);
             // $stmt->bindParam(':idUsuario', $respComandaFatura['id_usuario'], PDO::PARAM_INT);
@@ -80,10 +81,10 @@ class PdvDAO extends Conexao
             if(array_key_exists('vzsCartao', $respComandaFatura)){
                 $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
             }
-
-           return $stmt->execute();
-            // $resp = $bd->lastInsertId();
-            // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));
+            
+            $stmt->execute();
+            $resp = $stmt->fetch(PDO::FETCH_ASSOC, 'App\Entity\Comanda', $id->getId());
+            die(var_dump($resp));
             // return $resp;
         
     }
