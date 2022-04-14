@@ -363,7 +363,7 @@
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
 						habilitarCampos();
-                        console.log(comanda);
+                        // console.log(comanda);
                     }else{
 						habilitarCampos();
 					}
@@ -438,50 +438,56 @@
 	*/
 	$('#gravarVenda').click(function() {
 		
-		var dados={
-			cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
-			numero: (comanda.numero!=null?(comanda.numero):null),
-			pg_forma1: $('#pgUm').val(),
-			valor_total1: $('#valorUm').val(),
-			pg_forma2: $('#pgDois').val(),
-			valor_total2: $('#valorDois').val(),
-			vzs_cartao: $('#vzsCartaoUm').val(),
-			linhas:[]
-		};
-		
-		comanda.linhas.forEach(linha =>{
-			var novaLinha = {
-				id_produto: parseInt(linha.produtoVenda),
-				quantidade: parseInt(linha.quantV),
-				valor_unitario: parseFloat(linha.precoV)
-			};
-			dados.linhas.push(novaLinha);
-			console.log('dados.Gravar',dados.linhas);
-			apagarForm();
-		});
-		console.log('dados', dados);
-
-		$.ajax({
-			type:"POST",
-			data: dados,
-			url:"gravar-venda",
-			success:function(r){
-				console.log('respostaGravou1',r);
-				var resp = JSON.parse(r);
-				// console.log('respostaGravou2',resp);
-				if(resp.resp){	
-					// console.log('resp',resp.resp);
-					$('#codigo').val('');
-					$('#clienteCpf').val(null).trigger('change');
-					$('#nomeClienteComanda').val('');
+		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
+			if($('#pgUm').val() != ""){
+				var dados={
+					cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
+					numero: (comanda.numero!=null?(comanda.numero):null),
+					pg_forma1: $('#pgUm').val(),
+					valor_total1: $('#valorUm').val(),
+					pg_forma2: $('#pgDois').val(),
+					valor_total2: $('#valorDois').val(),
+					vzs_cartao: $('#vzsCartaoUm').val(),
+					linhas:[]
+				};
+			
+				comanda.linhas.forEach(linha =>{
+					var novaLinha = {
+						id_produto: parseInt(linha.produtoVenda),
+						quantidade: parseInt(linha.quantV),
+						valor_unitario: parseFloat(linha.precoV)
+					};
+					dados.linhas.push(novaLinha);
+					// console.log('dados.Gravar',dados.linhas);
 					apagarForm();
-					alertify.success("Venda efetuada!!");
-				}else{
-					alertify.error("Falha ao Adicionar");
-				}
-				
-			}
-		});
+				});
+				console.log('dados', dados);
+
+				// $.ajax({
+				// 	type:"POST",
+				// 	data: dados,
+				// 	url:"gravar-venda",
+				// 	success:function(r){
+				// 		console.log('respostaGravou1',r);
+				// 		var resp = JSON.parse(r);
+				// 		// console.log('respostaGravou2',resp);
+				// 		if(resp.resp){	
+				// 			// console.log('resp',resp.resp);
+				// 			$('#codigo').val('');
+				// 			$('#clienteCpf').val(null).trigger('change');
+				// 			$('#nomeClienteComanda').val('');
+				// 			apagarForm();
+				// 			alertify.success("Venda efetuada!!");
+				// 		}else{
+				// 			alertify.error("Falha ao Adicionar");
+				// 		}
+						
+				// 	}
+		// 		});
+			}else{alertify.alert("Preencher forma de pagamento!");}
+			
+		}else{alertify.alert("Preencher o CPF!");} 
+		
 	});
 	
 </script>
@@ -624,10 +630,12 @@
 		var formatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 		var valorSoma = soma;
 		$('#valorUm').val(formatter.format(valorSoma));
-
+		console.log('ak1',$('#valorUm').val());
 		$('#valorUm').change(function(){
 			var valorUm = parseFloat($('#valorUm').val()) ;
+			console.log('ak2',$('#valorUm').val());
 			if(valorUm < valorSoma){
+				console.log('ak3',valorUm);
 				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
 				$('#valorDois').val(formatter.format(valorDois));

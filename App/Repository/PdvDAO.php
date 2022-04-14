@@ -83,7 +83,7 @@ class PdvDAO extends Conexao
             }
             
             $stmt->execute();
-            $resp = $stmt->fetch(PDO::FETCH_ASSOC, 'App\Entity\Comanda', $id->getId());
+            $resp = $bd->lastInsertId();
             die(var_dump($resp));
             // return $resp;
         
