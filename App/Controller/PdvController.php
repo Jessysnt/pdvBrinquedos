@@ -41,8 +41,6 @@ class PdvController
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obPdvDAO = new PdvDAO;
 
-            // die(var_dump($_POST));
-
             $id_usuario=$_SESSION['usuario']->getId();
             
             $comandaFatura=array(
@@ -65,9 +63,9 @@ class PdvController
             if($_POST['vzs_cartao'] == ""){
                 unset($comandaFatura['vzsCartao']);
             }
-            // die(var_dump($comandaFatura));
+            
             $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
-            die(var_dump($respComandaFatura));
+           
             if($respComandaFatura > 0){
 
                 foreach($_POST['linhas'] as $row) {
@@ -77,9 +75,10 @@ class PdvController
                         'quantidade'=>$row['quantidade'],
                         'valor_unitario'=>$row['valor_unitario'],
                     );
-                    $obPdvDAO->gravarLinhaFatura($linhaFatura);
+                    // die(var_dump($linhaFatura));
+                   $obPdvDAO->gravarLinhaFatura($linhaFatura);
                 }
-                View::jsonResponse(['resp'=>true]);
+                View::jsonResponse(['resp'=>true, 'linhaFatura'=>$linhaFatura]);
             }
         }
     }
