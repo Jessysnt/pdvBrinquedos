@@ -56,7 +56,10 @@
                 <input type="text" class="form-control input-sm" id="descricao" name="descricao">
                 <label>Categoria</label>
                 <select class="form-control input-sm" id="categoria" name="categoria" >
-                    <option value="A">Selecionar</option>
+                    <option value="">Selecionar</option>
+                    {% for categoria in categorias %}
+                    <option value="{{categoria.id}}">{{categoria.categoria}}</option>
+                    {% endfor %}
                 </select>
                 <label>Imagem</label>
                 <input type="file" id="imagem" name="imagem">
@@ -88,7 +91,7 @@
                 $('#nomeU').val(dado['nome']);
                 $('#descricaoU').val(dado['descricao']);
                 $('#codigoU').val(dado['codigo']);
-                $('#cateoriaU').val(dado['categoria']);
+                $('#categoriaU').val(dado['categoria']);
             }
         });
     }
@@ -161,6 +164,7 @@
 				processData: false,
                 url: "produto-form",
                 success:function(r){
+                    // console.log('respostaGravou1',r);
                     var resp = JSON.parse(r);
                     if(resp.resp){	
                         $('#frmProdutos')[0].reset();
@@ -179,17 +183,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#categoria').select2({
-        language: "pt-br",
-        minimumInputLength: 3,
-        ajax: {
-            url: 'pesquisar-categoria',
-            dataType: 'json',
-            // success:function(r){
-            // 	console.log(r.results);
-            // }
-        }
-    });
+    $('#categoria').select2();
 
 });
 </script>

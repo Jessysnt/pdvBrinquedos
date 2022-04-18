@@ -22,12 +22,12 @@ class CategoriaDAO extends Conexao
     /**
      * Pesquisa categoria para trazer no cadastro de Produto
      */
-    public function pesquisarCategorias($nomeparcial)
+    public function pesquisarCategorias()
     {
-        $stmt = static::getConexao()->prepare("SELECT id, categoria AS 'text' FROM categoria WHERE categoria LIKE :categoria");
-        $stmt->bindValue(':categoria', '%'.$nomeparcial.'%');
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = static::getConexao()->query("SELECT id, categoria FROM categoria");
+        // $stmt->bindValue(':categoria', '%'.$nomeparcial.'%');
+        // $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Entity\Categoria');
     }
 
     public function tabCategoria($busca, $pagina, $itensPag)
@@ -38,9 +38,7 @@ class CategoriaDAO extends Conexao
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -48,9 +46,7 @@ class CategoriaDAO extends Conexao
     {
         $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM categoria WHERE categoria LIKE :busca LIMIT 10 ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
-
         $stmt->execute();
-        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

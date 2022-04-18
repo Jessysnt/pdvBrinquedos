@@ -12,6 +12,9 @@ class ProdutoController
     {
         $obProduto = new ProdutoDAO();
 
+        $obCategoriaDAO = new CategoriaDAO();
+        $categoria = $obCategoriaDAO->pesquisarCategorias();
+
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             $usuario=$_SESSION['usuario']->getId();
@@ -40,14 +43,14 @@ class ProdutoController
                     $dados['nome']=$_POST['nome'];
                     $dados['descricao']=$_POST['descricao'];
                     $obProduto->addProduto($dados);
-                    View::jsonResponse(['resp'=>true]);
+                    View::jsonResponse(['resp'=>true, 'idimagem'=>$idimagem]);
                 }else{
                     View::jsonResponse(['resp'=>false]);
                 }
             }
         }
         
-        View::renderTemplate('/produtos/produto/produtoForm.html'); 
+        View::renderTemplate('/produtos/produto/produtoForm.html', ['categorias'=>$categoria]); 
     }
 
     public function tabelaProduto()
@@ -79,9 +82,8 @@ class ProdutoController
     public function pesquisarCategoria()
     {   
         $obCategoriaDAO = new CategoriaDAO();
-        $categoria = $obCategoriaDAO->pesquisarCategorias($_GET['term']);
-        //die(var_dump($prod));
-        View::jsonResponse(['results'=>$categoria]);
+        $categoria = $obCategoriaDAO->pesquisarCategorias();
+        View::renderTemplate('/produtos/produto/produtoForm.html', ['categorias'=>$categoria]);
     }
 
 }
