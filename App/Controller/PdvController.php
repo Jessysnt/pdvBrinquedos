@@ -70,15 +70,14 @@ class PdvController
 
                 foreach($_POST['linhas'] as $row) {
                     $linhaFatura=array(
-                        'id_comanda_fatura'=>$respComandaFatura,
+                        'id_comanda_fatura'=>intval($respComandaFatura['id']),
                         'id_produto'=>$row['id_produto'],
                         'quantidade'=>$row['quantidade'],
                         'valor_unitario'=>$row['valor_unitario'],
                     );
-                    // die(var_dump($linhaFatura));
-                   $obPdvDAO->gravarLinhaFatura($linhaFatura);
+                    $obPdvDAO->gravarLinhaFatura($linhaFatura);
                 }
-                View::jsonResponse(['resp'=>true, 'linhaFatura'=>$linhaFatura]);
+                View::jsonResponse(['resp'=>true]);
             }
         }
     }
