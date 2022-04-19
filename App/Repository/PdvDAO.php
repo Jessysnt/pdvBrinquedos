@@ -8,15 +8,32 @@ use PDO;
 
 class PdvDAO extends Conexao
 {
+    /**
+     * Ve a comanda se esta aberta .. 
+     */
     public function verEstaAberta($numero)
     {
-        $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero AND comanda_aberta = 1");
+        $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero");
         $stmt->bindValue(':numero', $numero);
         $stmt->execute();
-        // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($resp){
+            if($resp['comanda_aberta'] == 1){
+                return $resp;
+            }
+            if($resp['comanda_aberta'] == 0){
+                echo 'fechada';
+            }
+        }else{
+            return false;
+        }
+        
+        
     }
 
+    /**
+     * Comanda aberta tras os produtos para colocar na tabela temporaria
+     */
     public function verProdutoLinha($idComandaFatura)
     {
         $stmt = static::getConexao()->prepare("SELECT pro.id AS produtoVenda, pro.nome AS nomeProduto, pro.descricao as descricaoV, lf.quantidade AS quantV, lf.valor_unitario AS precoV, lf.*, pro.* FROM linhafatura AS lf INNER JOIN produto AS pro ON lf.id_produto = pro.id where id_comanda_fatura = :idComandaFatura");
@@ -94,6 +111,8 @@ class PdvDAO extends Conexao
 
             return $resp;
         }
+
+        return 'esta ak 1';
     }
 
     public function gravarLinhaFatura($linhaFatura)
@@ -121,6 +140,9 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
             $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
             return $stmt->execute();
+
+        }else{
+            return 'esta ak 2';
         }
     }
 }

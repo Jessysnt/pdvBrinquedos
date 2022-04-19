@@ -115,6 +115,7 @@
 					  <th scope="col">Quantidade</th>
 					  <th scope="col">Preço</th>
 					  <th scope="col">Subtotal</th>
+					  <!-- <th scope="col">Excluir</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -358,27 +359,24 @@
 				url: "obter-dados-numero",
 				success:function(r){
                     // console.log('r', r);
-					var resp = JSON.parse(r);
-					if(resp.resp){
-                        comanda = resp.resp;
+					if(r != 'false' && r != 'fechadafalse'){
+						var resp = JSON.parse(r);
+                        comanda = resp;
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
 						habilitarCampos();
+						$('#valorUm').focus();
                         // console.log(comanda);
-                    }else{
+                    }
+					if(r == 'fechadafalse'){
+						apagarForm();
+						alertify.success('Comanda fechada.');
+					}
+					if(r == 'false'){
+						alertify.success('Nova comanda.');
+						apagarForm();
 						habilitarCampos();
 					}
-					// 	$('#numeroComanda').val('');
-					// 	alertify.error("Comanda aberta !");
-					// }else{
-					// 	comanda.numero = $('#numeroComanda').val();
-					// 	$("#codigo").prop("disabled", false);
-					// 	$("#produtoVenda").prop("disabled", false);
-					// 	$("#quantidadeV").prop("disabled", false);
-					// 	$("#precoV").prop("disabled", false);
-					// 	$("#quantV").prop("disabled", false);
-					// 	$("#quantV").val(1);
-					// }
 				}
 			});
 		}
@@ -393,7 +391,7 @@
 		var tbody = tabela.find('tbody');
 		tbody.empty();
 		comanda.linhas.forEach(linha => {
-			tbody.append(`<tr> <th>${linha.nomeProduto}</th> <td>${linha.descricaoV}</td>  <td>${linha.quantV}</td> <td>${parseFloat(linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td> ${(linha.quantV*linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td></tr>`);
+			tbody.append(`<tr> <th>${linha.nomeProduto}</th> <td>${linha.descricaoV}</td>  <td>${linha.quantV}</td> <td>${parseFloat(linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td> ${(linha.quantV*linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td class="btn-danger glyphicon glyphicon-remove" onclick="apagarItem()"></td></tr>`);
 		});
 	};
 
@@ -412,9 +410,9 @@
 	}
 
 	/**
-	 * Faz a soma do subtotal
+	 * Apaga tds os dados do formulario
 	 */
-	 function apagarForm() {
+	function apagarForm() {
 		comanda={
 			cliente: null,
 			numero: null,
@@ -428,9 +426,13 @@
 		$('#quantV').val(1);
 		$('#codigo').attr('data-id', "");
 		$('#codigo').attr('data-nome', "");
-		$("#numero").prop("disabled", false);
-		$("#cpf").prop("disabled", false);
+		$('#grupoCpf').show();
 	}
+
+	function apagarItem(){
+		
+	}
+
 </script>
 
 <script type="text/javascript">
@@ -459,8 +461,7 @@
 						valor_unitario: parseFloat(linha.precoV)
 					};
 					dados.linhas.push(novaLinha);
-					console.log('dados.Gravar',dados.linhas);
-					
+					// console.log('dados.Gravar',dados.linhas);
 					apagarForm();
 				});
 				console.log('dados', dados);
@@ -637,18 +638,19 @@
 		$('#valorUm').val(valorSoma);
 
 		$('#valorUm').change(function(){
-			var valorUm = $('#valorUm').maskMoney('unmasked')[0] ;
+			var valorUm = $('#valorUm').val() ;
 			// console.log(valorUm);
 			if(valorUm < valorSoma){
 				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
-				$('#valorDois').val(formatter.format(valorDois));
+				// $('#valorDois').val(formatter.format(valorDois));
+				$('#valorDois').val(valorDois);
 				// console.log('valorDoiS', valorDois);
 			} else {
 				$("#pagamentoDois").hide();
 			}
 		});
-		$('#valorUm').focus();
+		// $('#valorUm').focus();
 		// var formatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 		// var valorSoma = soma;
 		// $('#valorUm').val(formatter.format(valorSoma));

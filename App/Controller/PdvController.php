@@ -19,18 +19,18 @@ class PdvController
             
             $respNumero=$obPdvDAO->verEstaAberta($_POST['numero']);
 
-            if(count($respNumero) > 0){
-                $obProdutoLinha = intval($respNumero[0]['id']);
+            if($respNumero > 0){
+                $obProdutoLinha = intval($respNumero['id']);
 
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);
 
-                $resp = $respNumero[0];
+                $resp = $respNumero;
                 $resp['linhas'] = $respProdutoLinha;
 
-                View::jsonResponse(['resp'=>$resp]);
+                View::jsonResponse($resp);
 
             }else{
-                View::jsonResponse(['resp'=>false]);
+                View::jsonResponse(false);
             }
 
         }
@@ -75,9 +75,9 @@ class PdvController
                         'quantidade'=>$row['quantidade'],
                         'valor_unitario'=>$row['valor_unitario'],
                     );
-                    $obPdvDAO->gravarLinhaFatura($linhaFatura);
+                    $resp = $obPdvDAO->gravarLinhaFatura($linhaFatura);
                 }
-                View::jsonResponse(['resp'=>true]);
+                View::jsonResponse(['gravarComanda'=>$resp]);
             }
         }
     }
