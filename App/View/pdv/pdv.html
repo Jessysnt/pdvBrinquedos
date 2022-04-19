@@ -56,7 +56,7 @@
 					</div>
 				</div>
 				<div class="mb-3 form-check">
-					<input type="checkbox" class="form-check-input" id="anonimo" onclick="desabilitaCliente()">
+					<input type="checkbox" class="form-check-input" id="anonimo">
 					<label class="form-check-label" for="exampleCheck1">Anônimo</label>
 				</div>
 				<br>	
@@ -242,15 +242,7 @@
 		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
 
-	function desabilitaCliente(){
-		$("#grupoCpf").hide();
-		$("#clienteCpf").prop("disabled", false);
-		$("#nomeClienteComanda").prop("disabled", false);
-	}
-
 	function vezesCartao(){
-		// console.log('Ak1', $('#pgUm').val());
-		// console.log('Ak2', $('#pgDois').val());
 		if($('#pgUm').val() == 4){
 			$("#vzsCartaoUm").show();
 		}else{
@@ -274,6 +266,18 @@
 
 </script>
 
+<script type="text/javascript">
+	$('#anonimo').click(function(){
+		if($('#anonimo')[0].checked == true){
+			$("#grupoCpf").hide();
+		}
+		if($('#anonimo')[0].checked == false){
+			$("#grupoCpf").show();
+			$("#clienteCpf").prop("disabled", false);
+			$("#nomeClienteComanda").prop("disabled", false);
+		}
+	});
+</script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -369,13 +373,18 @@
                         // console.log(comanda);
                     }
 					if(r == 'fechadafalse'){
+						
+						var numeroComanda = $('#numeroComanda').val();
 						apagarForm();
+						$('#numeroComanda').val(numeroComanda);
 						alertify.success('Comanda fechada.');
 					}
 					if(r == 'false'){
-						alertify.success('Nova comanda.');
+						var numeroComanda = $('#numeroComanda').val();
 						apagarForm();
+						$('#numeroComanda').val(numeroComanda);
 						habilitarCampos();
+						alertify.success('Nova comanda.');
 					}
 				}
 			});
@@ -430,7 +439,7 @@
 	}
 
 	function apagarItem(){
-		
+		console.log(tabela);
 	}
 
 </script>
@@ -440,7 +449,6 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarVenda').click(function() {
-		
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
 			if($('#pgUm').val() != ""){
 				var dados={
@@ -488,9 +496,8 @@
 					}
 				});
 			}else{alertify.alert("Preencher forma de pagamento!");}
-			
+
 		}else{alertify.alert("Preencher o CPF!");} 
-		
 	});
 	
 </script>
@@ -546,75 +553,67 @@
 		});
 
 
-
 		/**
 		* Adiciona os itens na tabela temporaria 
 		*/
 		$('#btAddTemp').click(function(){
 			
-			//Cpf selecionado para abrir comanda.. ve se o campo esta preenchido
-			// var anonimo = $('input[name="inlineRadioOptions"]:checked').val();
-			// if((radio == 'cpf' && $('#clienteCpf')[0].checkValidity()) || radio == 'numero' ){
-			if($('#anonimo')[0].checkValidity() ){
+			var quant = parseInt($('#quantV').val());
+			var quantidade = parseInt($('#quantidadeV').val());
 
-				var quant = parseInt($('#quantV').val());
-				var quantidade = parseInt($('#quantidadeV').val());
+			
+			if(quant > quantidade){
+				alertify.alert("Quantidade inexistente em estoque!!");
+				quant = $('#quantV').val("");
+				return false;
+			}else{
+				quantidade = $('#quantidadeV').val();
+			}
+			
+			if($('#quantV').val() == "" || $('#quantV').val() <= 0){
+				alertify.alert("Preencha a quantidade desejada!!");
+				return false;
+			}
 
-				
-				if(quant > quantidade){
-					alertify.alert("Quantidade inexistente em estoque!!");
-					quant = $('#quantV').val("");
-					return false;
-				}else{
-					quantidade = $('#quantidadeV').val();
+			/**
+			* Pega as informaçoes do formulario e transforma em json para adicionar no array
+			*/
+			var jsonData = {};
+			var formData = $("#frmComanda").serializeArray();
+
+			$.each(formData, function() {
+				if (jsonData[this.name]) {
+				if (!jsonData[this.name].push) {
+						jsonData[this.name] = [jsonData[this.name]];
 				}
-				
-				if($('#quantV').val() == "" || $('#quantV').val() <= 0){
-					alertify.alert("Preencha a quantidade desejada!!");
-					return false;
+					jsonData[this.name].push(this.value || '');
+				} else {
+					jsonData[this.name] = this.value || '';
 				}
-
-				/**
-				* Pega as informaçoes do formulario e transforma em json para adicionar no array
-				*/
-				var jsonData = {};
-				var formData = $("#frmComanda").serializeArray();
-
-				$.each(formData, function() {
-					if (jsonData[this.name]) {
-					if (!jsonData[this.name].push) {
-							jsonData[this.name] = [jsonData[this.name]];
-					}
-						jsonData[this.name].push(this.value || '');
-					} else {
-						jsonData[this.name] = this.value || '';
-					}
-				});
-				if($('#codigo').val() == ""){
-					jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
-				}else{
-					jsonData['produtoVenda'] = $('#codigo').attr('data-id');
-					jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
-				}
-				
-				
-				/**
-				* Coloca os itens temporarios na tabela
-				*/
-				comanda.linhas.push(jsonData);
-				
-				itensSoma($('#tabelaComanda'));
-				atualizarTabela($('#tabelaComanda'));
-				
-				$('#produtoVenda').val(null).trigger('change');//reseta o select2
-				$('#quantV').val(1);
-				$('#precoV').val('');
-				$('#descricaoV').val('');
-				$('#quantidadeV').val('');
-				$('#codigo').val('');
-				$('#codigo').attr('data-id', "");
-				$('#codigo').attr('data-nome', "");
-			}else{alertify.alert("Preencher o CPF!!");} 
+			});
+			if($('#codigo').val() == ""){
+				jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
+			}else{
+				jsonData['produtoVenda'] = $('#codigo').attr('data-id');
+				jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
+			}
+			
+			/**
+			* Coloca os itens temporarios na tabela
+			*/
+			comanda.linhas.push(jsonData);
+			
+			itensSoma($('#tabelaComanda'));
+			atualizarTabela($('#tabelaComanda'));
+			
+			$('#produtoVenda').val(null).trigger('change');//reseta o select2
+			$('#quantV').val(1);
+			$('#precoV').val('');
+			$('#descricaoV').val('');
+			$('#quantidadeV').val('');
+			$('#codigo').val('');
+			$('#codigo').attr('data-id', "");
+			$('#codigo').attr('data-nome', "");
 		});
 
 
