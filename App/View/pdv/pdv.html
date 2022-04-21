@@ -370,7 +370,7 @@
 		                atualizarTabela($('#tabelaComanda'));
 						habilitarCampos();
 						$('#valorUm').focus();
-                        // console.log(comanda);
+                        console.log(comanda);
                     }
 					if(r == 'fechadafalse'){
 						
@@ -399,8 +399,9 @@
 	function atualizarTabela(tabela) {
 		var tbody = tabela.find('tbody');
 		tbody.empty();
+		i=0;
 		comanda.linhas.forEach(linha => {
-			tbody.append(`<tr> <th>${linha.nomeProduto}</th> <td>${linha.descricaoV}</td>  <td>${linha.quantV}</td> <td>${parseFloat(linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td> ${(linha.quantV*linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td class="btn-danger glyphicon glyphicon-remove" onclick="apagarItem()"></td></tr>`);
+			tbody.append(`<tr id="${i++}"> <th>${linha.nomeProduto}</th> <td>${linha.descricaoV}</td>  <td>${linha.quantV}</td> <td>${parseFloat(linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td> ${(linha.quantV*linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td class="btn-danger glyphicon glyphicon-remove" id="remove" onclick="apagarItem(${i}, ${linha.produtoVenda})"></td></tr>`);
 		});
 	};
 
@@ -429,6 +430,7 @@
 		};
 		itensSoma($('#tabelaComanda'));
 		atualizarTabela($('#tabelaComanda'));
+		console.log(itensSoma());
 		$('#frmComanda')[0].reset();
 		$('#produtoVenda').val(null).trigger('change');//reseta o select2
 		$('#clienteCpf').val(null).trigger('change');
@@ -438,8 +440,29 @@
 		$('#grupoCpf').show();
 	}
 
-	function apagarItem(){
-		console.log(tabela);
+	function apagarItem(i, idproduto){
+		var dados = {
+			id_produto: idproduto,
+			id_comanda_fatura: parseInt(comanda.id)
+		};
+		var tbody = $('#tabelaComanda').find('tr')[i];
+		tbody.remove();
+		var resp = atualizarTabela();
+		console.log('resp',resp);
+		// $.ajax({
+		// 	type:"DELETE",
+		// 	data: dados,
+		// 	url:"apaga-prod-comanda",
+		// 	success:function(r){
+		// 		console.log(r);
+		// 		if(r){
+		// 			tbody.remove();
+		// 			// alertify.success("Excluido com sucesso!!");
+		// 		}else{
+		// 			alertify.error("Não foi possível excluir");
+		// 		}
+		// 	}
+		// });
 	}
 
 </script>
@@ -622,6 +645,7 @@
 		*/
 		$('#btnLimparComanda').click(function(){
 			apagarForm();
+			console.log('ak');
 		});
 
 	});
@@ -637,13 +661,13 @@
 		$('#valorUm').val(valorSoma);
 
 		$('#valorUm').change(function(){
-			var valorUm = $('#valorUm').val() ;
+			var valorUm = parseFloat($('#valorUm').val()) ;
 			// console.log(valorUm);
 			if(valorUm < valorSoma){
 				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
 				// $('#valorDois').val(formatter.format(valorDois));
-				$('#valorDois').val(valorDois);
+				$('#valorDois').val(parseFloat(valorDois).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 				// console.log('valorDoiS', valorDois);
 			} else {
 				$("#pagamentoDois").hide();

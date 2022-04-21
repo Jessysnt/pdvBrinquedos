@@ -70,6 +70,7 @@ $router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'nu
 $router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);
 $router->add('obter-dados-numero', ['controller' => 'PdvController', 'action' => 'obterDadosNumero']);
 $router->add('gravar-venda', ['controller' => 'PdvController', 'action' => 'gravarComanda']);
+$router->add('apaga-prod-comanda', ['controller' => 'PdvController', 'action' => 'apagarProdutoComanda']);
 
 //Rotas de Categoria
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);

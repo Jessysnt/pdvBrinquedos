@@ -81,4 +81,23 @@ class PdvController
             }
         }
     }
+
+    public function apagarProdutoComanda()
+    {
+        $obPdvDAO = new PdvDAO();
+
+        if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+
+            parse_str(file_get_contents("php://input"), $post);
+
+            $dados=array(
+                'id_comanda_fatura'=>$post['id_comanda_fatura'],
+                'id_produto'=>$post['id_produto'],
+            );
+            // die(var_dump($dados));
+            $resp = $obPdvDAO->deletarProdutoComanda($dados);
+              
+            View::jsonResponse($resp);
+        }
+    }
 }

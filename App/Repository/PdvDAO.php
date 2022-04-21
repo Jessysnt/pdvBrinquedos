@@ -26,9 +26,7 @@ class PdvDAO extends Conexao
             }
         }else{
             return false;
-        }
-        
-        
+        } 
     }
 
     /**
@@ -141,8 +139,15 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
             return $stmt->execute();
 
-        }else{
-            return 'esta ak 2';
         }
+    }
+
+    public function deletarProdutoComanda($dados)
+    {
+        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
+        $stmt->bindParam(':id_comanda_fatura', $dados['id_comanda_fatura'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_produto', $dados['id_produto'], PDO::PARAM_INT);
+
+		return $stmt->execute();
     }
 }
