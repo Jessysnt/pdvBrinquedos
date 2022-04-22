@@ -430,7 +430,6 @@
 		};
 		itensSoma($('#tabelaComanda'));
 		atualizarTabela($('#tabelaComanda'));
-		console.log(itensSoma());
 		$('#frmComanda')[0].reset();
 		$('#produtoVenda').val(null).trigger('change');//reseta o select2
 		$('#clienteCpf').val(null).trigger('change');
@@ -446,23 +445,28 @@
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
-		tbody.remove();
-		var resp = atualizarTabela();
-		console.log('resp',resp);
-		// $.ajax({
-		// 	type:"DELETE",
-		// 	data: dados,
-		// 	url:"apaga-prod-comanda",
-		// 	success:function(r){
-		// 		console.log(r);
-		// 		if(r){
-		// 			tbody.remove();
-		// 			// alertify.success("Excluido com sucesso!!");
-		// 		}else{
-		// 			alertify.error("Não foi possível excluir");
-		// 		}
-		// 	}
-		// });
+		// console.log('resp',total);
+
+		$.ajax({
+			type:"DELETE",
+			data: dados,
+			url:"apaga-prod-comanda",
+			success:function(r){
+				console.log(r);
+				if(r){
+					console.log('comanda',comanda);
+					tbody.remove();
+					var resp = JSON.parse(r);
+					comanda = resp;
+					itensSoma($('#tabelaComanda'));
+					atualizarTabela($('#tabelaComanda'));
+					$('#valorUm').focus();
+					// alertify.success("Excluido com sucesso!!");
+				}else{
+					alertify.error("Não foi possível excluir");
+				}
+			}
+		});
 	}
 
 </script>

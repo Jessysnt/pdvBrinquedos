@@ -95,9 +95,15 @@ class PdvController
                 'id_produto'=>$post['id_produto'],
             );
             // die(var_dump($dados));
-            $resp = $obPdvDAO->deletarProdutoComanda($dados);
-              
-            View::jsonResponse($resp);
+            $respDeletarProduto = $obPdvDAO->deletarProdutoComanda($dados);
+
+            if($respDeletarProduto){
+                $respProdutoLinha = $obPdvDAO->verProdutoLinha($post['id_comanda_fatura']);
+                $resp['linhas'] = $respProdutoLinha;
+                View::jsonResponse($resp);
+            }else{
+                View::jsonResponse(false);
+            }
         }
     }
 }

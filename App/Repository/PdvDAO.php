@@ -37,7 +37,6 @@ class PdvDAO extends Conexao
         $stmt = static::getConexao()->prepare("SELECT pro.id AS produtoVenda, pro.nome AS nomeProduto, pro.descricao as descricaoV, lf.quantidade AS quantV, lf.valor_unitario AS precoV, lf.*, pro.* FROM linhafatura AS lf INNER JOIN produto AS pro ON lf.id_produto = pro.id where id_comanda_fatura = :idComandaFatura");
         $stmt->bindValue(':idComandaFatura', $idComandaFatura);
         $stmt->execute();
-        // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -110,7 +109,6 @@ class PdvDAO extends Conexao
             return $resp;
         }
 
-        return 'esta ak 1';
     }
 
     public function gravarLinhaFatura($linhaFatura)
@@ -138,7 +136,6 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
             $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
             return $stmt->execute();
-
         }
     }
 
@@ -147,7 +144,6 @@ class PdvDAO extends Conexao
         $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
         $stmt->bindParam(':id_comanda_fatura', $dados['id_comanda_fatura'], PDO::PARAM_INT);
         $stmt->bindParam(':id_produto', $dados['id_produto'], PDO::PARAM_INT);
-
 		return $stmt->execute();
     }
 }
