@@ -44,6 +44,7 @@ class PdvController
             $id_usuario=$_SESSION['usuario']->getId();
             
             $comandaFatura=array(
+                'id_usuario'=>$id_usuario,
                 'numero' => $_POST['numero'],
                 'cliente' => $_POST['cliente'],
                 'formaPgUm' => intval($_POST['pg_forma1']),
@@ -52,7 +53,9 @@ class PdvController
                 'valorTotalDois' => $_POST['valor_total2'],
                 'vzsCartao' => intval($_POST['vzs_cartao'])
             );
-            
+            if($_POST['numero'] == ""){
+                unset($comandaFatura['numero']);
+            }
             if($_POST['cliente'] == ""){
                 unset($comandaFatura['cliente']);
             }
@@ -63,14 +66,17 @@ class PdvController
             if($_POST['vzs_cartao'] == ""){
                 unset($comandaFatura['vzsCartao']);
             }
-            
-            $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
-           
-            if($respComandaFatura > 0){
 
+            if($_POST['numero'] == ""){
+                $respComandaFatura=$obPdvDAO->gravarComandaFaturaSemNumero($comandaFatura);
+            }else{
+                $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
+            }
+
+            if($respComandaFatura > 0){
                 foreach($_POST['linhas'] as $row) {
                     $linhaFatura=array(
-                        'id_comanda_fatura'=>intval($respComandaFatura['id']),
+                        'id_comanda_fatura'=>$respComandaFatura,
                         'id_produto'=>$row['id_produto'],
                         'quantidade'=>$row['quantidade'],
                         'valor_unitario'=>$row['valor_unitario'],
@@ -82,6 +88,9 @@ class PdvController
         }
     }
 
+    /**
+     * Apaga produto a tabela temporaria
+     */
     public function apagarProdutoComanda()
     {
         $obPdvDAO = new PdvDAO();

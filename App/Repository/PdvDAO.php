@@ -41,16 +41,12 @@ class PdvDAO extends Conexao
     }
 
     /**
-     * 
+     * Gravar fatura com numero de comanda
      */
     public function gravarComandaFatura($respComandaFatura)
     {
         $bd = static::getConexao();
 
-        // $sqlNumero = ['',''];
-        // if(array_key_exists('numero', $respComandaFatura)){
-        //     $sqlNumero = [', numero',', :numero'];
-        // }
         $sqlCliente = ['',''];
         if(array_key_exists('cliente', $respComandaFatura)){
             $sqlCliente = ['id_cliente=',':cliente, '];
@@ -70,10 +66,9 @@ class PdvDAO extends Conexao
         if(array_key_exists('vzsCartao', $respComandaFatura)){
             $sqlVzsCartao = ['vzs_cartao=',':vzsCartao, '];
         }
-        
+
         $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1] pg_forma1=:formaPgUm, valor_total1=:valorTotalUm, $sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0 WHERE numero = :numero";
-        
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0 WHERE numero = :numero";
 
         $stmt=$bd->prepare($sql);
         
@@ -105,12 +100,70 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
             $stmt->execute();
             $resp = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            return $resp;
+            return $resp['id'];
         }
-
     }
 
+    /**
+     * Gravar fatura sem numero de comanda
+     */
+    public function gravarComandaFaturaSemNumero($respComandaFatura)
+    {
+        $bd = static::getConexao();
+
+        $sqlCliente = ['',''];
+        if(array_key_exists('cliente', $respComandaFatura)){
+            $sqlCliente = [', id_cliente',', :idCliente'];
+        }
+
+        $sqlFormaPgDois = ['',''];
+        if(array_key_exists('formaPgDois', $respComandaFatura)){
+            $sqlFormaPgDois = [', pg_forma2',', :formaPgDois'];
+        }
+
+        $sqlValorTotalDois = ['',''];
+        if(array_key_exists('valorTotalDois', $respComandaFatura)){
+            $sqlValorTotalDois = [', valor_total2',', :valorTotalDois'];
+        }
+
+        $sqlVzsCartao = ['',''];
+        if(array_key_exists('vzsCartao', $respComandaFatura)){
+            $sqlVzsCartao = [', vzs_cartao',', :vzsCartao'];
+        }
+
+        $sql = "INSERT INTO comandafatura (id_usuario$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0], comanda_aberta) VALUES (:idUsuario$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1], :comanda_aberta)";
+
+        $stmt=$bd->prepare($sql);
+
+        $stmt->bindParam(':idUsuario', $respComandaFatura['id_usuario'], PDO::PARAM_INT);
+        
+        if(array_key_exists('cliente', $respComandaFatura)){
+            $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
+        }
+        $stmt->bindParam(':formaPgUm', $respComandaFatura['formaPgUm'], PDO::PARAM_INT);
+        $stmt->bindParam(':valorTotalUm', $respComandaFatura['valorTotalUm'], PDO::PARAM_STR);
+        
+        if(array_key_exists('formaPgDois', $respComandaFatura)){
+            $stmt->bindParam(':formaPgDois', $respComandaFatura['formaPgDois'], PDO::PARAM_INT);
+        }
+
+        if(array_key_exists('valorTotalDois', $respComandaFatura)){
+            $stmt->bindParam(':valorTotalDois', $respComandaFatura['valorTotalDois'], PDO::PARAM_STR);
+        }
+
+        if(array_key_exists('vzsCartao', $respComandaFatura)){
+            $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':comanda_aberta', 0);
+
+        $stmt->execute();
+        $resp = $bd->lastInsertId();
+        return $resp;
+    }
+
+    /**
+     * Gravar produtos, preços e quantidade
+     */
     public function gravarLinhaFatura($linhaFatura)
     {
         $stmt=static::getConexao()->prepare("SELECT id_produto FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
@@ -139,6 +192,9 @@ class PdvDAO extends Conexao
         }
     }
 
+    /**
+     * Deleta produtos da tabela temporaria
+     */
     public function deletarProdutoComanda($dados)
     {
         $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");

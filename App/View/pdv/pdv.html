@@ -445,14 +445,12 @@
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
-		// console.log('resp',total);
-
 		$.ajax({
 			type:"DELETE",
 			data: dados,
 			url:"apaga-prod-comanda",
 			success:function(r){
-				console.log(r);
+				// console.log(r);
 				if(r){
 					console.log('comanda',comanda);
 					tbody.remove();
