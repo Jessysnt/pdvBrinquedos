@@ -63,16 +63,19 @@ DROP TABLE IF EXISTS `comandafatura`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comandafatura` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) NOT NULL,
-  `id_cliente` int(11) DEFAULT NULL,
+  `comanda_aberta` tinyint(4) NOT NULL DEFAULT '1',
   `numero` varchar(100) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
+  `id_vendedor` int(11) DEFAULT NULL,
+  `id_caixa` int(11) DEFAULT NULL,
   `pg_forma1` int(11) DEFAULT NULL,
   `valor_total1` decimal(10,2) DEFAULT NULL,
   `pg_forma2` int(11) DEFAULT NULL,
   `valor_total2` decimal(10,2) DEFAULT NULL,
   `vzs_cartao` int(11) DEFAULT NULL,
   `bandeira_cartao` varchar(100) DEFAULT NULL,
-  `comanda_aberta` tinyint(4) NOT NULL DEFAULT '1',
+  `data_registro` datetime DEFAULT NULL,
+  `data_finalizacai` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_idx` (`id_cliente`),
   CONSTRAINT `fk_comandafatura_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
