@@ -9,21 +9,6 @@
 
 <div class="container">
     <h3>Abrir Comanda</h3>
- 
-	<!-- <div class="row">
-		<div class="col-sm-3">
-			<div class="form-check form-check-inline ">
-			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cpf" value="cpf">
-			  <label class="form-check-label" for="inlineRadio1">CPF</label>
-			</div>
-		</div>
-		<div class="col-sm-3">
-			<div class="form-check form-check-inline ">
-			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="numero" value="numero">
-			  <label class="form-check-label" for="inlineRadio2">Número</label>
-			</div>
-		</div>
-	</div> -->
 
     <br/>
 
@@ -56,10 +41,11 @@
 					</div>
 				</div>
 				<div class="mb-3 form-check">
-					<input type="checkbox" class="form-check-input" id="anonimo" onclick="desabilitaCliente()">
+					<input type="checkbox" class="form-check-input" id="anonimo">
 					<label class="form-check-label" for="exampleCheck1">Anônimo</label>
 				</div>
-				<br>	
+				<br>
+
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group">
@@ -145,10 +131,9 @@
 
 <script type="text/javascript">
 	/**
-     * Todos os campos do formulario inativos ate nao ter comanda aberta
+     * Todos os campos do formulario inativos ate escolher uma opcao no RadioOptions
      */
 	$(document).ready(function(){
-		$("#numeroComanda").prop("disabled", false);
 		$("#clienteCpf").prop("disabled", true);
 		$("#nomeClienteComanda").prop("disabled", true);
 		$("#codigo").prop("disabled", true);
@@ -158,23 +143,13 @@
 		$("#precoV").prop("disabled", true);
 		$("#quantV").prop("disabled", true);
 		$("#anonimo").prop("disabled", true);
+		$("#vzsCartaoUm").hide();
+		$("#vzsCartaoDois").hide();
+		$("#pagamentoDois").hide();
+		$("#pgDois").hide();
+		$("#valorUm").prop("disabled", true);
+		$("#pgUm").prop("disabled", true);
 	});
-
-	// $("#cpf").on("click", function () {
-	// 	$("#numeroComanda").prop("disabled", true);
-	// 	$("#clienteCpf").prop("disabled", false);
-	// 	$("#nomeClienteComanda").prop("disabled", false);
-	// 	$("#codigo").prop("disabled", false);
-	// 	$("#produtoVenda").prop("disabled", false);
-	// 	$("#quantidadeV").prop("disabled", false);
-	// 	$("#precoV").prop("disabled", false);
-	// 	$("#quantV").prop("disabled", false);
-	// 	$("#descricaoV").prop("disabled", false);
-	// 	$("#quantV").val(1);
-	// 	$("#grupoNumero").hide();
-	// 	$("#grupoCpf").show();
-	// 	$("#numero").prop("disabled", true);
-	// });
 
 	function habilitarCampos(){
 		$("#clienteCpf").prop("disabled", false);
@@ -187,13 +162,10 @@
 		$("#descricaoV").prop("disabled", false);
 		$("#anonimo").prop("disabled", false);
 		$("#quantV").val(1);
+		$("#valorUm").prop("disabled", false);
+		$("#pgUm").prop("disabled", false);
+		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
-
-	function desabilitaCliente(){
-		$("#grupoCpf").hide();
-		$("#clienteCpf").prop("disabled", false);
-		$("#nomeClienteComanda").prop("disabled", false);
-	}
 
 	/**
 	* JSON para enviar a comanda
@@ -203,8 +175,19 @@
 		numero: null,
 		linhas:[]
 	};
+</script>
 
-
+<script type="text/javascript">
+	$('#anonimo').click(function(){
+		if($('#anonimo')[0].checked == true){
+			$("#grupoCpf").hide();
+		}
+		if($('#anonimo')[0].checked == false){
+			$("#grupoCpf").show();
+			$("#clienteCpf").prop("disabled", false);
+			$("#nomeClienteComanda").prop("disabled", false);
+		}
+	});
 </script>
 
 
@@ -252,7 +235,50 @@
 
 <script type="text/javascript">
 	/**
-	* Entter para pesquisar
+	* Entter inserir codigo da comanda
+	*/
+	$('#numeroComanda').on('keypress',function(e) {
+		if(e.which == 13) {
+			$.ajax({
+				type: "POST",
+				data: "numero=" + $('#numeroComanda').val(),
+				url: "ver-aberto",
+				success:function(r){
+                    // console.log('r', r);
+					if(r != 'false' && r != 'fechadafalse'){
+						alertify.confirm('Comanda aberta, deseja editar?', function(){
+							// comanda.numero = $('#numeroComanda').val();
+							var resp = JSON.parse(r);
+							comanda = resp;
+							itensSoma($('#tabelaComanda'));
+							atualizarTabela($('#tabelaComanda'));
+							habilitarCampos();
+							$('#valorUm').focus();
+						}, function(){ 
+							$('#numeroComanda').val('');
+							alertify.error('Cancelado !');
+						});
+                    }
+					if(r == 'fechadafalse'){
+						var numeroComanda = $('#numeroComanda').val();
+						apagarForm();
+						$('#numeroComanda').val(numeroComanda);
+						alertify.error('Comanda fechada.');
+					}
+					if(r == 'false'){
+						var numeroComanda = $('#numeroComanda').val();
+						apagarForm();
+						$('#numeroComanda').val(numeroComanda);
+						habilitarCampos();
+						alertify.success('Nova comanda.');
+					}
+				}
+			});
+		}
+	});	
+
+	/**
+	* Entter para pesquisar produto
 	*/
 	$('#codigo').on('keypress',function(e) {
 		if(e.which == 13) {
@@ -276,44 +302,6 @@
 			});
 		}
 	});
-
-	/**
-	* Entter inserir codigo da comanda
-	*/
-	$('#numeroComanda').on('keypress',function(e) {
-		if(e.which == 13) {
-			$.ajax({
-				type: "POST",
-				data: "numero=" + $('#numeroComanda').val(),
-				url: "ver-aberto",
-				success:function(r){
-					var resp = JSON.parse(r);
-					if(resp.length > 0){
-						$('#numeroComanda').val('');
-						alertify.error("Comanda aberta !");
-					}else{
-						comanda.numero = $('#numeroComanda').val();
-						habilitarCampos();
-					}
-					console.log(resp);
-				}
-			});
-			// $.ajax({
-			// 	type:"POST",
-			// 	data:"numeroComanda=" + $('#numeroComanda').val(),
-			// 	url:"pesquisar-prod-est-codigo",
-			// 	success:function(r){
-			// 		console.log('resposta',r);
-			// 		var resp = JSON.parse(r);
-			// 		if(resp.length > 0){
-			// 			comanda.cliente = r.results[0]['numeroComanda'];
-
-			// 			$('#btAddTemp').click(); 
-			// 		}
-			// 	}
-			// });
-		}
-	});
 </script>
 
 <script type="text/javascript">
@@ -323,8 +311,9 @@
 	function atualizarTabela(tabela) {
 		var tbody = tabela.find('tbody');
 		tbody.empty();
+		i=0;
 		comanda.linhas.forEach(linha => {
-			tbody.append(`<tr> <th>${linha.nomeProduto}</th> <td>${linha.descricaoV}</td>  <td>${linha.quantV}</td> <td>${parseFloat(linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td> ${(linha.quantV*linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td></tr>`);
+			tbody.append(`<tr id="${i++}"> <th>${linha.nomeProduto}</th> <td>${linha.descricaoV}</td>  <td>${linha.quantV}</td> <td>${parseFloat(linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td> ${(linha.quantV*linha.precoV).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td><td class="btn-danger glyphicon glyphicon-remove" id="remove" onclick="apagarItem(${i}, ${linha.produtoVenda})"></td></tr>`);
 		});
 	};
 
@@ -342,7 +331,7 @@
 	}
 
 	/**
-	 * Faz a soma do subtotal
+	 * Apaga tudo
 	 */
 	 function apagarForm() {
 		comanda={
@@ -358,6 +347,38 @@
 		$('#quantV').val(1);
 		$('#codigo').attr('data-id', "");
 		$('#codigo').attr('data-nome', "");
+		$('#grupoCpf').show();
+	}
+
+	/**
+	 * Apaga item da tabela temp
+	 */
+	function apagarItem(i, idproduto){
+		var dados = {
+			id_produto: idproduto,
+			id_comanda_fatura: parseInt(comanda.id)
+		};
+		var tbody = $('#tabelaComanda').find('tr')[i];
+		$.ajax({
+			type:"DELETE",
+			data: dados,
+			url:"apaga-prod-comanda",
+			success:function(r){
+				// console.log(r);
+				if(r){
+					console.log('comanda',comanda);
+					tbody.remove();
+					var resp = JSON.parse(r);
+					comanda = resp;
+					itensSoma($('#tabelaComanda'));
+					atualizarTabela($('#tabelaComanda'));
+					$('#valorUm').focus();
+					// alertify.success("Excluido com sucesso!!");
+				}else{
+					alertify.error("Não foi possível excluir");
+				}
+			}
+		});
 	}
 </script>
 
@@ -366,46 +387,45 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarComanda').click(function() {
-		
-		var dados={
-			cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
-			numero: (comanda.numero!=null?(comanda.numero):null),
-			linhas:[]
-		};
-		// console.log('numero', numero);
-		comanda.linhas.forEach(linha =>{
-			var novaLinha = {
-				id_produto: parseInt(linha.produtoVenda),
-				quantidade: parseInt(linha.quantV),
-				valor_unitario: parseFloat(linha.precoV)
+		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
+			var dados={
+				cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
+				numero: (comanda.numero!=null?(comanda.numero):null),
+				linhas:[]
 			};
-			dados.linhas.push(novaLinha);
-			console.log('dados.linhas',dados.linhas);
-			apagarForm();
-		});
-		console.log('dados', dados);
-		// console.log('comanda.linhas',comanda.linhas);
-		$.ajax({
-			type:"POST",
-			data: dados,
-			url:"resp-comanda",
-			success:function(r){
-				console.log('respostaGravou1',r);
-				var resp = JSON.parse(r);
-				console.log('respostaGravou2',r);
-				if(resp.resp){	
-					console.log('resp',resp.resp);
-					$('#codigo').val('');
-					$('#clienteCpf').val(null).trigger('change');
-					$('#nomeClienteComanda').val('');
-					apagarForm();
-					alertify.success("Comanda criada com sucesso!!");
-				}else{
-					alertify.error("Falha ao Adicionar");
+			// console.log('numero', numero);
+			comanda.linhas.forEach(linha =>{
+				var novaLinha = {
+					id_produto: parseInt(linha.produtoVenda),
+					quantidade: parseInt(linha.quantV),
+					valor_unitario: parseFloat(linha.precoV)
+				};
+				dados.linhas.push(novaLinha);
+				apagarForm();
+			});
+			console.log('dados', dados);
+			// console.log('comanda.linhas',comanda.linhas);
+			$.ajax({
+				type:"POST",
+				data: dados,
+				url:"resp-comanda",
+				success:function(r){
+					console.log('respostaGravou1',r);
+					// var resp = JSON.parse(r);
+					// console.log('respostaGravou2',r);
+					if(r){	
+						// console.log('resp',resp.resp);
+						$('#codigo').val('');
+						$('#clienteCpf').val(null).trigger('change');
+						$('#nomeClienteComanda').val('');
+						apagarForm();
+						alertify.success("Comanda criada com sucesso!!");
+					}else{
+						alertify.error("Falha ao Adicionar");
+					}
 				}
-				
-			}
-		});
+			});
+		}else{alertify.alert("Preencher o CPF!");} 	
 	});
 	
 </script>
@@ -460,76 +480,66 @@
 			}
 		});
 
-
-
 		/**
 		* Adiciona os itens na tabela temporaria 
 		*/
 		$('#btAddTemp').click(function(){
+
+			var quant = parseInt($('#quantV').val());
+			var quantidade = parseInt($('#quantidadeV').val());
 			
-			//Cpf selecionado para abrir comanda.. ve se o campo esta preenchido
+			if(quant > quantidade){
+				alertify.alert("Quantidade inexistente em estoque!!");
+				quant = $('#quantV').val("");
+				return false;
+			}else{
+				quantidade = $('#quantidadeV').val();
+			}
 			
-			if($('#anonimo')[0].checkValidity()){
+			if($('#quantV').val() == "" || $('#quantV').val() <= 0){
+				alertify.alert("Preencha a quantidade desejada!!");
+				return false;
+			}
 
-				var quant = parseInt($('#quantV').val());
-				var quantidade = parseInt($('#quantidadeV').val());
+			/**
+			* Pega as informaçoes do formulario e transforma em json para adicionar no array
+			*/
+			var jsonData = {};
+			var formData = $("#frmComanda").serializeArray();
 
-				
-				if(quant > quantidade){
-					alertify.alert("Quantidade inexistente em estoque!!");
-					quant = $('#quantV').val("");
-					return false;
-				}else{
-					quantidade = $('#quantidadeV').val();
+			$.each(formData, function() {
+				if (jsonData[this.name]) {
+				if (!jsonData[this.name].push) {
+						jsonData[this.name] = [jsonData[this.name]];
 				}
-				
-				if($('#quantV').val() == "" || $('#quantV').val() <= 0){
-					alertify.alert("Preencha a quantidade desejada!!");
-					return false;
+					jsonData[this.name].push(this.value || '');
+				} else {
+					jsonData[this.name] = this.value || '';
 				}
-
-				/**
-				* Pega as informaçoes do formulario e transforma em json para adicionar no array
-				*/
-				var jsonData = {};
-				var formData = $("#frmComanda").serializeArray();
-
-				$.each(formData, function() {
-					if (jsonData[this.name]) {
-					if (!jsonData[this.name].push) {
-							jsonData[this.name] = [jsonData[this.name]];
-					}
-						jsonData[this.name].push(this.value || '');
-					} else {
-						jsonData[this.name] = this.value || '';
-					}
-				});
-				if($('#codigo').val() == ""){
-					jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
-				}else{
-					jsonData['produtoVenda'] = $('#codigo').attr('data-id');
-					jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
-				}
-				
-				
-				/**
-				* Coloca os itens temporarios na tabela
-				*/
-				comanda.linhas.push(jsonData);
-				console.log(comanda);
-				
-				itensSoma($('#tabelaComanda'));
-				atualizarTabela($('#tabelaComanda'));
-				
-				$('#produtoVenda').val(null).trigger('change');//reseta o select2
-				$('#quantV').val(1);
-				$('#precoV').val('');
-				$('#descricaoV').val('');
-				$('#quantidadeV').val('');
-				$('#codigo').val('');
-				$('#codigo').attr('data-id', "");
-				$('#codigo').attr('data-nome', "");
-			}else{alertify.alert("Preencher o CPF!!");} 
+			});
+			if($('#codigo').val() == ""){
+				jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
+			}else{
+				jsonData['produtoVenda'] = $('#codigo').attr('data-id');
+				jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
+			}
+			
+			/**
+			* Coloca os itens temporarios na tabela
+			*/
+			comanda.linhas.push(jsonData);
+			
+			itensSoma($('#tabelaComanda'));
+			atualizarTabela($('#tabelaComanda'));
+			
+			$('#produtoVenda').val(null).trigger('change');//reseta o select2
+			$('#quantV').val(1);
+			$('#precoV').val('');
+			$('#descricaoV').val('');
+			$('#quantidadeV').val('');
+			$('#codigo').val('');
+			$('#codigo').attr('data-id', "");
+			$('#codigo').attr('data-nome', "");
 		});
 
 
@@ -542,29 +552,5 @@
 
 	});
 </script>
-
-<!-- <script type="text/javascript">
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
-</script> -->
-
-
-
 
 {% endblock %}

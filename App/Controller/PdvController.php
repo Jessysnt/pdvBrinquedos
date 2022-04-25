@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\PdvDAO;
 use Core\View;
+use DateTimeZone;
 
 class PdvController
 {
@@ -23,7 +24,6 @@ class PdvController
                 $obProdutoLinha = intval($respNumero['id']);
 
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);
-
                 $resp = $respNumero;
                 $resp['linhas'] = $respProdutoLinha;
 
@@ -32,7 +32,6 @@ class PdvController
             }else{
                 View::jsonResponse(false);
             }
-
         }
     }
 
@@ -42,16 +41,19 @@ class PdvController
             $obPdvDAO = new PdvDAO;
 
             $id_usuario=$_SESSION['usuario']->getId();
-            
+            date_default_timezone_set("America/Sao_Paulo");
+            $datetime = date("Y-m-d h:i:sa");
+
             $comandaFatura=array(
-                'id_usuario'=>$id_usuario,
+                'id_caixa'=> $id_usuario,
                 'numero' => $_POST['numero'],
                 'cliente' => $_POST['cliente'],
                 'formaPgUm' => intval($_POST['pg_forma1']),
                 'valorTotalUm' => $_POST['valor_total1'],
                 'formaPgDois' => intval($_POST['pg_forma2']),
                 'valorTotalDois' => $_POST['valor_total2'],
-                'vzsCartao' => intval($_POST['vzs_cartao'])
+                'vzsCartao' => intval($_POST['vzs_cartao']),
+                'dataFinalizacao' => $datetime
             );
             if($_POST['numero'] == ""){
                 unset($comandaFatura['numero']);

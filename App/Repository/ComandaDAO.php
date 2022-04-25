@@ -37,52 +37,82 @@ class ComandaDAO extends Conexao
     {
         $bd = static::getConexao();
 
-        $sqlNumero = ['',''];
-        if(array_key_exists('numero', $respComandaFatura)){
-            $sqlNumero = [', numero',', :numero'];
-        }
         $sqlCliente = ['',''];
         if(array_key_exists('cliente', $respComandaFatura)){
             $sqlCliente = [', id_cliente',', :idCliente'];
         }
 
-        $sql = "INSERT INTO comandafatura (id_usuario$sqlNumero[0]$sqlCliente[0]) VALUES (:idUsuario$sqlNumero[1]$sqlCliente[1])";
+        $stmt=$bd->prepare("SELECT id FROM comandafatura WHERE numero = :numero");
+        $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
+        $stmt->execute();
+        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($resp != false){
+            return $resp['id'];
+        }else{
+            $sql = "INSERT INTO comandafatura (id_vendedor, numero$sqlCliente[0], data_registro) VALUES (:idVendedor, :numero$sqlCliente[1], :dataRegistro)";
 
             $stmt=$bd->prepare($sql);
 
-            $stmt->bindParam(':idUsuario', $respComandaFatura['id_usuario'], PDO::PARAM_INT);
-            
-            if(array_key_exists('numero', $respComandaFatura)){
-                $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
-            }
+            $stmt->bindParam(':idVendedor', $respComandaFatura['id_vendedor'], PDO::PARAM_INT);
+            $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
             if(array_key_exists('cliente', $respComandaFatura)){
                 $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
             }
+            $stmt->bindValue(':numero', $respComandaFatura['dataRegistro']);
 
             $stmt->execute();
             $resp = $bd->lastInsertId();
-            
             return $resp;
+        }
     }
 
     public function gravarLinhaFatura($linhaFatura)
     {
-        $stmt=static::getConexao()->prepare("INSERT INTO linhafatura (id_comanda_fatura, id_produto, quantidade, valor_unitario) VALUES (:id_comanda_fatura, :id_produto, :quantidade, :valor_unitario)");
-
+        $stmt=static::getConexao()->prepare("SELECT id_produto FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
         $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
         $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-        $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
-        $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
-
-        return $stmt->execute();
+        $stmt->execute();
+        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($resp != false){
+            if($resp['id_produto'] == $linhaFatura['id_produto']){
+                $stmt=static::getConexao()->prepare("UPDATE linhafatura SET quantidade =:quantidade, valor_unitario =:valor_unitario WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
+                $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
+                $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
+                $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
+                $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
+                return $stmt->execute();
+            }
+        }
+        if($resp == false){
+            $stmt=static::getConexao()->prepare("INSERT INTO linhafatura (id_comanda_fatura, id_produto, quantidade, valor_unitario) VALUES (:id_comanda_fatura, :id_produto, :quantidade, :valor_unitario)");
+            $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
+            $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
+            $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
+            $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
+            return $stmt->execute();
+        }
     }
 
+    /**
+     * Ve a comanda se esta aberta .. 
+     */
     public function verEstaAberta($numero)
     {
         $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero AND comanda_aberta = 1");
         $stmt->bindValue(':numero', $numero);
         $stmt->execute();
-        // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($resp){
+            if($resp['comanda_aberta'] == 1){
+                return $resp;
+            }
+            if($resp['comanda_aberta'] == 0){
+                echo 'fechada';
+            }
+        }else{
+            return false;
+        } 
     }
 }

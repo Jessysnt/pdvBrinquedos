@@ -131,11 +131,11 @@ class PdvDAO extends Conexao
             $sqlVzsCartao = [', vzs_cartao',', :vzsCartao'];
         }
 
-        $sql = "INSERT INTO comandafatura (id_usuario$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0], comanda_aberta) VALUES (:idUsuario$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1], :comanda_aberta)";
+        $sql = "INSERT INTO comandafatura (id_caixa$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0], comanda_aberta) VALUES (:idCaixa$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1], :comanda_aberta)";
 
         $stmt=$bd->prepare($sql);
 
-        $stmt->bindParam(':idUsuario', $respComandaFatura['id_usuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
         
         if(array_key_exists('cliente', $respComandaFatura)){
             $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
