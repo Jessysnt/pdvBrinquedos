@@ -247,7 +247,6 @@
                     // console.log('r', r);
 					if(r != 'false' && r != 'fechadafalse'){
 						alertify.confirm('Comanda aberta, deseja editar?', function(){
-							// comanda.numero = $('#numeroComanda').val();
 							var resp = JSON.parse(r);
 							comanda = resp;
 							itensSoma($('#tabelaComanda'));
@@ -266,11 +265,12 @@
 						alertify.error('Comanda fechada.');
 					}
 					if(r == 'false'){
-						var numeroComanda = $('#numeroComanda').val();
+						var numero = $('#numeroComanda').val();
 						apagarForm();
-						$('#numeroComanda').val(numeroComanda);
+						$('#numeroComanda').val(numero);
 						habilitarCampos();
 						alertify.success('Nova comanda.');
+						comanda.numero= numero;
 					}
 				}
 			});
@@ -295,7 +295,6 @@
 						$('#descricaoV').val(resp[0]['descricao']);
 						$('#quantidadeV').val(resp[0]['quantotal']);
 						$('#precoV').val(resp[0]['preco_ven']);
-
 						$('#btAddTemp').click(); 
 					}
 				}
@@ -393,7 +392,7 @@
 				numero: (comanda.numero!=null?(comanda.numero):null),
 				linhas:[]
 			};
-			// console.log('numero', numero);
+			
 			comanda.linhas.forEach(linha =>{
 				var novaLinha = {
 					id_produto: parseInt(linha.produtoVenda),
@@ -404,17 +403,14 @@
 				apagarForm();
 			});
 			console.log('dados', dados);
-			// console.log('comanda.linhas',comanda.linhas);
+
 			$.ajax({
 				type:"POST",
 				data: dados,
-				url:"resp-comanda",
+				url:"gravar-comanda",
 				success:function(r){
 					console.log('respostaGravou1',r);
-					// var resp = JSON.parse(r);
-					// console.log('respostaGravou2',r);
 					if(r){	
-						// console.log('resp',resp.resp);
 						$('#codigo').val('');
 						$('#clienteCpf').val(null).trigger('change');
 						$('#nomeClienteComanda').val('');

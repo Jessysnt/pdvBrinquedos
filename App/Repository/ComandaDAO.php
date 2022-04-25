@@ -26,7 +26,6 @@ class ComandaDAO extends Conexao
         $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome, pro.descricao, es.quantotal, es.preco_ven FROM produto AS pro INNER JOIN estoque AS es ON pro.id=es.id_produto AND pro.codigo = :codigo");
         $stmt->bindValue(':codigo', $codigo);
         $stmt->execute();
-        // die(var_dump($stmt->fetchAll(PDO::FETCH_ASSOC)));
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -51,16 +50,13 @@ class ComandaDAO extends Conexao
             return $resp['id'];
         }else{
             $sql = "INSERT INTO comandafatura (id_vendedor, numero$sqlCliente[0], data_registro) VALUES (:idVendedor, :numero$sqlCliente[1], :dataRegistro)";
-
             $stmt=$bd->prepare($sql);
-
             $stmt->bindParam(':idVendedor', $respComandaFatura['id_vendedor'], PDO::PARAM_INT);
             $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
             if(array_key_exists('cliente', $respComandaFatura)){
                 $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
             }
-            $stmt->bindValue(':numero', $respComandaFatura['dataRegistro']);
-
+            $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
             $stmt->execute();
             $resp = $bd->lastInsertId();
             return $resp;

@@ -65,12 +65,12 @@ class ComandaController
             
             $comandaFatura=array(
                 'id_vendedor'=>$id_usuario,
+                'numero' => $_POST['numero'],
+                'cliente' => $_POST['cliente'],
                 'dataRegistro' => $datetime,
             );
-            if($_POST['numero'] != ""){
-                $comandaFatura['numero'] = $_POST['numero'];
-            }else{
-                $comandaFatura['id_cliente'] = $_POST['cliente'];
+            if($_POST['cliente'] == ""){
+                unset($comandaFatura['cliente']);
             }
 
             $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
