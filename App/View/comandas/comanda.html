@@ -358,26 +358,35 @@
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
-		$.ajax({
-			type:"DELETE",
-			data: dados,
-			url:"apaga-prod-comanda",
-			success:function(r){
-				// console.log(r);
-				if(r){
-					console.log('comanda',comanda);
-					tbody.remove();
-					var resp = JSON.parse(r);
-					comanda = resp;
-					itensSoma($('#tabelaComanda'));
-					atualizarTabela($('#tabelaComanda'));
-					$('#valorUm').focus();
-					// alertify.success("Excluido com sucesso!!");
-				}else{
-					alertify.error("Não foi possível excluir");
+
+		if(dados.id_comanda_fatura){
+			$.ajax({
+				type:"DELETE",
+				data: dados,
+				url:"apaga-prod-comanda",
+				success:function(r){
+					// console.log(r);
+					if(r){
+						// console.log('comanda',comanda);
+						tbody.remove();
+						var resp = JSON.parse(r);
+						comanda = resp;
+						itensSoma($('#tabelaComanda'));
+						atualizarTabela($('#tabelaComanda'));
+						$('#valorUm').focus();
+						// alertify.success("Excluido com sucesso!!");
+					}else{
+						alertify.error("Não foi possível excluir");
+					}
 				}
-			}
-		});
+			});
+		}else{
+			tbody.remove();
+			delete comanda.linhas[i-1];
+			itensSoma($('#tabelaComanda'));
+			atualizarTabela($('#tabelaComanda'));
+			// console.log('nva', comanda);
+		}
 	}
 </script>
 

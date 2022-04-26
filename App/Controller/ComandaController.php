@@ -72,21 +72,21 @@ class ComandaController
             if($_POST['cliente'] == ""){
                 unset($comandaFatura['cliente']);
             }
-
-            $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
+            die(var_dump($_POST));
+            // $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
             
-            if($respComandaFatura > 0){
-                foreach($_POST['linhas'] as $row) {
-                    $linhaFatura=array(
-                        'id_comanda_fatura'=>$respComandaFatura,
-                        'id_produto'=>$row['id_produto'],
-                        'quantidade'=>$row['quantidade'],
-                        'valor_unitario'=>$row['valor_unitario'],
-                    );
-                    $obComandaDAO->gravarLinhaFatura($linhaFatura);
-                }
-                View::jsonResponse(['resp'=>true]);
-            }
+            // if($respComandaFatura > 0){
+            //     foreach($_POST['linhas'] as $row) {
+            //         $linhaFatura=array(
+            //             'id_comanda_fatura'=>$respComandaFatura,
+            //             'id_produto'=>$row['id_produto'],
+            //             'quantidade'=>$row['quantidade'],
+            //             'valor_unitario'=>$row['valor_unitario'],
+            //         );
+            //         $obComandaDAO->gravarLinhaFatura($linhaFatura);
+            //     }
+            //     View::jsonResponse(['resp'=>true]);
+            // }
         }
     }
 

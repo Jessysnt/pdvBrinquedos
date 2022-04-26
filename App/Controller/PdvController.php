@@ -105,7 +105,7 @@ class PdvController
                 'id_comanda_fatura'=>$post['id_comanda_fatura'],
                 'id_produto'=>$post['id_produto'],
             );
-            // die(var_dump($dados));
+            
             $respDeletarProduto = $obPdvDAO->deletarProdutoComanda($dados);
 
             if($respDeletarProduto){
