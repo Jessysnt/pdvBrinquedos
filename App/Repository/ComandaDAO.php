@@ -40,7 +40,8 @@ class ComandaDAO extends Conexao
         if(array_key_exists('cliente', $respComandaFatura)){
             $sqlCliente = [', id_cliente',', :idCliente'];
         }
-
+        // die(var_dump($respComandaFatura));
+        
         $stmt=$bd->prepare("SELECT id FROM comandafatura WHERE numero = :numero");
         $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
         $stmt->execute();
@@ -54,7 +55,7 @@ class ComandaDAO extends Conexao
             $stmt->bindParam(':idVendedor', $respComandaFatura['id_vendedor'], PDO::PARAM_INT);
             $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
             if(array_key_exists('cliente', $respComandaFatura)){
-                $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
+                $stmt->bindParam(':idCliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
             }
             $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
             $stmt->execute();

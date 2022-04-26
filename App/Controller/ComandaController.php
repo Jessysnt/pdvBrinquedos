@@ -20,7 +20,6 @@ class ComandaController
     {   
         $obProdutoDAO = new ProdutoDAO();
         $prod = $obProdutoDAO->pesquisarProdutos($_GET['term']);
-        //die(var_dump($prod));
         View::jsonResponse(['results'=>$prod]);
     }
 
@@ -28,7 +27,6 @@ class ComandaController
     {
         $obClienteDAO = new ClienteDAO();
         $cli = $obClienteDAO->pesquisarClientes($_GET['term']);
-
         View::jsonResponse(['results'=>$cli]);
     }
 
@@ -38,7 +36,6 @@ class ComandaController
             $idProduto = intval($_POST['id']) ;
             $obProdEstDAO = new ComandaDAO();
             $res = $obProdEstDAO->pesquisarProdutoVenda($idProduto);
-
             View::jsonResponse($res);
         }
     }
@@ -46,10 +43,8 @@ class ComandaController
     public function pesquisarProEstCod()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            // $codigo = intval($_POST['codigo']) ;
             $obProdEst = new ComandaDAO();
             $res = $obProdEst->pesquisarProdutoVendaCod($_POST['codigo']);
-
             View::jsonResponse($res);
         }
     }
@@ -61,7 +56,7 @@ class ComandaController
 
             $id_usuario=$_SESSION['usuario']->getId();
             date_default_timezone_set("America/Sao_Paulo");
-            $datetime = date("Y-m-d h:i:sa");
+            $datetime = date("Y-m-d H:i:s");
             
             $comandaFatura=array(
                 'id_vendedor'=>$id_usuario,
@@ -72,21 +67,21 @@ class ComandaController
             if($_POST['cliente'] == ""){
                 unset($comandaFatura['cliente']);
             }
-            die(var_dump($_POST));
-            // $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
             
-            // if($respComandaFatura > 0){
-            //     foreach($_POST['linhas'] as $row) {
-            //         $linhaFatura=array(
-            //             'id_comanda_fatura'=>$respComandaFatura,
-            //             'id_produto'=>$row['id_produto'],
-            //             'quantidade'=>$row['quantidade'],
-            //             'valor_unitario'=>$row['valor_unitario'],
-            //         );
-            //         $obComandaDAO->gravarLinhaFatura($linhaFatura);
-            //     }
-            //     View::jsonResponse(['resp'=>true]);
-            // }
+            $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
+            
+            if($respComandaFatura > 0){
+                foreach($_POST['linhas'] as $row) {
+                    $linhaFatura=array(
+                        'id_comanda_fatura'=>$respComandaFatura,
+                        'id_produto'=>$row['id_produto'],
+                        'quantidade'=>$row['quantidade'],
+                        'valor_unitario'=>$row['valor_unitario'],
+                    );
+                    $obComandaDAO->gravarLinhaFatura($linhaFatura);
+                }
+                View::jsonResponse(['resp'=>true]);
+            }
         }
     }
 
