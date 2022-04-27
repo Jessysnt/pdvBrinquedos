@@ -112,4 +112,14 @@ class ComandaDAO extends Conexao
             return false;
         } 
     }
+
+    /**
+     * Deleta produtos da tabela temporaria
+     */
+    public function deletarProdutoComanda($post)
+    {
+        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura");
+        $stmt->bindParam(':id_comanda_fatura', $post, PDO::PARAM_INT);
+		return $stmt->execute();
+    }
 }

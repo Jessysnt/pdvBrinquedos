@@ -39,10 +39,9 @@ class PdvController
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obPdvDAO = new PdvDAO;
-
             $id_usuario=$_SESSION['usuario']->getId();
             date_default_timezone_set("America/Sao_Paulo");
-            $datetime = date("Y-m-d h:i:sa");
+            $datetime = date("Y-m-d H:i:s");
 
             $comandaFatura=array(
                 'id_caixa'=> $id_usuario,
@@ -101,20 +100,10 @@ class PdvController
 
             parse_str(file_get_contents("php://input"), $post);
 
-            $dados=array(
-                'id_comanda_fatura'=>$post['id_comanda_fatura'],
-                'id_produto'=>$post['id_produto'],
-            );
+            $respDeletarProduto = $obPdvDAO->deletarProdutoComanda($post['id_comanda_fatura']);
             
-            $respDeletarProduto = $obPdvDAO->deletarProdutoComanda($dados);
-
-            if($respDeletarProduto){
-                $respProdutoLinha = $obPdvDAO->verProdutoLinha($post['id_comanda_fatura']);
-                $resp['linhas'] = $respProdutoLinha;
-                View::jsonResponse($resp);
-            }else{
-                View::jsonResponse(false);
-            }
+            View::jsonResponse($respDeletarProduto);
+            
         }
     }
 }

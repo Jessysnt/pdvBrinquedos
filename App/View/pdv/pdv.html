@@ -423,9 +423,43 @@
 		$('#grupoCpf').show();
 	}
 
+	/**
+	 * Apaga item da tabela temp
+	 */
+	 function apagarItem(i, idproduto){
+		var dados = {
+		// 	id_produto: idproduto,
+			id_comanda_fatura: parseInt(comanda.id)
+		};
+		var tbody = $('#tabelaComanda').find('tr')[i];
+		if(dados.id_comanda_fatura){
+			$.ajax({
+				type:"DELETE",
+				data: dados,
+				url:"apaga-prod-comanda",
+				success:function(r){
+					if(r == true){
+						// console.log('r',r);
+						tbody.remove();
+						delete comanda.linhas[i-1];
+						itensSoma($('#tabelaComanda'));
+						atualizarTabela($('#tabelaComanda'));
+					}else{
+						alertify.error("Não foi possível excluir");	
+					}
+					
+				}
+			});
+		}else{
+			tbody.remove();
+			delete comanda.linhas[i-1];
+			itensSoma($('#tabelaComanda'));
+			atualizarTabela($('#tabelaComanda'));
+		}
+	}
 	function apagarItem(i, idproduto){
 		var dados = {
-			id_produto: idproduto,
+			// id_produto: idproduto,
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];

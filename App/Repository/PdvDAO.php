@@ -195,11 +195,10 @@ class PdvDAO extends Conexao
     /**
      * Deleta produtos da tabela temporaria
      */
-    public function deletarProdutoComanda($dados)
+    public function deletarProdutoComanda($post)
     {
-        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
-        $stmt->bindParam(':id_comanda_fatura', $dados['id_comanda_fatura'], PDO::PARAM_INT);
-        $stmt->bindParam(':id_produto', $dados['id_produto'], PDO::PARAM_INT);
+        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura");
+        $stmt->bindParam(':id_comanda_fatura', $post, PDO::PARAM_INT);
 		return $stmt->execute();
     }
 }

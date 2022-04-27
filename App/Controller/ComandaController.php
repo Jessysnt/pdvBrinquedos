@@ -110,5 +110,23 @@ class ComandaController
             }
         }
     }
+
+    /**
+     * Apaga produto a tabela temporaria
+     */
+    public function apagarProdutoComanda()
+    {
+        $obComandaDAO = new ComandaDAO();
+
+        if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+
+            parse_str(file_get_contents("php://input"), $post);
+
+            $respDeletarProduto = $obComandaDAO->deletarProdutoComanda($post['id_comanda_fatura']);
+            
+            View::jsonResponse($respDeletarProduto);
+            
+        }
+    }
     
 }

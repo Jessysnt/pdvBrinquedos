@@ -10,8 +10,6 @@
 <div class="container">
     <h3>Abrir Comanda</h3>
 
-    <br/>
-
     <section class="direita">
 		<div class="row">
 			<form method="post" id="frmComanda">
@@ -252,8 +250,10 @@
 							itensSoma($('#tabelaComanda'));
 							atualizarTabela($('#tabelaComanda'));
 							habilitarCampos();
-							$('#valorUm').focus();
+							$("#grupoCpf").show();
+							$('#anonimo')[0].checked = false;
 							console.log('numeroComanda', comanda);
+							
 						}, function(){ 
 							$('#numeroComanda').val('');
 							alertify.error('Cancelado !');
@@ -355,30 +355,21 @@
 	 */
 	function apagarItem(i, idproduto){
 		var dados = {
-			id_produto: idproduto,
+		// 	id_produto: idproduto,
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
-		console.log('dados',dados);
 		if(dados.id_comanda_fatura){
 			$.ajax({
 				type:"DELETE",
 				data: dados,
-				url:"apaga-prod-comanda",
+				url:"apaga-prods-comanda",
 				success:function(r){
-					console.log(r);
-					if(r){
-						console.log('comanda',comanda);
-						tbody.remove();
-						var resp = JSON.parse(r);
-						comanda = resp;
-						itensSoma($('#tabelaComanda'));
-						atualizarTabela($('#tabelaComanda'));
-						$('#valorUm').focus();
-						// alertify.success("Excluido com sucesso!!");
-					}else{
-						alertify.error("Não foi possível excluir");
-					}
+					// console.log('r',r);
+					tbody.remove();
+					delete comanda.linhas[i-1];
+					itensSoma($('#tabelaComanda'));
+					atualizarTabela($('#tabelaComanda'));
 				}
 			});
 		}else{
@@ -386,7 +377,6 @@
 			delete comanda.linhas[i-1];
 			itensSoma($('#tabelaComanda'));
 			atualizarTabela($('#tabelaComanda'));
-			// console.log('nva', comanda);
 		}
 	}
 </script>
