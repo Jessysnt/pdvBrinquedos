@@ -17,9 +17,7 @@ class EstoqueDAO extends Conexao
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -27,31 +25,25 @@ class EstoqueDAO extends Conexao
     {
         $stmt = static::getConexao()->prepare("SELECT count(es.id) AS total FROM estoque AS es INNER JOIN produto AS pro ON es.id_produto=pro.id WHERE pro.nome LIKE :busca LIMIT 1 ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
-
         $stmt->execute();
-        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function atualizaProdEstoque($dados)
     {
         $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal, preco_ven=:precoVenda WHERE id=:idEstoque");
-
         $stmt->bindParam(':idEstoque', $dados['idEstoque'], PDO::PARAM_INT);
         $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);
-        $stmt->bindParam(':precoVenda', $dados['precoVenda'], PDO::PARAM_STR);
-                        
+        $stmt->bindParam(':precoVenda', $dados['precoVenda'], PDO::PARAM_STR);            
         return $stmt->execute();
     }
 
     public function addProdEstoque($dados)
     {
         $stmt=static::getConexao()->prepare("INSERT INTO estoque (id_produto, quantotal, preco_ven) VALUES (:idProduto, :quantotal, :precoVenda)");
-
         $stmt->bindParam(':idProduto', $dados['idProduto'], PDO::PARAM_INT);
         $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);
         $stmt->bindParam(':precoVenda', $dados['precoVenda'], PDO::PARAM_STR);
-
         return $stmt->execute();
     }
 
@@ -69,10 +61,17 @@ class EstoqueDAO extends Conexao
     public function apagaEstoquePV($dados)
     {
         $stmt=static::getConexao()->prepare("DELETE FROM estoque SET quantotal=:quantotal,  WHERE id=:idProduto");
-
         $stmt->bindParam(':idProduto', $dados['idprodv'], PDO::PARAM_INT);
-        $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);
-                        
+        $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);                
+        return $stmt->execute();
+    }
+
+    public function baixaEstoque($linhaFatura)
+    {
+        $baixaEstoque = $linhaFatura['quant_estoque'] - $linhaFatura['quantidade'];
+        $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal, preco_ven=:precoVenda WHERE id_produto=:idProduto");
+        $stmt->bindParam(':idProduto', $linhaFatura['id_produto'], PDO::PARAM_INT);
+        $stmt->bindParam(':quantotal', $baixaEstoque, PDO::PARAM_INT);            
         return $stmt->execute();
     }
     

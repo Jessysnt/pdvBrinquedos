@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\EstoqueDAO;
 use App\Repository\PdvDAO;
 use Core\View;
 use DateTimeZone;
@@ -39,6 +40,7 @@ class PdvController
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obPdvDAO = new PdvDAO;
+            $obEstoqueDAO = new EstoqueDAO;
             $id_usuario=$_SESSION['usuario']->getId();
             date_default_timezone_set("America/Sao_Paulo");
             $datetime = date("Y-m-d H:i:s");
@@ -80,11 +82,17 @@ class PdvController
                         'id_comanda_fatura'=>$respComandaFatura,
                         'id_produto'=>$row['id_produto'],
                         'quantidade'=>$row['quantidade'],
+                        'quant_estoque'=>$row['quant_estoque'],
                         'valor_unitario'=>$row['valor_unitario'],
                     );
                     $resp = $obPdvDAO->gravarLinhaFatura($linhaFatura);
+                    
+                    if($resp == true){
+                        $respEstoque = $obEstoqueDAO->baixaEstoque($linhaFatura);
+                    }
                 }
-                View::jsonResponse(['gravarComanda'=>$resp]);
+                View::jsonResponse($respEstoque);
+                // View::jsonResponse(['gravarComanda'=>$resp]);
             }
         }
     }

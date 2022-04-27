@@ -89,5 +89,15 @@ class Estoque
             return $ven;
         }
     }
+
+    /**
+     * Debita estoque ao lançar venda
+     */
+    public function diminuiQuantidade(int $quantidade): self
+    {
+        $this->quantotal += $quantidade;
+        
+        return $this;
+    }
     
 }
