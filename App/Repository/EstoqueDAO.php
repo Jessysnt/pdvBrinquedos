@@ -66,12 +66,14 @@ class EstoqueDAO extends Conexao
         return $stmt->execute();
     }
 
-    public function baixaEstoque($linhaFatura)
+    /**
+     * Baixa atraves da venda
+     */
+    public function baixaEstoque($dados)
     {
-        $baixaEstoque = $linhaFatura['quant_estoque'] - $linhaFatura['quantidade'];
-        $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal, preco_ven=:precoVenda WHERE id_produto=:idProduto");
-        $stmt->bindParam(':idProduto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-        $stmt->bindParam(':quantotal', $baixaEstoque, PDO::PARAM_INT);            
+        $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal WHERE id=:idEstoque");
+        $stmt->bindParam(':idEstoque', $dados['idEstoque'], PDO::PARAM_INT);
+        $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);           
         return $stmt->execute();
     }
     

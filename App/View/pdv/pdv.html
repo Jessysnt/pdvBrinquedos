@@ -488,27 +488,27 @@
 				});
 				console.log('dados', dados);
 
-				// $.ajax({
-				// 	type:"POST",
-				// 	data: dados,
-				// 	url:"gravar-venda",
-				// 	success:function(r){
-				// 		console.log('respostaGravou1',r);
-				// 		// var resp = JSON.parse(r);
-				// 		// console.log('respostaGravou2',resp);
-				// 		if(r){	
-				// 			// console.log('resp',resp.resp);
-				// 			$('#codigo').val('');
-				// 			$('#clienteCpf').val(null).trigger('change');
-				// 			$('#nomeClienteComanda').val('');
-				// 			apagarForm();
-				// 			alertify.success("Venda efetuada!!");
-				// 		}else{
-				// 			alertify.error("Falha ao Adicionar");
-				// 		}
+				$.ajax({
+					type:"POST",
+					data: dados,
+					url:"gravar-venda",
+					success:function(r){
+						console.log('respostaGravou1',r);
+						// var resp = JSON.parse(r);
+						// console.log('respostaGravou2',resp);
+						if(r){	
+							// console.log('resp',resp.resp);
+							$('#codigo').val('');
+							$('#clienteCpf').val(null).trigger('change');
+							$('#nomeClienteComanda').val('');
+							apagarForm();
+							alertify.success("Venda efetuada!!");
+						}else{
+							alertify.error("Falha ao Adicionar");
+						}
 						
-				// 	}
-				// });
+					}
+				});
 			}else{alertify.alert("Preencher forma de pagamento!");}
 
 		}else{alertify.alert("Preencher o CPF!");} 

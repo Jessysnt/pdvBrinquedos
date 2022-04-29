@@ -95,7 +95,7 @@ class Estoque
      */
     public function diminuiQuantidade(int $quantidade): self
     {
-        $this->quantotal += $quantidade;
+        $this->quantotal -= $quantidade;
         
         return $this;
     }

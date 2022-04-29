@@ -36,9 +36,7 @@ class ProdutoVendaController
             );
             $resp=$obProdVendaDAO->adicionarProdVenda($dadosP);
             
-            
             if($resp){
-                //die(var_dump('resp',$resp));
                 $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['produtoSelect']);
                 
                 if($obEstoque){

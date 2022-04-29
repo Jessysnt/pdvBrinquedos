@@ -41,6 +41,7 @@ class PdvController
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obPdvDAO = new PdvDAO;
             $obEstoqueDAO = new EstoqueDAO;
+            
             $id_usuario=$_SESSION['usuario']->getId();
             date_default_timezone_set("America/Sao_Paulo");
             $datetime = date("Y-m-d H:i:s");
@@ -87,12 +88,26 @@ class PdvController
                     );
                     $resp = $obPdvDAO->gravarLinhaFatura($linhaFatura);
                     
-                    if($resp == true){
-                        $respEstoque = $obEstoqueDAO->baixaEstoque($linhaFatura);
+                    if($resp){
+                        $obEstoque = $obEstoqueDAO->retornaProdEst($row['id_produto']);
+
+                        if($obEstoque){
+                            $obEstoque->diminuiQuantidade($row['quantidade']);
+                            $dados=array(
+                                'idEstoque'=>$obEstoque->getId(),
+                                'quantotal'=> $obEstoque->getQuantotal()
+                            ); 
+                            $obEstoqueDAO->baixaEstoque($dados);
+                            View::jsonResponse(['resp'=>true]);
+
+                        }else{
+                            View::jsonResponse(['resp'=>false]);
+                        }
+
+                    }else{
+                        View::jsonResponse(['resp'=>false]);
                     }
                 }
-                View::jsonResponse($respEstoque);
-                // View::jsonResponse(['gravarComanda'=>$resp]);
             }
         }
     }

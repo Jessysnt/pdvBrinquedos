@@ -68,31 +68,26 @@ class PdvDAO extends Conexao
         }
 
         $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0 WHERE numero = :numero";
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
 
         $stmt=$bd->prepare($sql);
-        
+        $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
         $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
-        
         if(array_key_exists('cliente', $respComandaFatura)){
             $stmt->bindParam(':cliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
         }
-
         $stmt->bindParam(':formaPgUm', $respComandaFatura['formaPgUm'], PDO::PARAM_INT);
         $stmt->bindParam(':valorTotalUm', $respComandaFatura['valorTotalUm'], PDO::PARAM_STR);
-        
         if(array_key_exists('formaPgDois', $respComandaFatura)){
             $stmt->bindParam(':formaPgDois', $respComandaFatura['formaPgDois'], PDO::PARAM_INT);
         }
-
         if(array_key_exists('valorTotalDois', $respComandaFatura)){
             $stmt->bindParam(':valorTotalDois', $respComandaFatura['valorTotalDois'], PDO::PARAM_STR);
         }
-
         if(array_key_exists('vzsCartao', $respComandaFatura)){
             $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
         }
-        
+        $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
         $result = $stmt->execute();
 
         if($result == true){
@@ -131,31 +126,26 @@ class PdvDAO extends Conexao
             $sqlVzsCartao = [', vzs_cartao',', :vzsCartao'];
         }
 
-        $sql = "INSERT INTO comandafatura (id_caixa$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0], comanda_aberta) VALUES (:idCaixa$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1], :comanda_aberta)";
+        $sql = "INSERT INTO comandafatura (id_caixa$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0], comanda_aberta, data_finalizacao) VALUES (:idCaixa$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1], :comanda_aberta, :dataFinalizacao)";
 
         $stmt=$bd->prepare($sql);
-
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
-        
         if(array_key_exists('cliente', $respComandaFatura)){
             $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
         }
         $stmt->bindParam(':formaPgUm', $respComandaFatura['formaPgUm'], PDO::PARAM_INT);
         $stmt->bindParam(':valorTotalUm', $respComandaFatura['valorTotalUm'], PDO::PARAM_STR);
-        
         if(array_key_exists('formaPgDois', $respComandaFatura)){
             $stmt->bindParam(':formaPgDois', $respComandaFatura['formaPgDois'], PDO::PARAM_INT);
         }
-
         if(array_key_exists('valorTotalDois', $respComandaFatura)){
             $stmt->bindParam(':valorTotalDois', $respComandaFatura['valorTotalDois'], PDO::PARAM_STR);
         }
-
         if(array_key_exists('vzsCartao', $respComandaFatura)){
             $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
         }
         $stmt->bindValue(':comanda_aberta', 0);
-
+        $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
         $stmt->execute();
         $resp = $bd->lastInsertId();
         return $resp;
