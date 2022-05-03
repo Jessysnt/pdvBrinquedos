@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/lib/alertifyjs/css/alertify.css">
     <link rel="stylesheet" type="text/css" href="assets/lib/alertifyjs/css/themes/default.css">
-    <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/lib/select2/css/select2.css">
     <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
     <link rel="stylesheet" type="text/css" href="assets/css/container.css">
@@ -16,7 +15,7 @@
 </head>
 <body>
     <div id="nav">
-        <div class="navbar navbar-inverse navbar-fixed-top" data-offset-top="100">
+        <div class="navbar navbar-fixed-top" data-offset-top="100" style="background-color: #eba44688">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -31,37 +30,46 @@
     
             <ul class="nav navbar-nav navbar-right">
     
-                <li ><a href="painel" style="color: #6aadbd"><span class="glyphicon glyphicon-home"></span> Inicio</a>
+                <li ><a href="painel" style="color: #2b2574"><span class="glyphicon glyphicon-home"></span> Inicio</a>
                 </li>
+
+               <li><a href="cliente-add" style="color: #0d02a3"><span class="glyphicon glyphicon-user"></span> Clientes</a>
+              </li>
+              {% if (session['usuario'].getCargo() == "1" or "2" or "3") %}
+              <li><a href="pdv" style="color: #045719"><span class="glyphicon glyphicon-usd"></span> PDV</a>
+              </li>
+              {% endif %}
+              {% if (session['usuario'].getCargo() == "1" or "2" or "4") %}
+              <li><a href="comandas" style="color: #045719"><span class="glyphicon glyphicon-usd"></span> Abrir Comanda</a>
+              </li>
+              {% endif %}
+              
               
               <li class="dropdown">
-                <a href="#" style="color: #d16f4b" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Gestão Produtos <span class="caret"></span></a>
+                <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Gestão Produtos <span class="caret"></span></a>
                 <ul class="dropdown-menu">
+                  {% if (session['usuario'].getCargo() == "1" or "2" or "3") %} 
                   <li><a href="categorias">Categorias</a></li>
-                  <li><a href="produto-form">Produtos</a></li>
                   <li><a href="fornecedores.php">Fornecedores</a></li>
+                  {% endif %}
+                  <li><a href="estoque">Produtos</a></li>
                 </ul>
               </li>
-    
-               <li><a href="cliente-add" style="color: #e303fc"><span class="glyphicon glyphicon-user"></span> Clientes</a>
-              </li>
-              <li><a href="pdv" style="color: #e306fc"><span class="glyphicon glyphicon-usd"></span> PDV</a>
-              </li>
-              <!--
-              <li><a href="vendas.php" style="color: #61e89c"><span class="glyphicon glyphicon-usd"></span>Vendas</a>
-              </li> -->
-    
+              
+
+              {% if (session['usuario'].getCargo() == "1" or "2") %}
               <li class="dropdown">
-                <a href="#" style="color: #61e89c" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-usd"></span> Gestão Vendas <span class="caret"></span></a>
+                <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Relatorios <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="pagamentos.php">Pagamentos</a></li>
-                  <li><a href="comandas">Abrir Comanda</a></li>
+                  <!-- <li><a href="pagamentos.php">Pagamentos</a></li> -->
+                  <!-- <li><a href="comandas">Abrir Comanda</a></li> -->
                   <li><a href="vendasRelatorios.php">Lista de Vendas</a></li>
                 </ul>
               </li>
+              {% endif %}
               
               <li class="dropdown" >
-                <a href="#" style="color: #19d1cb"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Usuário   <span class="caret"></span></a>
+                <a href="#" style="color: #0d02a3"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Usuário   <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   
                   {% if session['usuario'].getCargo() == "1" %} 

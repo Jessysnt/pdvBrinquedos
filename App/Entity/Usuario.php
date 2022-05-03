@@ -130,7 +130,7 @@ class Usuario {
             case '3':
                 return 'Caixa';
                 break;
-            case '3':
+            case '4':
                 return 'Vendedor';
                 break;
             default:
