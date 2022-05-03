@@ -135,7 +135,7 @@
 			</div>
 			<div id="vzsCartaoUm" class="col-sm-4">
 				<label>x no cartão</label>
-				<input type="number" class="form-control input-sm" name="vzsCartaoUm">
+				<input type="number" class="form-control input-sm" name="vzsCartaoUm" id="vzsCartao">
 			</div>				
 			<div class="col-sm-4">
 				<label>Valor a pagar</label>
@@ -156,7 +156,7 @@
 							<option value="1" >Dinheiro</option>
 							<option value="2">Pix</option>
 							<option value="3">Debito</option>
-							<option value="4">Credito</option>
+							<!-- <option value="4">Credito</option> -->
 							<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 						</select>
 					</div>
@@ -227,7 +227,9 @@
 
 	function vezesCartao(){
 		if($('#pgUm').val() == 4){
+			$("#vzsCartao").prop("disabled", false);
 			$("#vzsCartaoUm").show();
+			// $("#vzsCartaoUm").val(1);
 		}else{
 			$("#vzsCartaoUm").hide();
 		}
@@ -309,33 +311,6 @@
 
 <script type="text/javascript">
 	/**
-	* Entter para pesquisar
-	*/
-	$('#codigo').on('keypress',function(e) {
-		if(e.which == 13) {
-			$.ajax({
-				type:"POST",
-				data:"codigo=" + $('#codigo').val(),
-				url:"pesquisar-prod-est-codigo",
-				success:function(r){
-					console.log('resposta',r);
-					var resp = JSON.parse(r);
-					if(resp.length > 0){
-						$('#codigo').attr('data-id', parseInt(resp[0]['id']));
-						$('#codigo').attr('data-nome', resp[0]['nome']);
-						$('#descricaoV').val(resp[0]['descricao']);
-						$('#quantidadeV').val(resp[0]['quantotal']);
-						$('#precoV').val(resp[0]['preco_ven']);
-
-						$('#btAddTemp').click(); 
-						$('#valorUm').focus();
-					}
-				}
-			});
-		}
-	});
-
-	/**
 	* Entter inserir codigo da comanda
 	*/
 	$('#numeroComanda').on('keypress',function(e) {
@@ -367,6 +342,34 @@
 						$('#numeroComanda').val(numeroComanda);
 						habilitarCampos();
 						alertify.success('Nova comanda.');
+					}
+				}
+			});
+		}
+	});
+
+
+	/**
+	* Entter para pesquisar
+	*/
+	$('#codigo').on('keypress',function(e) {
+		if(e.which == 13) {
+			$.ajax({
+				type:"POST",
+				data:"codigo=" + $('#codigo').val(),
+				url:"pesquisar-prod-est-codigo",
+				success:function(r){
+					console.log('resposta',r);
+					var resp = JSON.parse(r);
+					if(resp.length > 0){
+						$('#codigo').attr('data-id', parseInt(resp[0]['id']));
+						$('#codigo').attr('data-nome', resp[0]['nome']);
+						$('#descricaoV').val(resp[0]['descricao']);
+						$('#quantidadeV').val(resp[0]['quantotal']);
+						$('#precoV').val(resp[0]['preco_ven']);
+
+						$('#btAddTemp').click(); 
+						$('#valorUm').focus();
 					}
 				}
 			});
@@ -420,6 +423,9 @@
 		$('#codigo').attr('data-nome', "");
 		$('#grupoCpf').show();
 		$('#pgUm').val(null).trigger('change');
+		$('#pgDois').val(null).trigger('change');
+		$('#pagamentoDois').hide();
+		$('#valorDois').val("");
 	}
 
 	/**
@@ -471,10 +477,9 @@
 					valor_total1: $('#valorUm').val(),
 					pg_forma2: $('#pgDois').val(),
 					valor_total2: $('#valorDois').val(),
-					vzs_cartao: $('#vzsCartaoUm').val(),
+					vzs_cartao: $('#vzsCartao').val(),
 					linhas:[]
 				};
-			
 				comanda.linhas.forEach(linha =>{
 					var novaLinha = {
 						id_produto: parseInt(linha.produtoVenda),
@@ -506,7 +511,6 @@
 						}else{
 							alertify.error("Falha ao Adicionar");
 						}
-						
 					}
 				});
 			}else{alertify.alert("Preencher forma de pagamento!");}
@@ -636,7 +640,6 @@
 		*/
 		$('#btnLimparComanda').click(function(){
 			apagarForm();
-			console.log('ak');
 		});
 
 	});
@@ -644,42 +647,25 @@
 
 <script type="text/javascript">
 	function valorPagar(soma){
-		// $('#valorUm').maskMoney('mask', soma);
-		// console.log(formatter);
-		var formatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-		var valorSoma = soma;
+		//  new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 2});
+		// $('#valorUm').val(formatter.format(soma));
+		// var formatter = new Intl.NumberFormat(  {maximumFractionDigits: 2 });
+		$('#valorUm').val(soma);
 		// console.log(valorSoma);
-		$('#valorUm').val(valorSoma);
 
 		$('#valorUm').change(function(){
-			var valorUm = parseFloat($('#valorUm').val()) ;
-			// console.log(valorUm);
-			if(valorUm < valorSoma){
+			var valorUm = parseFloat($('#valorUm').val());
+			console.log(valorUm);
+
+			if(valorUm < soma){
 				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
-				// $('#valorDois').val(formatter.format(valorDois));
-				$('#valorDois').val(parseFloat(valorDois).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				// console.log('valorDoiS', valorDois);
+				$('#valorDois').val(valorDois);
+				// $('#valorDois').val(parseFloat(valorDois).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			} else {
 				$("#pagamentoDois").hide();
 			}
 		});
-		// $('#valorUm').focus();
-		// var formatter = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-		// var valorSoma = soma;
-		// $('#valorUm').val(formatter.format(valorSoma));
-		// console.log('ak1',$('#valorUm').val());
-		// $('#valorUm').change(function(){
-		// 	var valorUm = $('#valorUm').maskMoney('unmasked')[0] ;
-		// 	console.log('ak2',$('#valorUm').val());
-		// 	if(valorUm < valorSoma){
-		// 		console.log('ak3',valorUm);
-		// 		var valorDois = soma - valorUm;
-		// 		$("#pagamentoDois").show();
-		// 		$('#valorDois').val(formatter.format(valorDois));
-		// 		// console.log('valorDoiS', valorDois);
-		// 	}
-		// });
 	};
 </script>
 

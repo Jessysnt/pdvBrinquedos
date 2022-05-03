@@ -45,6 +45,7 @@ class PdvDAO extends Conexao
      */
     public function gravarComandaFatura($respComandaFatura)
     {
+        // die(var_dump($respComandaFatura));
         $bd = static::getConexao();
 
         $sqlCliente = ['',''];
@@ -54,22 +55,22 @@ class PdvDAO extends Conexao
 
         $sqlFormaPgDois = ['',''];
         if(array_key_exists('formaPgDois', $respComandaFatura)){
-            $sqlFormaPgDois = ['pg_forma2=',':formaPgDois, '];
+            $sqlFormaPgDois = [' pg_forma2=',':formaPgDois, '];
         }
 
         $sqlValorTotalDois = ['',''];
         if(array_key_exists('valorTotalDois', $respComandaFatura)){
-            $sqlValorTotalDois = ['valor_total2=',':valorTotalDois, '];
+            $sqlValorTotalDois = [' valor_total2=',':valorTotalDois, '];
         }
 
         $sqlVzsCartao = ['',''];
         if(array_key_exists('vzsCartao', $respComandaFatura)){
-            $sqlVzsCartao = ['vzs_cartao=',':vzsCartao, '];
+            $sqlVzsCartao = [' vzs_cartao=',':vzsCartao, '];
         }
 
         $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
         $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
-
+        
         $stmt=$bd->prepare($sql);
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
         $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
@@ -88,7 +89,8 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
         }
         $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
-        $result = $stmt->execute();
+        // die(var_dump($respComandaFatura));
+        $result = $stmt->execute(); 
 
         if($result == true){
             $stmt=$bd->prepare($LastUpdateID);

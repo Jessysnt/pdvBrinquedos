@@ -38,6 +38,7 @@ class PdvController
 
     public function gravarComanda()
     {
+        // die(var_dump($_POST));
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obPdvDAO = new PdvDAO;
             $obEstoqueDAO = new EstoqueDAO;
@@ -76,7 +77,7 @@ class PdvController
             }else{
                 $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
             }
-
+            // die(var_dump($respComandaFatura));
             if($respComandaFatura > 0){
                 foreach($_POST['linhas'] as $row) {
                     $linhaFatura=array(
