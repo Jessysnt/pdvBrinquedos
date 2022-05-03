@@ -39,6 +39,7 @@ $router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'a
 
 //Rotas de Cliente
 $router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
+$router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' => 'tabelaClientes']);
 
 
 //Rotas dos Produto

@@ -23,8 +23,11 @@
     
             <thead>	
                  <tr>
-                     <th>Faixa Etária</th>
-                     <th>Descrição</th>
+                     <th>Nome</th>
+                     <th>Sobrenome</th>
+                     <th>E-mail</th>
+                     <th>Telefone</th>
+                     <th>CPF</th>
     
                      <th>Editar</th>
                      <th>Excluir</th>
@@ -33,10 +36,13 @@
              </thead>
     
              <tbody>	
-                {% for categoria in categorias %}
+                {% for cliente in clientes %}
                  <tr>
-                    <td>{{categoria.categoria}}</td>
-                    <td>{{categoria.descricao}}</td>
+                    <td>{{cliente.nome}}</td>
+                    <td>{{cliente.sobrenome}}</td>
+                    <td>{{cliente.email}}</td>
+                    <td>{{cliente.telefone}}</td>
+                    <td>{{cliente.cpf}}</td>
                      <td>
                         <span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarCategoria" onclick="adicionarDados('{{categoria.id}}')">
                             <span class="glyphicon glyphicon-pencil"></span>

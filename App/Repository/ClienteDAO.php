@@ -48,9 +48,7 @@ class ClienteDAO extends Conexao
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -58,9 +56,7 @@ class ClienteDAO extends Conexao
     {
         $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM cliente WHERE cliente LIKE :busca LIMIT 10 ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
-
         $stmt->execute();
-        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
