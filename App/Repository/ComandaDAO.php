@@ -35,19 +35,24 @@ class ComandaDAO extends Conexao
     public function gravarComandaFatura($respComandaFatura)
     {
         $bd = static::getConexao();
-
         $sqlCliente = ['',''];
         if(array_key_exists('cliente', $respComandaFatura)){
             $sqlCliente = [', id_cliente',', :idCliente'];
         }
-        // die(var_dump($respComandaFatura));
-        
+
         $stmt=$bd->prepare("SELECT id FROM comandafatura WHERE numero = :numero");
         $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
         $stmt->execute();
         $resp = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if($resp != false){
+            if($sqlCliente[0] != ""){
+                $stmt=static::getConexao()->prepare("UPDATE comandafatura SET id_cliente = :idCliente, data_registro = :dataRegistro WHERE id= :id");
+                $stmt->bindParam(':id', $resp['id'], PDO::PARAM_INT);
+                $stmt->bindParam(':idCliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
+                $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
+                $stmt->execute();
+            }
             return $resp['id'];
         }else{
             $sql = "INSERT INTO comandafatura (id_vendedor, numero$sqlCliente[0], data_registro) VALUES (:idVendedor, :numero$sqlCliente[1], :dataRegistro)";
