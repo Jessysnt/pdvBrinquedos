@@ -370,7 +370,6 @@
 						$('#descricaoV').val(resp[0]['descricao']);
 						$('#quantidadeV').val(resp[0]['quantotal']);
 						$('#precoV').val(resp[0]['preco_ven']);
-
 						$('#btAddTemp').click(); 
 						$('#valorUm').focus();
 					}else{
@@ -498,7 +497,7 @@
 					pg_forma1: $('#pgUm').val(),
 					valor_total1: $('#valorUm').maskMoney('unmasked')[0],
 					pg_forma2: $('#pgDois').val(),
-					valor_total2: $('#valorUm').maskMoney('unmasked')[0],
+					valor_total2: $('#valorDois').maskMoney('unmasked')[0],
 					vzs_cartao: $('#vzsCartao').val(),
 					linhas:[]
 				};
@@ -670,11 +669,11 @@
 <script type="text/javascript">
 	function valorPagar(soma){
 		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+		
 		$('#valorUm').change(function(){
 			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
-
 			if(valorUm < soma){
-				var valorDois = (soma - valorUm).toFixed(2);
+				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			} else {
