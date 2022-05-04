@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ClienteDAO;
 use App\Repository\EstoqueDAO;
 use App\Repository\PdvDAO;
 use Core\View;
@@ -23,11 +24,9 @@ class PdvController
 
             if($respNumero > 0){
                 $obProdutoLinha = intval($respNumero['id']);
-
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);
                 $resp = $respNumero;
                 $resp['linhas'] = $respProdutoLinha;
-
                 View::jsonResponse($resp);
 
             }else{
@@ -38,7 +37,6 @@ class PdvController
 
     public function gravarComanda()
     {
-        // die(var_dump($_POST));
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obPdvDAO = new PdvDAO;
             $obEstoqueDAO = new EstoqueDAO;
@@ -77,14 +75,13 @@ class PdvController
             }else{
                 $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
             }
-            // die(var_dump($respComandaFatura));
+            
             if($respComandaFatura > 0){
                 foreach($_POST['linhas'] as $row) {
                     $linhaFatura=array(
                         'id_comanda_fatura'=>$respComandaFatura,
                         'id_produto'=>$row['id_produto'],
                         'quantidade'=>$row['quantidade'],
-                        'quant_estoque'=>$row['quant_estoque'],
                         'valor_unitario'=>$row['valor_unitario'],
                     );
                     $resp = $obPdvDAO->gravarLinhaFatura($linhaFatura);
@@ -99,8 +96,6 @@ class PdvController
                                 'quantotal'=> $obEstoque->getQuantotal()
                             ); 
                             $obEstoqueDAO->baixaEstoque($dados);
-                            View::jsonResponse(['resp'=>true]);
-
                         }else{
                             View::jsonResponse(['resp'=>false]);
                         }
@@ -109,6 +104,7 @@ class PdvController
                         View::jsonResponse(['resp'=>false]);
                     }
                 }
+                View::jsonResponse(['resp'=>true]);
             }
         }
     }
@@ -121,13 +117,22 @@ class PdvController
         $obPdvDAO = new PdvDAO();
 
         if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-
             parse_str(file_get_contents("php://input"), $post);
-
             $respDeletarProduto = $obPdvDAO->deletarProdutoComanda($post['id_comanda_fatura']);
-            
             View::jsonResponse($respDeletarProduto);
-            
         }
     }
+
+    /**
+     * Comanda aberta, tras o cliente para a tela
+     */
+    public function pesqClienteComanda()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obClienteDAO = new ClienteDAO;
+            $respCliente = $obClienteDAO->pesquisarClienteComanda($_POST['cliente']);
+            View::jsonResponse($respCliente);
+        }
+    }
+
 }

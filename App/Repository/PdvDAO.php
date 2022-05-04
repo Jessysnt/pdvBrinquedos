@@ -69,7 +69,7 @@ class PdvDAO extends Conexao
         }
 
         $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
         
         $stmt=$bd->prepare($sql);
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);

@@ -249,6 +249,7 @@
 							comanda = resp;
 							itensSoma($('#tabelaComanda'));
 							atualizarTabela($('#tabelaComanda'));
+							clienteComanda(comanda.id_cliente);
 							habilitarCampos();
 							$("#grupoCpf").show();
 							$('#anonimo')[0].checked = false;
@@ -378,6 +379,24 @@
 			itensSoma($('#tabelaComanda'));
 			atualizarTabela($('#tabelaComanda'));
 		}
+	}
+
+	/**
+	 * Comanda aberta com cliente, tras para a tela
+	 */
+	 function clienteComanda(idCliente) {
+		$.ajax({
+			type:"POST",
+			data:"cliente=" + idCliente,
+			url:"pesq-cliente-comanda",
+			success:function(r){
+				var resp = JSON.parse(r);
+				if(resp != ""){
+					$('#nomeClienteComanda').val(resp[0]['nome'] + " " + resp[0]['sobrenome']);
+					comanda.cliente = resp[0]['id'];
+				}
+			}
+		});
 	}
 </script>
 

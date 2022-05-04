@@ -13,14 +13,12 @@ class ClienteDAO extends Conexao
     {
         $usuario = $_SESSION['usuario']->getId();
         $stmt = static::getConexao()->prepare("INSERT INTO cliente (id_usuario, nome, sobrenome, telefone, email, cpf) VALUES (:usuario, :nome, :sobrenome, :telefone, :email, :cpf)");
-        
         $stmt->bindParam(':usuario', $usuario , PDO::PARAM_INT);
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
         $stmt->bindParam(':telefone', $dados['telefone'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
         $stmt->bindParam(':cpf', $dados['cpf'], PDO::PARAM_STR);
-
         return $stmt->execute();
     }
 
@@ -37,6 +35,17 @@ class ClienteDAO extends Conexao
     {
         $stmt = static::getConexao()->prepare("SELECT id, cpf AS 'text', nome, sobrenome FROM cliente WHERE cpf LIKE :cpf");
         $stmt->bindValue(':cpf', '%'.$nomeparcial.'%');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Exibe o cliente da comanda
+     */
+    public function pesquisarClienteComanda($cliente)
+    {
+        $stmt = static::getConexao()->prepare("SELECT id, cpf, nome, sobrenome FROM cliente WHERE id = :id");
+        $stmt->bindParam(':id', $cliente , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

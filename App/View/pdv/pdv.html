@@ -38,10 +38,14 @@
 						</div>
 					</div>
 				</div>
+				<!-- <div class="mb-3 form-check"> -->
+					<!-- <input type="checkbox" id="anonimo"> -->
+					<!-- <label class="form-check-input" for="exampleCheck1"><input type="checkbox" id="anonimo"> Anônimo</label>
+				</div> -->
 				<div class="mb-3 form-check">
-					<input type="checkbox" class="form-check-input" id="anonimo">
-					<label class="form-check-label" for="exampleCheck1">Anônimo</label>
-				</div>
+					<input class="form-check-input" type="checkbox" value="" id="anonimo">
+					<label class="form-check-label" for="anonimo"> Anônimo</label>
+				  </div>
 				<br>	
 					
 				<div class="row">
@@ -140,7 +144,6 @@
 			<div class="col-sm-4">
 				<label>Valor a pagar</label>
 				<div>
-					<!-- <input type="text"  class="form-control input-sm" id="valorUm" name="valorUm" data-thousands="." data-decimal="," data-prefix="R$ " /> -->
 					<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
 				</div>
 			</div>
@@ -157,7 +160,6 @@
 							<option value="2">Pix</option>
 							<option value="3">Debito</option>
 							<!-- <option value="4">Credito</option> -->
-							<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 						</select>
 					</div>
 				</div>
@@ -222,14 +224,14 @@
 		$("#quantV").val(1);
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
-		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
+		$("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
+		$("#valorDois").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
 
 	function vezesCartao(){
 		if($('#pgUm').val() == 4){
 			$("#vzsCartao").prop("disabled", false);
 			$("#vzsCartaoUm").show();
-			// $("#vzsCartaoUm").val(1);
 		}else{
 			$("#vzsCartaoUm").hide();
 		}
@@ -326,6 +328,7 @@
                         comanda = resp;
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
+						clienteComanda(comanda.id_cliente);
 						habilitarCampos();
 						$('#valorUm').focus();
                         console.log(comanda);
@@ -370,6 +373,8 @@
 
 						$('#btAddTemp').click(); 
 						$('#valorUm').focus();
+					}else{
+						alertify.error('Produto nao encontrado.');
 					}
 				}
 			});
@@ -431,9 +436,8 @@
 	/**
 	 * Apaga item da tabela temp
 	 */
-	 function apagarItem(i, idproduto){
+	function apagarItem(i, idproduto){
 		var dados = {
-		// 	id_produto: idproduto,
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
@@ -461,6 +465,24 @@
 			atualizarTabela($('#tabelaComanda'));
 		}
 	}
+
+	/**
+	 * Comanda aberta com cliente, tras para a tela
+	 */
+	function clienteComanda(idCliente) {
+		$.ajax({
+			type:"POST",
+			data:"cliente=" + idCliente,
+			url:"pesq-cliente-comanda",
+			success:function(r){
+				var resp = JSON.parse(r);
+				if(resp != ""){
+					$('#nomeClienteComanda').val(resp[0]['nome'] + " " + resp[0]['sobrenome']);
+					comanda.cliente = resp[0]['id'];
+				}
+			}
+		});
+	}
 </script>
 
 <script type="text/javascript">
@@ -474,9 +496,9 @@
 					cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
 					numero: (comanda.numero!=null?(comanda.numero):null),
 					pg_forma1: $('#pgUm').val(),
-					valor_total1: $('#valorUm').val(),
+					valor_total1: $('#valorUm').maskMoney('unmasked')[0],
 					pg_forma2: $('#pgDois').val(),
-					valor_total2: $('#valorDois').val(),
+					valor_total2: $('#valorUm').maskMoney('unmasked')[0],
 					vzs_cartao: $('#vzsCartao').val(),
 					linhas:[]
 				};
@@ -647,21 +669,14 @@
 
 <script type="text/javascript">
 	function valorPagar(soma){
-		//  new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 2});
-		// $('#valorUm').val(formatter.format(soma));
-		// var formatter = new Intl.NumberFormat(  {maximumFractionDigits: 2 });
-		$('#valorUm').val(soma);
-		// console.log(valorSoma);
-
+		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 		$('#valorUm').change(function(){
-			var valorUm = parseFloat($('#valorUm').val());
-			console.log(valorUm);
+			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 
 			if(valorUm < soma){
-				var valorDois = soma - valorUm;
+				var valorDois = (soma - valorUm).toFixed(2);
 				$("#pagamentoDois").show();
-				$('#valorDois').val(valorDois);
-				// $('#valorDois').val(parseFloat(valorDois).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			} else {
 				$("#pagamentoDois").hide();
 			}
