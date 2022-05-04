@@ -30,7 +30,7 @@
                      <th>CPF</th>
     
                      <th>Editar</th>
-                     <th>Excluir</th>
+                     <th>excluir</th>
                  </tr>
                  
              </thead>
@@ -96,8 +96,8 @@
         if(e.which == 13) {
             var nomeFiltro = $(this).val().toLowerCase();
             $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
-            // $('html').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
         }
     });
 </script>
+
 {% endblock %}
