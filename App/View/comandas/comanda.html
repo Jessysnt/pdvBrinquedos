@@ -40,7 +40,7 @@
 				</div>
 				<div class="mb-3 form-check">
 					<input type="checkbox" class="form-check-input" id="anonimo">
-					<label class="form-check-label" for="exampleCheck1">Anônimo</label>
+					<label class="form-check-label" for="anonimo">Anônimo</label>
 				</div>
 				<br>
 
@@ -298,6 +298,8 @@
 						$('#quantidadeV').val(resp[0]['quantotal']);
 						$('#precoV').val(resp[0]['preco_ven']);
 						$('#btAddTemp').click(); 
+					}else{
+						alertify.error('Produto nao encontrado.');
 					}
 				}
 			});
