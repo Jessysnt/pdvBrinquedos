@@ -13,7 +13,7 @@
 <div class="container">
     <div class="table-responsive">
     </br>
-        <caption><label>Categorias</label></caption> 
+        <caption><label>Clientes</label></caption> 
             </br>
     
         <table class="table table-hover table-condensed table-bordered"  id="lista">
@@ -44,12 +44,12 @@
                     <td>{{cliente.telefone}}</td>
                     <td>{{cliente.cpf}}</td>
                      <td>
-                        <span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarCategoria" onclick="adicionarDados('{{categoria.id}}')">
+                        <span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarCliente" onclick="adicionarDados('{{cliente.id}}')">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </span>
                     </td>
                     <td>
-                        <span class="btn btn-danger btn-xs" onclick="deletarCategoria('{{categoria.id}}')">
+                        <span class="btn btn-danger btn-xs" onclick="deletarCliente('{{cliente.id}}')">
                             <span class="glyphicon glyphicon-remove"></span>
                         </span>
                     </td>
@@ -92,17 +92,11 @@
 
 {% block javascript %}
 <script type="text/javascript">
-	$('.pagination li a').click(function(event){
-        event.preventDefault();
-        $('#tabelaCategoriaLoad').load(event.currentTarget.href);
-        return false;
-    });
-
-    $('#filtro-nome').keyup(function(e) {
+	$('#filtro-nome').keyup(function(e) {
         if(e.which == 13) {
             var nomeFiltro = $(this).val().toLowerCase();
-            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
-            $('#tabelaCategoriaLoad').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            // $('html').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
         }
     });
 </script>

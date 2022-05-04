@@ -40,7 +40,7 @@ class ClienteController
         $total = $obClienteDAO->qntTotalClientes($busca);
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
-        View::renderTemplate('/clientes/tabelaCliente.html', ['clientes'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tabela-categoria', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
+        View::renderTemplate('/clientes/tabelaCliente.html', ['clientes'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/cliente-tabela', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
 
     }
 }
