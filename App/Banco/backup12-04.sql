@@ -48,6 +48,7 @@ CREATE TABLE `cliente` (
   `email` varchar(100) NOT NULL,
   `telefone` varchar(100) NOT NULL,
   `cpf` varchar(100) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_cliente_usuario_idx` (`id_usuario`),
   CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -75,7 +76,7 @@ CREATE TABLE `comandafatura` (
   `vzs_cartao` int(11) DEFAULT NULL,
   `bandeira_cartao` varchar(100) DEFAULT NULL,
   `data_registro` datetime DEFAULT NULL,
-  `data_finalizacai` datetime DEFAULT NULL,
+  `data_finalizacao` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_idx` (`id_cliente`),
   CONSTRAINT `fk_comandafatura_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION

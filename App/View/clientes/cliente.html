@@ -7,6 +7,44 @@
 
 {% block body %}
 
+<!-- Modal -->
+<div class="modal fade" id="atualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Atualizar Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmProdutovU" enctype="multipart/form-data">
+                    <input type="text" hidden="" id="idprodvU" name="idprodvU">
+                    
+                    <label>Brinquedo</label>
+                    <select class="form-control input-sm" id="idProdutoU" name="idProdutoU">
+                        <option value="A">Selecionar</option>
+                        {% for produto in produtos %}
+                        <option value="{{produto.id}}">{{produto.nome}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Lote</label>
+                    <input type="text" class="form-control input-sm" id="loteU" name="loteU">
+                    <label>Quantidade</label>
+                    <input type="text" class="form-control input-sm" id="quantidadeU" name="quantidadeU">
+                    <label>Preço comprado</label>
+                    <input type="text" class="form-control input-sm" id="compU" name="compU">
+                    <label>Preço vendido</label>
+                    <input type="text" class="form-control input-sm" id="venU" name="venU">
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnAtualizarProdutovU" class="btn btn-primary col-md" data-dismiss="modal">Atualizar</button>
+
+            </div>
+        </div>
+    </div>
+</div> 
+
 <div class="container">
 <div class="row">
     <ul class="nav nav-tabs nav-justified">
@@ -83,45 +121,26 @@
 </script>
 
 <script type="text/javascript">
-    function adicionarDados(idcliente){
-        $.ajax({
-            type:"POST",
-            data:"idcliente=" + idcliente,
-            url:"../procedimentos/clientes/obterClientes.php",
-            success:function(r){
-                dado=jQuery.parseJSON(r);
-                $('#idclienteU').val(dado['id_cliente']);
-                $('#nomeU').val(dado['nome']);
-                $('#sobrenomeU').val(dado['sobrenome']);
-                $('#enderecoU').val(dado['endereco']);
-                $('#emailU').val(dado['email']);
-                $('#telefoneU').val(dado['telefone']);
-                $('#cpfU').val(dado['cpf']);
-            }
-        });
-    }
-
-    function deletarCliente(idcliente){
-        alertify.confirm('Deseja excluir este cliente?', function(){ 
-            $.ajax({
-                type:"POST",
-                data:"idcliente=" + idcliente,
-                url:"cliente-inativar",
-                success:function(r){
-                    //alert(r);
-                    if(r==1){
-                        $('#tabelaClientesLoad').load("tabClientes.php");
-                        alertify.success("Excluido com sucesso!!");
-                    }else{
-                        alertify.error("Não foi possível excluir");
-                    }
-                }
-            });
-        }, function(){ 
-            alertify.error('Cancelado !')
-        });
-    }
-
+    
+    // function mostraCliente(idcliente){
+    //     console.log('ak2');
+    //     console.log(idcliente);
+    //     $.ajax({
+    //         type:"POST",
+    //         data:"idcliente=" + idcliente,
+    //         url:"../procedimentos/clientes/obterClientes.php",
+    //         success:function(r){
+    //             dado=jQuery.parseJSON(r);
+    //             $('#idclienteU').val(dado['id_cliente']);
+    //             $('#nomeU').val(dado['nome']);
+    //             $('#sobrenomeU').val(dado['sobrenome']);
+    //             $('#enderecoU').val(dado['endereco']);
+    //             $('#emailU').val(dado['email']);
+    //             $('#telefoneU').val(dado['telefone']);
+    //             $('#cpfU').val(dado['cpf']);
+    //         }
+    //     });
+    // }
 </script>
 
 

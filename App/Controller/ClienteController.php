@@ -9,10 +9,8 @@ class ClienteController
 {
     public function clienteAdd()
     {
-        $obClienteDAO = new ClienteDAO();
-        
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            
+            $obClienteDAO = new ClienteDAO();
             $resp = $obClienteDAO->adicionarCliente($_POST);
             View::jsonResponse($resp);
         }
@@ -41,6 +39,14 @@ class ClienteController
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
         View::renderTemplate('/clientes/tabelaCliente.html', ['clientes'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/cliente-tabela', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
+    }
 
+    public function inativarCliente()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obClienteDAO = new ClienteDAO();
+            $resp = $obClienteDAO->inativarCliente($_POST);
+            View::jsonResponse($resp);
+        }
     }
 }

@@ -44,7 +44,7 @@ class ClienteDAO extends Conexao
      */
     public function pesquisarClienteComanda($cliente)
     {
-        $stmt = static::getConexao()->prepare("SELECT id, cpf, nome, sobrenome FROM cliente WHERE id = :id");
+        $stmt = static::getConexao()->prepare("SELECT id, cpf, nome, sobrenome FROM cliente WHERE id = :id AND status=1");
         $stmt->bindParam(':id', $cliente , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,5 +67,12 @@ class ClienteDAO extends Conexao
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function inativarCliente($cliente)
+    {
+        $stmt = static::getConexao()->prepare("UPDATE cliente SET status=0 WHERE id = :id");
+        $stmt->bindParam(':id', $cliente, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
