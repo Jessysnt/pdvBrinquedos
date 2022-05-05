@@ -81,6 +81,9 @@ $router->add('pesq-cliente-comanda', ['controller' => 'PdvController', 'action' 
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);
 $router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action' => 'tabelaCategorias']);
 
+//Rotas de Fornecedor
+$router->add('fornecedores', ['controller' => 'FornecedorController', 'action' => 'fornecedor']);
+
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 $router->add('{controller}/{action}');
