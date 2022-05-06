@@ -11,13 +11,13 @@
 
 {% block body %}
 <!--Tabela-->
-<div class="container">
-    <div class="table-responsive">
+<div class="container" id="tabela">
+    <div class="table-responsive" >
     </br>
         <caption><label>Clientes</label></caption> 
             </br>
     
-        <table class="table table-hover table-condensed table-bordered"  id="lista">
+        <table class="table table-hover table-condensed table-bordered" >
     
              <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
              </br>
@@ -98,25 +98,39 @@
 
 {% block javascript %}
 <script type="text/javascript">
-	$('#filtro-nome').keyup(function(e) {
+	// $('#filtro-nome').keyup(function(e) {
+    //     if(e.which == 13) {
+    //         var nomeFiltro = $(this).val().toLowerCase();
+    //         $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+    //     }
+    // });
+
+    $('.pagination li a').click(function(event){
+        event.preventDefault();
+        $('#tabela').load(event.currentTarget.href);
+        return false;
+    });
+
+    $('#filtro-nome').keyup(function(e) {
         if(e.which == 13) {
             var nomeFiltro = $(this).val().toLowerCase();
-            $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabela').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
         }
     });
 </script>
 
 <script type="text/javascript">
-    function inativaCliente(idcliente){
+    function inativarCliente(idcliente){
         alertify.confirm('Deseja inativar este cliente?', function(){ 
             $.ajax({
                 type:"POST",
                 data:"idcliente=" + idcliente,
                 url:"cliente-inativar",
                 success:function(r){
-                    console.log(r);
                     if(r){
-                        // $('#tabelaClientesLoad').load("tabClientes.php");
+                        $('#tabela').load("cliente-tabela");
+                        console.log($('#tabela'));
                         alertify.success("Inativado!");
                     }else{
                         alertify.error("Erro");

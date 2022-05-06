@@ -32,7 +32,7 @@ class ClienteController
         if(isset($_GET['itensPag'])){
             $itensPag = $_GET['itensPag'];
         }
-
+        
         $obClienteDAO = new ClienteDAO();
         $resp = $obClienteDAO->tabClientes($busca, $pagina, $itensPag);
         $total = $obClienteDAO->qntTotalClientes($busca);
@@ -45,7 +45,7 @@ class ClienteController
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obClienteDAO = new ClienteDAO();
-            $resp = $obClienteDAO->inativarCliente($_POST);
+            $resp = $obClienteDAO->inativarCliente($_POST["idcliente"]);
             View::jsonResponse($resp);
         }
     }

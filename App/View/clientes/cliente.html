@@ -170,7 +170,7 @@
                     var resp = JSON.parse(r);
                     if(resp){
                         $('#frmClientes')[0].reset();
-                        $('#tabelaClientesLoad').load("tabClientes.php");
+                        // $('#tabelaClientesLoad').load("tabClientes.php");
                         alertify.success("Cliente Adicionado");
                     }else{
                         alertify.error("Não foi possível adicionar");

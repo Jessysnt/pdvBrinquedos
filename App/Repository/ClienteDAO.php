@@ -53,7 +53,7 @@ class ClienteDAO extends Conexao
     public function tabClientes($busca, $pagina, $itensPag)
     {
         $offset = $itensPag*($pagina-1);
-        $stmt = static::getConexao()->prepare("SELECT * FROM cliente WHERE nome LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT * FROM cliente WHERE nome LIKE :busca AND status=1 LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
