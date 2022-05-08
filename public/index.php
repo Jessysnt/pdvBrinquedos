@@ -40,8 +40,9 @@ $router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'a
 //Rotas de Cliente
 $router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
 $router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' => 'tabelaClientes']);
-$router->add('cliente-editar', ['controller' => 'ClienteController', 'action' => 'editarCliente']);
+$router->add('cliente-obter', ['controller' => 'ClienteController', 'action' => 'obterCliente']);
 $router->add('cliente-inativar', ['controller' => 'ClienteController', 'action' => 'inativarCliente']);
+$router->add('cliente-atualizar', ['controller' => 'ClienteController', 'action' => 'atualizarCliente']);
 
 
 //Rotas dos Produto

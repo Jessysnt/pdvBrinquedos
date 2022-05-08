@@ -49,4 +49,24 @@ class ClienteController
             View::jsonResponse($resp);
         }
     }
+
+    /**
+     * Tras o cliente para a modal de atualizar
+     */
+    public function obterCliente(){
+        $obClienteDAO = new ClienteDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $obClienteDAO->obterCliente($_POST);
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function atualizarCliente()
+    {
+        $obClienteDAO = new ClienteDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $obClienteDAO->atualizarCliente($_POST);
+            View::jsonResponse($resp);
+        }
+    }
 }

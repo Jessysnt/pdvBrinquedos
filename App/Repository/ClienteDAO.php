@@ -75,4 +75,24 @@ class ClienteDAO extends Conexao
         $stmt->bindParam(':id', $cliente, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function obterCliente($cliente)
+    {
+        $stmt = static::getConexao()->prepare("SELECT * FROM cliente WHERE id=:id");
+        $stmt->bindParam(':id', $cliente['idcliente'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function atualizarCliente($cliente)
+    {
+        $stmt=static::getConexao()->prepare("UPDATE cliente SET nome=:nome, sobrenome=:sobrenome, email=:email, telefone=:telefone, cpf=:cpf WHERE id=:id");
+        $stmt->bindParam(':id', $cliente['idclienteU'], PDO::PARAM_INT);
+        $stmt->bindParam(':nome', $cliente['nomeU'], PDO::PARAM_STR);
+        $stmt->bindParam(':sobrenome', $cliente['sobrenomeU'], PDO::PARAM_STR);
+        $stmt->bindParam(':email', $cliente['emailU'], PDO::PARAM_STR);
+        $stmt->bindParam(':telefone', $cliente['telefoneU'], PDO::PARAM_STR);
+        // $stmt->bindParam(':cpf', $cliente['cpfU'], PDO::PARAM_STR);         
+        return $stmt->execute();
+	}
 }
