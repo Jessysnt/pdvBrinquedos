@@ -24,8 +24,9 @@
                     <label>Cargo</label>
                     <select class="form-control input-sm" id="cargoU" name="cargoU">
                         <option value="A">Selecionar Categoria</option>
-                        <option value="2">Caixa</option>
-                        <option value="3">Vendedor</option>
+                        <option value="2">Gerente</option>
+                        <option value="3">Caixa</option>
+                        <option value="4">Vendedor</option>
                         <option value="1">Administrador</option>
                     </select>
 
@@ -57,8 +58,9 @@
                 <label>Cargo</label>
                 <select class="form-control input-sm" id="cargo" name="cargo">
                     <option value="A">Selecionar Categoria</option>
-                    <option value="2">Caixa</option>
-                    <option value="3">Vendedor</option>
+                    <option value="2">Gerente</option>
+                    <option value="3">Caixa</option>
+                    <option value="4">Vendedor</option>
                     <option value="1">Administrador</option>
                 </select>
 
@@ -101,10 +103,7 @@
                 data:"idusuario=" + idusuario,
                 url:"apg-usuario",
                 success:function(r){
-                    var resp = JSON.parse(r);
-                    //console.log(idusuario);
-                    //console.log(r);
-                    if(resp){
+                    if(true){
                         $('#tabelaUsuariosLoad').load("tab-usuario");
                         alertify.success("Excluido com sucesso!!");
                     }else{
@@ -123,7 +122,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btnAtualizaUsuario').click(function(){
-            
             dados=$('#frmUsuarioU').serialize();
             $.ajax({
                 type:"POST",

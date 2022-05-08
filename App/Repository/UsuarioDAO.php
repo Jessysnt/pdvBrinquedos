@@ -47,31 +47,32 @@ class UsuarioDAO extends Conexao
     }
 
 
-    public function atualizarUsuario($dados){
-
+    public function atualizarUsuario($dados)
+    {
         $stmt=static::getConexao()->prepare("UPDATE usuario SET nome=:nome, sobrenome=:sobrenome, email=:email, cargo=:cargo WHERE id=:id");
         $stmt->bindParam(':id', $dados['idUsuario'], PDO::PARAM_INT);
         $stmt->bindParam(':nome', $dados['nomeU'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenomeU'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['emailU'], PDO::PARAM_STR);
-        $stmt->bindParam(':cargo', $dados['cargoU'], PDO::PARAM_INT);
-                        
+        $stmt->bindParam(':cargo', $dados['cargoU'], PDO::PARAM_INT);         
         return $stmt->execute();
 	}
 
-    public function deletarUsuario($dados){
-		$stmt=static::getConexao()->prepare("DELETE FROM usuario WHERE id=:id");
+    public function inativarUsuario($dados)
+    {
+		$stmt=static::getConexao()->prepare("UPDATE usuario SET status=0 WHERE id=:id");
         $stmt->bindParam(':id', $dados['idusuario'], PDO::PARAM_INT);
-
 		return $stmt->execute();
 	}
 
-    public function exibirUsuario(){
-        $stmt = static::getConexao()->query("SELECT * FROM usuario");
+    public function exibirUsuario()
+    {
+        $stmt = static::getConexao()->query("SELECT * FROM usuario WHERE status=1");
         return $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Entity\Usuario');
     }
 
-    public function obterUsuario($dados){
+    public function obterUsuario($dados)
+    {
         $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE id=:id");
         $stmt->bindParam(':id', $dados['idusuario'], PDO::PARAM_INT);
         $stmt->execute();

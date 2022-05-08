@@ -34,7 +34,7 @@ $router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
 $router->add('usuario-add', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
 $router->add('tab-usuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
 $router->add('obt-usuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
-$router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'apagarUsuario']);
+$router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'inativarUsuario']);
 $router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
 
 //Rotas de Cliente
