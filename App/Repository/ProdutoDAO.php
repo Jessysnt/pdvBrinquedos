@@ -8,37 +8,29 @@ use PDO;
 
 class ProdutoDAO extends Conexao
 {
-    public function addImagem($dados){
-
-        try{
-            $bd = static::getConexao();
-            $stmt=$bd->prepare("INSERT INTO imagem (nome, url) VALUES (:nome, :url)");
-
-            $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
-            $stmt->bindParam(':url', $dados['url'], PDO::PARAM_STR);
-
-            $stmt->execute();
-            $resp = $bd->lastInsertId();
-
-            return $resp;
-            
-        }catch(\PDOException $e){
-            return $e->getMessage();
-        }
-		
+    /**
+     * Adiciona imagem no banco e tras o id adicionar na tabela produto
+     */
+    public function addImagem($dados)
+    {
+        $bd = static::getConexao();
+        $stmt=$bd->prepare("INSERT INTO imagem (nome, url) VALUES (:nome, :url)");
+        $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
+        $stmt->bindParam(':url', $dados['url'], PDO::PARAM_STR);
+        $stmt->execute();
+        $resp = $bd->lastInsertId();
+        return $resp;
 	}
 
     public function addProduto($dados)
     {
         $stmt=static::getConexao()->prepare("INSERT INTO produto (id_imagem, id_usuario, id_categoria, nome, codigo, descricao) VALUES (:idImagem, :idUsuario, :idCategoria, :nome, :codigo, :descricao)");
-
         $stmt->bindParam(':idImagem', $dados['idImagem'], PDO::PARAM_INT);
         $stmt->bindParam(':idUsuario', $dados['idUsuario'], PDO::PARAM_INT);
         $stmt->bindParam(':idCategoria', $dados['idCategoria'], PDO::PARAM_INT);
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
         $stmt->bindParam(':codigo', $dados['codigo'], PDO::PARAM_STR);
         $stmt->bindParam(':descricao', $dados['descricao'], PDO::PARAM_STR);
-        
         return $stmt->execute();
     }
 
@@ -85,27 +77,57 @@ class ProdutoDAO extends Conexao
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    
- 
-    // public function obterProduto($idproduto){
-    //     $stmt=static::getConexao()->prepare("SELECT id_produto, nome, descricao  FROM produtos WHERE id_produto='$idproduto'");
+    public function obterProduto($produto)
+    {
+        $stmt = static::getConexao()->prepare("SELECT * FROM produto WHERE id=:id");
+        $stmt->bindParam(':id', $produto, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-    //     $result=mysqli_query($conexao, $sql);
+    public function atualizarProduto($produto)
+    {
+        $stmt=static::getConexao()->prepare("UPDATE produto SET nome=:nome, codigo=:codigo, descricao=:descricao, id_categoria=:idCategoria WHERE id=:id");
+        $stmt->bindParam(':id', $produto['idProduto'], PDO::PARAM_INT);
+        $stmt->bindParam(':nome', $produto['nomeU'], PDO::PARAM_STR);
+        $stmt->bindParam(':codigo', $produto['codigoU'], PDO::PARAM_STR);
+        $stmt->bindParam(':descricao', $produto['descricaoU'], PDO::PARAM_STR);
+        $stmt->bindParam(':idCategoria', $produto['categoriaU'], PDO::PARAM_INT);        
+        return $stmt->execute();
+	}
 
-    //     $mostrar=mysqli_fetch_row($result);
+    public function excluirProduto($produto)
+    {
+        $stmt = static::getConexao()->prepare("SELECT id FROM produtovenda WHERE id_produto=:idProduto");
+        $stmt->bindParam(':idProduto', $produto, PDO::PARAM_INT);
+        $stmt->execute();
+        $respPV = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($respPV == false){
+            $idimagem=self::obterIdImg($produto);
+            $stmt = static::getConexao()->prepare("DELETE FROM imagem WHERE id=:idimagem");
+            $stmt->bindParam(':idimagem', $idimagem['id_imagem'], PDO::PARAM_INT);
+            $respExcluirImg = $stmt->execute();
+            if($respExcluirImg == true){
+                $stmt = static::getConexao()->prepare("DELETE FROM produto WHERE id=:idProduto");
+                $stmt->bindParam(':idProduto', $produto, PDO::PARAM_INT);
+                return $stmt->execute();
+            }
+        }else{
+            return false;
+        }
+    }
 
-    //     $dados=array(
-    //         "id_produto" => $mostrar[0],
-    //         "nome" => $mostrar[1],
-    //         "descricao" => $mostrar[2]
-    //     );
-
-    //     return $dados;
-    // }
-
-    // public function atualizarProduto($dados){
-    //     $stmt=static::getConexao()->prepare("UPDATE produtos set  nome= '$dados[1]', descricao= '$dados[2]' WHERE id_produto='$dados[0]'");
-    // }
+    /**
+     * Tras o id da Imagem.. pq apos excluir o produto tem q exclir a imagem associada
+     */
+    public function obterIdImg($produto)
+    {
+        $stmt = static::getConexao()->prepare("SELECT id_imagem FROM produto WHERE id='$produto'");
+        $stmt->bindParam(':idProduto', $produto, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     // public function deletarProduto($idproduto){
     //     $c= new conectar();

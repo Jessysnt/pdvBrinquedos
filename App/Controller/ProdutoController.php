@@ -11,14 +11,11 @@ class ProdutoController
     public function produtoForm()
     {
         $obProduto = new ProdutoDAO();
-
         $obCategoriaDAO = new CategoriaDAO();
         $categoria = $obCategoriaDAO->pesquisarCategorias();
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
             $usuario=$_SESSION['usuario']->getId();
-
             $dados=array();
 
             $nomeImg=$_FILES['imagem']['name'];
@@ -48,8 +45,7 @@ class ProdutoController
                     View::jsonResponse(['resp'=>false]);
                 }
             }
-        }
-        
+        }     
         View::renderTemplate('/produtos/produto/produtoForm.html', ['categorias'=>$categoria]); 
     }
 
@@ -76,14 +72,42 @@ class ProdutoController
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
         View::renderTemplate('/produtos/produto/tabelaProduto.html', ['produtos'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tab-produto', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
-
     }
 
-    public function pesquisarCategoria()
-    {   
-        $obCategoriaDAO = new CategoriaDAO();
-        $categoria = $obCategoriaDAO->pesquisarCategorias();
-        View::renderTemplate('/produtos/produto/produtoForm.html', ['categorias'=>$categoria]);
+    // public function pesquisarCategoria()
+    // {   
+    //     $obCategoriaDAO = new CategoriaDAO();
+    //     $categoria = $obCategoriaDAO->pesquisarCategorias();
+    //     View::renderTemplate('/produtos/produto/produtoForm.html', ['categorias'=>$categoria]);
+    // }
+
+    /**
+     * Tras o produto para a modal de atualizar
+     */
+    public function obterProduto(){
+        $obProdutoDAO = new ProdutoDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $obProdutoDAO->obterProduto($_POST['id']);
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function atualizarProduto()
+    {
+        $ProdutoDAO = new ProdutoDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $ProdutoDAO->atualizarProduto($_POST);
+            View::jsonResponse($resp);
+        }
+    }
+
+    public function apagarProduto()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $ProdutoDAO = new ProdutoDAO();
+            $resp = $ProdutoDAO->excluirProduto($_POST['id']);
+            View::jsonResponse($resp);
+        }
     }
 
 }

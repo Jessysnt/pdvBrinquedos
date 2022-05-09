@@ -5,7 +5,7 @@
 {% block body %}
 
 <!-- Modal -->
-<div class="modal fade" id="abremodalUpdateProduto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="atualizarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,14 +15,21 @@
             <div class="modal-body">
                 <form id="frmProdutosU" enctype="multipart/form-data">
                     <input type="text" id="idProduto" hidden="" name="idProduto">
-                    
                     <label>Nome</label>
                     <input type="text" class="form-control input-sm" id="nomeU" name="nomeU">
-                    <label>Descrição</label>
-                    <input type="text" class="form-control input-sm" id="descricaoU" name="descricaoU">
                     <label>Código</label>
                     <input type="text" class="form-control input-sm" id="codigoU" name="codigoU">
-                    
+                    <label>Descrição</label>
+                    <input type="text" class="form-control input-sm" id="descricaoU" name="descricaoU">
+                    <label>Categoria</label>
+                    <select class="form-control input-sm" id="categoriaU" name="categoriaU" >
+                        <option value="">Selecionar</option>
+                        {% for categoria in categorias %}
+                        <option value="{{categoria.id}}">{{categoria.categoria}}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- <label>Imagem</label>
+                    <input type="file" id="imagem" name="imagem"> -->
                 </form>
             </div>
             <div class="modal-footer">
@@ -81,35 +88,37 @@
 {% block javascript %}
 
 <script type="text/javascript">
-    function adicionarProduto(idproduto){
+    function atualizarProduto(idproduto){
         //alert(idproduto);
         $.ajax({
             type:"POST",
-            data:"idproduto=" + idproduto,
-            url:"../procedimentos/produtos/obterProdutos.php",
+            data:"id=" + idproduto,
+            url:"produto-obter",
             success:function(r){
                 dado=jQuery.parseJSON(r);
-                $('#idProduto').val(dado['id_produto']);
+                $('#idProduto').val(dado['id']);
                 $('#nomeU').val(dado['nome']);
-                $('#descricaoU').val(dado['descricao']);
                 $('#codigoU').val(dado['codigo']);
-                $('#categoriaU').val(dado['categoria']);
+                $('#descricaoU').val(dado['descricao']);
+                $('#categoriaU').val(dado['id_categoria']);
             }
         });
     }
 
-    function deletarProduto(idproduto){
+    function excluirProduto(idproduto){
         alertify.confirm('Deseja Excluir este Produto?', function(){ 
             $.ajax({
                 type:"POST",
-                data:"idproduto=" + idproduto,
-                url:"../procedimentos/produtos/deletarProdutos.php",
+                data:"id=" + idproduto,
+                url:"produto-apagar",
                 success:function(r){
-                    if(r==1){
-                        $('#tabelaProdutosLoad').load("produtos/tabelaProdutos.php");
+                    // console.log(r);
+                    var resp = JSON.parse(r);
+                    if(resp == true){
+                        $('#tabelaProdutosLoad').load("tab-produto");
                         alertify.success("Excluido com sucesso!!");
                     }else{
-                        alertify.error("Não Excluido :(");
+                        alertify.error("Lote contem este produto!");
                     }
                 }
             });
@@ -122,16 +131,15 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btnAtualizarProduto').click(function(){
-
             dados=$('#frmProdutosU').serialize();
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"../procedimentos/produtos/atualizarProdutos.php",
+                url:"produto-atualizar",
                 success:function(r){
-                    
-                    if(r==1){
-                        $('#tabelaProdutosLoad').load("produtos/tabelaProdutos.php");
+                    var resp = JSON.parse(r);
+                    if(resp == true){
+                        $('#tabelaProdutosLoad').load("tab-produto");
                         alertify.success("Editado com sucesso!!");
                     }else{
                         alertify.error("Erro ao editar");
@@ -147,16 +155,12 @@
         $('#tabelaProdutosLoad').load("tab-produto");
 
         $('#btnAddProduto').click(function(){
-
             vazios=validarFormVazio('frmProdutos');
-
             if(vazios > 0){
                 alertify.alert("Preencha todos os campos!!");
                 return false;
             }
-               
             var formData = new FormData(document.getElementById("frmProdutos"));
-            
             $.ajax({
                 type: "POST",
                 data: formData,
@@ -177,8 +181,7 @@
                         alertify.error("Falha ao Adicionar");
                     }
                 }
-            });
-            
+            });  
         });
     });
 </script>
@@ -186,7 +189,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $('#categoria').select2();
-
 });
 </script>
 

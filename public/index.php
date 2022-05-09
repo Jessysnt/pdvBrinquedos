@@ -49,6 +49,9 @@ $router->add('cliente-atualizar', ['controller' => 'ClienteController', 'action'
 $router->add('produto-form', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
 $router->add('tab-produto', ['controller' => 'ProdutoController', 'action' => 'tabelaProduto']);
 $router->add('pesquisar-categoria', ['controller' => 'ProdutoController', 'action' => 'pesquisarCategoria']);
+$router->add('produto-obter', ['controller' => 'ProdutoController', 'action' => 'obterProduto']);
+$router->add('produto-atualizar', ['controller' => 'ProdutoController', 'action' => 'atualizarProduto']);
+$router->add('produto-apagar', ['controller' => 'ProdutoController', 'action' => 'apagarProduto']);
 
 //Rotas Produtos Preço
 $router->add('produto-venda', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);

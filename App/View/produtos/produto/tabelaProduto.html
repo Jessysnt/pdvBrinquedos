@@ -28,12 +28,12 @@
             <td><img width="60" height="60" src="{{produto.url}}"></td>	
             
             <td>
-                <span  data-toggle="modal" data-target="#abremodalUpdateProdutov" class="btn btn-warning btn-xs" onclick="adicionarProdutov('{{ produto.id }}')">
+                <span  data-toggle="modal" data-target="#atualizarModal" class="btn btn-warning btn-xs" onclick="atualizarProduto('{{ produto.id }}')">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </span>
             </td>
             <td>
-                <span class="btn btn-danger btn-xs" onclick="deletarProdutov('{{ produto.id }}')">
+                <span class="btn btn-danger btn-xs" onclick="excluirProduto('{{ produto.id }}')">
                     <span class="glyphicon glyphicon-remove"></span>
                 </span>
             </td>
