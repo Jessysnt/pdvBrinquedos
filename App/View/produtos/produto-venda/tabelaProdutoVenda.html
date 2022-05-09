@@ -28,7 +28,7 @@
             <td>{{produtovenda.preco_ven |format_currency('BRL')}}</td>		
             
             <td>
-                <span  data-toggle="modal" data-target="#abremodalUpdateProdutov" class="btn btn-warning btn-xs" onclick="adicionarProdutov('{{ produtovenda.id }}')">
+                <span  data-toggle="modal" data-target="#modalProdutoVenda" class="btn btn-warning btn-xs" onclick="editarProdutoVenda('{{ produtovenda.id }}')">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </span>
             </td>

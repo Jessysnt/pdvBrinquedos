@@ -75,7 +75,6 @@ class ProdutoVendaController
     {
         $obProdutoVenda = new ProdutoVendaDAO();
         $resp = $obProdutoVenda->produtoVendaTabela();
-        
         View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtosVenda'=>$resp]); 
     }
 
@@ -84,7 +83,6 @@ class ProdutoVendaController
         $obProdutoVendaDAO = new ProdutoVendaDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $resp = $obProdutoVendaDAO->obterProdutoVenda($_POST);
-           
             View::jsonResponse($resp);
         }
     }
@@ -92,13 +90,22 @@ class ProdutoVendaController
     public function atualizarProdutoVenda()
     {
         $obProdutoVendaDAO = new ProdutoVendaDAO();
-
         if($_SERVER['REQUEST_METHOD'] === 'PUT'){
-
             parse_str(file_get_contents("php://input"), $post);
+            date_default_timezone_set("America/Sao_Paulo");
+            $datetime = date("Y-m-d H:i:s");
 
-            $resp = $obProdutoVendaDAO->atualizarProdutoV($post);
-           // die(var_dump($resp));   
+            $editadoProdutoVenda=array(
+                'id' => $post[''],
+                'idProduto' => $post[''],
+                'lote' => $post[''],
+                'quantidade' => $post[''],
+                'precoComp' => $post[''],
+                'precoVend' => $post[''],
+                'editado' => $datetime,
+            );
+
+            $resp = $obProdutoVendaDAO->atualizarProdutoV($editadoProdutoVenda); 
             View::jsonResponse($resp);
         }
     }
@@ -109,18 +116,12 @@ class ProdutoVendaController
         $obProdutoVendaDAO = new ProdutoVendaDAO();
 
         if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-
             parse_str(file_get_contents("php://input"), $post);
-
             $obEstoque = $obEstoqueDAO->retornaProdEst($post);
             if($obEstoque){
                 $obEstoqueDAO->apagaEstoquePV($obEstoque);
-            }
-            
-            // die(var_dump($post)); 
-
+            } 
             $resp = $obProdutoVendaDAO->deletarProdutoVenda($post);
-              
             View::jsonResponse($resp);
         }
     }
