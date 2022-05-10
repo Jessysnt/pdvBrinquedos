@@ -104,7 +104,6 @@ class ProdutoVendaController
                 'precoVend' => $post[''],
                 'editado' => $datetime,
             );
-
             $resp = $obProdutoVendaDAO->atualizarProdutoV($editadoProdutoVenda); 
             View::jsonResponse($resp);
         }
@@ -117,11 +116,20 @@ class ProdutoVendaController
 
         if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
             parse_str(file_get_contents("php://input"), $post);
-            $obEstoque = $obEstoqueDAO->retornaProdEst($post);
+            $obEstoque = $obEstoqueDAO->retornaEstoqueLote($post);
             if($obEstoque){
-                $obEstoqueDAO->apagaEstoquePV($obEstoque);
+                die(var_dump($obEstoque['quantidade']));
+                $obEstoque->diminuiQuantidade($obEstoque['quantidade']);
+                // $dados=array(
+                //     'idEstoque'=>$obEstoque['ides'],
+                //     'quantotal'=> $obEstoque['quantotal'],
+                // ); 
+                die(var_dump($obEstoque));
+                // $obEstoque->diminuiQuantidade($_POST['quantidade']);
+                // die(var_dump($obEstoque));
+                // $obEstoqueDAO->apagaEstoquePV($obEstoque);
             } 
-            $resp = $obProdutoVendaDAO->deletarProdutoVenda($post);
+            $resp = $obProdutoVendaDAO->deletarProdutoVenda($post['idProdVend']);
             View::jsonResponse($resp);
         }
     }

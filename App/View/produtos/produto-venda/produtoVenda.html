@@ -32,7 +32,7 @@
                     </select>
                     <label>Lote</label>
                     <input type="text" class="form-control input-sm" id="loteU" name="loteU">
-                    <label>Quantidade</label>
+                    <label>Quantidade un</label>
                     <input type="text" class="form-control input-sm" id="quantidadeU" name="quantidadeU">
                     <label>Preço comprado</label>
                     <input type="text" class="form-control input-sm" id="compU" name="compU">
@@ -64,7 +64,6 @@
     <div class="row">
         <div class="col-sm-4">
             <form method="post" id="frmProdutov" enctype="multipart/form-data">
-                
                 <div class="form-group">
                     <label for="nome">Brinquedo</label>
                     <select class="form-control input-sm" id="produtoSelect" name="produtoSelect" >
@@ -74,12 +73,16 @@
                         {% endfor %} -->
                     </select >
                 </div>
+                <!-- <div class="form-group">
+                    <label>Código</label>
+                    <input type="textbox" class="form-control input-sm" id="codigo" name="codigo" data-nome="" data-id="">
+                </div> -->
                 <div class="form-group">
                     <label for="lote">Lote</label>
                     <input type="text" class="form-control" id="lote" name="lote">
                 </div>
                 <div class="form-group">
-                    <label for="quantidade">Quantidade</label>
+                    <label for="quantidade">Quantidade un</label>
                     <input type="text" class="form-control" id="quantidade" name="quantidade">
                 </div>
                 <div class="form-group">
@@ -91,12 +94,8 @@
                     <label for="ven">Preço vendido</label>
                     <input type="text" class="form-control" id="ven" name="ven">
                 </div>
-                
-                <span type="submit" class="btn btn-primary btn-block" id="btnAddProdutov">Adicionar</span>
-                
+                <span type="submit" class="btn btn-primary btn-block" id="btnAddProdutov">Adicionar</span>                
             </form>
-
-        
         </div>
         <div class="col-sm-8">
             <div id="tabelaProdvLoad"></div>
@@ -126,20 +125,26 @@
         });
     }
 
-    function deletarProdutov(idprodv){
+    function deletarProdutov(idProdVend, idProduto){
+        let dados={
+            idProdVend: idProdVend,
+            idProduto, idProduto
+        }
+        console.log('dados', dados);
         alertify.confirm('Deseja excluir este Brinquedo?', function(){ 
             $.ajax({
                 type:"DELETE",
-                data:"idprodv=" + idprodv,
+                data:dados,
                 url:"apg-prod-ven",
                 success:function(r){
                     console.log(r);
-                    if(r==1){
-                        $('#tabelaProdvLoad').load("tab-prod-vend");
-                        alertify.success("Excluido com sucesso!!");
-                    }else{
-                        alertify.error("Não foi possível excluir");
-                    }
+                    // var resp = JSON.parse(r);
+                    // if(resp == true){
+                    //     $('#tabelaProdvLoad').load("tab-prod-vend");
+                    //     alertify.success("Excluido com sucesso!!");
+                    // }else{
+                    //     alertify.error("Não foi possível excluir");
+                    // }
                 }
             });
         }, function(){ 
@@ -156,12 +161,17 @@
 
         $('#btnAddProdutov').click(function(){
             vazios=validarFormVazio('frmProdutov');
-            
             if(vazios > 0){
                 alertify.alert("Preencha os Campos!!");
                 return false;
             }
-            
+
+            var precoCompra = parseFloat($('#comp').val());
+			var precoVenda = parseFloat($('#ven').val());
+            if(precoCompra > precoVenda){
+                alertify.error("Valor de venda menor que o valor da compra!!");
+                return false;
+            }
             dados=$('#frmProdutov').serialize();
             var formData = new FormData(document.getElementById("frmProdutov"));
             $.ajax({
@@ -188,6 +198,12 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btnAtualizarProdutovU').click(function(){
+            var precoCompra = parseFloat($('#compU').val());
+			var precoVenda = parseFloat($('#venU').val());
+            if(precoCompra > precoVenda){
+                alertify.error("Valor de venda menor que o valor da compra!!");
+                return false;
+            }
             dados=$('#frmProdutovU').serialize();
             $.ajax({
                 type:"PUT",
@@ -195,14 +211,14 @@
                 url:"atz-prod-venda",
                 success:function(r){
                     console.log(r);
-                    // var resp = JSON.parse(r);
-                    // if(resp.resp){
-                    //     $('#produtoSelect').val(null).trigger('change');
-                    //     $('#tabelaProdvLoad').load("tab-prod-vend");
-                    //     alertify.success("Brinquedo atualizado com sucesso!");
-                    // }else{
-                    //     alertify.error("Não foi possível atualizar Brinquedo!");
-                    // }
+                    var resp = JSON.parse(r);
+                    if(resp.resp){
+                        $('#produtoSelect').val(null).trigger('change');
+                        $('#tabelaProdvLoad').load("tab-prod-vend");
+                        alertify.success("Brinquedo atualizado com sucesso!");
+                    }else{
+                        alertify.error("Não foi possível atualizar Brinquedo!");
+                    }
                 }
             });
         })
@@ -219,7 +235,33 @@ $(document).ready(function(){
             dataType: 'json'
         }
     });
-    //$('#produtoSelectU').select2();
+});
+
+/**
+* Entter para pesquisar produto
+*/
+$('#codigo').on('keypress',function(e) {
+    if(e.which == 13) {
+        $.ajax({
+            type:"POST",
+            data:"codigo=" + $('#codigo').val(),
+            url:"pesquisar-prod-est-codigo",
+            success:function(r){
+                console.log('resposta',r);
+                var resp = JSON.parse(r);
+                if(resp.length > 0){
+                    $('#codigo').attr('data-id', parseInt(resp[0]['id']));
+                    $('#codigo').attr('data-nome', resp[0]['nome']);
+                    $('#descricaoV').val(resp[0]['descricao']);
+                    $('#quantidadeV').val(resp[0]['quantotal']);
+                    $('#precoV').val(resp[0]['preco_ven']);
+                    $('#btAddTemp').click(); 
+                }else{
+                    alertify.error('Produto nao encontrado.');
+                }
+            }
+        });
+    }
 });
 </script>
 {% endblock %}

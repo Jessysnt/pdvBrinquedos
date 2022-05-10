@@ -23,7 +23,7 @@ class ProdutoVendaDAO extends Conexao
 
     public function produtoVendaTabela()
     {
-        $stmt = static::getConexao()->query("SELECT pro.nome, pro.codigo, pv.lote, pv.quantidade, pv.preco_comp, pv.preco_ven, pv.id FROM produtovenda AS pv INNER JOIN produto AS pro ON pv.id_produto=pro.id");
+        $stmt = static::getConexao()->query("SELECT pro.id AS idProduto, pro.nome, pro.codigo, pv.lote, pv.quantidade, pv.preco_comp, pv.preco_ven, pv.id FROM produtovenda AS pv INNER JOIN produto AS pro ON pv.id_produto=pro.id");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -50,7 +50,7 @@ class ProdutoVendaDAO extends Conexao
     }
 
     public function deletarProdutoVenda($idprodv)
-    {
+    {   
         $stmt=static::getConexao()->prepare("DELETE FROM produtovenda WHERE id=:id");
         $stmt->bindParam(':id', $idprodv, PDO::PARAM_INT);
 		return $stmt->execute();

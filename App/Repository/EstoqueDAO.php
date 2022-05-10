@@ -47,21 +47,38 @@ class EstoqueDAO extends Conexao
         return $stmt->execute();
     }
 
+    /**
+     * Retorna produto estoque
+     */
     public function retornaProdEst($idProduto)
     {
         $stmt = static::getConexao()->prepare("SELECT * FROM estoque WHERE id_produto = :idProduto");
         $stmt->bindParam(':idProduto', $idProduto, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchObject('\App\Entity\Estoque');
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Retorna quantidade produto estoque e quantidade do produto no lote
+     */
+    public function retornaEstoqueLote($Produto)
+    {
+        $stmt = static::getConexao()->prepare("SELECT es.id as ides, es.quantotal, es.preco_ven, pv.id as idpv, pv.quantidade, pv.preco_ven FROM estoque AS es LEFT JOIN produtovenda AS pv ON es.id_produto=pv.id_produto WHERE es.id_produto = :idProduto AND  pv.id = :idProdVend");
+        $stmt->bindParam(':idProduto', $Produto['idProduto'], PDO::PARAM_INT);
+        $stmt->bindParam(':idProdVend', $Produto['idProdVend'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * Apaga a quantidade no estoque quando a tabela produto-venda apaga o produto
      */
     public function apagaEstoquePV($dados)
-    {
-        $stmt=static::getConexao()->prepare("DELETE FROM estoque SET quantotal=:quantotal,  WHERE id=:idProduto");
-        $stmt->bindParam(':idProduto', $dados['idprodv'], PDO::PARAM_INT);
+    {   
+        // die(var_dump($dados['id_produto']));
+        $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal WHERE id_produto=:idProduto");
+        $stmt->bindParam(':idProduto', $dados['id_produto'], PDO::PARAM_INT);
         $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);                
         return $stmt->execute();
     }
