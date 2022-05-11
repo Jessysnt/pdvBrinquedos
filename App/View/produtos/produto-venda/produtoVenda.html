@@ -133,9 +133,9 @@
         console.log('dados', dados);
         alertify.confirm('Deseja excluir este Brinquedo?', function(){ 
             $.ajax({
-                type:"DELETE",
+                type:"POST",
                 data:dados,
-                url:"apg-prod-ven",
+                url:"prod-vend-desativa",
                 success:function(r){
                     console.log(r);
                     // var resp = JSON.parse(r);
@@ -179,6 +179,7 @@
                 data: dados,
                 url:"prod-vend-add",
                 success:function(r){
+                    console.log(r);
                     var resp = JSON.parse(r);
                     if(resp.resp){
                         $('#frmProdutov')[0].reset();

@@ -60,6 +60,7 @@ $router->add('tab-prod-vend', ['controller' => 'ProdutoVendaController', 'action
 $router->add('obt-produtov', ['controller' => 'ProdutoVendaController', 'action' => 'obterProdutoV']);
 $router->add('atz-prod-venda', ['controller' => 'ProdutoVendaController', 'action' => 'atualizarProdutoVenda']);
 $router->add('apg-prod-ven', ['controller' => 'ProdutoVendaController', 'action' => 'apagarProdutoVenda']);
+$router->add('prod-vend-desativa', ['controller' => 'ProdutoVendaController', 'action' => 'desativarLote']);
 
 //Rotas Estoque
 $router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);

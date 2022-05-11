@@ -147,6 +147,10 @@
 					<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
 				</div>
 			</div>
+			<div id="trocoUm" class="col-sm-4">
+				<label>Troco</label>
+				<input type="text" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
+			</div>
 		</div>		
 
 		<div id="pagamentoDois">
@@ -207,6 +211,7 @@
 		$("#vzsCartaoDois").hide();
 		$("#pagamentoDois").hide();
 		$("#pgDois").hide();
+		$("#trocoUm").hide();
 		$("#valorUm").prop("disabled", true);
 		$("#pgUm").prop("disabled", true);
 	});
@@ -224,8 +229,10 @@
 		$("#quantV").val(1);
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
-		$("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
-		$("#valorDois").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
+		$('#pgUm').val(1).trigger('change')
+		$("#valorUm").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
+		$("#valorDois").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
+		$("#trocoUmDinheiro").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 	};
 
 	function vezesCartao(){
@@ -485,11 +492,20 @@
 </script>
 
 <script type="text/javascript">
+	
+	
 	/**
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarVenda').click(function() {
+		var vtUm = $('#valorUm').maskMoney('unmasked')[0];
+		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
+		var vtSoma = vtUm + vtDois;
+		var vt = $('#valorTotal').val();
+		console.log('vt',$('#valorTotal'));
+		return false;
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
+			
 			if($('#pgUm').val() != ""){
 				var dados={
 					cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
@@ -667,19 +683,47 @@
 </script>
 
 <script type="text/javascript">
+	$('#pgUm').click(function(){
+		console.log('ak2');
+		if($('#pgUm').val == 1){
+			console.log('ak2');
+		}
+	});
+
 	function valorPagar(soma){
 		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-		
+
 		$('#valorUm').change(function(){
 			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
+			if(valorUm > soma){
+				$("#trocoUm").show();
+				var troco = valorUm - soma;
+				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+				console.log('pag',$('#pgUm').val());
+			}
 			if(valorUm < soma){
 				var valorDois = soma - valorUm;
 				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-			} else {
+			} 
+			if(valorUm == soma) {
 				$("#pagamentoDois").hide();
+				$("#trocoUm").hide();
+				$("#trocoUmDinheiro").val('');
+				console.log($("#trocoUmDinheiro").val());
 			}
 		});
+
+		// $('#pgUm').change(function(){
+		// 	console.log('ak');
+		// 	if($('#pgUm').val() == 1){
+		// 		console.log('ak2',$('#pgUm').val());
+				
+		// 	}
+		// });
+		
+		
+		
 	};
 </script>
 

@@ -74,7 +74,6 @@ class Estoque
     public function acrescentaQuantidade(int $quantidade): self
     {
         $this->quantotal += $quantidade;
-        
         return $this;
     }
     
@@ -93,10 +92,9 @@ class Estoque
     /**
      * Debita estoque ao lançar venda
      */
-    public function diminuiQuantidade(int $quantidade): self
+    public function diminuiQuantidade(int $quantotal): self
     {
-        $this->quantotal -= $quantidade;
-        
+        $this->quantotal -= $quantotal;
         return $this;
     }
     

@@ -55,7 +55,7 @@ class EstoqueDAO extends Conexao
         $stmt = static::getConexao()->prepare("SELECT * FROM estoque WHERE id_produto = :idProduto");
         $stmt->bindParam(':idProduto', $idProduto, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchObject('\App\Entity\Estoque');
     }
 
     /**

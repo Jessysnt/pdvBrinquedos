@@ -23,9 +23,7 @@ class ProdutoVendaController
         $obEstoqueDAO = new EstoqueDAO();
         
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            
             $idusuario=$_SESSION['usuario']->getId();
-            
             $dadosP=array(
                 'idUsuario'=>$idusuario,
                 'idProduto'=>$_POST['produtoSelect'],
@@ -38,20 +36,15 @@ class ProdutoVendaController
             
             if($resp){
                 $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['produtoSelect']);
-                
                 if($obEstoque){
-                    
                     $obEstoque->acrescentaQuantidade($_POST['quantidade']);
-                    
                     $dados=array(
                         'idEstoque'=>$obEstoque->getId(),
                         'quantotal'=> $obEstoque->getQuantotal(),
                         'precoVenda'=>$obEstoque->verificaPrecoVenda($_POST['ven'])
                     ); 
                     $obEstoqueDAO->atualizaProdEstoque($dados);
-
                     View::jsonResponse(['resp'=>true]);
-
                 }else{
                     $dados=array(
                         'idProduto'=>$_POST['produtoSelect'],
@@ -59,7 +52,6 @@ class ProdutoVendaController
                         'precoVenda'=>$_POST['ven']
                     );
                     $obEstoqueDAO->addProdEstoque($dados);
-
                     View::jsonResponse(['resp'=>true]);
                 }
         
@@ -109,29 +101,49 @@ class ProdutoVendaController
         }
     }
 
-    public function apagarProdutoVenda()
+    public function desativarLote()
     {
         $obEstoqueDAO = new EstoqueDAO();
         $obProdutoVendaDAO = new ProdutoVendaDAO();
 
-        if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-            parse_str(file_get_contents("php://input"), $post);
-            $obEstoque = $obEstoqueDAO->retornaEstoqueLote($post);
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['idProduto']);
             if($obEstoque){
-                die(var_dump($obEstoque['quantidade']));
-                $obEstoque->diminuiQuantidade($obEstoque['quantidade']);
-                // $dados=array(
-                //     'idEstoque'=>$obEstoque['ides'],
-                //     'quantotal'=> $obEstoque['quantotal'],
-                // ); 
-                die(var_dump($obEstoque));
-                // $obEstoque->diminuiQuantidade($_POST['quantidade']);
+                $resp = $obEstoque->diminuiQuantidade();
+                View::jsonResponse($resp);
                 // die(var_dump($obEstoque));
-                // $obEstoqueDAO->apagaEstoquePV($obEstoque);
-            } 
-            $resp = $obProdutoVendaDAO->deletarProdutoVenda($post['idProdVend']);
-            View::jsonResponse($resp);
+                // $dados=array(
+                //     'idEstoque'=>$obEstoque->getId(),
+                //     'quantotal'=> $obEstoque->getQuantotal(),
+                //     'precoVenda'=>$obEstoque->verificaPrecoVenda($_POST['ven'])
+                // ); 
+            }
         }
     }
+
+    // public function apagarProdutoVenda()
+    // {
+    //     $obEstoqueDAO = new EstoqueDAO();
+    //     $obProdutoVendaDAO = new ProdutoVendaDAO();
+
+    //     if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+    //         parse_str(file_get_contents("php://input"), $post);
+    //         $obEstoque = $obEstoqueDAO->retornaEstoqueLote($post);
+    //         if($obEstoque){
+    //             die(var_dump($obEstoque['quantidade']));
+    //             $obEstoque->diminuiQuantidade($obEstoque['quantidade']);
+    //             // $dados=array(
+    //             //     'idEstoque'=>$obEstoque['ides'],
+    //             //     'quantotal'=> $obEstoque['quantotal'],
+    //             // ); 
+    //             die(var_dump($obEstoque));
+    //             // $obEstoque->diminuiQuantidade($_POST['quantidade']);
+    //             // die(var_dump($obEstoque));
+    //             // $obEstoqueDAO->apagaEstoquePV($obEstoque);
+    //         } 
+    //         $resp = $obProdutoVendaDAO->deletarProdutoVenda($post['idProdVend']);
+    //         View::jsonResponse($resp);
+    //     }
+    // }
     
 }
