@@ -125,10 +125,11 @@
         });
     }
 
-    function deletarProdutov(idProdVend, idProduto){
+    function deletarProdutov(idProdVend, idProduto, quantidade){
         let dados={
-            idProdVend: idProdVend,
-            idProduto, idProduto
+            idLote: idProdVend,
+            idProduto: idProduto,
+            quantidade: quantidade
         }
         console.log('dados', dados);
         alertify.confirm('Deseja excluir este Brinquedo?', function(){ 
@@ -138,13 +139,13 @@
                 url:"prod-vend-desativa",
                 success:function(r){
                     console.log(r);
-                    // var resp = JSON.parse(r);
-                    // if(resp == true){
-                    //     $('#tabelaProdvLoad').load("tab-prod-vend");
-                    //     alertify.success("Excluido com sucesso!!");
-                    // }else{
-                    //     alertify.error("Não foi possível excluir");
-                    // }
+                    var resp = JSON.parse(r);
+                    if(resp == true){
+                        $('#tabelaProdvLoad').load("tab-prod-vend");
+                        alertify.success("Excluido com sucesso!!");
+                    }else{
+                        alertify.error("Não foi possível excluir");
+                    }
                 }
             });
         }, function(){ 

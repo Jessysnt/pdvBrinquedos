@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Estoque;
 use App\Repository\EstoqueDAO;
 use App\Repository\ProdutoDAO;
 use App\Repository\ProdutoVendaDAO;
@@ -101,49 +102,30 @@ class ProdutoVendaController
         }
     }
 
+    /**
+     * Desativa lote e exclui do estoque
+     */
     public function desativarLote()
     {
         $obEstoqueDAO = new EstoqueDAO();
         $obProdutoVendaDAO = new ProdutoVendaDAO();
-
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['idProduto']);
             if($obEstoque){
-                $resp = $obEstoque->diminuiQuantidade();
-                View::jsonResponse($resp);
-                // die(var_dump($obEstoque));
-                // $dados=array(
-                //     'idEstoque'=>$obEstoque->getId(),
-                //     'quantotal'=> $obEstoque->getQuantotal(),
-                //     'precoVenda'=>$obEstoque->verificaPrecoVenda($_POST['ven'])
-                // ); 
+                $obEstoque->diminuiQuantidade($_POST['quantidade']);
+                $dados=array(
+                    'idEstoque'=>$obEstoque->getId(),
+                    'quantotal'=> $obEstoque->getQuantotal(),
+                    'precoVenda'=>$obEstoqueDAO->retornaMaiorPreco($_POST['idProduto'])
+                ); 
+                $respEstoque = $obEstoqueDAO->atualizaProdEstoque($dados);
+                if($respEstoque){
+                    $respProdutoVenda = $obProdutoVendaDAO->inativarProdutoVenda($_POST['idLote']) ;
+                    View::jsonResponse($respProdutoVenda);
+                }
+            }else{
+                View::jsonResponse(false);
             }
         }
     }
-
-    // public function apagarProdutoVenda()
-    // {
-    //     $obEstoqueDAO = new EstoqueDAO();
-    //     $obProdutoVendaDAO = new ProdutoVendaDAO();
-
-    //     if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-    //         parse_str(file_get_contents("php://input"), $post);
-    //         $obEstoque = $obEstoqueDAO->retornaEstoqueLote($post);
-    //         if($obEstoque){
-    //             die(var_dump($obEstoque['quantidade']));
-    //             $obEstoque->diminuiQuantidade($obEstoque['quantidade']);
-    //             // $dados=array(
-    //             //     'idEstoque'=>$obEstoque['ides'],
-    //             //     'quantotal'=> $obEstoque['quantotal'],
-    //             // ); 
-    //             die(var_dump($obEstoque));
-    //             // $obEstoque->diminuiQuantidade($_POST['quantidade']);
-    //             // die(var_dump($obEstoque));
-    //             // $obEstoqueDAO->apagaEstoquePV($obEstoque);
-    //         } 
-    //         $resp = $obProdutoVendaDAO->deletarProdutoVenda($post['idProdVend']);
-    //         View::jsonResponse($resp);
-    //     }
-    // }
-    
 }

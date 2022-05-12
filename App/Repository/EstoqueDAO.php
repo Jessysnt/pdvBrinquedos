@@ -34,7 +34,7 @@ class EstoqueDAO extends Conexao
         $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal, preco_ven=:precoVenda WHERE id=:idEstoque");
         $stmt->bindParam(':idEstoque', $dados['idEstoque'], PDO::PARAM_INT);
         $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);
-        $stmt->bindParam(':precoVenda', $dados['precoVenda'], PDO::PARAM_STR);            
+        $stmt->bindParam(':precoVenda', $dados['precoVenda']['precoVenda'], PDO::PARAM_STR);            
         return $stmt->execute();
     }
 
@@ -59,28 +59,14 @@ class EstoqueDAO extends Conexao
     }
 
     /**
-     * Retorna quantidade produto estoque e quantidade do produto no lote
+     * Retorna valor maximo do produto
      */
-    public function retornaEstoqueLote($Produto)
+    public function retornaMaiorPreco($idProduto)
     {
-        $stmt = static::getConexao()->prepare("SELECT es.id as ides, es.quantotal, es.preco_ven, pv.id as idpv, pv.quantidade, pv.preco_ven FROM estoque AS es LEFT JOIN produtovenda AS pv ON es.id_produto=pv.id_produto WHERE es.id_produto = :idProduto AND  pv.id = :idProdVend");
-        $stmt->bindParam(':idProduto', $Produto['idProduto'], PDO::PARAM_INT);
-        $stmt->bindParam(':idProdVend', $Produto['idProdVend'], PDO::PARAM_INT);
+        $stmt = static::getConexao()->prepare("SELECT MAX(preco_ven) AS precoVenda FROM produtovenda WHERE id_produto =:idProduto ");
+        $stmt->bindParam(':idProduto', $idProduto, PDO::PARAM_INT);;
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-
-    /**
-     * Apaga a quantidade no estoque quando a tabela produto-venda apaga o produto
-     */
-    public function apagaEstoquePV($dados)
-    {   
-        // die(var_dump($dados['id_produto']));
-        $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal WHERE id_produto=:idProduto");
-        $stmt->bindParam(':idProduto', $dados['id_produto'], PDO::PARAM_INT);
-        $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);                
-        return $stmt->execute();
     }
 
     /**
