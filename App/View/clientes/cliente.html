@@ -46,12 +46,12 @@
 </div> 
 
 <div class="container">
-<div class="row">
+<!-- <div class="row">
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" class="active"><a href="cliente-add">Cadastro</a></li>
         <li role="presentation"><a href="cliente-tabela">Lista</a></li>
     </ul>
-</div>	
+</div>	 -->
 </br>
 <div class="row">
     <div class="col-sm-6">
@@ -147,7 +147,8 @@
                     if(resp){
                         $('#frmClientes')[0].reset();
                         // $('#tabelaClientesLoad').load("tabClientes.php");
-                        alertify.success("Cliente Adicionado");
+                        // alertify.success("Cliente Adicionado");
+                        window.location.href="cliente-tabela";
                     }else{
                         alertify.error("Não foi possível adicionar");
                     }

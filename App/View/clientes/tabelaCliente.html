@@ -44,12 +44,13 @@
 </div>
 
 <div class="container" id="tabela">
-    <div class="row">
+    <a class="btn btn-primary" href="cliente-add" role="button">Novo Cliente</a>
+    <!-- <div class="row">
         <ul class="nav nav-tabs nav-justified">
             <li role="presentation" ><a href="cliente-add">Cadastro</a></li>
             <li role="presentation" class="active" color="red"><a href="cliente-tabela">Lista</a></li>
         </ul>
-    </div>	
+    </div>	 -->
     </br>
 
 <!--Tabela-->
@@ -74,6 +75,7 @@
     
                      <th>Editar</th>
                      <th>Excluir</th>
+                     <th>Visualizar</th>
                  </tr>
                  
              </thead>
@@ -94,6 +96,11 @@
                     <td>
                         <span class="btn btn-danger btn-xs" onclick="inativarCliente('{{cliente.id}}')">
                             <span class="glyphicon glyphicon-remove"></span>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="btn btn-secondary btn-xs" onclick="">
+                            <span class="glyphicon glyphicon-list-alt"></span>
                         </span>
                     </td>
                  </tr>
