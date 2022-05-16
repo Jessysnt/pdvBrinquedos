@@ -4,43 +4,6 @@
 
 {% block body %}
 
-<!-- Modal -->
-<div class="modal fade" id="atualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Editar Usuário</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmUsuarioU">
-                    <input type="text" hidden="" id="idUsuario" name="idUsuario">
-                    <label>Nome</label>
-                    <input type="text" class="form-control input-sm" name="nomeU" id="nomeU">
-                    <label>Usuário</label>
-                    <input type="text" class="form-control input-sm" name="sobrenomeU" id="sobrenomeU">
-                    <label>Email</label>
-                    <input type="text" class="form-control input-sm" name="emailU" id="emailU">
-                    <label>Cargo</label>
-                    <select class="form-control input-sm" id="cargoU" name="cargoU">
-                        <option value="A">Selecionar Categoria</option>
-                        <option value="2">Gerente</option>
-                        <option value="3">Caixa</option>
-                        <option value="4">Vendedor</option>
-                        <option value="1">Administrador</option>
-                    </select>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="btnAtualizaUsuario" type="button" class="btn btn-warning" data-dismiss="modal">Atualizar</button>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="container">
     <h1>Administrar Usuário</h1>
     <div class="row">
@@ -69,94 +32,25 @@
 
             </form>
         </div>
-        <div class="col-sm-7">
+        <!-- <div class="col-sm-7">
             <div id="tabelaUsuariosLoad"></div>
-        </div>
+        </div> -->
     </div>
 </div>
 
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript">
-    function adicionarDados(idusuario){
-        //alert(idusuario);
-        $.ajax({
-            type:"POST",
-            data:"idusuario=" + idusuario,
-            url:"obt-usuario",
-            success:function(r){
-                var resp = JSON.parse(r);
-                $('#idUsuario').val(resp['id']);
-                $('#nomeU').val(resp['nome']);
-                $('#sobrenomeU').val(resp['sobrenome']);
-                $('#emailU').val(resp['email']);
-                $('#cargoU').val(resp['cargo']);
-            }
-        });
-    }
-
-    function deletarUsuario(idusuario){
-        alertify.confirm('Deseja excluir este usuario?', function(){ 
-            $.ajax({
-                type:"POST",
-                data:"idusuario=" + idusuario,
-                url:"apg-usuario",
-                success:function(r){
-                    if(true){
-                        $('#tabelaUsuariosLoad').load("tab-usuario");
-                        alertify.success("Excluido com sucesso!!");
-                    }else{
-                        alertify.error("Não foi possível excluir");
-                    }
-                }
-            });
-        }, function(){ 
-            alertify.error('Cancelado !')
-        });
-    }
-
-
-</script>
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#btnAtualizaUsuario').click(function(){
-            dados=$('#frmUsuarioU').serialize();
-            $.ajax({
-                type:"POST",
-                data:dados,
-                url:"atz-usuario",
-                success:function(r){
-                    var resp = JSON.parse(r);
-                    if(resp){
-                        $('#tabelaUsuariosLoad').load('tab-usuario');
-                        alertify.success("Editado com sucesso");
-                    }else{
-                        alertify.error("Não foi possível editar");
-                    }
-                }, error:function(e){
-                    console.log(e);
-                }
-            });
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-
-        $('#tabelaUsuariosLoad').load('tab-usuario');
-
+        // $('#tabelaUsuariosLoad').load('tab-usuario');
         $('#usuario-add').click(function(){
-
             vazios=validarFormVazio('frmUsuario');
-
             if(vazios > 0){
                 alertify.alert("Preencha os campos!!");
                 return false;
             }
-
             dados=$('#frmUsuario').serialize();
             $.ajax({
                 type:"POST",

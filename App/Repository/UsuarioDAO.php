@@ -48,13 +48,14 @@ class UsuarioDAO extends Conexao
 
 
     public function atualizarUsuario($dados)
-    {
-        $stmt=static::getConexao()->prepare("UPDATE usuario SET nome=:nome, sobrenome=:sobrenome, email=:email, cargo=:cargo WHERE id=:id");
-        $stmt->bindParam(':id', $dados['idUsuario'], PDO::PARAM_INT);
+    {   
+        $stmt=static::getConexao()->prepare("UPDATE usuario SET nome=:nome, sobrenome=:sobrenome, email=:email, cargo=:cargo, status=:statusU WHERE id=:id");
+        $stmt->bindParam(':id', $dados['id'], PDO::PARAM_INT);
         $stmt->bindParam(':nome', $dados['nomeU'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenomeU'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['emailU'], PDO::PARAM_STR);
-        $stmt->bindParam(':cargo', $dados['cargoU'], PDO::PARAM_INT);         
+        $stmt->bindParam(':cargo', $dados['cargoU'], PDO::PARAM_INT);   
+        $stmt->bindParam(':statusU', $dados['statusU'], PDO::PARAM_INT);        
         return $stmt->execute();
 	}
 
@@ -64,6 +65,25 @@ class UsuarioDAO extends Conexao
         $stmt->bindParam(':id', $dados['idusuario'], PDO::PARAM_INT);
 		return $stmt->execute();
 	}
+
+    public function tabUsuario($busca, $pagina, $itensPag)
+    {
+        $offset = $itensPag*($pagina-1);
+        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE nome LIKE :busca ORDER BY status desc LIMIT :itensPag OFFSET :offset");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Entity\Usuario');
+    }
+
+    public function qntTotalUsuarios($busca)
+    {
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM usuario WHERE nome LIKE :busca LIMIT 10 ");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function exibirUsuario()
     {

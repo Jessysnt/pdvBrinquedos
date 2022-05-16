@@ -30,16 +30,16 @@
     
             <ul class="nav navbar-nav navbar-right">
     
-                <li ><a href="painel" style="color: #2b2574"><span class="glyphicon glyphicon-home"></span> Inicio</a>
-                </li>
-
-              <li class="dropdown">
-                <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Gestão Produtos <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="cliente-tabela">Clientes</a></li>
-                  <!-- <li><a class="dropdown-item" href="cliente-add" ><span ></span> Clientes</a></li> -->
-                </ul>
+              <li ><a href="painel" style="color: #2b2574"><span class="glyphicon glyphicon-home"></span> Inicio</a>
               </li>
+              <li><a href="cliente-tabela" style="color: #0d02a3" ><span class="glyphicon glyphicon-user"></span> Clientes</a></li>
+              <!-- <li class="dropdown">
+                <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Clientes <span class="caret"></span></a>
+                <ul class="dropdown-menu"> -->
+                  <!-- <li><a class="dropdown-item" href="cliente-tabela">Clientes</a></li> -->
+                  <!-- <li><a class="dropdown-item" href="cliente-add" ><span ></span> Clientes</a></li> -->
+                <!-- </ul>
+              </li> -->
               {% if (session['usuario'].getCargo() == "1" or "2" or "3") %}
               <li><a href="pdv" style="color: #045719"><span class="glyphicon glyphicon-usd"></span> PDV</a>
               </li>
@@ -78,7 +78,8 @@
                 <ul class="dropdown-menu">
                   
                   {% if session['usuario'].getCargo() == "1" %} 
-                  <li> <a href="usuario-add">Gestão Usuários</a></li>
+                  <li> <a href="tab-usuario">Gestão Usuários</a></li>
+                  <!-- <li> <a href="usuario-add">Gestão Usuários</a></li> -->
                   {% endif %}
     
                   <li> <a style="color: red" href="sair"><span class="glyphicon glyphicon-off"></span> Sair</a></li>

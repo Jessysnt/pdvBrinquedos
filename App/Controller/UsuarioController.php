@@ -12,15 +12,12 @@ class UsuarioController
         $obUsuario = new UsuarioDAO();
     
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    
             $result = $obUsuario->registroUsuario($_POST);
-                
             View::jsonResponse($result);
         }
     
         $validar = false;
         $usuarioAdm = $obUsuario->verificaAdm();
-    
         if(count($usuarioAdm)>0){
             $validar = true;
         }
@@ -29,9 +26,26 @@ class UsuarioController
 
     public function tabelaUsuario()
     {
-        $obUsuario = new UsuarioDAO();
-        $resp = $obUsuario->exibirUsuario();
-        View::renderTemplate('/usuario/tabelaUsuario.html', ['usuarios'=>$resp]); 
+        $busca= "";
+        $pagina= 1;
+        $itensPag= 10;
+
+        if(isset($_GET['busca'])){
+            $busca = $_GET['busca'];
+        }
+        if(isset($_GET['pagina'])){
+            $pagina = $_GET['pagina'];
+        }
+        if(isset($_GET['itensPag'])){
+            $itensPag = $_GET['itensPag'];
+        }
+
+        $obUsuarioDAO = new UsuarioDAO();
+        $resp = $obUsuarioDAO->tabUsuario($busca, $pagina, $itensPag);
+        $total = $obUsuarioDAO->qntTotalUsuarios($busca);
+        $totalpaginas =  ceil($total['total'] / $itensPag);
+
+        View::renderTemplate('/usuario/tabelaUsuario.html', ['usuarios'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tab-usuario', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
     }
 
     public function obterUsuario()
@@ -54,9 +68,17 @@ class UsuarioController
 
     public function atualizaUsuario()
     {
-        $obUsuario = new UsuarioDAO();
+        $obUsuarioDAO = new UsuarioDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $resp = $obUsuario->atualizarUsuario($_POST);
+            $obUsuario=array(
+                'id'=>intval($_POST['idUsuario']),
+                'nomeU'=>$_POST['nomeU'],
+                'sobrenomeU'=>$_POST['sobrenomeU'],
+                'emailU'=>$_POST['emailU'],
+                'cargoU'=>$_POST['cargoU'],
+                'statusU'=>intval($_POST['statusU']) 
+            );
+            $resp = $obUsuarioDAO->atualizarUsuario($obUsuario);
             View::jsonResponse($resp);
         }
     }

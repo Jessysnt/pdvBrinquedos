@@ -86,7 +86,7 @@ class ClienteDAO extends Conexao
 
     public function atualizarCliente($cliente)
     {
-        $stmt=static::getConexao()->prepare("UPDATE cliente SET nome=:nome, sobrenome=:sobrenome, email=:email, telefone=:telefone, cpf=:cpf WHERE id=:id");
+        $stmt=static::getConexao()->prepare("UPDATE cliente SET nome=:nome, sobrenome=:sobrenome, email=:email, telefone=:telefone WHERE id=:id");
         $stmt->bindParam(':id', $cliente['idclienteU'], PDO::PARAM_INT);
         $stmt->bindParam(':nome', $cliente['nomeU'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $cliente['sobrenomeU'], PDO::PARAM_STR);

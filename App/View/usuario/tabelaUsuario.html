@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários{% endblock %}
+
 {% block stylesheet %}
 <style>
 	td {text-align: center;}
@@ -7,62 +11,235 @@
 
 {% block body %}
 
-<div class="table-responsive">
+<!-- Modal -->
+<div class="modal fade" id="atualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Editar Usuário</h4>
+          </div>
+          <div class="modal-body">
+              <form id="frmUsuarioU">
+                  <input type="text" hidden="" id="idUsuario" name="idUsuario">
+                  <label>Nome</label>
+                  <input type="text" class="form-control input-sm" name="nomeU" id="nomeU">
+                  <label>Usuário</label>
+                  <input type="text" class="form-control input-sm" name="sobrenomeU" id="sobrenomeU">
+                  <label>Email</label>
+                  <input type="text" class="form-control input-sm" name="emailU" id="emailU">
+                  <label>Cargo</label>
+                  <select class="form-control input-sm" id="cargoU" name="cargoU">
+                      <option value="A">Selecionar Categoria</option>
+                      <option value="2">Gerente</option>
+                      <option value="3">Caixa</option>
+                      <option value="4">Vendedor</option>
+                      <option value="1">Administrador</option>
+                  </select><br>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="statusU" name="statusU">
+                    <label class="custom-control-label" for="statusU">Ativo</label>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button id="btnAtualizaUsuario" type="button" class="btn btn-warning" data-dismiss="modal">Atualizar</button>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container" id="tabela">
+<a class="btn btn-primary" href="usuario-add" role="button">Novo Usuário</a>
 </br>
-	<caption><label>Usuários</label></caption> 
-		</br>
+	<div class="table-responsive">
+	</br>
+		<caption><label>Usuários</label></caption> 
+			</br>
 
-	 <table class="table table-hover table-condensed table-bordered"  id="lista">
+		<table class="table table-hover table-condensed table-bordered"  id="lista">
 
-	 	<div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
-	 	</br>
+			<div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+			</br>
 
-		<thead>	
-		 	<tr>
-		 		<th>Nome</th>
-		 		<th>Sobrenome</th>
-		 		<th>Email</th>
-		 		<th>Cargo</th>
+			<thead>	
+				<tr>
+					<th>Nome</th>
+					<th>Sobrenome</th>
+					<th>Email</th>
+					<th>Cargo</th>
 
-		 		<th>Editar</th>
-		 		<th>Excluir</th>
-		 	</tr>
-			 
- 		</thead>
+					<th>Status</th>
+					<th>Editar</th>
+					<th>inativar</th>
+					<th>Visualizar</th>
+				</tr>
+				
+			</thead>
 
- 		<tbody>	
-			{% for usuario in usuarios %}
-		 	<tr>
-		 		<td>{{usuario.nome}}</td>
-		 		<td>{{usuario.sobrenome}}</td>
-		 		<td>{{usuario.email}}</td>
-		 		<td>{{usuario.getCargoNome()}}</td>
-		 		<td>
-					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('{{usuario.id}}')">
-						<span class="glyphicon glyphicon-pencil"></span>
-					</span>
-				</td>
-				<td>
-					<span class="btn btn-danger btn-xs" onclick="deletarUsuario('{{usuario.id}}')">
-						<span class="glyphicon glyphicon-remove"></span>
-					</span>
-				</td>
-		 	</tr>
-			 {% endfor %}
-	 	</tbody>
-	</table>
+			<tbody>	
+				{% for usuario in usuarios %}
+				<tr>
+					<td>{{usuario.nome}}</td>
+					<td>{{usuario.sobrenome}}</td>
+					<td>{{usuario.email}}</td>
+					<td>{{usuario.getCargoNome()}}</td>
+					{% if usuario.status == 1 %}
+          <td><span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span></td>
+          {% elseif usuario.status == 0 %}
+          <td><span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span></td>
+          {% endif %}
+					<td>
+						<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('{{usuario.id}}')">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</span>
+					</td>
+					<td>
+						<span class="btn btn-danger btn-xs" onclick="deletarUsuario('{{usuario.id}}')">
+							<span class="glyphicon glyphicon-remove"></span>
+						</span>
+					</td>
+					<td>
+            <span class="btn btn-secondary btn-xs" onclick="vendasUsuario('{{usuario.id}}')">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </span>
+          </td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if pagina > 1 %} 
+          <li class="page-item">
+            <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina-1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          {% endif %}
+
+          {% for i in 1..totalpaginas %}
+          <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
+          {% endfor %}
+
+          {% if totalpaginas > pagina %}
+          <li class="page-item">
+            <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina+1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+	</div>
 </div>
 {% endblock %}
 
 {% block javascript %}
 <script type="text/javascript">
-	$('#filtro-nome').keyup(function() {
-		var nomeFiltro = $(this).val().toLowerCase();
-		$('table tbody').find('tr').each(function() {
-		    var conteudoCelula = $(this).find('td:first').text();
-		    var corresponde = conteudoCelula.toLowerCase().indexOf(nomeFiltro) >= 0;
-		    $(this).css('display', corresponde ? '' : 'none');
-		});
-	});
+	// $('#filtro-nome').keyup(function(e) {
+    //     if(e.which == 13) {
+    //         var nomeFiltro = $(this).val().toLowerCase();
+    //         $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+    //     }
+    // });
+
+    $('.pagination li a').click(function(event){
+        event.preventDefault();
+        $('#tabela').load(event.currentTarget.href);
+        return false;
+    });
+
+    $('#filtro-nome').keyup(function(e) {
+        if(e.which == 13) {
+            var nomeFiltro = $(this).val().toLowerCase();
+            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabela').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+        }
+    });
+</script>
+
+<script type="text/javascript">
+  function adicionarDados(idusuario){
+      //alert(idusuario);
+      $.ajax({
+          type:"POST",
+          data:"idusuario=" + idusuario,
+          url:"obt-usuario",
+          success:function(r){
+              var resp = JSON.parse(r);
+              $('#idUsuario').val(resp['id']);
+              $('#nomeU').val(resp['nome']);
+              $('#sobrenomeU').val(resp['sobrenome']);
+              $('#emailU').val(resp['email']);
+              $('#cargoU').val(resp['cargo']);
+              if(resp['status'] == 1){
+                $('#statusU')[0].checked = true;
+              }
+          }
+      });
+  }
+
+  function deletarUsuario(idusuario){
+      alertify.confirm('Deseja excluir este usuario?', function(){ 
+          $.ajax({
+              type:"POST",
+              data:"idusuario=" + idusuario,
+              url:"apg-usuario",
+              success:function(r){
+                  if(true){
+                      $('#tabelaUsuariosLoad').load("tab-usuario");
+                      alertify.success("Excluido com sucesso!!");
+                  }else{
+                      alertify.error("Não foi possível excluir");
+                  }
+              }
+          });
+      }, function(){ 
+          alertify.error('Cancelado !')
+      });
+  }
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+      $('#btnAtualizaUsuario').click(function(){
+          // dados=$('#frmUsuarioU').serialize();
+          if($('#statusU')[0].checked == true){
+            var status = 1;
+          }else{
+            var status = 0;
+          }
+          dados={
+            idUsuario: $('#idUsuario').val(),
+            nomeU: $('#nomeU').val(),
+            sobrenomeU: $('#sobrenomeU').val(),
+            emailU: $('#emailU').val(),
+            cargoU: $('#cargoU').val(),
+            statusU: status
+          };
+          $.ajax({
+              type:"POST",
+              data:dados,
+              url:"atz-usuario",
+              success:function(r){
+                  var resp = JSON.parse(r);
+                  if(resp){
+                      $('#tabela').load("tab-usuario");
+                      alertify.success("Editado com sucesso");
+                  }else{
+                      alertify.error("Não foi possível editar");
+                  }
+              }, error:function(e){
+                  console.log(e);
+              }
+          });
+      });
+  });
 </script>
 {% endblock %}
