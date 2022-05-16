@@ -82,5 +82,15 @@ class UsuarioController
             View::jsonResponse($resp);
         }
     }
+
+    public function usuarioVendas()
+    {   
+        $obUsuarioDAO = new UsuarioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $obUsuarioDAO->exibirUsuario(intval($_POST["idusuario"])); 
+            View::jsonResponse($resp);
+        }
+        View::renderTemplate('/usuario/usuario-venda.html');
+    }
     
 }

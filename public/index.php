@@ -36,6 +36,7 @@ $router->add('tab-usuario', ['controller' => 'UsuarioController', 'action' => 't
 $router->add('obt-usuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
 $router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'inativarUsuario']);
 $router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
+$router->add('usuario-venda', ['controller' => 'UsuarioController', 'action' => 'usuarioVendas']);
 
 //Rotas de Cliente
 $router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);

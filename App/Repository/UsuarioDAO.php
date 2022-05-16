@@ -85,10 +85,12 @@ class UsuarioDAO extends Conexao
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function exibirUsuario()
+    public function exibirUsuario($idUsuario)
     {
-        $stmt = static::getConexao()->query("SELECT * FROM usuario WHERE status=1");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Entity\Usuario');
+        $stmt = static::getConexao()->prepare("SELECT id, nome, sobrenome, cargo FROM usuario WHERE id=:id");
+        $stmt->bindParam(':id', $idUsuario, PDO::PARAM_INT);
+        $stmt->execute(); 
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function obterUsuario($dados)

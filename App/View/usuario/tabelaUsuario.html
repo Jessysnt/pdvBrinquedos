@@ -186,23 +186,36 @@
   }
 
   function deletarUsuario(idusuario){
-      alertify.confirm('Deseja excluir este usuario?', function(){ 
-          $.ajax({
-              type:"POST",
-              data:"idusuario=" + idusuario,
-              url:"apg-usuario",
-              success:function(r){
-                  if(true){
-                      $('#tabelaUsuariosLoad').load("tab-usuario");
-                      alertify.success("Excluido com sucesso!!");
-                  }else{
-                      alertify.error("Não foi possível excluir");
-                  }
-              }
-          });
-      }, function(){ 
-          alertify.error('Cancelado !')
-      });
+    alertify.confirm('Deseja excluir este usuario?', function(){ 
+        $.ajax({
+            type:"POST",
+            data:"idusuario=" + idusuario,
+            url:"apg-usuario",
+            success:function(r){
+                if(true){
+                    $('#tabela').load("tab-usuario");
+                    alertify.success("Excluido com sucesso!!");
+                }else{
+                    alertify.error("Não foi possível excluir");
+                }
+            }
+        });
+    }, function(){ 
+        alertify.error('Cancelado !')
+    });
+  }
+
+  function vendasUsuario(idUsuario) {
+    window.location.href="usuario-venda";
+    $.ajax({
+      type:"POST",
+      data:"idusuario=" + idUsuario,
+      url:"usuario-venda",
+      success:function(r){
+        console.log(r);
+        // window.location.href="usuario-venda";
+      }
+  });
   }
 </script>
 
