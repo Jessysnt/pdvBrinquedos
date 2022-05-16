@@ -86,11 +86,11 @@ class UsuarioController
     public function usuarioVendas()
     {   
         $obUsuarioDAO = new UsuarioDAO();
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $resp = $obUsuarioDAO->exibirUsuario(intval($_POST["idusuario"])); 
-            View::jsonResponse($resp);
+        if($_GET['usuario']){
+            $resp = $obUsuarioDAO->exibirUsuario(intval($_GET["usuario"]));
+            View::renderTemplate('/usuario/usuario-venda.html', ['usuario'=>$resp]); 
         }
-        View::renderTemplate('/usuario/usuario-venda.html');
+       
     }
     
 }

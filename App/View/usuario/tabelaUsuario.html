@@ -100,10 +100,10 @@
 							<span class="glyphicon glyphicon-remove"></span>
 						</span>
 					</td>
-					<td>
-            <span class="btn btn-secondary btn-xs" onclick="vendasUsuario('{{usuario.id}}')">
-                <span class="glyphicon glyphicon-list-alt"></span>
-            </span>
+          <td>
+            <a class="btn btn-primary btn-xs" href="usuario-venda?usuario={{usuario.id}}" role="button">
+              <span class="glyphicon glyphicon-list-alt"></span>
+            </a>
           </td>
 				</tr>
 				{% endfor %}
@@ -203,19 +203,6 @@
     }, function(){ 
         alertify.error('Cancelado !')
     });
-  }
-
-  function vendasUsuario(idUsuario) {
-    window.location.href="usuario-venda";
-    $.ajax({
-      type:"POST",
-      data:"idusuario=" + idUsuario,
-      url:"usuario-venda",
-      success:function(r){
-        console.log(r);
-        // window.location.href="usuario-venda";
-      }
-  });
   }
 </script>
 
