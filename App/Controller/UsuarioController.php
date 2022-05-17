@@ -83,6 +83,9 @@ class UsuarioController
         }
     }
 
+    /**
+     * Tras o usuario para a tela de relatorio
+     */
     public function usuarioVendas()
     {   
         $obUsuarioDAO = new UsuarioDAO();
@@ -90,7 +93,20 @@ class UsuarioController
             $resp = $obUsuarioDAO->exibirUsuario(intval($_GET["usuario"]));
             View::renderTemplate('/usuario/usuario-venda.html', ['usuario'=>$resp]); 
         }
-       
+    }
+
+    public function relatorioVendasUsuario()
+    {
+        $obUsuarioDAO = new UsuarioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $usuario=array(
+                'idUsuario'=> intval($_POST['idUsuario']),
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => date($_POST['dtFinal'])
+            );
+            $resp = $obUsuarioDAO->vendaUsuarioData($usuario);
+            View::jsonResponse($resp);
+        }
     }
     
 }

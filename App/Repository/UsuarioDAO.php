@@ -31,13 +31,11 @@ class UsuarioDAO extends Conexao
         $senha = sha1($dados['senha']);
 
         $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, email, senha, cargo) VALUES (:nome, :sobrenome, :email, :senha, :cargo)");
-        
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
         $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_INT);
-
         return $stmt->execute();
     }
 
@@ -85,12 +83,15 @@ class UsuarioDAO extends Conexao
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Dados passado para a tela usuario-venda
+     */
     public function exibirUsuario($idUsuario)
     {
         $stmt = static::getConexao()->prepare("SELECT id, nome, sobrenome, cargo FROM usuario WHERE id=:id");
         $stmt->bindParam(':id', $idUsuario, PDO::PARAM_INT);
         $stmt->execute(); 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchObject('\App\Entity\Usuario');
     }
 
     public function obterUsuario($dados)
@@ -99,5 +100,16 @@ class UsuarioDAO extends Conexao
         $stmt->bindParam(':id', $dados['idusuario'], PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function vendaUsuarioData($usuario)
+    {
+        // die(var_dump($usuario));
+        $stmt = static::getConexao()->prepare("SELECT numero, valor_total1, valor_total2 AS Total  FROM comandafatura WHERE data_finalizacao < :dtInicial AND data_finalizacao > :dtFinal AND id_vendedor=:idVendedor");
+        $stmt->bindParam(':idVendedor', $usuario['idUsuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

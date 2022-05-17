@@ -5,20 +5,27 @@
 {% block body %}
 
 <div class="container">
-    <h1>{{ usuario.nome }}</h1>
+    <h3 style="color: rgb(56, 109, 179);">{{ usuario.getNomeCompleto() }}</h3>
+    
     <br>
 
     <form id="frmRelatorioUsuario">
         <div class="row">  
             <div class="col-sm-4">
                 <label>Escolha as datas</label>
-            </div><br>
-            <div class="col-sm-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
                 <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial">
             </div>
-            <div class="col-sm-4">
-                <input type="date" class="form-control input-sm" name="dtFim" id="dtFim">
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
             </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar('{{usuario.id}}')">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
     </form>
 </div>
@@ -27,11 +34,27 @@
 
 {% block javascript %}
 <script type="text/javascript">
-    // console.log();
-    $('#dtInicial').change(function(){
-        console.log($('#dtInicial')[0].value);
-
-    });
+    function enviar(idUsuario) {
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value){
+            var dados={
+                idUsuario: idUsuario,
+                dtInicial: $('#dtInicial')[0].value,
+                dtFinal: $('#dtFinal')[0].value
+            }
+            $.ajax({
+                type:"POST",
+                data: dados,
+                url:"usuario-relatorio-venda",
+                success:function(r){
+                    console.log('r', r);
+                }
+            });
+        }else{
+            alertify.error("Datas invalidas!");
+        }
+        
+        console.log(dados);
+    }
     
 </script>
 {% endblock %}
