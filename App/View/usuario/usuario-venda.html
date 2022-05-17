@@ -11,8 +11,11 @@
 
     <form id="frmRelatorioUsuario">
         <div class="row">  
-            <div class="col-sm-4">
-                <label>Escolha as datas</label>
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
             </div>
         </div>
         <div class="row">
@@ -28,6 +31,10 @@
             <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
     </form>
+
+    <div>
+        
+    </div>
 </div>
 
 {% endblock %}
@@ -46,7 +53,8 @@
                 data: dados,
                 url:"usuario-relatorio-venda",
                 success:function(r){
-                    console.log('r', r);
+                    var resp = JSON.parse(r);
+                    console.log('r', resp);
                 }
             });
         }else{

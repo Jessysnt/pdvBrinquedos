@@ -17,7 +17,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label for="numeroComanda">Número Comanda</label>
-							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{3}" title="REINO###">
+							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
 							<input type="submit" id="sub">
 						</div>
 					</div>
@@ -238,50 +238,47 @@
 	* Entter inserir codigo da comanda
 	*/
 	$('#numeroComanda').on('keypress',function(e) {
-		if(e.which == 13) {
-			console.log('ver', $('#sub'));
-			// if($('#numeroComanda').val() == "REINO%"){
-				console.log($('#numeroComanda').val());
-				$.ajax({
-					type: "POST",
-					data: "numero=" + $('#numeroComanda').val(),
-					url: "ver-aberto",
-					success:function(r){
-						// console.log('r', r);
-						if(r != 'false' && r != 'fechadafalse'){
-							alertify.confirm('Comanda aberta, deseja editar?', function(){
-								var resp = JSON.parse(r);
-								comanda = resp;
-								itensSoma($('#tabelaComanda'));
-								atualizarTabela($('#tabelaComanda'));
-								clienteComanda(comanda.id_cliente);
-								habilitarCampos();
-								$("#grupoCpf").show();
-								$('#anonimo')[0].checked = false;
-								console.log('numeroComanda', comanda);
-								
-							}, function(){ 
-								$('#numeroComanda').val('');
-								alertify.error('Cancelado !');
-							});
-						}
-						if(r == 'fechadafalse'){
-							var numeroComanda = $('#numeroComanda').val();
-							apagarForm();
-							$('#numeroComanda').val(numeroComanda);
-							alertify.error('Comanda fechada.');
-						}
-						if(r == 'false'){
-							var numero = $('#numeroComanda').val();
-							apagarForm();
-							$('#numeroComanda').val(numero);
+		if(e.which == 13 && e.target.validity.valid) {
+			e.preventDefault();
+			$.ajax({
+				type: "POST",
+				data: "numero=" + $('#numeroComanda').val(),
+				url: "ver-aberto",
+				success:function(r){
+					console.log('r', r);
+					if(r != 'false' && r != 'fechadafalse'){
+						alertify.confirm('Comanda aberta, deseja editar?', function(){
+							var resp = JSON.parse(r);
+							comanda = resp;
+							itensSoma($('#tabelaComanda'));
+							atualizarTabela($('#tabelaComanda'));
+							clienteComanda(comanda.id_cliente);
 							habilitarCampos();
-							alertify.success('Nova comanda.');
-							comanda.numero= numero;
-						}
+							$("#grupoCpf").show();
+							$('#anonimo')[0].checked = false;
+							console.log('numeroComanda', comanda);
+							
+						}, function(){ 
+							$('#numeroComanda').val('');
+							alertify.error('Cancelado !');
+						});
 					}
-				});
-			// }
+					if(r == 'fechadafalse'){
+						var numeroComanda = $('#numeroComanda').val();
+						apagarForm();
+						$('#numeroComanda').val(numeroComanda);
+						alertify.error('Comanda fechada.');
+					}
+					if(r == 'false'){
+						var numero = $('#numeroComanda').val();
+						apagarForm();
+						$('#numeroComanda').val(numero);
+						habilitarCampos();
+						alertify.success('Abertura de comanda.');
+						comanda.numero= numero;
+					}
+				}
+			});
 		}
 	});	
 
@@ -574,6 +571,24 @@
 		});
 
 	});
+</script>
+
+<script type="text/javascript">
+/**
+ * Ao perder o foco, testa o padrão do campo
+*/
+$('#numeroComanda').focusout(function(e) {
+	if(!e.target.validity.valid){
+		$('#frmComanda')[0].reportValidity();
+	}
+});
+
+$('#numeroComanda').keyup(function(e) {
+	if(e.which == 13){
+		e.preventDefault();
+	}
+});
+
 </script>
 
 {% endblock %}

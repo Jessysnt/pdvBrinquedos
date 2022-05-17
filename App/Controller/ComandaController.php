@@ -91,20 +91,15 @@ class ComandaController
     public function numeroAberto()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $obComandaDAO = new ComandaDAO;
-            $obPdvDAO = new PdvDAO;
-            
+            $obComandaDAO = new ComandaDAO();
+            $obPdvDAO = new PdvDAO();
             $respNumero=$obComandaDAO->verEstaAberta($_POST['numero']);
-
             if($respNumero > 0){
                 $obProdutoLinha = intval($respNumero['id']);
-                
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);
                 $resp = $respNumero;
                 $resp['linhas'] = $respProdutoLinha;
-
                 View::jsonResponse($resp);
-
             }else{
                 View::jsonResponse(false);
             }

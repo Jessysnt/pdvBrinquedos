@@ -105,7 +105,7 @@ class UsuarioDAO extends Conexao
     public function vendaUsuarioData($usuario)
     {
         // die(var_dump($usuario));
-        $stmt = static::getConexao()->prepare("SELECT numero, valor_total1, valor_total2 AS Total  FROM comandafatura WHERE data_finalizacao < :dtInicial AND data_finalizacao > :dtFinal AND id_vendedor=:idVendedor");
+        $stmt = static::getConexao()->prepare("SELECT numero, valor_total1, valor_total2, data_finalizacao  FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_vendedor=:idVendedor");
         $stmt->bindParam(':idVendedor', $usuario['idUsuario'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);

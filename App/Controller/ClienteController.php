@@ -69,4 +69,30 @@ class ClienteController
             View::jsonResponse($resp);
         }
     }
+
+    /**
+     * Tras o cliente para a tela de relatorio
+     */
+    public function clienteVendas()
+    {   
+        $obClienteDAO = new ClienteDAO();
+        if($_GET['cliente']){
+            $resp = $obClienteDAO->exibirCliente(intval($_GET["cliente"]));
+            View::renderTemplate('/clientes/cliente-venda.html', ['cliente'=>$resp]); 
+        }
+    }
+
+    public function relatorioVendasCliente()
+    {
+        $obClienteDAO = new ClienteDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $cliente=array(
+                'idCliente'=> intval($_POST['idCliente']),
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => $_POST['dtFinal']
+            );
+            $resp = $obClienteDAO->vendaClienteData($cliente);
+            View::jsonResponse($resp);
+        }
+    }
 }

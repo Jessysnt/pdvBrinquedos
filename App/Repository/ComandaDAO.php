@@ -102,7 +102,7 @@ class ComandaDAO extends Conexao
      */
     public function verEstaAberta($numero)
     {
-        $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero AND comanda_aberta = 1");
+        $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero");
         $stmt->bindValue(':numero', $numero);
         $stmt->execute();
         $resp = $stmt->fetch(PDO::FETCH_ASSOC);

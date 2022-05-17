@@ -22,10 +22,15 @@ class ClienteDAO extends Conexao
         return $stmt->execute();
     }
 
-    public function exibirClientes()
+    /**
+     * Dados passado para a tela cliente-venda
+     */
+    public function exibirCliente($idCliente)
     {
-        $stmt = static::getConexao()->query("SELECT * FROM cliente");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = static::getConexao()->prepare("SELECT id, nome, sobrenome, cpf FROM cliente WHERE id=:id");
+        $stmt->bindParam(':id', $idCliente, PDO::PARAM_INT);
+        $stmt->execute(); 
+        return $stmt->fetchObject('\App\Entity\Cliente');
     }
 
     /**
@@ -95,4 +100,16 @@ class ClienteDAO extends Conexao
         // $stmt->bindParam(':cpf', $cliente['cpfU'], PDO::PARAM_STR);         
         return $stmt->execute();
 	}
+
+    public function vendaClienteData($usuario)
+    {
+        $stmt = static::getConexao()->prepare("SELECT numero, valor_total1, valor_total2, data_finalizacao  FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_cliente=:idCliente");
+        $stmt->bindParam(':idCliente', $usuario['idCliente'], PDO::PARAM_INT);
+        $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
 }

@@ -28,7 +28,7 @@
                 </select>
 
                 <p></p>
-                <span class="btn btn-primary btn-block" id="usuarioF">Adicionar</span>
+                <span class="btn btn-primary btn-block" id="adicionarUsuario">Adicionar</span>
 
             </form>
         </div>
@@ -45,7 +45,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         // $('#tabelaUsuariosLoad').load('tab-usuario');
-        $('#usuario-add').click(function(){
+        $('#adicionarUsuario').click(function(){
             vazios=validarFormVazio('frmUsuario');
             if(vazios > 0){
                 alertify.alert("Preencha os campos!!");

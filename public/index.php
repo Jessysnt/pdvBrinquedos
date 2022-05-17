@@ -45,6 +45,8 @@ $router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' =>
 $router->add('cliente-obter', ['controller' => 'ClienteController', 'action' => 'obterCliente']);
 $router->add('cliente-inativar', ['controller' => 'ClienteController', 'action' => 'inativarCliente']);
 $router->add('cliente-atualizar', ['controller' => 'ClienteController', 'action' => 'atualizarCliente']);
+$router->add('cliente-venda', ['controller' => 'ClienteController', 'action' => 'clienteVendas']);
+$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
 
 
 //Rotas dos Produto

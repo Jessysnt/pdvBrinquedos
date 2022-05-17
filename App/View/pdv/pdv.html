@@ -17,7 +17,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Numero Comanda</label>
-							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO###">
+							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
 						</div>
 					</div>
 				</div>
@@ -272,6 +272,22 @@
 		}
 	});
 </script>
+<script type="text/javascript">
+	/**
+	 * Ao perder o foco, testa o padrão do campo
+	*/
+	$('#numeroComanda').focusout(function(e) {
+		if(!e.target.validity.valid){
+			$('#frmComanda')[0].reportValidity();
+		}
+	});
+	
+	$('#numeroComanda').keyup(function(e) {
+		if(e.which == 13){
+			e.preventDefault();
+		}
+	});
+</script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -323,13 +339,14 @@
 	* Entter inserir codigo da comanda
 	*/
 	$('#numeroComanda').on('keypress',function(e) {
-		if(e.which == 13) {
+		if(e.which == 13 && e.target.validity.valid) {
+			e.preventDefault();
 			$.ajax({
 				type: "POST",
 				data: "numero=" + $('#numeroComanda').val(),
 				url: "obter-dados-numero",
 				success:function(r){
-                    // console.log('r', r);
+                    console.log('r', r);
 					if(r != 'false' && r != 'fechadafalse'){
 						var resp = JSON.parse(r);
                         comanda = resp;
@@ -344,7 +361,7 @@
 						var numeroComanda = $('#numeroComanda').val();
 						apagarForm();
 						$('#numeroComanda').val(numeroComanda);
-						alertify.success('Comanda fechada.');
+						alertify.error('Comanda fechada.');
 					}
 					if(r == 'false'){
 						var numeroComanda = $('#numeroComanda').val();
@@ -693,6 +710,7 @@
 
 		$('#valorUm').change(function(){
 			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
+			// console.log('valorUm', valorUm);
 			if(valorUm > soma){
 				$("#trocoUm").show();
 				var troco = valorUm - soma;

@@ -102,7 +102,7 @@ class UsuarioController
             $usuario=array(
                 'idUsuario'=> intval($_POST['idUsuario']),
                 'dtInicial' => $_POST['dtInicial'],
-                'dtFinal' => date($_POST['dtFinal'])
+                'dtFinal' => $_POST['dtFinal']
             );
             $resp = $obUsuarioDAO->vendaUsuarioData($usuario);
             View::jsonResponse($resp);

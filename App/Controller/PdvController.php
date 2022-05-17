@@ -18,17 +18,14 @@ class PdvController
     public function obterDadosNumero()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $obPdvDAO = new PdvDAO;
-            
+            $obPdvDAO = new PdvDAO();
             $respNumero=$obPdvDAO->verEstaAberta($_POST['numero']);
-
             if($respNumero > 0){
                 $obProdutoLinha = intval($respNumero['id']);
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);
                 $resp = $respNumero;
                 $resp['linhas'] = $respProdutoLinha;
                 View::jsonResponse($resp);
-
             }else{
                 View::jsonResponse(false);
             }

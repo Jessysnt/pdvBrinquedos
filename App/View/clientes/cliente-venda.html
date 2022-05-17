@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Relatório do cliente{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h3 style="color: rgb(56, 109, 179);">{{ cliente.getNomeCompleto() }}</h3>
+    <h6 style="color: rgb(56, 109, 179);">{{ cliente.cpf }}</h6>
+    
+    <br>
+
+    <form id="frmRelatorioCliente">
+        <div class="row">  
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial">
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
+            </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar('{{cliente.id}}')">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+        </div>
+    </form>
+
+    <div>
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    function enviar(idCliente) {
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value){
+            var dados={
+                idCliente: idCliente,
+                dtInicial: $('#dtInicial')[0].value,
+                dtFinal: $('#dtFinal')[0].value
+            }
+            $.ajax({
+                type:"POST",
+                data: dados,
+                url:"cliente-relatorio-venda",
+                success:function(r){
+                    var resp = JSON.parse(r);
+                    console.log('r', resp);
+                }
+            });
+        }else{
+            alertify.error("Datas invalidas!");
+        }
+        
+        console.log(dados);
+    }
+    
+</script>
+{% endblock %}
