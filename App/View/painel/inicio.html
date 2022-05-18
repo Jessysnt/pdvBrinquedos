@@ -33,9 +33,9 @@
         </div>
         <div class="col-sm-2">
             <select class="form-control input-sm" id="ano" name="ano">
-                
-                <option value="i">{{data.data_finalizacao | date("Y")}}</option>
-               
+                {% for data in datas %}
+                <option value="{{data.ANO}}">{{data.ANO}}</option>
+                {% endfor %} 
               </select>
         </div>
     </div>
@@ -47,7 +47,7 @@
     <div>
         <h6>{{data.data_finalizacao}}</h6>
         {% for data in datas %}
-        <label>{{data.data_finalizacao | date("Y")}},</label><br>
+        <label>{{data.ANO}},</label><br>
         {% endfor %} 
     </div>
 </div>
@@ -115,7 +115,7 @@
 
 <script type="text/javascript">
     $('#mes').val(1).trigger('change');
-    $('#ano').val(1).trigger('change');
+    $('#ano').val('{{data.ANO}}').trigger('change');
     // $("#ano").select2({
         // language: "pt-BR",
         // minimumInputLength: 3,
@@ -131,7 +131,7 @@
                 console.log(r);
             }
         });
-        console.log($('#mes')[0].value);
+        console.log($('#ano')[0].value);
     });
 </script>
 {% endblock %}
