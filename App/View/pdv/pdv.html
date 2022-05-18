@@ -16,17 +16,18 @@
 				<div class="row" id="grupoNumero">
 					<div class="col-sm-6">
 						<div class="form-group">
-							<label>Numero Comanda</label>
+							<label for="numeroComanda">Número Comanda</label>
 							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
+							<input type="submit" id="sub">
 						</div>
 					</div>
 				</div>
 				<div class="row" id="grupoCpf">
-					<div class="col-sm-5">
+					<div class="col-sm-4">
 						<div class="form-group">
-							<label>Selecionar Cliente</label>
+							<label>Digite o CPF</label>
 							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
-								<option value="" readonly="true">Selecionar</option>
+								<option value="" readonly="true">Só números</option>
 								<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 							</select>
 						</div>
@@ -38,15 +39,11 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="mb-3 form-check"> -->
-					<!-- <input type="checkbox" id="anonimo"> -->
-					<!-- <label class="form-check-input" for="exampleCheck1"><input type="checkbox" id="anonimo"> Anônimo</label>
-				</div> -->
 				<div class="mb-3 form-check">
-					<input class="form-check-input" type="checkbox" value="" id="anonimo">
-					<label class="form-check-label" for="anonimo"> Anônimo</label>
-				  </div>
-				<br>	
+					<input type="checkbox" class="form-check-input" id="anonimo">
+					<label class="form-check-label" for="anonimo">Anônimo</label>
+				</div>
+				<br>
 					
 				<div class="row">
 					<div class="col-sm-6">
@@ -229,7 +226,7 @@
 		$("#quantV").val(1);
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
-		$('#pgUm').val(1).trigger('change')
+		$('#pgUm').val(1).trigger('change');
 		$("#valorUm").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 		$("#valorDois").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 		$("#trocoUmDinheiro").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
@@ -269,22 +266,6 @@
 			$("#grupoCpf").show();
 			$("#clienteCpf").prop("disabled", false);
 			$("#nomeClienteComanda").prop("disabled", false);
-		}
-	});
-</script>
-<script type="text/javascript">
-	/**
-	 * Ao perder o foco, testa o padrão do campo
-	*/
-	$('#numeroComanda').focusout(function(e) {
-		if(!e.target.validity.valid){
-			$('#frmComanda')[0].reportValidity();
-		}
-	});
-	
-	$('#numeroComanda').keyup(function(e) {
-		if(e.which == 13){
-			e.preventDefault();
 		}
 	});
 </script>
@@ -346,7 +327,7 @@
 				data: "numero=" + $('#numeroComanda').val(),
 				url: "obter-dados-numero",
 				success:function(r){
-                    console.log('r', r);
+                    // console.log('r', r);
 					if(r != 'false' && r != 'fechadafalse'){
 						var resp = JSON.parse(r);
                         comanda = resp;
@@ -368,7 +349,7 @@
 						apagarForm();
 						$('#numeroComanda').val(numeroComanda);
 						habilitarCampos();
-						alertify.success('Nova comanda.');
+						alertify.success('Abertura de comanda.');
 					}
 				}
 			});
@@ -572,7 +553,6 @@
 	
 </script>
 
-
 <script type="text/javascript">
 	$(document).ready(function(){
 
@@ -695,6 +675,23 @@
 		});
 
 	});
+</script>
+
+<script type="text/javascript">
+/**
+ * Ao perder o foco, testa o padrão do campo
+*/
+$('#numeroComanda').focusout(function(e) {
+	if(!e.target.validity.valid){
+		$('#frmComanda')[0].reportValidity();
+	}
+});
+
+$('#numeroComanda').keyup(function(e) {
+	if(e.which == 13){
+		e.preventDefault();
+	}
+});
 </script>
 
 <script type="text/javascript">

@@ -245,7 +245,7 @@
 				data: "numero=" + $('#numeroComanda').val(),
 				url: "ver-aberto",
 				success:function(r){
-					console.log('r', r);
+					// console.log('r', r);
 					if(r != 'false' && r != 'fechadafalse'){
 						alertify.confirm('Comanda aberta, deseja editar?', function(){
 							var resp = JSON.parse(r);
