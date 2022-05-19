@@ -16,25 +16,26 @@
     <div class="row">
         <div class="col-sm-2">
             <select class="form-control input-sm" id="mes" name="mes">
-                <option selected>Mês</option>
-                <option value="1">Jan</option>
-                <option value="2">Feb</option>
-                <option value="3">Mar</option>
-                <option value="4">Apr</option>
-                <option value="5">May</option>
-                <option value="6">Jun</option>
-                <option value="7">Jul</option>
-                <option value="8">Aug</option>
-                <option value="9">Sep</option>
-                <option value="10">Oct</option>
-                <option value="11">Nov</option>
-                <option value="12">Dec</option> 
+                <!-- <option selected>Mês</option> -->
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option> 
             </select>
         </div>
         <div class="col-sm-2">
             <select class="form-control input-sm" id="ano" name="ano">
-                {% for data in datas %}
-                <option value="{{data.ANO}}">{{data.ANO}}</option>
+                <option selected>Mês</option> 
+                {% for ano in anos %}
+                <option value="{{ano.ANO}}">{{ano.ANO}}</option>
                 {% endfor %} 
               </select>
         </div>
@@ -45,9 +46,8 @@
     </div>
 
     <div>
-        <h6>{{data.data_finalizacao}}</h6>
-        {% for data in datas %}
-        <label>{{data.ANO}},</label><br>
+        {% for ano in anos %}
+        <label>{{ano.ANO}},</label><br>
         {% endfor %} 
     </div>
 </div>
@@ -56,82 +56,99 @@
 {% endblock %}
 
 {% block javascript %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const chart = Highcharts.chart('container', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Mes de 2022'
-            },
-            subtitle: {
-                text: 'mes'
-            },
-            xAxis: {
-                categories: [],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Valor'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Vendas',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+<script type="text/javascript">
+    var dataHoje = new Date();
+    let grafico;
+    $('#mes').val('0'+(dataHoje.getMonth()+1)).trigger('change');
+    $('#ano').val(dataHoje.getFullYear()).trigger('change');
 
-            // }, {
-            //     name: 'New York',
-            //     data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+    
 
-            // }, {
-            //     name: 'London',
-            //     data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+    
+       
+        function carrega(dados) {
+            
+        
+        $.ajax({
+            type:"POST",
+            data: dados,
+            url:"pesquisa-mes",
+            success:function(r){
+                var resp = JSON.parse(r);
+                console.log('resp', resp);
 
-            // }, {
-            //     name: 'Berlin',
-            //     data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
-            }]
+        Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: dataHoje
+                    },
+                    xAxis: {
+                        categories: resp.label,
+                        crosshair: true,
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'R$'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Vendas',
+                        data: resp.data
+                    }]
+                });
+            }
         });
+        }        
+    document.addEventListener('DOMContentLoaded', function () {
+        dados={
+            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+    };
+    carrega(dados);
+    console.log('ak pag');
     });
 </script>
 
 <script type="text/javascript">
-    $('#mes').val(1).trigger('change');
-    $('#ano').val('{{data.ANO}}').trigger('change');
-    // $("#ano").select2({
-        // language: "pt-BR",
-        // minimumInputLength: 3,
-        // ajax: {
-        //     url: 'pesquisar-produto',
-        //     dataType: 'json'
-        // }
-    // });
     $('#mes').change(function(){
-        ajax:({
-            url: "painel",
-            success:function(r){
-                console.log(r);
-            }
-        });
-        console.log($('#ano')[0].value);
+        dados={
+            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+        };
+        console.log('dados',dados);
+        carrega(dados);
+        console.log('ak selec');
+       
+        
+    });
+
+    $('#ano').change(function(){
+        dados={
+            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+        };
+        console.log('dados',dados);
+        carrega(dados);
+        console.log('ak selec');
+       
+        
     });
 </script>
 {% endblock %}

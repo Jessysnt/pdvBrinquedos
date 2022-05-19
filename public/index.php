@@ -27,7 +27,6 @@ $router = new Core\Router();
 $router->add('', ['controller' => 'LoginController', 'action' => 'logar']);
 $router->add('login', ['controller' => 'LoginController', 'action' => 'logar']);
 $router->add('registro', ['controller' => 'RegistrarController', 'action' => 'primeiroRegistro']);
-$router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
 $router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
 
 //Rotas de Usuario
@@ -93,6 +92,9 @@ $router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action
 //Rotas de Fornecedor
 $router->add('fornecedores', ['controller' => 'FornecedorController', 'action' => 'fornecedor']);
 
+//Rotas do Painel
+$router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
+$router->add('pesquisa-mes', ['controller' => 'PainelController', 'action' => 'dadosMes']);
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 $router->add('{controller}/{action}');
