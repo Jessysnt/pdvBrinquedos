@@ -33,23 +33,18 @@
         </div>
         <div class="col-sm-2">
             <select class="form-control input-sm" id="ano" name="ano">
-                <option selected>Mês</option> 
+                <!--<option selected>Mês</option> -->
                 {% for ano in anos %}
                 <option value="{{ano.ANO}}">{{ano.ANO}}</option>
                 {% endfor %} 
               </select>
         </div>
     </div>
-    
+    <br>
     <div>
         <div id="container" style="width:100%; height:400px;"></div>
     </div>
 
-    <div>
-        {% for ano in anos %}
-        <label>{{ano.ANO}},</label><br>
-        {% endfor %} 
-    </div>
 </div>
 
     <!-- <img src="assets/img/raposab.png" > -->
@@ -72,18 +67,16 @@
             success:function(r){
                 var resp = JSON.parse(r);
                 var dias = resp.label;
-                console.log('dias', dias);
-                console.log('dara', resp.data);
 
                 Highcharts.chart('container', {
                     chart: {
                         type: 'column'
                     },
                     title: {
-                        text: ''
+                        text: $('#mes')[0].options[i].innerText + ' de ' + $('#ano').val()
                     },
                     subtitle: {
-                        text: $('#mes')[0].options[i].innerText + '-' + $('#ano').val()
+                        text: ''
                     },
                     xAxis: {
                         categories: resp.label.map(date => {
@@ -109,8 +102,7 @@
                         /**/
                         formatter: function () {
                             return this.points.reduce(function (s, point) {
-                                return s + `<tr><td style="color:${point.series.color};padding:0">${point.series.name}: </td>` + `<td style="padding:0"><b> ${ point.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></td></tr>`; }, '<span style="font-size:10px">' + 
-                                    `${resp.label.dateFormat('%d', new Date().getTime())}`  + '</span> <table>');
+                                return s + `<tr><td style="color:${point.series.color};padding:0">${point.series.name}: </td>` + `<td style="padding:0"><b> ${ point.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></td></tr>`; }, `<span style="font-size:10px"> ${this.x + ' de ' + $("#mes")[0].options[i].innerText } </span> <table>`);
                         },
                         /**/
                         shared: true,
