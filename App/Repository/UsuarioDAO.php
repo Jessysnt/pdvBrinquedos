@@ -88,7 +88,10 @@ class UsuarioDAO extends Conexao
      */
     public function exibirUsuario($idUsuario)
     {
-        $stmt = static::getConexao()->prepare("SELECT id, nome, sobrenome, cargo FROM usuario WHERE id=:id");
+        $stmt = static::getConexao()->prepare("SELECT u.id, u.nome, u.sobrenome, u.cargo, COUNT(DISTINCT cf.id) as totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido 
+        FROM usuario AS u
+        LEFT JOIN comandafatura AS cf ON cf.id_vendedor = u.id
+        WHERE u.id=:id AND cf.data_finalizacao IS NOT NULL");
         $stmt->bindParam(':id', $idUsuario, PDO::PARAM_INT);
         $stmt->execute(); 
         return $stmt->fetchObject('\App\Entity\Usuario');
@@ -104,8 +107,19 @@ class UsuarioDAO extends Conexao
 
     public function vendaUsuarioData($usuario)
     {
-        // die(var_dump($usuario));
-        $stmt = static::getConexao()->prepare("SELECT numero, valor_total1, valor_total2, data_finalizacao  FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_vendedor=:idVendedor");
+        $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_vendedor=:idVendedor");
+        $stmt->bindParam(':idVendedor', $usuario['idUsuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function vendaUsuarioPeriodo($usuario)
+    {
+        $stmt = static::getConexao()->prepare("SELECT cf.id, cf.data_finalizacao, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, c.id, c.nome, c.sobrenome FROM comandafatura AS cf
+        INNER JOIN cliente AS c ON cf.id_cliente = c.id
+        WHERE cf.id_vendedor = :idVendedor AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal");
         $stmt->bindParam(':idVendedor', $usuario['idUsuario'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);

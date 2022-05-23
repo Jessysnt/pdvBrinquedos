@@ -5,8 +5,18 @@
 {% block body %}
 
 <div class="container">
-    <h3 style="color: rgb(56, 109, 179);">{{ usuario.getNomeCompleto() }}</h3>
-    
+    <!-- <h3 style="color: rgb(56, 109, 179);">{{ usuario.getNomeCompleto() }}</h3> -->
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160)">
+                <div class="card-body">
+                    <!-- <h4>Informaçoes do usuario</h4> -->
+                    <h4 style="color: rgb(56, 109, 179);">{{ usuario.getNomeCompleto() }}</h4>
+                    <p class="card-text">Cargo: {{ usuario.getCargoNome() }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
 
     <form id="frmRelatorioUsuario">
@@ -31,9 +41,55 @@
             <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
     </form>
-
-    <div>
-        
+    <br>
+    <br>
+    <div id="totalGeral">
+        <div class="row">
+            <div class="card-deck">
+                <div class="card text-white bg-secondary col-sm-3" style="margin-right: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de vendas</h5>
+                        <p class="card-text" >{{usuario.totalVendas}}</p>
+                    </div>
+                </div>
+                <!-- <div class="card col-sm-3"></div> -->
+                <div class="card text-white bg-secondary col-sm-3" >
+                    <div class="card-body">
+                        <h5 class="card-title">Total liquido</h5>
+                        <p class="card-text" >{{usuario.totalLiquido}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="totalDatas">
+        <div class="row">
+            <div class="card-deck">
+                <div class="card text-white bg-secondary col-sm-3" style="margin-right: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de vendas</h5>
+                        <input id="totalVendas" class="card text-white bg-secondary" style="border: transparent;"> 
+                    </div>
+                </div>
+                <!-- <div class="card col-sm-3"></div> -->
+                <div class="card text-white bg-secondary col-sm-3" >
+                    <div class="card-body">
+                        <h5 class="card-title">Total liquido</h5>
+                        <input id="totalLiquido" class="card text-white bg-secondary" style="border: transparent;"> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div id="vendasPeriodo">
+        <!-- <div class="row">
+            <div div class="col-sm-11" id="aqui">
+                <div class="card" style="border-radius: 1rem; border-color: rgb(134, 47, 160)" >
+                   <p></p>
+                </div>
+            </div>
+        </div> -->
     </div>
 </div>
 
@@ -41,8 +97,13 @@
 
 {% block javascript %}
 <script type="text/javascript">
+    $(document).ready(function(){
+        $('#totalDatas').hide();
+        $('#vendasPeriodo').hide();
+    });
+
     function enviar(idUsuario) {
-        if($('#dtInicial')[0].value < $('#dtFinal')[0].value){
+        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
             var dados={
                 idUsuario: idUsuario,
                 dtInicial: $('#dtInicial')[0].value,
@@ -53,8 +114,27 @@
                 data: dados,
                 url:"usuario-relatorio-venda",
                 success:function(r){
-                    var resp = JSON.parse(r);
+                    // console.log('r', r);
+                    var resp = jQuery.parseJSON(r);
                     console.log('r', resp);
+                    if(resp.vendaTotal['totalLiquido'] != null){
+                        $('#totalGeral').hide();
+                        $('#totalDatas').show();
+                        $('#totalVendas').val(resp.vendaTotal['totalVendas']);
+                        $('#totalLiquido').val(resp.vendaTotal['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+
+                        resp.vendaPeriodo.forEach(linha => {
+                            $('#vendasPeriodo').append(`<p>${linha.data_finalizacao}</p> <p>${linha.nome} ${linha.sobrenome}</p> <p>${linha.total}</p>`);
+                            // $('#dataVenda').val(linha['data_finalizacao']),
+                            // $('#nomeCliente').val(linha['nome']),
+                            // $('#clienteTotal').val(linha['total'])
+                        });
+                        $('#vendasPeriodo').show();
+                    }else{
+                        $('#totalVendas').val('');
+                        $('#totalLiquido').val('');
+                        alertify.error("Nao ha vendas nesse periodo");
+                    }
                 }
             });
         }else{

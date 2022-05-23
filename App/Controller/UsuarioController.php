@@ -104,8 +104,9 @@ class UsuarioController
                 'dtInicial' => $_POST['dtInicial'],
                 'dtFinal' => $_POST['dtFinal']
             );
-            $resp = $obUsuarioDAO->vendaUsuarioData($usuario);
-            View::jsonResponse($resp);
+            $respVendasGeral = $obUsuarioDAO->vendaUsuarioData($usuario);
+            $respVendasPeriodo = $obUsuarioDAO->vendaUsuarioPeriodo($usuario);
+            View::jsonResponse(['vendaTotal'=>$respVendasGeral, 'vendaPeriodo'=>$respVendasPeriodo]);
         }
     }
     
