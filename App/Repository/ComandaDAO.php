@@ -55,6 +55,7 @@ class ComandaDAO extends Conexao
             }
             return $resp['id'];
         }else{
+            // die(var_dump($respComandaFatura));
             $sql = "INSERT INTO comandafatura (id_vendedor, numero$sqlCliente[0], data_registro) VALUES (:idVendedor, :numero$sqlCliente[1], :dataRegistro)";
             $stmt=$bd->prepare($sql);
             $stmt->bindParam(':idVendedor', $respComandaFatura['id_vendedor'], PDO::PARAM_INT);
