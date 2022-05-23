@@ -144,10 +144,6 @@
 					<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
 				</div>
 			</div>
-			<div id="trocoUm" class="col-sm-4">
-				<label>Troco</label>
-				<input type="text" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
-			</div>
 		</div>		
 
 		<div id="pagamentoDois">
@@ -175,7 +171,11 @@
 					</div>
 				</div>
 			</div>
-		</div>			
+		</div>	
+		<div id="trocoUm" class="col-sm-4">
+			<label>Troco</label>
+			<input type="text" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
+		</div>		
 		<br>
 		<div class="row">
 			<div class="col-sm-3">
@@ -499,54 +499,55 @@
 		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
 		var vtSoma = vtUm + vtDois;
 		var vt = $('#valorTotal').val();
-		// console.log('vt',$('#valorTotal'));
+		// console.log(vtDois);
 		// return false;
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
-			
 			if($('#pgUm').val() != ""){
-				var dados={
-					cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
-					numero: (comanda.numero!=null?(comanda.numero):null),
-					pg_forma1: $('#pgUm').val(),
-					valor_total1: $('#valorUm').maskMoney('unmasked')[0],
-					pg_forma2: $('#pgDois').val(),
-					valor_total2: $('#valorDois').maskMoney('unmasked')[0],
-					vzs_cartao: $('#vzsCartao').val(),
-					linhas:[]
-				};
-				comanda.linhas.forEach(linha =>{
-					var novaLinha = {
-						id_produto: parseInt(linha.produtoVenda),
-						quantidade: parseInt(linha.quantV),
-						quant_estoque: linha.quantidadeV,
-						valor_unitario: parseFloat(linha.precoV)
+				if(vtDois != 0 && $('#pgDois').val() != ""){
+					var dados={
+						cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
+						numero: (comanda.numero!=null?(comanda.numero):null),
+						pg_forma1: $('#pgUm').val(),
+						valor_total1: $('#valorUm').maskMoney('unmasked')[0],
+						pg_forma2: $('#pgDois').val(),
+						valor_total2: $('#valorDois').maskMoney('unmasked')[0],
+						vzs_cartao: $('#vzsCartao').val(),
+						linhas:[]
 					};
-					dados.linhas.push(novaLinha);
-					// console.log('dados.Gravar',dados.linhas);
-					apagarForm();
-				});
-				console.log('dados', dados);
+					comanda.linhas.forEach(linha =>{
+						var novaLinha = {
+							id_produto: parseInt(linha.produtoVenda),
+							quantidade: parseInt(linha.quantV),
+							quant_estoque: linha.quantidadeV,
+							valor_unitario: parseFloat(linha.precoV)
+						};
+						dados.linhas.push(novaLinha);
+						// console.log('dados.Gravar',dados.linhas);
+						apagarForm();
+					});
+					console.log('dados', dados);
 
-				$.ajax({
-					type:"POST",
-					data: dados,
-					url:"gravar-venda",
-					success:function(r){
-						console.log('respostaGravou1',r);
-						// var resp = JSON.parse(r);
-						// console.log('respostaGravou2',resp);
-						if(r){	
-							// console.log('resp',resp.resp);
-							$('#codigo').val('');
-							$('#clienteCpf').val(null).trigger('change');
-							$('#nomeClienteComanda').val('');
-							apagarForm();
-							alertify.success("Venda efetuada!!");
-						}else{
-							alertify.error("Falha ao Adicionar");
+					$.ajax({
+						type:"POST",
+						data: dados,
+						url:"gravar-venda",
+						success:function(r){
+							console.log('respostaGravou1',r);
+							// var resp = JSON.parse(r);
+							// console.log('respostaGravou2',resp);
+							if(r){	
+								// console.log('resp',resp.resp);
+								$('#codigo').val('');
+								$('#clienteCpf').val(null).trigger('change');
+								$('#nomeClienteComanda').val('');
+								apagarForm();
+								alertify.success("Venda efetuada!!");
+							}else{
+								alertify.error("Falha ao Adicionar");
+							}
 						}
-					}
-				});
+					});
+				}else{alertify.alert("Preencher forma de pagamento!");}
 			}else{alertify.alert("Preencher forma de pagamento!");}
 
 		}else{alertify.alert("Preencher o CPF!");} 
@@ -717,27 +718,35 @@ $('#numeroComanda').keyup(function(e) {
 			}
 			if(valorUm < soma){
 				var valorDois = soma - valorUm;
+				$("#trocoUm").hide();
+				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			} 
 			if(valorUm == soma) {
 				$("#pagamentoDois").hide();
+				$("#valorDois").val('');
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
-				console.log($("#trocoUmDinheiro").val());
 			}
 		});
 
-		// $('#pgUm').change(function(){
-		// 	console.log('ak');
-		// 	if($('#pgUm').val() == 1){
-		// 		console.log('ak2',$('#pgUm').val());
-				
-		// 	}
-		// });
-		
-		
-		
+		$('#valorDois').change(function(){
+			valorDois = $('#valorDois').maskMoney('unmasked')[0];
+			valorUm = $('#valorUm').maskMoney('unmasked')[0];
+			var valorVenda = valorUm + valorDois;
+			console.log('valorVenda',valorVenda);
+			if(soma < valorVenda){
+				console.log('dentro if');
+				troco = valorVenda - soma;
+				$("#trocoUm").show();
+				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+			}
+			if(valorVenda == soma){
+				$("#trocoUm").hide();
+				$("#trocoUmDinheiro").val('');
+			}
+		});
 	};
 </script>
 
