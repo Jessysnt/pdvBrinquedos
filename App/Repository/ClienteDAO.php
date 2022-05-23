@@ -107,6 +107,8 @@ class ClienteDAO extends Conexao
     {
         // die(var_dump($cliente));
         // COUNT(DISTINCT v.id) as totalVendas, SUM(v.total) as totalLiquido, SUM(v.total) / COUNT(DISTINCT v.id) as ticketMedio") 
+        $cliente['dtInicial'] = $cliente['dtInicial'].' 00:00:00';
+        $cliente['dtFinal'] = $cliente['dtFinal'].' 23:59:59';
         $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_cliente=:idCliente");
         $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
@@ -117,11 +119,14 @@ class ClienteDAO extends Conexao
 
     public function vendaCliente($cliente)
     {
-        $stmt = static::getConexao()->prepare("SELECT cf.id, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS Total, lf.id_produto, lf.quantidade, 
-        p.nome FROM comandafatura AS cf
-        LEFT JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
+        $cliente['dtInicial'] = $cliente['dtInicial'].' 00:00:00';
+        $cliente['dtFinal'] = $cliente['dtFinal'].' 23:59:59';
+        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d-%m-%Y') as data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario,' desc.:', COALESCE(lf.desconto, 0))) as item
+        FROM comandafatura AS cf
+        INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
         INNER JOIN produto AS p ON lf.id_produto = p.id
-        WHERE cf.id_cliente = :idCliente AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal");
+        WHERE cf.id_cliente =:idCliente AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal
+        GROUP BY cf.id ORDER BY data ASC");
         $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $cliente['dtFinal'], PDO::PARAM_STR);

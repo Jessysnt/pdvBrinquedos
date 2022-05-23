@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block stylesheet %}
-
-
 {% endblock %}
 
 {% block title %}Relatório do cliente{% endblock %}
@@ -92,19 +90,20 @@
     </div>
     <br>
     <div>
-        {% for cliente in cliente %}
         <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{cliente.Total}}</h5>
-                        <p class="card-text"></p>
-                        <p class="card-text"></p>
-                    </div>
-                </div>
-            </div>
+            <table id="vendasPeriodo" class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                      <th scope="col">Data </th>
+                      <th scope="col">Fatura</th>
+                      <th scope="col">Total da Venda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
         </div>
-        {% endfor %} 
     </div>
 
 </div>
@@ -115,6 +114,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#totalDatas').hide();
+        $('#vendasPeriodo').hide();
     });
 
 
@@ -131,14 +131,20 @@
                 data: dados,
                 url:"cliente-relatorio-venda",
                 success:function(r){
-                    console.log('r', r);
                     var resp = jQuery.parseJSON(r);
-                    console.log(resp.dados);
+                    console.log(resp.cliente);
                     if(resp.dados['totalLiquido'] != null){
                         $('#totalGeral').hide();
                         $('#totalDatas').show();
-                        $('#totalVendas').val(resp['totalVendas']);
-                        $('#totalLiquido').val(resp['totalLiquido']);
+                        $('#totalVendas').val(resp.dados['totalVendas']);
+                        $('#totalLiquido').val(parseFloat(resp.dados['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+
+                        $('#vendasPeriodo').show();
+                        var tbody = $('#vendasPeriodo').find('tbody');
+                        tbody.empty();
+                        resp.cliente.forEach(linha => {
+                            tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+                        });
                     }else{
                         $('#totalVendas').val('');
                         $('#totalLiquido').val('');

@@ -56,7 +56,7 @@
                 <div class="card text-white bg-secondary col-sm-3" >
                     <div class="card-body">
                         <h5 class="card-title">Total liquido</h5>
-                        <p class="card-text" >{{usuario.totalLiquido}}</p>
+                        <p class="card-text" >{{usuario.totalLiquido }}</p>
                     </div>
                 </div>
             </div>
@@ -82,14 +82,19 @@
         </div>
     </div>
     <br>
-    <div id="vendasPeriodo">
-        <!-- <div class="row">
-            <div div class="col-sm-11" id="aqui">
-                <div class="card" style="border-radius: 1rem; border-color: rgb(134, 47, 160)" >
-                   <p></p>
-                </div>
-            </div>
-        </div> -->
+    <div class="row">
+        <table id="vendasPeriodo" class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                  <th scope="col">Data </th>
+                  <th scope="col">Cliente</th>
+                  <th scope="col">Total da Venda</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -121,15 +126,15 @@
                         $('#totalGeral').hide();
                         $('#totalDatas').show();
                         $('#totalVendas').val(resp.vendaTotal['totalVendas']);
-                        $('#totalLiquido').val(resp.vendaTotal['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                        $('#totalLiquido').val(parseFloat(resp.vendaTotal['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
-                        resp.vendaPeriodo.forEach(linha => {
-                            $('#vendasPeriodo').append(`<p>${linha.data_finalizacao}</p> <p>${linha.nome} ${linha.sobrenome}</p> <p>${linha.total}</p>`);
-                            // $('#dataVenda').val(linha['data_finalizacao']),
-                            // $('#nomeCliente').val(linha['nome']),
-                            // $('#clienteTotal').val(linha['total'])
-                        });
                         $('#vendasPeriodo').show();
+                        var tbody = $('#vendasPeriodo').find('tbody');
+                        tbody.empty();
+                        resp.vendaPeriodo.forEach(linha => {
+                            tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.nome ?? ''} ${linha.sobrenome ?? ''}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+                        });
+                        
                     }else{
                         $('#totalVendas').val('');
                         $('#totalLiquido').val('');
@@ -140,8 +145,7 @@
         }else{
             alertify.error("Datas invalidas!");
         }
-        
-        console.log(dados);
+
     }
     
 </script>
