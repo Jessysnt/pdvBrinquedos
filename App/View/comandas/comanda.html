@@ -287,12 +287,13 @@
 	*/
 	$('#codigo').on('keypress',function(e) {
 		if(e.which == 13) {
+			e.preventDefault();
 			$.ajax({
 				type:"POST",
 				data:"codigo=" + $('#codigo').val(),
 				url:"pesquisar-prod-est-codigo",
 				success:function(r){
-					console.log('resposta',r);
+					// console.log('resposta',r);
 					var resp = JSON.parse(r);
 					if(resp.length > 0){
 						$('#codigo').attr('data-id', parseInt(resp[0]['id']));
