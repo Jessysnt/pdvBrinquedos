@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Produtos mais vendidos{% endblock %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160)">
+                <div class="card-body">
+                    <h4>Relatório de briquedos mais vendidos </h4>
+                    <!-- <h4 style="color: rgb(56, 109, 179);">{{ usuario.getNomeCompleto() }}</h4> -->
+                    <!-- <p class="card-text">Cargo: {{ usuario.getCargoNome() }}</p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <form id="frmRelatorioCliente">
+        <div class="row">  
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial">
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
+            </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar('{{cliente.id}}')">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+        </div>
+    </form>
+    <br>
+    <br>
+    <div class="row">
+        <table id="tabelaProdutosTop" class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Quantidade Vendida</th>
+                  <th scope="col">Total Vendas</th>
+                  <th scope="col">Total Liquido</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function(){
+            $('#tabelaProdutosTop').hide();
+        });
+
+    function enviar() {
+        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
+            var dados={
+                dtInicial: $('#dtInicial')[0].value,
+                dtFinal: $('#dtFinal')[0].value
+            }
+            $.ajax({
+                type:"POST",
+                data: dados,
+                url:"mais-vendidos",
+                success:function(r){
+                    // console.log('r', r);
+                    var resp = jQuery.parseJSON(r);
+                    console.log('r', resp.maisVendidos);
+                    if(resp.maisVendidos != 0){
+                        $('#tabelaProdutosTop').show();
+                        var tbody = $('#tabelaProdutosTop').find('tbody');
+                        tbody.empty();
+                        resp.maisVendidos.forEach((linha, index) => {
+                            tbody.append(`<tr> <th>${index+1}º</th> <th>${linha.nome}</th> <td>${linha.quantidadeVendida}</td>  <td>${linha.totalVendas}</td> <td>${parseFloat(linha.totalLiquido).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+                        });
+                    }else{
+                        // $('#totalVendas').val('');
+                        // $('#totalLiquido').val('');
+                        alertify.error("Nao ha vendas nesse periodo");
+                    }
+                }
+            });
+        }else{
+            alertify.error("Datas invalidas!");
+        }
+        
+        console.log(dados);
+    }
+    
+</script>
+{% endblock %}
