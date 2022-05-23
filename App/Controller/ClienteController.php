@@ -91,8 +91,13 @@ class ClienteController
                 'dtInicial' => $_POST['dtInicial'],
                 'dtFinal' => $_POST['dtFinal']
             );
-            $resp = $obClienteDAO->vendaClienteData($cliente);
-            View::jsonResponse($resp);
+            $respVendasGeral = $obClienteDAO->vendaClienteData($cliente);
+            $respVendasProdutos = $obClienteDAO->vendaCliente($cliente);
+            View::jsonResponse(['dados'=>$respVendasGeral, 'cliente'=>$respVendasProdutos]);
+            View::renderTemplate('/clientes/cliente-venda.html', ['cliente'=>$respVendasProdutos]); 
+            // if($cliente){
+            //     View::renderTemplate('/clientes/cliente-venda.html', ['cliente'=>$respVendasProdutos]); 
+            // }
         }
     }
 }

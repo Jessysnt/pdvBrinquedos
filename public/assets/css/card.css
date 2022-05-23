@@ -198,4 +198,10 @@
   .bg-secondary {
     background-color: #6c757d !important;
   }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
   

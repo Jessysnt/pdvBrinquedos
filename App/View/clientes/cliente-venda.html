@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
+{% block stylesheet %}
+
+
+{% endblock %}
+
 {% block title %}Relatório do cliente{% endblock %}
 
 {% block body %}
 
 <div class="container">
-    <h3 style="color: rgb(56, 109, 179);">{{ cliente.getNomeCompleto() }}</h3>
-    <h6 style="color: rgb(56, 109, 179);">{{ cliente.cpf }}</h6>
-    
-    <br>
 
     <form id="frmRelatorioCliente">
         <div class="row">  
@@ -32,38 +33,125 @@
             <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
     </form>
+    <br>
+    <br>
 
-    <div>
-        
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160)">
+                <div class="card-body">
+                    <h4>Informaçoes do cliente</h4>
+                    <h5 class="card-title">Nome: {{ cliente.getNomeCompleto() }}</h5>
+                    <p class="card-text">CPF: {{ cliente.cpf }}</p>
+                    <p class="card-text">Telefone: {{ cliente.telefone }}</p>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <br>
+    <br>
+
+    <div id="totalGeral">
+        <div class="row">
+            <div class="card-deck">
+                <div class="card text-white bg-secondary col-sm-3" style="margin-right: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de vendas</h5>
+                        <p class="card-text" >{{cliente.totalVendas}}</p>
+                    </div>
+                </div>
+                <!-- <div class="card col-sm-3"></div> -->
+                <div class="card text-white bg-secondary col-sm-3" >
+                    <div class="card-body">
+                        <h5 class="card-title">Total liquido</h5>
+                        <p class="card-text" >{{cliente.totalLiquido}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="totalDatas">
+        <div class="row">
+            <div class="card-deck">
+                <div class="card text-white bg-secondary col-sm-3" style="margin-right: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de vendas</h5>
+                        <input id="totalVendas" class="card text-white bg-secondary" style="border: transparent;"> 
+                    </div>
+                </div>
+                <!-- <div class="card col-sm-3"></div> -->
+                <div class="card text-white bg-secondary col-sm-3" >
+                    <div class="card-body">
+                        <h5 class="card-title">Total liquido</h5>
+                        <input id="totalLiquido" class="card text-white bg-secondary" style="border: transparent;"> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div>
+        {% for cliente in cliente %}
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{cliente.Total}}</h5>
+                        <p class="card-text"></p>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %} 
+    </div>
+
 </div>
 
 {% endblock %}
 
 {% block javascript %}
 <script type="text/javascript">
+    $(document).ready(function(){
+        $('#totalDatas').hide();
+    });
+
+
     function enviar(idCliente) {
-        if($('#dtInicial')[0].value < $('#dtFinal')[0].value){
+        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
             var dados={
                 idCliente: idCliente,
                 dtInicial: $('#dtInicial')[0].value,
                 dtFinal: $('#dtFinal')[0].value
             }
+            console.log(dados);
             $.ajax({
                 type:"POST",
                 data: dados,
                 url:"cliente-relatorio-venda",
                 success:function(r){
-                    var resp = JSON.parse(r);
-                    console.log('r', resp);
-                }
+                    console.log('r', r);
+                    var resp = jQuery.parseJSON(r);
+                    console.log(resp.dados);
+                    if(resp.dados['totalLiquido'] != null){
+                        $('#totalGeral').hide();
+                        $('#totalDatas').show();
+                        $('#totalVendas').val(resp['totalVendas']);
+                        $('#totalLiquido').val(resp['totalLiquido']);
+                    }else{
+                        $('#totalVendas').val('');
+                        $('#totalLiquido').val('');
+                        alertify.error("Nao ha vendas nesse periodo");
+                    }
+                    // $('#totalLiquido').val(resp['totalLiquido']);
+                } 
             });
         }else{
             alertify.error("Datas invalidas!");
         }
-        
-        console.log(dados);
     }
     
 </script>
 {% endblock %}
+

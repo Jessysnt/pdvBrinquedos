@@ -27,7 +27,9 @@ class ClienteDAO extends Conexao
      */
     public function exibirCliente($idCliente)
     {
-        $stmt = static::getConexao()->prepare("SELECT id, nome, sobrenome, cpf FROM cliente WHERE id=:id");
+        $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido FROM cliente AS c
+        LEFT JOIN comandafatura AS cf ON cf.id_cliente = c.id
+        WHERE c.id = :id AND c.status=1");
         $stmt->bindParam(':id', $idCliente, PDO::PARAM_INT);
         $stmt->execute(); 
         return $stmt->fetchObject('\App\Entity\Cliente');
@@ -101,12 +103,28 @@ class ClienteDAO extends Conexao
         return $stmt->execute();
 	}
 
-    public function vendaClienteData($usuario)
+    public function vendaClienteData($cliente)
     {
-        $stmt = static::getConexao()->prepare("SELECT numero, valor_total1, valor_total2, data_finalizacao  FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_cliente=:idCliente");
-        $stmt->bindParam(':idCliente', $usuario['idCliente'], PDO::PARAM_INT);
-        $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
-        $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);
+        // die(var_dump($cliente));
+        // COUNT(DISTINCT v.id) as totalVendas, SUM(v.total) as totalLiquido, SUM(v.total) / COUNT(DISTINCT v.id) as ticketMedio") 
+        $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_cliente=:idCliente");
+        $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
+        $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $cliente['dtFinal'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function vendaCliente($cliente)
+    {
+        $stmt = static::getConexao()->prepare("SELECT cf.id, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS Total, lf.id_produto, lf.quantidade, 
+        p.nome FROM comandafatura AS cf
+        LEFT JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
+        INNER JOIN produto AS p ON lf.id_produto = p.id
+        WHERE cf.id_cliente = :idCliente AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal");
+        $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
+        $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $cliente['dtFinal'], PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
