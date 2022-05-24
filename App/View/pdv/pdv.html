@@ -171,7 +171,8 @@
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
+		<br>	
 		<div id="trocoUm" class="col-sm-4">
 			<label>Troco</label>
 			<input type="text" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
@@ -212,6 +213,7 @@
 		$("#valorUm").prop("disabled", true);
 		$("#pgUm").prop("disabled", true);
 		$("#sub").hide();
+		// $("#valorTotal").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 	});
 
 	function habilitarCampos(){
@@ -495,12 +497,12 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarVenda').click(function() {
-		var vtUm = $('#valorUm').maskMoney('unmasked')[0];
+		valorRestante();
+	});	
+		
+		
+	function gravarComanda() {
 		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
-		var vtSoma = vtUm + vtDois;
-		var vt = $('#valorTotal').val();
-		// console.log(vtDois);
-		// return false;
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
 			if($('#pgUm').val() != ""){
 				if(vtDois != 0 && $('#pgDois').val() != ""){
@@ -551,7 +553,7 @@
 			}else{alertify.alert("Preencher forma de pagamento!");}
 
 		}else{alertify.alert("Preencher o CPF!");} 
-	});
+	};
 	
 </script>
 
@@ -697,12 +699,12 @@ $('#numeroComanda').keyup(function(e) {
 </script>
 
 <script type="text/javascript">
-	$('#pgUm').click(function(){
-		console.log('ak2');
-		if($('#pgUm').val == 1){
-			console.log('ak2');
-		}
-	});
+	// $('#pgUm').click(function(){
+	// 	console.log('ak2');
+	// 	if($('#pgUm').val == 1){
+	// 		console.log('ak2');
+	// 	}
+	// });
 
 	function valorPagar(soma){
 		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
@@ -735,9 +737,7 @@ $('#numeroComanda').keyup(function(e) {
 			valorDois = $('#valorDois').maskMoney('unmasked')[0];
 			valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			var valorVenda = valorUm + valorDois;
-			console.log('valorVenda',valorVenda);
 			if(soma < valorVenda){
-				console.log('dentro if');
 				troco = valorVenda - soma;
 				$("#trocoUm").show();
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
@@ -748,6 +748,24 @@ $('#numeroComanda').keyup(function(e) {
 			}
 		});
 	};
+
+
+	function valorRestante() {
+		var totalLinha = 0.0;
+		comanda.linhas.forEach(linha => {
+			totalLinha += linha.quantV*linha.precoV;
+		});
+		valorUm = $('#valorUm').maskMoney('unmasked')[0];
+		valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		var somaCampos = valorUm + valorDois;
+		var dezPorcento = totalLinha - (totalLinha * 0.1);
+		if(dezPorcento > somaCampos){
+			alertify.error('Desconto maior que o permitido!');
+			return false;
+		}else{
+			gravarComanda();
+		}
+	}
 </script>
 
 
