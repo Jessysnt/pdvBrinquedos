@@ -5,10 +5,11 @@
 {% block body %}
 
 <div class="container">
-    <h1>Administrar Usuário</h1>
-    <div class="row">
-        <div class="col-sm-4">
-            <form id="frmUsuario">
+    <h3>Administrar Usuário</h3>
+    
+    <form id="frmUsuario">
+        <div class="row">
+            <div class="col-sm-4">
                 <label>Nome</label>
                 <input type="text" class="form-control input-sm" name="nome" id="nome">
                 <label>Sobrenome</label>
@@ -17,30 +18,363 @@
                 <input type="text" class="form-control input-sm" name="email" id="email">
                 <label>Senha</label>
                 <input type="text" class="form-control input-sm" name="senha" id="senha">
-
-                <label>Cargo</label>
-                <select class="form-control input-sm" id="cargo" name="cargo">
+                <br>
+                <!-- <label>Funções</label> -->
+                <!-- <select class="form-control input-sm" id="cargo" name="cargo">
                     <option value="A">Selecionar Categoria</option>
                     <option value="2">Gerente</option>
                     <option value="3">Caixa</option>
                     <option value="4">Vendedor</option>
                     <option value="1">Administrador</option>
-                </select>
-
-                <p></p>
+                </select> -->
                 <span class="btn btn-primary btn-block" id="adicionarUsuario">Adicionar</span>
+            </div> 
+         
+            <div class="col-sm-4">
+                <div class="container">
+                    <label style="color: black;">Cargos</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="administrador" value="administrador">
+                        <label class="form-check-label" for="administrador">Administrador</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="gerente" value="gerente">
+                        <label class="form-check-label" for="gerente">Gerente</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="supervisor" value="supervisor">
+                        <label class="form-check-label" for="supervisor">Supervisor de vendas</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="caixa" value="caixa">
+                        <label class="form-check-label" for="caixa">Caixa</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="vendedor" value="vendedor">
+                        <label class="form-check-label" for="vendedor">Vendedor</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="estoque" value="estoque">
+                        <label class="form-check-label" for="estoque">Estoque</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" >
+                <label style="color: black;">Funções</label>
+                <br>
 
-            </form>
+                <div class="container">
+                    <label> Gestão de Cliente</label>
+                    <div class="container">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteVisualizar" name="acessos[]" value="1">
+                            <label class="form-check-label" for="clienteVisualizar">Visualizar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteAdicionar" name="acessos[]" value="2">
+                            <label class="form-check-label" for="clienteAdicionar">Adicionar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteEditar" name="acessos[]" value="3">
+                            <label class="form-check-label" for="clienteEditar">Editar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteRelatorio" name="acessos[]" value="4">
+                            <label class="form-check-label" for="clienteRelatorio">Relatório</label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <label> Gestão de Colaboradores</label>
+                    <div class="container">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioVusualizar" name="acessos[]" value="5">
+                            <label class="form-check-label" for="usuarioVusualizar">Visualizar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioAdicionar" name="acessos[]" value="6">
+                            <label class="form-check-label" for="usuarioAdicionar">Adicionar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioEditar" name="acessos[]" value="7">
+                            <label class="form-check-label" for="usuarioEditar">Editar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioRelatorio" name="acessos[]" value="8">
+                            <label class="form-check-label" for="usuarioRelatorio">Relatório</label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="produto" name="acessos[]" value="9">
+                        <label class="form-check-label" for="produto">Gestão de Produtos</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="categoria" name="acessos[]" value="10">
+                        <label class="form-check-label" for="categoria">Gestão de Categorias</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="produtoLote" name="acessos[]" value="11">
+                        <label class="form-check-label" for="produtoLote">Gestão de Produtos Lote</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="estoqueVer" name="acessos[]" value="12">
+                        <label class="form-check-label" for="estoqueVer">Estoque</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="comanda" name="acessos[]" value="13">
+                        <label class="form-check-label" for="comanda">Comanda</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="pdv" name="acessos[]" value="14">
+                        <label class="form-check-label" for="estoque">PDV</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <label>Relatórios</label>
+                    <div class="container">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="15">
+                            <label class="form-check-label" for="relatorioVenda">Vendas</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioProduto" name="acessos[]" value="16">
+                            <label class="form-check-label" for="relatorioProduto">Produtos</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioComanda" name="acessos[]" value="17">
+                            <label class="form-check-label" for="relatorioComanda">Comandas</label>
+                        </div>
+                    </div>
+                </div>
+            </div>         
         </div>
-        <!-- <div class="col-sm-7">
-            <div id="tabelaUsuariosLoad"></div>
-        </div> -->
-    </div>
+    </form>       
+        
+    
 </div>
+
+//Administrador
+tudo
+
+//Gerente 
+tudo menos funcionario
+>Rotas de Relatorios
+$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
+
+//Geral
+$router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
+$router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' => 'tabelaClientes']);
+$router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
+$router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);
+>Rotas de Comandas
+
+//Caixa
+>Rotas do PDV
+comandas abertas
+>Rotas Produtos Preço
+$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
+
+//Estoque
+>Rotas dos Produto
+>Rotas Produtos Preço
+>Rotas de Categoria
+
+//Rotas iniciais
+$router->add('', ['controller' => 'LoginController', 'action' => 'logar']);
+$router->add('login', ['controller' => 'LoginController', 'action' => 'logar']);
+$router->add('registro', ['controller' => 'RegistrarController', 'action' => 'primeiroRegistro']);
+$router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
+
+//Rotas de Usuario
+$router->add('usuario-add', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
+$router->add('tab-usuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
+$router->add('obt-usuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
+$router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'inativarUsuario']);
+$router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
+$router->add('usuario-venda', ['controller' => 'UsuarioController', 'action' => 'usuarioVendas']);
+$router->add('usuario-relatorio-venda', ['controller' => 'UsuarioController', 'action' => 'relatorioVendasUsuario']);
+
+
+//Rotas de Cliente
+$router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
+$router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' => 'tabelaClientes']);
+$router->add('cliente-obter', ['controller' => 'ClienteController', 'action' => 'obterCliente']);
+$router->add('cliente-inativar', ['controller' => 'ClienteController', 'action' => 'inativarCliente']);
+$router->add('cliente-atualizar', ['controller' => 'ClienteController', 'action' => 'atualizarCliente']);
+$router->add('cliente-venda', ['controller' => 'ClienteController', 'action' => 'clienteVendas']);
+$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
+
+
+//Rotas dos Produto
+$router->add('produto-form', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
+$router->add('tab-produto', ['controller' => 'ProdutoController', 'action' => 'tabelaProduto']);
+$router->add('pesquisar-categoria', ['controller' => 'ProdutoController', 'action' => 'pesquisarCategoria']);
+$router->add('produto-obter', ['controller' => 'ProdutoController', 'action' => 'obterProduto']);
+$router->add('produto-atualizar', ['controller' => 'ProdutoController', 'action' => 'atualizarProduto']);
+$router->add('produto-apagar', ['controller' => 'ProdutoController', 'action' => 'apagarProduto']);
+
+//Rotas Produtos Preço
+$router->add('produto-venda', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
+$router->add('prod-vend-add', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
+$router->add('tab-prod-vend', ['controller' => 'ProdutoVendaController', 'action' => 'tabelaProdutoVenda']);
+$router->add('obt-produtov', ['controller' => 'ProdutoVendaController', 'action' => 'obterProdutoV']);
+$router->add('atz-prod-venda', ['controller' => 'ProdutoVendaController', 'action' => 'atualizarProdutoVenda']);
+$router->add('apg-prod-ven', ['controller' => 'ProdutoVendaController', 'action' => 'apagarProdutoVenda']);
+$router->add('prod-vend-desativa', ['controller' => 'ProdutoVendaController', 'action' => 'desativarLote']);
+
+//Rotas Estoque
+$router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);
+
+//Rotas de Comandas
+$router->add('comandas', ['controller' => 'ComandaController', 'action' => 'telaInicial']);
+$router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
+$router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
+$router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
+$router->add('pesquisar-prod-est-codigo', ['controller' => 'ComandaController', 'action' => 'pesquisarProEstCod']);
+$router->add('gravar-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
+$router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'numeroAberto']);
+$router->add('apaga-prods-comanda', ['controller' => 'ComandaController', 'action' => 'apagarProdutoComanda']);
+
+//Rotas do PDV
+$router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);
+$router->add('obter-dados-numero', ['controller' => 'PdvController', 'action' => 'obterDadosNumero']);
+$router->add('gravar-venda', ['controller' => 'PdvController', 'action' => 'gravarComanda']);
+$router->add('apaga-prod-comanda', ['controller' => 'PdvController', 'action' => 'apagarProdutoComanda']);
+$router->add('pesq-cliente-comanda', ['controller' => 'PdvController', 'action' => 'pesqClienteComanda']);
+
+//Rotas de Categoria
+$router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);
+$router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action' => 'tabelaCategorias']);
+
+//Rotas de Fornecedor
+$router->add('fornecedores', ['controller' => 'FornecedorController', 'action' => 'fornecedor']);
+
+//Rotas do Painel
+$router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
+$router->add('pesquisa-mes', ['controller' => 'PainelController', 'action' => 'dadosMes']);
+
+//Rotas de Relatorios
+$router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
 
 {% endblock %}
 
+
 {% block javascript %}
+
+<script type="text/javascript">
+    $('#administrador').change(function(e) {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("administrador");
+    });
+
+    $('#gerente').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("gerente");
+    });
+
+    $('#supervisor').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("supervisor");
+    });
+
+    $('#caixa').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("caixa");
+    });
+
+    $('#vendedor').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("vendedor");
+    });
+
+    $('#estoque').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("estoque");
+    });
+
+    function ativarCheckbox(cargo) {
+        var ativar = [];
+        switch (cargo) {
+            case "administrador":
+                ativar = [1,2,3,4,5,8,9,10,11,12,13,14,15,16,17];
+                break;
+
+            case "gerente":
+                ativar = [1,2,3,4,5,8,9,10,11,12,13,14,15,16,17];
+                break;
+
+            case "supervisor":
+                ativar = [1,2,3,4,12,13];
+                break;
+
+            case "caixa":
+                ativar = [1,2,3,11,12,13,14];
+                break;
+
+            case "vendedor":
+                ativar = [1,2,3,12,13];
+                break;
+
+            case "estoque":
+                ativar = [9,10,11,12];
+                break;
+        
+            default:
+                break;
+        }
+        var checkboxes = $(':checkbox[name="acessos[]"]');
+        $(checkboxes).each(function(){
+            $(this).prop('checked', false);
+            if(ativar.includes(parseInt($(this)[0].value))){
+                $(this).prop('checked', true);    
+            }
+        });
+    }
+</script>
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -51,7 +385,15 @@
                 alertify.alert("Preencha os campos!!");
                 return false;
             }
-            dados=$('#frmUsuario').serialize();
+            dados = $('#frmUsuario').serialize();
+            // dados={
+            //     nome: $('#nome').val(),
+            //     sobrenome: $('#sobrenome').val(),
+            //     email: $('#email').val(),
+            //     senha: $('#senha').val()
+            // };
+            console.log(dados);
+            return false;
             $.ajax({
                 type:"POST",
                 data:dados,
@@ -73,10 +415,6 @@
     });
 </script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $('#cargo').select2();
-    //$('#cargoU').select2(); 
-});
-</script>
+
+
 {% endblock %}

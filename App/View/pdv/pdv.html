@@ -152,7 +152,7 @@
 					<label>2ª Forma de pagamento</label>
 					<div>
 						<select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
-							<option value="" readonly="true">Selecionar</option>
+							<option value="A" readonly="true">Selecionar</option>
 							<option value="1" >Dinheiro</option>
 							<option value="2">Pix</option>
 							<option value="3">Debito</option>
@@ -413,6 +413,7 @@
 			soma += linha.quantV*linha.precoV;
 		});
 		total.html(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+		console.log('cod entter', soma);
 		valorPagar(soma);
 	}
 
@@ -503,9 +504,12 @@
 		
 	function gravarComanda() {
 		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
+		// return false;
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
 			if($('#pgUm').val() != ""){
-				if(vtDois != 0 && $('#pgDois').val() != ""){
+				if((vtDois > 0  && $('#pgDois').val() == 'A') || vtDois == 0 ){
+					console.log('entrou if aaaaa');
+					return false;
 					var dados={
 						cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
 						numero: (comanda.numero!=null?(comanda.numero):null),
@@ -549,8 +553,8 @@
 							}
 						}
 					});
-				}else{alertify.alert("Preencher forma de pagamento!");}
-			}else{alertify.alert("Preencher forma de pagamento!");}
+				}else{alertify.alert("Preencher forma de pagamento! pgdois");}
+			}else{alertify.alert("Preencher forma de pagamento! pgum");}
 
 		}else{alertify.alert("Preencher o CPF!");} 
 	};
@@ -706,9 +710,9 @@ $('#numeroComanda').keyup(function(e) {
 	// 	}
 	// });
 
-	function valorPagar(soma){
+	function valorPagar(sm){
+		var soma = sm;
 		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-
 		$('#valorUm').change(function(){
 			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			// console.log('valorUm', valorUm);
@@ -716,7 +720,10 @@ $('#numeroComanda').keyup(function(e) {
 				$("#trocoUm").show();
 				var troco = valorUm - soma;
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				console.log('pag',$('#pgUm').val());
+				$("#pagamentoDois").hide();
+				$("#valorDois").val('');
+				console.log('ak1', valorUm);
+				console.log('ak1s', soma);
 			}
 			if(valorUm < soma){
 				var valorDois = soma - valorUm;
@@ -724,12 +731,15 @@ $('#numeroComanda').keyup(function(e) {
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+				console.log('ak2', valorUm);
+				console.log('ak2s', soma);
 			} 
 			if(valorUm == soma) {
 				$("#pagamentoDois").hide();
 				$("#valorDois").val('');
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
+				console.log('ak3');
 			}
 		});
 
@@ -741,10 +751,19 @@ $('#numeroComanda').keyup(function(e) {
 				troco = valorVenda - soma;
 				$("#trocoUm").show();
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+				console.log('ak4');
 			}
 			if(valorVenda == soma){
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
+				console.log('ak5');
+			}
+			if(valorDois == 0){
+				$("#trocoUm").hide();
+				$("#trocoUmDinheiro").val('');
+				$("#pagamentoDois").hide();
+				// $('#pgDois').val(null).trigger('change');
+				console.log('ak6');
 			}
 		});
 	};
