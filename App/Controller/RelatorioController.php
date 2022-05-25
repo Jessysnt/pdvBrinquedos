@@ -20,4 +20,22 @@ class RelatorioController
         }
         View::renderTemplate('/relatorios/mais-vendidos.html'); 
     }
+
+    public function statusComandas()
+    {
+        View::renderTemplate('/relatorios/comanda-status.html');
+    }
+
+    public function pesquisaComandas()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $datas=array(
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => $_POST['dtFinal']
+            );
+            $respComandas = $obRelatorioDAO->vendaComandas($datas);
+            View::jsonResponse(['dados'=>$respComandas]);
+        }
+    }
 }

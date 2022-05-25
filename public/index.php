@@ -96,8 +96,10 @@ $router->add('fornecedores', ['controller' => 'FornecedorController', 'action' =
 $router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
 $router->add('pesquisa-mes', ['controller' => 'PainelController', 'action' => 'dadosMes']);
 
-//Rotas de relatorios
+//Rotas de Relatorios
 $router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
+$router->add('comanda-status', ['controller' => 'RelatorioController', 'action' => 'statusComandas']);
+$router->add('pesquisa-comanda', ['controller' => 'RelatorioController', 'action' => 'pesquisaComandas']);
 
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);

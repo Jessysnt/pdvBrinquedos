@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Comandas{% endblock %}
+
+{% block stylesheet %}
+<style>
+	td {text-align: center;}
+    th {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="container" id="tabela">
+    <form id="frmRelatorioCliente">
+        <div class="row">  
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial">
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
+            </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+        </div>
+    </form>
+
+    <div class="table-responsive" id="vendasPeriodo">
+		<caption><label>Comandas</label></caption> 
+			<br>
+		<table class="table table-hover table-condensed table-bordered"  id="lista">
+			<!-- <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+			<br> -->
+			<thead>	
+				<tr>
+					<th>Data</th>
+					<th>Comanda</th>
+					<th>Vendedor</th>
+					<th>Cliente</th>
+					<th>Itens</th>
+
+					<th>Status</th>
+					<th>Fechar</th>
+				</tr>
+			</thead>
+            <tbody>
+					
+            </tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	 $(document).ready(function(){
+        $('#vendasPeriodo').hide();
+    });
+
+    function enviar() {
+        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
+            var dados={
+                dtInicial: $('#dtInicial')[0].value,
+                dtFinal: $('#dtFinal')[0].value
+            }
+            console.log(dados);
+            $.ajax({
+                type:"POST",
+                data: dados,
+                url:"pesquisa-comanda",
+                success:function(r){
+                    console.log(r);
+                    // var resp = jQuery.parseJSON(r);
+                    // console.log(resp.cliente);
+                    // if(resp.dados['totalLiquido'] != null){
+                    //     $('#totalGeral').hide();
+                    //     $('#totalDatas').show();
+                    //     $('#totalVendas').val(resp.dados['totalVendas']);
+                    //     $('#totalLiquido').val(parseFloat(resp.dados['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+
+                    //     $('#vendasPeriodo').show();
+                    //     var tbody = $('#vendasPeriodo').find('tbody');
+                    //     tbody.empty();
+                    //     resp.cliente.forEach(linha => {
+                    //         tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+                    //     });
+                    // }else{
+                    //     $('#totalVendas').val('');
+                    //     $('#totalLiquido').val('');
+                    //     alertify.error("Nao ha vendas nesse periodo");
+                    // }
+                    // $('#totalLiquido').val(resp['totalLiquido']);
+                } 
+            });
+        }else{
+            alertify.error("Datas invalidas!");
+        }
+    }
+</script>
+
+{% endblock %}
