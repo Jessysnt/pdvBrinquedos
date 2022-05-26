@@ -7,23 +7,56 @@
 
 {% block body %}
 
-<div class="container">
-    <h3>Lançar Venda</h3>
+<!-- Modal -->
+<div class="modal fade" id="permissao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Permitir desconto</h4>
+			</div>
+			<div class="modal-body">
+				<form id="permissaoSenha">
+					<input type="text" hidden="" id="idUsuario" name="idUsuario">
+					<label>Nome</label>
+					<input type="text" class="form-control input-sm" name="nomeP" id="nomeP">
+					<label>Senha</label>
+					<input type="text" class="form-control input-sm" name="senhaP" id="senhaP">
+					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button id="permitirDesconto" type="button" class="btn btn-warning" data-dismiss="modal">Atualizar</button>
+  
+			</div>
+		</div>
+	</div>
+</div>
 
-    <section class="direita">
-		<div class="row">
-			<form method="post" id="frmComanda">
-				<div class="row" id="grupoNumero">
-					<div class="col-sm-6">
-						<div class="form-group">
-							<label for="numeroComanda">Número Comanda</label>
-							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
-							<input type="submit" id="sub">
-						</div>
-					</div>
-				</div>
-				<div class="row" id="grupoCpf">
-					<div class="col-sm-4">
+
+
+<div class="container" style="margin-top: -55px;">
+    <h3 style="color: green;">Lançar Venda</h3>
+    <br>
+    <div class="row">
+        <div id="formularioAtivo">
+
+        </div>
+        <div class="col-sm-6">
+            <form method="post" id="frmComanda">
+				
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="numeroComanda" style="color: rgb(0, 19, 128);" >Número Comanda</label>
+                            <input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
+                            <input type="submit" id="sub">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="grupoCpf">
+                    <div class="col-sm-4">
 						<div class="form-group">
 							<label>Digite o CPF</label>
 							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
@@ -32,165 +65,196 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-5">
+					<div class="col-sm-4">
 						<div class="form-group">
 							<label>Nome </label>
 							<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
 						</div>
 					</div>
-				</div>
-				<div class="mb-3 form-check">
+                </div>
+
+                <div class="mb-3 form-check">
 					<input type="checkbox" class="form-check-input" id="anonimo">
 					<label class="form-check-label" for="anonimo">Anônimo</label>
 				</div>
-				<br>
-					
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="form-group">
+                <br>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
 							<label>Código</label>
 							<input type="textbox" class="form-control input-sm" id="codigo" name="codigo" data-nome="" data-id="">
 						</div>
-						<div class="form-group">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
 							<label>Produto</label>
 							<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
 								<option value="">Selecionar</option>
 								<!--<option value="{{produto.id}}">{{produto.nome}}</option>--> 
 							</select>
 						</div>
-						<div class="form-group">
-							<label>Descrição</label>
-							<textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
-						</div>
-						<div class="form-group">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
 							<label>Quantidade Estoque</label>
 							<input readonly="" type="text" class="form-control input-sm" id="quantidadeV" name="quantidadeV">
 						</div>
-						<div class="form-group">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
 							<label>Preço</label>
 							<input readonly="" type="text" class="form-control input-sm" id="precoV" name="precoV">
-						</div>	
-						<div class="form-group">
+						</div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
 							<label>Quantidade Vendida</label>
 							<input type="number" class="form-control input-sm" id="quantV" name="quantV">
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-3">
+                    </div>
+                </div>
+
+                <div class="row">
+					<div class="col-sm-5" style="margin-left: 30px;">
 						<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Adicionar</span>
 					</div>
-					<div class="col-sm-3">
-						<span class="btn btn-danger" id="btnLimparComanda">Limpar Comanda</span>
-					</div>
-				</div>
+                </div>
 			</form>	
-		</div>
-	</section>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="row">
+                <table id="tabelaComanda" class="table table-bordered table-hover table-condensed" style="text-align: center; margin-top: 50px;">
+                    <thead>
+                        <tr class="table-primary">
+                        <th scope="col">Nome</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Subtotal</th>
+                        <!-- <th scope="col">Excluir</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"></td>
+                            <th>Total</th>
+                            <td id="valorTotal">R$ 0,00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <br>
+            <div id="botoesComandaAtiva">
+                <div class="row" >
+                    <div class="col-sm-4">
+                        <span class="btn btn-danger" id="btnLimparComanda" style="margin-right: 20px;">Limpar Comanda</span>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span type="submit" class="btn btn-success" name="finalizarVenda" id="finalizarVenda" >Finalizar Venda</span>
+                    </div>
+                </div>    
+            </div>
+            <br>
+            <div id="formasPagamentos">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>1ª Forma de pagamento</label>
+                        <div>
+                            <select class="form-control input-sm" id="pgUm" name="pgUm" required onchange="vezesCartao(value)">
+                                <option value="" readonly="true">Selecionar</option>
+                                <option value="1" >Dinheiro</option>
+                                <option value="2">Pix</option>
+                                <option value="3">Debito</option>
+                                <option value="4">Credito</option>
+                                <!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div id="vzsCartaoUm" class="col-sm-4">
+                        <label>x no cartão</label>
+                        <input type="number" class="form-control input-sm" name="vzsCartaoUm" id="vzsCartao">
+                    </div>				
+                    <div class="col-sm-4">
+                        <label>Valor a pagar</label>
+                        <div>
+                            <input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
+                        </div>
+                    </div>
+                </div>	
     
+                <div id="pagamentoDois">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>2ª Forma de pagamento</label>
+                            <div>
+                                <select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
+                                    <option value="" readonly="true">Selecionar</option>
+                                    <option value="1" >Dinheiro</option>
+                                    <option value="2">Pix</option>
+                                    <option value="3">Debito</option>
+                                    <!-- <option value="4">Credito</option> -->
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <label>Valor a pagar</label>
+                            <div>
+                                <input type="text" class="form-control input-sm" id="valorDois" name="valorDois">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <br>	
+                <div class="row" id="trocoUm">
+                    <div class="col-sm-4">
+                        <label>Troco</label>
+                        <input type="text" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
+                    </div>
+                </div>	
+                <br>
 
-	<section class="esquerda">
-		<div class="row">
-			<table id="tabelaComanda" class="table table-bordered table-hover table-condensed" style="text-align: center;">
-				<thead>
-					<tr class="table-primary">
-					  <th scope="col">Nome</th>
-					  <th scope="col">Descrição</th>
-					  <th scope="col">Quantidade</th>
-					  <th scope="col">Preço</th>
-					  <th scope="col">Subtotal</th>
-					  <!-- <th scope="col">Excluir</th> -->
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="3"></td>
-						<th>Total</th>
-						<td id="valorTotal">R$ 0,00</td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-		<!-- <div class="row">
-			<div class="col-sm-3">
-				<span class="btn btn-success" id="gravarComanda">GRAVAR</span>
-			</div>
-		</div> -->
-        <br>
-        <div class="row">
-			<div class="col-sm-4">
-				<label>1ª Forma de pagamento</label>
-				<div>
-					<select class="form-control input-sm" id="pgUm" name="pgUm" required onchange="vezesCartao(value)">
-						<option value="" readonly="true">Selecionar</option>
-						<option value="1" >Dinheiro</option>
-						<option value="2">Pix</option>
-						<option value="3">Debito</option>
-						<option value="4">Credito</option>
-						<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
-					</select>
-				</div>
-			</div>
-			<div id="vzsCartaoUm" class="col-sm-4">
-				<label>x no cartão</label>
-				<input type="number" class="form-control input-sm" name="vzsCartaoUm" id="vzsCartao">
-			</div>				
-			<div class="col-sm-4">
-				<label>Valor a pagar</label>
-				<div>
-					<input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
-				</div>
-			</div>
-		</div>		
+                <div id="botoesComandaAPagar">
+                    <div class="row" >
+                        <div class="col-sm-4">
+                            <span class="btn btn-primary" id="voltarFormulario" >Voltar</span>
+                        </div>
+    
+                        <div class="col-sm-4">
+                            <span type="submit" class="btn btn-success" name="gravarVenda" id="gravarVenda" >GRAVAR</span>
+                        </div>
+                    </div>    
+                </div>
 
-		<div id="pagamentoDois">
-			<div class="row">
-				<div class="col-sm-4">
-					<label>2ª Forma de pagamento</label>
-					<div>
-						<select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
-							<option value="A" readonly="true">Selecionar</option>
-							<option value="1" >Dinheiro</option>
-							<option value="2">Pix</option>
-							<option value="3">Debito</option>
-							<!-- <option value="4">Credito</option> -->
-						</select>
-					</div>
-				</div>
-				<div id="vzsCartaoDois" class="col-sm-4">
-					<label>x no cartão</label>
-					<input type="number" class="form-control input-sm" name="vzsCartaoDois">
-				</div>
-				<div class="col-sm-4">
-					<label>Valor a pagar</label>
-					<div>
-						<input type="text" class="form-control input-sm" id="valorDois" name="valorDois">
-					</div>
-				</div>
-			</div>
-		</div>
-		<br>	
-		<div id="trocoUm" class="col-sm-4">
-			<label>Troco</label>
-			<input type="text" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
-		</div>		
-		<br>
-		<div class="row">
-			<div class="col-sm-3">
-				<span type="submit" class="btn btn-primary btn-block" name="gravarVenda" id="gravarVenda" >GRAVAR</span>
-			</div>
-		</div>
-	</section>
-	
+            </div>            
+               
+        </div>
+
+    </div>
 </div>
-
 {% endblock %}
 
 {% block javascript %}
-
 <script type="text/javascript">
 	/**
      * Todos os campos do formulario inativos ate escolher uma opcao no RadioOptions
@@ -210,10 +274,12 @@
 		$("#pagamentoDois").hide();
 		$("#pgDois").hide();
 		$("#trocoUm").hide();
+		$("#formasPagamentos").hide();
 		$("#valorUm").prop("disabled", true);
 		$("#pgUm").prop("disabled", true);
 		$("#sub").hide();
-		// $("#valorTotal").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
+        $("#btAddTemp").hide();
+		$("#botoesComandaAtiva").hide();
 	});
 
 	function habilitarCampos(){
@@ -230,9 +296,11 @@
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
 		$('#pgUm').val(1).trigger('change');
+        $("#botoesComandaAtiva").show();
 		$("#valorUm").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 		$("#valorDois").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 		$("#trocoUmDinheiro").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
+        $("#btAddTemp").show();
 	};
 
 	function vezesCartao(){
@@ -257,7 +325,41 @@
 		numero: null,
 		linhas:[]
 	};
+</script>
 
+<script type="text/javascript">
+var valorUm = $('#valorUm').maskMoney('unmasked')[0];
+    $('#finalizarVenda').click(function () {
+        console.log(valorUm);
+        if($('#valorUm').maskMoney('unmasked')[0]){
+            $("#clienteCpf").prop("disabled", true);
+            $("#nomeClienteComanda").prop("disabled", true);
+            $("#codigo").prop("disabled", true);
+            $("#descricaoV").prop("disabled", true);
+            $("#produtoVenda").prop("disabled", true);
+            $("#quantidadeV").prop("disabled", true);
+            $("#precoV").prop("disabled", true);
+            $("#quantV").prop("disabled", true);
+            $("#anonimo").prop("disabled", true);
+            $("#formasPagamentos").show();
+            $("#botoesComandaAtiva").hide();
+            $("#frmComanda").hide();
+        }else{
+            alertify.error("Não possui produtos!");
+        }  
+    });
+
+    function voltarFormulario() {
+        $("#formasPagamentos").hide();
+        $("#frmComanda").show();
+    }
+
+    $('#voltarFormulario').click(function () {
+        $("#botoesComandaAtiva").show();
+        $("#formasPagamentos").hide();
+        $("#frmComanda").show();
+        habilitarCampos();
+    });
 </script>
 
 <script type="text/javascript">
@@ -274,48 +376,46 @@
 </script>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		/**
-		* Tras informaçoes para o select
-		*/
-		$("#clienteCpf").select2({
-			language: "pt-BR",
-			minimumInputLength: 14,
-    		ajax: {
-                url: 'pesquisar-cliente',
-                dataType: 'json',
-                success:function(r){
-					$('#nomeClienteComanda').val(r.results[0]['nome'] + " " + r.results[0]['sobrenome']);
-					comanda.cliente = r.results[0]['id'];
-					// if('#clienteCpf'){
-					// 	$("#clienteCpf").prop("disabled", true);
-					// 	//$("#nomeClienteComanda").prop("disabled", true);
-					// }
-				}
+    /**
+    * Tras informaçoes para o select
+    */
+    $("#clienteCpf").select2({
+        language: "pt-BR",
+        minimumInputLength: 14,
+        ajax: {
+            url: 'pesquisar-cliente',
+            dataType: 'json',
+            success:function(r){
+                $('#nomeClienteComanda').val(r.results[0]['nome'] + " " + r.results[0]['sobrenome']);
+                comanda.cliente = r.results[0]['id'];
+                // if('#clienteCpf'){
+                // 	$("#clienteCpf").prop("disabled", true);
+                // 	//$("#nomeClienteComanda").prop("disabled", true);
+                // }
             }
-        })
-		//Coloca mascara no select2
-		.on("select2:open", function () {
-			$(".select2-search__field")
-			.attr("type","text")
-			.mask("000.000.000-00");  
-		});
-		
-		/**
-		 * select de produto .. tras o id e o nome
-		 */
-        $("#produtoVenda").select2({
-			language: "pt-BR",
-            minimumInputLength: 3,
-            ajax: {
-                url: 'pesquisar-produto',
-                dataType: 'json'
-            }
-        });
+        }
+    })
+    //Coloca mascara no select2
+    .on("select2:open", function () {
+        $(".select2-search__field")
+        .attr("type","text")
+        .mask("000.000.000-00");  
+    });
+    
+    /**
+     * select de produto .. tras o id e o nome
+     */
+    $("#produtoVenda").select2({
+        language: "pt-BR",
+        minimumInputLength: 3,
+        ajax: {
+            url: 'pesquisar-produto',
+            dataType: 'json'
+        }
+    });
 
-		$("#pgUm").select2();
-		$("#pgDois").select2();
-	});
+    $("#pgUm").select2();
+    $("#pgDois").select2();
 </script>
 
 <script type="text/javascript">
@@ -330,7 +430,6 @@
 				data: "numero=" + $('#numeroComanda').val(),
 				url: "obter-dados-numero",
 				success:function(r){
-                    // console.log('r', r);
 					if(r != 'false' && r != 'fechadafalse'){
 						var resp = JSON.parse(r);
                         comanda = resp;
@@ -413,7 +512,6 @@
 			soma += linha.quantV*linha.precoV;
 		});
 		total.html(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-		console.log('cod entter', soma);
 		valorPagar(soma);
 	}
 
@@ -504,12 +602,9 @@
 		
 	function gravarComanda() {
 		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
-		// return false;
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
 			if($('#pgUm').val() != ""){
-				if((vtDois > 0  && $('#pgDois').val() == 'A') || vtDois == 0 ){
-					console.log('entrou if aaaaa');
-					return false;
+				if((vtDois > 0  && $('#pgDois').val()) || vtDois == 0 ){
 					var dados={
 						cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
 						numero: (comanda.numero!=null?(comanda.numero):null),
@@ -557,12 +652,11 @@
 			}else{alertify.alert("Preencher forma de pagamento! pgum");}
 
 		}else{alertify.alert("Preencher o CPF!");} 
-	};
-	
+	};	
 </script>
 
 <script type="text/javascript">
-	$(document).ready(function(){
+	
 
 		// $('#clienteCpf').change(function(){
 		// 	$.ajax({
@@ -577,24 +671,24 @@
 		// });
 
 
-		/**
-		 * Completa os campos do produto de acordo com o id do select
-		 */
-		$('#produtoVenda').change(function(){
-			$.ajax({
-				type:"POST",
-				data:"id=" + $('#produtoVenda').val(),
-				url:"pesquisar-prod-est",
-				success:function(r){
-					var resp = JSON.parse(r);
-					if(resp.length > 0){
-						$('#descricaoV').val(resp[0]['descricao']);
-						$('#quantidadeV').val(resp[0]['quantotal']);
-						$('#precoV').val(resp[0]['preco_ven']);	
-					}
-				}
-			});
-		});
+    /**
+     * Completa os campos do produto de acordo com o id do select
+     */
+    $('#produtoVenda').change(function(){
+        $.ajax({
+            type:"POST",
+            data:"id=" + $('#produtoVenda').val(),
+            url:"pesquisar-prod-est",
+            success:function(r){
+                var resp = JSON.parse(r);
+                if(resp.length > 0){
+                    $('#descricaoV').val(resp[0]['descricao']);
+                    $('#quantidadeV').val(resp[0]['quantotal']);
+                    $('#precoV').val(resp[0]['preco_ven']);	
+                }
+            }
+        });
+    });
 
 		$('#quantV').click(function(){
 
@@ -611,95 +705,93 @@
 		});
 
 
-		/**
-		* Adiciona os itens na tabela temporaria 
-		*/
-		$('#btAddTemp').click(function(){
-			
-			var quant = parseInt($('#quantV').val());
-			var quantidade = parseInt($('#quantidadeV').val());
+    /**
+    * Adiciona os itens na tabela temporaria 
+    */
+    $('#btAddTemp').click(function(){
+        
+        var quant = parseInt($('#quantV').val());
+        var quantidade = parseInt($('#quantidadeV').val());
 
-			
-			if(quant > quantidade){
-				alertify.alert("Quantidade inexistente em estoque!!");
-				quant = $('#quantV').val("");
-				return false;
-			}else{
-				quantidade = $('#quantidadeV').val();
-			}
-			
-			if($('#quantV').val() == "" || $('#quantV').val() <= 0){
-				alertify.alert("Preencha a quantidade desejada!!");
-				return false;
-			}
+        
+        if(quant > quantidade){
+            alertify.alert("Quantidade inexistente em estoque!!");
+            quant = $('#quantV').val("");
+            return false;
+        }else{
+            quantidade = $('#quantidadeV').val();
+        }
+        
+        if($('#quantV').val() == "" || $('#quantV').val() <= 0){
+            alertify.alert("Preencha a quantidade desejada!!");
+            return false;
+        }
 
-			/**
-			* Pega as informaçoes do formulario e transforma em json para adicionar no array
-			*/
-			var jsonData = {};
-			var formData = $("#frmComanda").serializeArray();
+        /**
+        * Pega as informaçoes do formulario e transforma em json para adicionar no array
+        */
+        var jsonData = {};
+        var formData = $("#frmComanda").serializeArray();
 
-			$.each(formData, function() {
-				if (jsonData[this.name]) {
-				if (!jsonData[this.name].push) {
-						jsonData[this.name] = [jsonData[this.name]];
-				}
-					jsonData[this.name].push(this.value || '');
-				} else {
-					jsonData[this.name] = this.value || '';
-				}
-			});
-			if($('#codigo').val() == ""){
-				jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
-			}else{
-				jsonData['produtoVenda'] = $('#codigo').attr('data-id');
-				jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
-			}
-			
-			/**
-			* Coloca os itens temporarios na tabela
-			*/
-			comanda.linhas.push(jsonData);
-			
-			itensSoma($('#tabelaComanda'));
-			atualizarTabela($('#tabelaComanda'));
-			
-			$('#produtoVenda').val(null).trigger('change');//reseta o select2
-			$('#quantV').val(1);
-			$('#precoV').val('');
-			$('#descricaoV').val('');
-			$('#quantidadeV').val('');
-			$('#codigo').val('');
-			$('#codigo').attr('data-id', "");
-			$('#codigo').attr('data-nome', "");
-		});
+        $.each(formData, function() {
+            if (jsonData[this.name]) {
+            if (!jsonData[this.name].push) {
+                    jsonData[this.name] = [jsonData[this.name]];
+            }
+                jsonData[this.name].push(this.value || '');
+            } else {
+                jsonData[this.name] = this.value || '';
+            }
+        });
+        if($('#codigo').val() == ""){
+            jsonData['nomeProduto'] = $('#produtoVenda option:selected').text();
+        }else{
+            jsonData['produtoVenda'] = $('#codigo').attr('data-id');
+            jsonData['nomeProduto'] = $('#codigo').attr('data-nome');
+        }
+        
+        /**
+        * Coloca os itens temporarios na tabela
+        */
+        comanda.linhas.push(jsonData);
+        
+        itensSoma($('#tabelaComanda'));
+        atualizarTabela($('#tabelaComanda'));
+        
+        $('#produtoVenda').val(null).trigger('change');//reseta o select2
+        $('#quantV').val(1);
+        $('#precoV').val('');
+        $('#descricaoV').val('');
+        $('#quantidadeV').val('');
+        $('#codigo').val('');
+        $('#codigo').attr('data-id', "");
+        $('#codigo').attr('data-nome', "");
+    });
 
 
-		/**
-		*Botao limpar formulario
-		*/
-		$('#btnLimparComanda').click(function(){
-			apagarForm();
-		});
-
-	});
+    /**
+    *Botao limpar formulario
+    */
+    $('#btnLimparComanda').click(function(){
+        apagarForm();
+    });
 </script>
 
 <script type="text/javascript">
-/**
- * Ao perder o foco, testa o padrão do campo
-*/
-$('#numeroComanda').focusout(function(e) {
-	if(!e.target.validity.valid){
-		$('#frmComanda')[0].reportValidity();
-	}
-});
-
-$('#numeroComanda').keyup(function(e) {
-	if(e.which == 13){
-		e.preventDefault();
-	}
-});
+    /**
+     * Ao perder o foco, testa o padrão do campo
+    */
+    $('#numeroComanda').focusout(function(e) {
+        if(!e.target.validity.valid){
+            $('#frmComanda')[0].reportValidity();
+        }
+    });
+    
+    $('#numeroComanda').keyup(function(e) {
+        if(e.which == 13){
+            e.preventDefault();
+        }
+    });
 </script>
 
 <script type="text/javascript">
@@ -710,31 +802,25 @@ $('#numeroComanda').keyup(function(e) {
 	// 	}
 	// });
 
-	function valorPagar(sm){
-		var soma = sm;
+	function valorPagar(soma){
 		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 		$('#valorUm').change(function(){
 			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
-			// console.log('valorUm', valorUm);
 			if(valorUm > soma){
 				$("#trocoUm").show();
 				var troco = valorUm - soma;
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 				$("#pagamentoDois").hide();
 				$("#valorDois").val('');
-				console.log('ak1', valorUm);
-				console.log('ak1s', soma);
-			}
-			if(valorUm < soma){
+				console.log('ak1');
+			}else if(valorUm < soma){
 				var valorDois = soma - valorUm;
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				console.log('ak2', valorUm);
-				console.log('ak2s', soma);
-			} 
-			if(valorUm == soma) {
+				console.log('ak2');
+			} else {
 				$("#pagamentoDois").hide();
 				$("#valorDois").val('');
 				$("#trocoUm").hide();
@@ -752,13 +838,11 @@ $('#numeroComanda').keyup(function(e) {
 				$("#trocoUm").show();
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 				console.log('ak4');
-			}
-			if(valorVenda == soma){
+			}else if(valorVenda == soma){
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				console.log('ak5');
-			}
-			if(valorDois == 0){
+			}else if(valorDois == 0){
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").hide();
@@ -767,7 +851,6 @@ $('#numeroComanda').keyup(function(e) {
 			}
 		});
 	};
-
 
 	function valorRestante() {
 		var totalLinha = 0.0;
@@ -779,7 +862,13 @@ $('#numeroComanda').keyup(function(e) {
 		var somaCampos = valorUm + valorDois;
 		var dezPorcento = totalLinha - (totalLinha * 0.1);
 		if(dezPorcento > somaCampos){
-			alertify.error('Desconto maior que o permitido!');
+			alertify.confirm('Desconto maior que o permitido! ', function(){
+				$("#permissao").modal({
+					show: true
+				});
+			}, function(){ 
+				alertify.error('Cancelado !');
+			});
 			return false;
 		}else{
 			gravarComanda();
@@ -787,6 +876,10 @@ $('#numeroComanda').keyup(function(e) {
 	}
 </script>
 
-
+<script type="text/javascript">
+	$('#permitirDesconto').click(function() {
+		
+	});
+</script>
 
 {% endblock %}

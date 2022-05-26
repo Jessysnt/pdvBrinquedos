@@ -15,11 +15,6 @@ class PdvController
         View::renderTemplate('/pdv/pdv.html');
     }
 
-    public function telaTeste()
-    {
-        View::renderTemplate('/pdv/pdv-teste.html');
-    }
-
     public function obterDadosNumero()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){

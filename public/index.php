@@ -80,7 +80,6 @@ $router->add('apaga-prods-comanda', ['controller' => 'ComandaController', 'actio
 
 //Rotas do PDV
 $router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);
-$router->add('pdvTeste', ['controller' => 'PdvController', 'action' => 'telaTeste']);
 $router->add('obter-dados-numero', ['controller' => 'PdvController', 'action' => 'obterDadosNumero']);
 $router->add('gravar-venda', ['controller' => 'PdvController', 'action' => 'gravarComanda']);
 $router->add('apaga-prod-comanda', ['controller' => 'PdvController', 'action' => 'apagarProdutoComanda']);
