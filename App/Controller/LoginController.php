@@ -12,18 +12,14 @@ class LoginController extends Controller
     public function logar(){
 
         $obUsuario = new UsuarioDAO();
-
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            
             $resp = $obUsuario->login($_POST);
-
             if($resp){
                 $_SESSION['usuario'] = $resp;
                 View::jsonResponse($resp);
             }else{
                 View::jsonResponse(['Usuario nao encontrado']);
             }
-            //View::jsonResponse($resp);
         }
 
         $validar = false;
@@ -44,6 +40,10 @@ class LoginController extends Controller
          exit;
     }
 }
+
+
+
+
 
 // if(isset($_POST['email'], $_POST['senha'])){
     

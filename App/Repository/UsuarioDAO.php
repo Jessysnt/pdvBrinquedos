@@ -131,4 +131,15 @@ class UsuarioDAO extends Conexao
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function verificaPermissaoDesconto($dados)
+    {
+        $senha = sha1($dados['senha']);
+        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE cpf=:cpf AND senha=:senha");
+        $stmt->bindParam(':cpf', $dados['cpf'], PDO::PARAM_STR);
+        $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+        // return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        return $stmt->fetchObject('\App\Entity\Usuario');
+    }
 }

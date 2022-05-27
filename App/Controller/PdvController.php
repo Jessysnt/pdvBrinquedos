@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ClienteDAO;
 use App\Repository\EstoqueDAO;
 use App\Repository\PdvDAO;
+use App\Repository\UsuarioDAO;
 use Core\View;
 use DateTimeZone;
 
@@ -17,9 +18,16 @@ class PdvController
 
     public function obterDadosNumero()
     {
+        $obPdvDAO = new PdvDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $obPdvDAO = new PdvDAO();
-            $respNumero=$obPdvDAO->verEstaAberta($_POST['numero']);
+            date_default_timezone_set("America/Sao_Paulo");
+            $datetime = date("Y-m-d");
+            $comanda=array(
+                'numero'=> $_POST['numero'],
+                'dtInicial'=> $datetime,
+                'dtFinal'=> $datetime
+            );
+            $respNumero=$obPdvDAO->verEstaAberta($comanda);
             if($respNumero > 0){
                 $obProdutoLinha = intval($respNumero['id']);
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);
@@ -129,6 +137,23 @@ class PdvController
             $obClienteDAO = new ClienteDAO;
             $respCliente = $obClienteDAO->pesquisarClienteComanda($_POST['cliente']);
             View::jsonResponse($respCliente);
+        }
+    }
+
+    /**
+     * Permissao de desconto
+     */
+    public function verificaPermissaoDesconto()
+    {
+        $obUsuario = new UsuarioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $resp = $obUsuario->verificaPermissaoDesconto($_POST);
+            die(var_dump($resp));
+            if($resp['cargo'] == 'administrador' || 'gerente' || 'supervisor'){
+                View::jsonResponse(true);
+            }else{
+                View::jsonResponse(false);
+            }
         }
     }
 

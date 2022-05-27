@@ -26,6 +26,11 @@ class Usuario {
     /**
      * @var string
      */
+    private $cpf;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -34,12 +39,12 @@ class Usuario {
     private $senha;
 
     /**
-     * @var integer
+     * @var string
      */
     private $cargo;
 
     /**
-     * @var integer
+     * @var string
      */
     private $acesso;
 
@@ -77,6 +82,18 @@ class Usuario {
         return $this;
     }
 
+    public function getCpf(): ?string
+    {
+        return $this->cpf;
+    }
+
+    public function setCpf(string $cpf): self
+    {
+        $this->cpf = $cpf;
+        
+        return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -101,12 +118,12 @@ class Usuario {
         return $this;
     }
 
-    public function getCargo(): ?int
+    public function getCargo(): ?string
     {
         return $this->cargo;
     }
 
-    public function setCargo(int $cargo): self
+    public function setCargo(string $cargo): self
     {
         $this->cargo = $cargo;
         
@@ -135,26 +152,26 @@ class Usuario {
         return $this->nome.' '.$this->sobrenome;
     }
 
-    public function getCargoNome(): ?string
-    {
-        switch ($this->cargo) {
-            case '1':
-                return 'Administrador';
-                break;
-            case '2':
-                return 'Gerente';
-                break;
-            case '3':
-                return 'Caixa';
-                break;
-            case '4':
-                return 'Vendedor';
-                break;
-            default:
-                return 'Cargo não encontrado.';
-                break;
-        }
-    }
+    // public function getCargoNome(): ?string
+    // {
+    //     switch ($this->cargo) {
+    //         case '1':
+    //             return 'Administrador';
+    //             break;
+    //         case '2':
+    //             return 'Gerente';
+    //             break;
+    //         case '3':
+    //             return 'Caixa';
+    //             break;
+    //         case '4':
+    //             return 'Vendedor';
+    //             break;
+    //         default:
+    //             return 'Cargo não encontrado.';
+    //             break;
+    //     }
+    // }
 
 
     public function getAcessos()

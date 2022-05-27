@@ -18,10 +18,10 @@
 			<div class="modal-body">
 				<form id="permissaoSenha">
 					<input type="text" hidden="" id="idUsuario" name="idUsuario">
-					<label>Nome</label>
-					<input type="text" class="form-control input-sm" name="nomeP" id="nomeP">
+					<label>CPF</label>
+					<input type="text" class="form-control input-sm" name="cpf" id="cpf">
 					<label>Senha</label>
-					<input type="text" class="form-control input-sm" name="senhaP" id="senhaP">
+					<input type="text" class="form-control input-sm" name="senha" id="senha">
 					
 				</form>
 			</div>
@@ -634,9 +634,9 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 						url:"gravar-venda",
 						success:function(r){
 							console.log('respostaGravou1',r);
-							// var resp = JSON.parse(r);
+							var resp = JSON.parse(r);
 							// console.log('respostaGravou2',resp);
-							if(r){	
+							if(resp.resp == true){	
 								// console.log('resp',resp.resp);
 								$('#codigo').val('');
 								$('#clienteCpf').val(null).trigger('change');
@@ -877,9 +877,35 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 </script>
 
 <script type="text/javascript">
-	$('#permitirDesconto').click(function() {
-		
+	$('#permitirDesconto').click(function(e) {
+		e.preventDefault();
+		vazios=validarFormVazio('permissaoSenha');
+		if(vazios > 0){
+			alert("Preencha os campos!!");
+			return false;
+		}
+		dados=$('#permissaoSenha').serialize();
+		$.ajax({
+			type:"POST",
+			data:dados,
+			url:"permissao-desconto",
+			success:function(r){
+				console.log(r);
+				// var resp = JSON.parse(r);
+				// if(resp){
+				// 	alertify.confirm('Imprimir comprovante de compra? ', function(){
+				// 		console.log('imprimir');
+				// 	}, function(){ 
+				// 		alertify.error('Cancelado !');
+				// 	});
+				// }else{
+				// 	alert(r);
+				// 	alertify.error("Acesso Negado!!");
+				// }
+			}
+		});
 	});
+
 </script>
 
 {% endblock %}
