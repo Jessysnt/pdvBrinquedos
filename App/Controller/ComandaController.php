@@ -90,10 +90,17 @@ class ComandaController
      */
     public function numeroAberto()
     {
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $obComandaDAO = new ComandaDAO();
+        $obComandaDAO = new ComandaDAO();
             $obPdvDAO = new PdvDAO();
-            $respNumero=$obComandaDAO->verEstaAberta($_POST['numero']);
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            date_default_timezone_set("America/Sao_Paulo");
+            $datetime = date("Y-m-d");
+            $comanda=array(
+                'numero'=> $_POST['numero'],
+                'dtInicial'=> $datetime,
+                'dtFinal'=> $datetime
+            );
+            $respNumero=$obComandaDAO->verEstaAberta($comanda);
             if($respNumero > 0){
                 $obProdutoLinha = intval($respNumero['id']);
                 $respProdutoLinha = $obPdvDAO->verProdutoLinha($obProdutoLinha);

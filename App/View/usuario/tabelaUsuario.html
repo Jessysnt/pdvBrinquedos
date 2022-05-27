@@ -67,12 +67,14 @@
 				<tr>
 					<th>Nome</th>
 					<th>Sobrenome</th>
+					<th>CPF</th>
 					<th>Email</th>
 					<th>Cargo</th>
+					<th>Funções</th>
 
 					<th>Status</th>
 					<th>Editar</th>
-					<th>inativar</th>
+					<th>Inativar</th>
 					<th>Visualizar</th>
 				</tr>
 				
@@ -83,8 +85,10 @@
 				<tr>
 					<td>{{usuario.nome}}</td>
 					<td>{{usuario.sobrenome}}</td>
+					<td>{{usuario.cpf}}</td>
 					<td>{{usuario.email}}</td>
-					<td>{{usuario.getCargoNome()}}</td>
+					<td>{{usuario.cargo}}</td>
+					<td>{{dump(usuario.acessos) }}</td>
 					{% if usuario.status == 1 %}
           <td><span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span></td>
           {% elseif usuario.status == 0 %}

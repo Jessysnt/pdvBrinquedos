@@ -29,7 +29,7 @@ class RelatorioDAO extends Conexao
         INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
         INNER JOIN produto AS p ON lf.id_produto = p.id
         LEFT JOIN cliente as c ON cf.id_cliente = c.id
-        WHERE  cf.data_registro BETWEEN :dtInicial AND :dtInicial
+        WHERE  cf.data_registro BETWEEN :dtInicial AND :dtFinal
         GROUP BY cf.id ORDER BY abertura ASC");
         // $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $datas['dtInicial'], PDO::PARAM_STR);

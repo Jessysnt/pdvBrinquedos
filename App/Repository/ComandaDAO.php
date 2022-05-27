@@ -103,8 +103,12 @@ class ComandaDAO extends Conexao
      */
     public function verEstaAberta($numero)
     {
-        $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero");
-        $stmt->bindValue(':numero', $numero);
+        $datas['dtInicial'] = $numero['dtInicial'].' 00:00:00';
+        $datas['dtFinal'] = $numero['dtFinal'].' 23:59:59';
+        $stmt = static::getConexao()->prepare("SELECT * FROM comandafatura where numero = :numero AND data_registro BETWEEN :dtInicial AND :dtFinal");
+        $stmt->bindValue(':numero', $numero['numero']);
+        $stmt->bindParam(':dtInicial', $datas['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $datas['dtFinal'], PDO::PARAM_STR);
         $stmt->execute();
         $resp = $stmt->fetch(PDO::FETCH_ASSOC);
         if($resp){
