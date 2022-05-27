@@ -34,27 +34,27 @@
                 <div class="container">
                     <label style="color: black;">Cargos</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="administrador" value="administrador">
+                        <input class="form-check-input" type="radio" id="administrador" value="administrador" name="cargo">
                         <label class="form-check-label" for="administrador">Administrador</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="gerente" value="gerente">
+                        <input class="form-check-input" type="radio" id="gerente" value="gerente" name="cargo">
                         <label class="form-check-label" for="gerente">Gerente</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="supervisor" value="supervisor">
+                        <input class="form-check-input" type="radio" id="supervisor" value="supervisor" name="cargo">
                         <label class="form-check-label" for="supervisor">Supervisor de vendas</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="caixa" value="caixa">
+                        <input class="form-check-input" type="radio" id="caixa" value="caixa" name="cargo">
                         <label class="form-check-label" for="caixa">Caixa</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="vendedor" value="vendedor">
+                        <input class="form-check-input" type="radio" id="vendedor" value="vendedor" name="cargo">
                         <label class="form-check-label" for="vendedor">Vendedor</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="estoque" value="estoque">
+                        <input class="form-check-input" type="radio" id="estoque" value="estoque" name="cargo">
                         <label class="form-check-label" for="estoque">Estoque</label>
                     </div>
                 </div>
@@ -62,7 +62,6 @@
             <div class="col-sm-4" >
                 <label style="color: black;">Funções</label>
                 <br>
-
                 <div class="container">
                     <label> Gestão de Cliente</label>
                     <div class="container">
@@ -173,109 +172,6 @@
     
 </div>
 
-//Administrador
-tudo
-
-//Gerente 
-tudo menos funcionario
->Rotas de Relatorios
-$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
-
-//Geral
-$router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
-$router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' => 'tabelaClientes']);
-$router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
-$router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);
->Rotas de Comandas
-
-//Caixa
->Rotas do PDV
-comandas abertas
->Rotas Produtos Preço
-$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
-
-//Estoque
->Rotas dos Produto
->Rotas Produtos Preço
->Rotas de Categoria
-
-//Rotas iniciais
-$router->add('', ['controller' => 'LoginController', 'action' => 'logar']);
-$router->add('login', ['controller' => 'LoginController', 'action' => 'logar']);
-$router->add('registro', ['controller' => 'RegistrarController', 'action' => 'primeiroRegistro']);
-$router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
-
-//Rotas de Usuario
-$router->add('usuario-add', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
-$router->add('tab-usuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
-$router->add('obt-usuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
-$router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'inativarUsuario']);
-$router->add('atz-usuario', ['controller' => 'UsuarioController', 'action' => 'atualizaUsuario']);
-$router->add('usuario-venda', ['controller' => 'UsuarioController', 'action' => 'usuarioVendas']);
-$router->add('usuario-relatorio-venda', ['controller' => 'UsuarioController', 'action' => 'relatorioVendasUsuario']);
-
-
-//Rotas de Cliente
-$router->add('cliente-add', ['controller' => 'ClienteController', 'action' => 'clienteAdd']);
-$router->add('cliente-tabela', ['controller' => 'ClienteController', 'action' => 'tabelaClientes']);
-$router->add('cliente-obter', ['controller' => 'ClienteController', 'action' => 'obterCliente']);
-$router->add('cliente-inativar', ['controller' => 'ClienteController', 'action' => 'inativarCliente']);
-$router->add('cliente-atualizar', ['controller' => 'ClienteController', 'action' => 'atualizarCliente']);
-$router->add('cliente-venda', ['controller' => 'ClienteController', 'action' => 'clienteVendas']);
-$router->add('cliente-relatorio-venda', ['controller' => 'ClienteController', 'action' => 'relatorioVendasCliente']);
-
-
-//Rotas dos Produto
-$router->add('produto-form', ['controller' => 'ProdutoController', 'action' => 'produtoForm']);
-$router->add('tab-produto', ['controller' => 'ProdutoController', 'action' => 'tabelaProduto']);
-$router->add('pesquisar-categoria', ['controller' => 'ProdutoController', 'action' => 'pesquisarCategoria']);
-$router->add('produto-obter', ['controller' => 'ProdutoController', 'action' => 'obterProduto']);
-$router->add('produto-atualizar', ['controller' => 'ProdutoController', 'action' => 'atualizarProduto']);
-$router->add('produto-apagar', ['controller' => 'ProdutoController', 'action' => 'apagarProduto']);
-
-//Rotas Produtos Preço
-$router->add('produto-venda', ['controller' => 'ProdutoVendaController', 'action' => 'produtoVenda']);
-$router->add('prod-vend-add', ['controller' => 'ProdutoVendaController', 'action' => 'produtoAdd']);
-$router->add('tab-prod-vend', ['controller' => 'ProdutoVendaController', 'action' => 'tabelaProdutoVenda']);
-$router->add('obt-produtov', ['controller' => 'ProdutoVendaController', 'action' => 'obterProdutoV']);
-$router->add('atz-prod-venda', ['controller' => 'ProdutoVendaController', 'action' => 'atualizarProdutoVenda']);
-$router->add('apg-prod-ven', ['controller' => 'ProdutoVendaController', 'action' => 'apagarProdutoVenda']);
-$router->add('prod-vend-desativa', ['controller' => 'ProdutoVendaController', 'action' => 'desativarLote']);
-
-//Rotas Estoque
-$router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoque']);
-
-//Rotas de Comandas
-$router->add('comandas', ['controller' => 'ComandaController', 'action' => 'telaInicial']);
-$router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
-$router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
-$router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
-$router->add('pesquisar-prod-est-codigo', ['controller' => 'ComandaController', 'action' => 'pesquisarProEstCod']);
-$router->add('gravar-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
-$router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'numeroAberto']);
-$router->add('apaga-prods-comanda', ['controller' => 'ComandaController', 'action' => 'apagarProdutoComanda']);
-
-//Rotas do PDV
-$router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);
-$router->add('obter-dados-numero', ['controller' => 'PdvController', 'action' => 'obterDadosNumero']);
-$router->add('gravar-venda', ['controller' => 'PdvController', 'action' => 'gravarComanda']);
-$router->add('apaga-prod-comanda', ['controller' => 'PdvController', 'action' => 'apagarProdutoComanda']);
-$router->add('pesq-cliente-comanda', ['controller' => 'PdvController', 'action' => 'pesqClienteComanda']);
-
-//Rotas de Categoria
-$router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);
-$router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action' => 'tabelaCategorias']);
-
-//Rotas de Fornecedor
-$router->add('fornecedores', ['controller' => 'FornecedorController', 'action' => 'fornecedor']);
-
-//Rotas do Painel
-$router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
-$router->add('pesquisa-mes', ['controller' => 'PainelController', 'action' => 'dadosMes']);
-
-//Rotas de Relatorios
-$router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
-
 {% endblock %}
 
 
@@ -340,7 +236,7 @@ $router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' =
         var ativar = [];
         switch (cargo) {
             case "administrador":
-                ativar = [1,2,3,4,5,8,9,10,11,12,13,14,15,16,17];
+                ativar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
                 break;
 
             case "gerente":
@@ -385,22 +281,14 @@ $router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' =
                 alertify.alert("Preencha os campos!!");
                 return false;
             }
-            dados = $('#frmUsuario').serialize();
-            // dados={
-            //     nome: $('#nome').val(),
-            //     sobrenome: $('#sobrenome').val(),
-            //     email: $('#email').val(),
-            //     senha: $('#senha').val()
-            // };
-            console.log(dados);
-            return false;
+            dados= $("#frmUsuario").serialize();
             $.ajax({
                 type:"POST",
                 data:dados,
                 url:"usuario-add",
                 success:function(r){
+                    console.log(r);
                     var resp = JSON.parse(r);
-                    //console.log(r);
                     if(resp){
                         $('#frmUsuario')[0].reset();
                         // $('#tabelaUsuariosLoad').load('tab-usuario');

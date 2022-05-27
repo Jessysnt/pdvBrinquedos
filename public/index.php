@@ -27,10 +27,10 @@ $router = new Core\Router();
 $router->add('', ['controller' => 'LoginController', 'action' => 'logar']);
 $router->add('login', ['controller' => 'LoginController', 'action' => 'logar']);
 $router->add('registro', ['controller' => 'RegistrarController', 'action' => 'primeiroRegistro']);
-$router->add('sair', ['controller' => 'LoginController', 'action' => 'sair']);
+$router->add('sair', ['controller' => 'LoginController', 'action' => 'sair'],);
 
 //Rotas de Usuario
-$router->add('usuario-add', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd']);
+$router->add('usuario-add', ['controller' => 'UsuarioController', 'action' => 'usuarioAdd', 'acesso' => 11]);
 $router->add('tab-usuario', ['controller' => 'UsuarioController', 'action' => 'tabelaUsuario']);
 $router->add('obt-usuario', ['controller' => 'UsuarioController', 'action' => 'obterUsuario']);
 $router->add('apg-usuario', ['controller' => 'UsuarioController', 'action' => 'inativarUsuario']);

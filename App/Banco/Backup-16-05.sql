@@ -191,9 +191,11 @@ CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) CHARACTER SET utf8 NOT NULL,
   `sobrenome` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `cpf` varchar(100) CHARACTER SET utf8 NOT NULL,
   `email` varchar(100) CHARACTER SET utf8 NOT NULL,
   `senha` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `cargo` int(11) NOT NULL,
+  `cargo` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `acesso` varchar(100) CHARACTER SET utf8 NOT NULL,
   `registro` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;

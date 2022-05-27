@@ -120,7 +120,18 @@ class Router
                 $action = $this->convertToCamelCase($action);
 
                 if (preg_match('/action$/i', $action) == 0) {
-                    $controller_object->$action();
+                    $acessoPermitidos = (array_key_exists('acesso',$this->params)) ? $this->params['acesso'] : 0;
+                    $acessos = [];
+                    if(isset($_SESSION['usuario'])) {
+                        $acessos = $_SESSION['usuario'] -> getAcessos();
+                    }else{
+                        $acessos = [0];
+                    }
+                    if(in_array($acessoPermitidos,$acessos)){
+                        $controller_object->$action();
+                    } else {                        
+                        throw new \Exception("O acesso não é permitido.");
+                    }  
 
                 } else {
                     throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");

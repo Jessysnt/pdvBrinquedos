@@ -9,15 +9,21 @@ class UsuarioController
 {
     public function usuarioAdd()
     {
-        $obUsuario = new UsuarioDAO();
-    
+        $obUsuarioDAO = new UsuarioDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $result = $obUsuario->registroUsuario($_POST);
+            $obUsuario=array(
+                'nome' => $_POST['nome'],
+                'sobrenome' => $_POST['sobrenome'],
+                'email' => $_POST['email'],
+                'senha' => $_POST['senha'],
+                'cargo' => $_POST['cargo'],
+                'acessos' => implode(', ', $_POST['acessos']) 
+            ); 
+            $result = $obUsuarioDAO->registroUsuario($obUsuario);
             View::jsonResponse($result);
         }
-    
         $validar = false;
-        $usuarioAdm = $obUsuario->verificaAdm();
+        $usuarioAdm = $obUsuarioDAO->verificaAdm();
         if(count($usuarioAdm)>0){
             $validar = true;
         }

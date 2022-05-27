@@ -39,6 +39,11 @@ class Usuario {
     private $cargo;
 
     /**
+     * @var integer
+     */
+    private $acesso;
+
+    /**
      * @var DateTime
      */
     private $registro;
@@ -108,6 +113,18 @@ class Usuario {
         return $this;
     }
 
+    public function getAcesso(): ?int
+    {
+        return $this->acesso;
+    }
+
+    public function setAcesso(string $acesso): self
+    {
+        $this->acesso = $acesso;
+        
+        return $this;
+    }
+
     public function getRegistro(): DateTime
     {
         return $this->registro;
@@ -138,6 +155,16 @@ class Usuario {
                 break;
         }
     }
+
+
+    public function getAcessos()
+    {
+        $var = array_map('intval', explode(', ',$this->acesso));
+        array_unshift($var, 0) ;
+        return  $var;
+    }
+
+
 
 
 }
