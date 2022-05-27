@@ -30,12 +30,13 @@ class UsuarioDAO extends Conexao
     {
         $senha = sha1($dados['senha']);
 
-        $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, email, senha, cargo) VALUES (:nome, :sobrenome, :email, :senha, :cargo)");
+        $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, email, senha, cargo, acessos) VALUES (:nome, :sobrenome, :email, :senha, :cargo, :acessos)");
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
-        $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_INT);
+        $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_STR);
+        $stmt->bindValue(':acesso', $dados['acessos']);
         return $stmt->execute();
     }
 
