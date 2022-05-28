@@ -7,44 +7,6 @@
 
 {% block body %}
 
-<!-- Modal -->
-<div class="modal fade" id="atualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Atualizar Cliente</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmProdutovU" enctype="multipart/form-data">
-                    <input type="text" hidden="" id="idprodvU" name="idprodvU">
-                    
-                    <label>Brinquedo</label>
-                    <select class="form-control input-sm" id="idProdutoU" name="idProdutoU">
-                        <option value="A">Selecionar</option>
-                        {% for produto in produtos %}
-                        <option value="{{produto.id}}">{{produto.nome}}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Lote</label>
-                    <input type="text" class="form-control input-sm" id="loteU" name="loteU">
-                    <label>Quantidade</label>
-                    <input type="text" class="form-control input-sm" id="quantidadeU" name="quantidadeU">
-                    <label>Preço comprado</label>
-                    <input type="text" class="form-control input-sm" id="compU" name="compU">
-                    <label>Preço vendido</label>
-                    <input type="text" class="form-control input-sm" id="venU" name="venU">
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="btnAtualizarProdutovU" class="btn btn-primary col-md" data-dismiss="modal">Atualizar</button>
-
-            </div>
-        </div>
-    </div>
-</div> 
-
 <div class="container">
 <!-- <div class="row">
     <ul class="nav nav-tabs nav-justified">
@@ -102,11 +64,11 @@
     })
     
     function validarCPF(el){
-            if( !_cpf(el.value) ){
-                alertify.error("CPF inválido!");
-                // apaga o valor
-                el.value = "";
-            }
+        if( !_cpf(el.value) ){
+            alertify.error("CPF inválido!");
+            // apaga o valor
+            el.value = "";
+        }
     }
 
     function validateEmail(email) {
@@ -127,16 +89,12 @@
         //$('#tabelaClientesLoad').load("tabClientes.php");
 
         $('#btnAdicionarCliente').click(function(){
-
             vazios=validarFormVazio('frmClientes');
-            
             if(vazios > 0){
                 alertify.alert("Preencha os Campos!!");
                 return false;
             }
-            
             dados=$('#frmClientes').serialize();
-
             $.ajax({
                 type:"POST",
                 data:dados,

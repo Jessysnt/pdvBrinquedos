@@ -29,10 +29,10 @@ class UsuarioDAO extends Conexao
     public function registroUsuario($dados)
     {
         $senha = sha1($dados['senha']);
-
-        $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, email, senha, cargo, acessos) VALUES (:nome, :sobrenome, :email, :senha, :cargo, :acessos)");
+        $stmt = static::getConexao()->prepare("INSERT INTO usuario (nome, sobrenome, cpf, email, senha, cargo, acesso) VALUES (:nome, :sobrenome, :cpf, :email, :senha, :cargo, :acesso)");
         $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
         $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
+        $stmt->bindParam(':cpf', $dados['cpf'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
         $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_STR);
@@ -41,7 +41,7 @@ class UsuarioDAO extends Conexao
     }
 
     public function verificaAdm(){
-        $stmt = static::getConexao()->query("SELECT * FROM usuario WHERE cargo=1");
+        $stmt = static::getConexao()->query("SELECT * FROM usuario WHERE cargo='Administrador'");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

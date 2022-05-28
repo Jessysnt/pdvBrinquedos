@@ -34,27 +34,27 @@
                 <div class="container">
                     <label style="color: black;">Cargos</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="administrador" value="administrador" name="cargo">
+                        <input class="form-check-input" type="radio" id="administrador" value="Administrador" name="cargo">
                         <label class="form-check-label" for="administrador">Administrador</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="gerente" value="gerente" name="cargo">
+                        <input class="form-check-input" type="radio" id="gerente" value="Gerente" name="cargo">
                         <label class="form-check-label" for="gerente">Gerente</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="supervisor" value="supervisor" name="cargo">
+                        <input class="form-check-input" type="radio" id="supervisor" value="Supervisor" name="cargo">
                         <label class="form-check-label" for="supervisor">Supervisor de vendas</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="caixa" value="caixa" name="cargo">
+                        <input class="form-check-input" type="radio" id="caixa" value="Caixa" name="cargo">
                         <label class="form-check-label" for="caixa">Caixa</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="vendedor" value="vendedor" name="cargo">
+                        <input class="form-check-input" type="radio" id="vendedor" value="Vendedor" name="cargo">
                         <label class="form-check-label" for="vendedor">Vendedor</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="estoque" value="estoque" name="cargo">
+                        <input class="form-check-input" type="radio" id="estoque" value="Estoque" name="cargo">
                         <label class="form-check-label" for="estoque">Estoque</label>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
 {% block javascript %}
 
 <script type="text/javascript">
-    $('#administrador').change(function(e) {
+    $('#Administrador').change(function(e) {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
@@ -187,7 +187,7 @@
         ativarCheckbox("administrador");
     });
 
-    $('#gerente').change(function() {
+    $('#Gerente').change(function() {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
@@ -196,7 +196,7 @@
         ativarCheckbox("gerente");
     });
 
-    $('#supervisor').change(function() {
+    $('#Supervisor').change(function() {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
@@ -205,7 +205,7 @@
         ativarCheckbox("supervisor");
     });
 
-    $('#caixa').change(function() {
+    $('#Caixa').change(function() {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
@@ -214,7 +214,7 @@
         ativarCheckbox("caixa");
     });
 
-    $('#vendedor').change(function() {
+    $('#Vendedor').change(function() {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
@@ -223,7 +223,7 @@
         ativarCheckbox("vendedor");
     });
 
-    $('#estoque').change(function() {
+    $('#Estoque').change(function() {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
@@ -235,27 +235,27 @@
     function ativarCheckbox(cargo) {
         var ativar = [];
         switch (cargo) {
-            case "administrador":
+            case "Administrador":
                 ativar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
                 break;
 
-            case "gerente":
+            case "Gerente":
                 ativar = [1,2,3,4,5,8,9,10,11,12,13,14,15,16,17];
                 break;
 
-            case "supervisor":
+            case "Supervisor":
                 ativar = [1,2,3,4,12,13];
                 break;
 
-            case "caixa":
+            case "Caixa":
                 ativar = [1,2,3,11,12,13,14];
                 break;
 
-            case "vendedor":
+            case "Vendedor":
                 ativar = [1,2,3,12,13];
                 break;
 
-            case "estoque":
+            case "Estoque":
                 ativar = [9,10,11,12];
                 break;
         

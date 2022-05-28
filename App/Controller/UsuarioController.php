@@ -14,6 +14,7 @@ class UsuarioController
             $obUsuario=array(
                 'nome' => $_POST['nome'],
                 'sobrenome' => $_POST['sobrenome'],
+                'cpf' => $_POST['cpf'],
                 'email' => $_POST['email'],
                 'senha' => $_POST['senha'],
                 'cargo' => $_POST['cargo'],

@@ -31,10 +31,12 @@
 							<label>Senha</label>
 							<input type="password" name="senha" id="senha" class="form-control input-sm">
 							<p></p>
+							<?php if($validar):?>
 							<button type="submit" class="btn btn-primary btn-block" id="entrarSistema">Entrar</button>
+							<?php endif ?>
 							</br>
 							<?php if(!$validar):?>
-							<a href="registro" class="btn btn-danger btn-sm">Registrar</a>
+							<a href="registro" class="btn btn-danger btn-block">Primeiro registro</a>
 							<?php endif ?>
 													
 						</form>
@@ -51,16 +53,12 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#entrarSistema').click(function(e){
-
 			e.preventDefault();
-
 			vazios=validarFormVazio('frmLogin');
-
 				if(vazios > 0){
 					alert("Preencha os campos!!");
 					return false;
 				}
-
 			dados=$('#frmLogin').serialize();
 			$.ajax({
 				type:"POST",
