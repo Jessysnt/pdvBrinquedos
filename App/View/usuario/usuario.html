@@ -15,9 +15,9 @@
                 <label>Sobrenome</label>
                 <input type="text" class="form-control input-sm" name="sobrenome" id="sobrenome">
                 <label>CPF</label>
-                <input type="text" class="form-control input-sm" name="cpf" id="cpf">
+                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Só números" onblur="validarCPF(this)">
                 <label>Email</label>
-                <input type="text" class="form-control input-sm" name="email" id="email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)">
                 <label>Senha</label>
                 <input type="password" class="form-control" name="senha" id="senha">
                 <br>
@@ -303,6 +303,30 @@
             });
         });
     });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#cpf").mask("000.000.000-00");
+
+    });
+    
+    function validarCPF(el){
+        if( !_cpf(el.value) ){
+            alertify.error("CPF inválido!");
+            // apaga o valor
+            el.value = "";
+        }
+    }
+
+    function validateEmail(email) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)){
+            return (true);
+        }
+        alertify.error("E-mail inválido!");
+        email.value = "";
+        return (false);
+    }
 </script>
 
 
