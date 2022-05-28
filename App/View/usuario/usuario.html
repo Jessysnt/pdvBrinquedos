@@ -14,10 +14,12 @@
                 <input type="text" class="form-control input-sm" name="nome" id="nome">
                 <label>Sobrenome</label>
                 <input type="text" class="form-control input-sm" name="sobrenome" id="sobrenome">
+                <label>CPF</label>
+                <input type="text" class="form-control input-sm" name="cpf" id="cpf">
                 <label>Email</label>
                 <input type="text" class="form-control input-sm" name="email" id="email">
                 <label>Senha</label>
-                <input type="text" class="form-control input-sm" name="senha" id="senha">
+                <input type="password" class="form-control" name="senha" id="senha">
                 <br>
                 <!-- <label>Funções</label> -->
                 <!-- <select class="form-control input-sm" id="cargo" name="cargo">
@@ -34,28 +36,28 @@
                 <div class="container">
                     <label style="color: black;">Cargos</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="administrador" value="Administrador" name="cargo">
-                        <label class="form-check-label" for="administrador">Administrador</label>
+                        <input class="form-check-input" type="radio" id="Administrador" value="Administrador" name="cargo">
+                        <label class="form-check-label" for="Administrador">Administrador</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="gerente" value="Gerente" name="cargo">
-                        <label class="form-check-label" for="gerente">Gerente</label>
+                        <input class="form-check-input" type="radio" id="Gerente" value="Gerente" name="cargo">
+                        <label class="form-check-label" for="Gerente">Gerente</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="supervisor" value="Supervisor" name="cargo">
-                        <label class="form-check-label" for="supervisor">Supervisor de vendas</label>
+                        <input class="form-check-input" type="radio" id="Supervisor" value="Supervisor" name="cargo">
+                        <label class="form-check-label" for="Supervisor">Supervisor de vendas</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="caixa" value="Caixa" name="cargo">
-                        <label class="form-check-label" for="caixa">Caixa</label>
+                        <input class="form-check-input" type="radio" id="Caixa" value="Caixa" name="cargo">
+                        <label class="form-check-label" for="Caixa">Caixa</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="vendedor" value="Vendedor" name="cargo">
-                        <label class="form-check-label" for="vendedor">Vendedor</label>
+                        <input class="form-check-input" type="radio" id="Vendedor" value="Vendedor" name="cargo">
+                        <label class="form-check-label" for="Vendedor">Vendedor</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="estoque" value="Estoque" name="cargo">
-                        <label class="form-check-label" for="estoque">Estoque</label>
+                        <input class="form-check-input" type="radio" id="Estoque" value="Estoque" name="cargo">
+                        <label class="form-check-label" for="Estoque">Estoque</label>
                     </div>
                 </div>
             </div>
@@ -184,7 +186,7 @@
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("administrador");
+        ativarCheckbox("Administrador");
     });
 
     $('#Gerente').change(function() {
@@ -193,7 +195,7 @@
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("gerente");
+        ativarCheckbox("Gerente");
     });
 
     $('#Supervisor').change(function() {
@@ -202,7 +204,7 @@
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("supervisor");
+        ativarCheckbox("Supervisor");
     });
 
     $('#Caixa').change(function() {
@@ -211,7 +213,7 @@
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("caixa");
+        ativarCheckbox("Caixa");
     });
 
     $('#Vendedor').change(function() {
@@ -220,7 +222,7 @@
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("vendedor");
+        ativarCheckbox("Vendedor");
     });
 
     $('#Estoque').change(function() {
@@ -229,7 +231,7 @@
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("estoque");
+        ativarCheckbox("Estoque");
     });
 
     function ativarCheckbox(cargo) {
