@@ -29,7 +29,7 @@
                 <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
             </div>
             <div class="col-sm-3">
-                <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
+                <span class="btn btn-primary btn-block" id="enviar">Enviar</span>
             </div>
             <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
@@ -43,7 +43,7 @@
 			<br> -->
 			<thead>	
 				<tr>
-					<th>Data</th>
+					<th>Data Abertura</th>
 					<th>Comanda</th>
 					<th>Vendedor</th>
 					<th>Cliente</th>
@@ -68,45 +68,58 @@
         $('#vendasPeriodo').hide();
     });
 
-    function enviar() {
+    $('#enviar').click(function(){
         if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
             var dados={
                 dtInicial: $('#dtInicial')[0].value,
                 dtFinal: $('#dtFinal')[0].value
             }
+            carrega(dados);
             console.log(dados);
-            $.ajax({
-                type:"POST",
-                data: dados,
-                url:"pesquisa-comanda",
-                success:function(r){
-                    console.log(r);
-                    // var resp = jQuery.parseJSON(r);
-                    // console.log(resp.cliente);
-                    // if(resp.dados['totalLiquido'] != null){
-                    //     $('#totalGeral').hide();
-                    //     $('#totalDatas').show();
-                    //     $('#totalVendas').val(resp.dados['totalVendas']);
-                    //     $('#totalLiquido').val(parseFloat(resp.dados['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-
-                    //     $('#vendasPeriodo').show();
-                    //     var tbody = $('#vendasPeriodo').find('tbody');
-                    //     tbody.empty();
-                    //     resp.cliente.forEach(linha => {
-                    //         tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
-                    //     });
-                    // }else{
-                    //     $('#totalVendas').val('');
-                    //     $('#totalLiquido').val('');
-                    //     alertify.error("Nao ha vendas nesse periodo");
-                    // }
-                    // $('#totalLiquido').val(resp['totalLiquido']);
-                } 
-            });
         }else{
             alertify.error("Datas invalidas!");
         }
-    }
+    });
+        
+        
+    function carrega(dados) {
+        $.ajax({
+            type:"POST",
+            data: dados,
+            url:"pesquisa-comanda",
+            success:function(r){
+                console.log('r',r);
+                var resp = jQuery.parseJSON(r);
+                console.log(resp);
+                if(resp.dados.length > 0){
+                    $('#vendasPeriodo').show();
+                    var tbody = $('#vendasPeriodo').find('tbody');
+                    tbody.empty();
+                    resp.dados.forEach(linha => {
+                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente}</td> <td> ${linha.item}</td> <td>if(linha.status == 1){ <span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span></td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span>}else{<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>} </td></tr>`);
+                    });
+                }else{
+                    $('#vendasPeriodo').hide();
+                    alertify.error('Nao ha comandas');
+                }
+            } 
+        });
+    }    
+    
 </script>
+
+<!-- <script type="text/javascript">
+    /**
+	 * Coloca os itens na tabela temporaria
+	 */
+	function atualizarTabela(tabela) {
+		var tbody = tabela.find('tbody');
+            tbody.empty();
+            resp.dados.forEach(linha => {
+                tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente}</td> <td> ${linha.item}</td> <td>if(linha.status == 1){ <span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span></td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span>}else{<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>} </td></tr>`);
+            });
+	};
+</script> -->
+
 
 {% endblock %}
