@@ -140,6 +140,6 @@ class UsuarioDAO extends Conexao
         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
         // return $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->execute();
-        return $stmt->fetchObject('\App\Entity\Usuario');
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

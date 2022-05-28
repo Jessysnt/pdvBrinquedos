@@ -148,8 +148,7 @@ class PdvController
         $obUsuario = new UsuarioDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $resp = $obUsuario->verificaPermissaoDesconto($_POST);
-            die(var_dump($resp));
-            if($resp['cargo'] == 'administrador' || 'gerente' || 'supervisor'){
+            if($resp['cargo'] == 'Administrador' || 'Gerente' || 'Supervisor'){
                 View::jsonResponse(true);
             }else{
                 View::jsonResponse(false);
