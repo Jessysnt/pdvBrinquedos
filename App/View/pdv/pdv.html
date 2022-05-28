@@ -889,10 +889,11 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			url:"permissao-desconto",
 			success:function(r){
 				console.log(r);
-				// var resp = JSON.parse(r);
 				if(true){
+					$('#permissaoSenha')[0].reset();
 					gravarComanda();
 					alertify.confirm('Imprimir comprovante de compra? ', function(){
+						href="comprovante-venda";
 						console.log('imprimir');
 					}, function(){ 
 						alertify.error('Cancelado !');

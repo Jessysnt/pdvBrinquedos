@@ -85,6 +85,7 @@ $router->add('gravar-venda', ['controller' => 'PdvController', 'action' => 'grav
 $router->add('apaga-prod-comanda', ['controller' => 'PdvController', 'action' => 'apagarProdutoComanda']);
 $router->add('pesq-cliente-comanda', ['controller' => 'PdvController', 'action' => 'pesqClienteComanda']);
 $router->add('permissao-desconto', ['controller' => 'PdvController', 'action' => 'verificaPermissaoDesconto']);
+$router->add('comprovante-venda', ['controller' => 'PdvController', 'action' => 'impressaoVenda']);
 
 //Rotas de Categoria
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);

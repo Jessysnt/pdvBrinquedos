@@ -156,4 +156,12 @@ class PdvController
         }
     }
 
+    public function impressaoVenda()
+    {
+        $obPdvDAO = new PdvDAO();
+            $resp = $obPdvDAO->tabelaComprovante();
+            View::renderTemplate('/pdv/comprovante-venda.html', ['comprovante'=>$resp]); 
+        
+    }
+
 }
