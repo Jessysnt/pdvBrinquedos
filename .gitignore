@@ -3,8 +3,6 @@
 
 /App/Config.php
 
-\public\arquivos/
-\public\arquivos/*
 
 \public\assets\lib\bootstrap-5\*
 /public/assets/lib/bootstrap-5/*
