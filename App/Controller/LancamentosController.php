@@ -9,6 +9,16 @@ class LancamentosController
 {
     public function formulario()
     {
+        $obLancamentoDAO = new LancamentoDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obLancamento=array(
+                'descricao' => $_POST['descricao'],
+                'data' => $_POST['data'],
+                'valor' => $_POST['valor']
+            ); 
+            $result = $obLancamentoDAO->adicionarLancamento($obLancamento);
+            View::jsonResponse($result);
+        }
         View::renderTemplate('/lancamentos/lancamentos.html'); 
     }
 

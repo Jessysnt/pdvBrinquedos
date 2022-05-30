@@ -12,7 +12,7 @@
     <br>
     <div class="row">
         <div class="col-sm-4">
-            <form method="post" id="frmClientes">
+            <form method="post" id="frmLancamento">
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
                     <input type="text" class="form-control" id="descricao" name="descricao">
@@ -25,10 +25,10 @@
                     <label for="valor">Valor</label>
                     <input type="text" class="form-control" id="valor" name="valor">
                 </div>
-                    <span type="submit" class="btn btn-primary btn-block" id="btnAdicionarCliente">Adicionar</span>
+                    <span type="submit" class="btn btn-primary btn-block" id="btnAdicionar">Adicionar</span>
             </form>
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-6" style="margin-left: 50px;">
             <div id="tabelaLancamentosLoad"></div>
         </div>
     </div>  
@@ -40,5 +40,36 @@
 <script type="text/javascript">
     $("#valor").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
     $('#tabelaLancamentosLoad').load("lancamento-tabela");
+
+    $('#btnAdicionar').click(function(){
+            vazios=validarFormVazio('frmUsuario');
+            if(vazios > 0){
+                alertify.alert("Preencha os campos!!");
+                return false;
+            }
+            // dados= $("#frmLancamento").serialize();
+            dados={
+                descricao: $('#descricao').val(),
+                data: $('#data').val(),
+                valor: $('#valor').maskMoney('unmasked')[0]
+            }
+            console.log(dados);
+            $.ajax({
+                type:"POST",
+                data:dados,
+                url:"lancamento",
+                success:function(r){
+                    console.log(r);
+                    var resp = JSON.parse(r);
+                    if(resp){
+                        $('#frmLancamento')[0].reset();
+                        $('#tabelaLancamentosLoad').load('lancamento-tabela');
+                        alertify.success("Adicionado com sucesso");
+                    }else{
+                        alertify.error("Falha ao adicionar :(");
+                    }
+                }
+            });
+        });
 </script>
 {% endblock %}
