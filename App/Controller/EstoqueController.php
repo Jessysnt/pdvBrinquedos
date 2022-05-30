@@ -29,6 +29,6 @@ class EstoqueController
 
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
-        View::renderTemplate('/produtos/estoque/estoque.html', ['estoques'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/estoque', 'busca'=>$busca, 'itensPag'=>$itensPag]);
+        View::renderTemplate('/produtos/estoque/estoque.html', ['estoques'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/estoque', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
     }
 }
