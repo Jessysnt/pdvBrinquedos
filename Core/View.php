@@ -16,7 +16,7 @@ class View
         if(is_readable($file)){
             require $file;
         }else{
-            throw new \Exception("$file não encontado");
+            throw new \Exception("$file não encontrado");
         }
     }
 
