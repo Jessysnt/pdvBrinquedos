@@ -184,6 +184,18 @@ CREATE TABLE `produtovenda` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `lancamento`
+--
+
+CREATE TABLE `lancamento` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(150) NOT NULL,
+  `data` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `usuario`
 --
 
@@ -268,6 +280,12 @@ ALTER TABLE `produtovenda`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `lancamento`
+--
+ALTER TABLE `lancamento`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices para tabela `usuario`
 --
 ALTER TABLE `usuario`
@@ -335,6 +353,12 @@ ALTER TABLE `produto`
 -- AUTO_INCREMENT de tabela `produtovenda`
 --
 ALTER TABLE `produtovenda`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `lancamento`
+--
+ALTER TABLE `lancamento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

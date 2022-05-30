@@ -103,6 +103,10 @@ $router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' =
 $router->add('comanda-status', ['controller' => 'RelatorioController', 'action' => 'statusComandas']);
 $router->add('pesquisa-comanda', ['controller' => 'RelatorioController', 'action' => 'pesquisaComandas']);
 
+//Rotas de lançamentos
+$router->add('lancamento', ['controller' => 'LancamentosController', 'action' => 'formulario']);
+$router->add('lancamento-tabela', ['controller' => 'LancamentosController', 'action' => 'tabelaLancamentos']);
+
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 $router->add('{controller}/{action}');

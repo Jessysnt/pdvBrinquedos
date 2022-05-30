@@ -1,0 +1,85 @@
+{% block body %}
+
+<div id="tabelaLancamentosLoad">
+    <div class="row">
+        <div class="col-sm">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" id="lista">
+                    <caption><label>Produtos</label></caption>
+                    </br>
+                    <div class="col-4"><input class="col-sm-4" id="filtro-nome" placeholder="Nome"/></div></br>
+                    </br>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Excluir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lancamento in lancamentos %}
+                        <tr>
+                            <td>{{estoque.data}}</td>
+                            <td>{{estoque.descricao}}</td>
+                            <td>{{estoque.preco_ven |format_currency('BRL')}}</td>
+                            <td>
+                                <span class="btn btn-danger btn-xs" onclick="deletarProdutov('{{produtovenda.id}}')">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>	
+                </table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if pagina > 1 %} 
+                <li class="page-item">
+                    <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina-1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+    
+                {% for i in 1..totalpaginas %}
+                <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
+                {% endfor %}
+    
+                {% if totalpaginas > pagina %}
+                <li class="page-item">
+                    <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina+1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	$('.pagination li a').click(function(event){
+        event.preventDefault();
+        $('#tabela').load(event.currentTarget.href);
+        return false;
+    });
+
+    $('#filtro-nome').keyup(function(e) {
+        if(e.which == 13) {
+            var nomeFiltro = $(this).val().toLowerCase();
+            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabela').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+        }
+    });
+</script>
+{% endblock %}
