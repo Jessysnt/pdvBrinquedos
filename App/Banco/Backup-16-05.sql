@@ -190,7 +190,8 @@ CREATE TABLE `produtovenda` (
 CREATE TABLE `lancamento` (
   `id` int(11) NOT NULL,
   `descricao` varchar(150) NOT NULL,
-  `data` date NOT NULL
+  `data` date NOT NULL,
+  `valor` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -210,7 +211,7 @@ CREATE TABLE `usuario` (
   `acesso` varchar(100) CHARACTER SET utf8 NOT NULL,
   `registro` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=ascii;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Índices para tabelas despejadas
