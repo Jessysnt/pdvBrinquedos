@@ -21,11 +21,11 @@
                     <tbody>
                         {% for lancamento in lancamentos %}
                         <tr>
-                            <td>{{estoque.data}}</td>
-                            <td>{{estoque.descricao}}</td>
-                            <td>{{estoque.preco_ven |format_currency('BRL')}}</td>
+                            <td>{{lancamento.data | date("d/m/Y")}}</td>
+                            <td>{{lancamento.descricao}}</td>
+                            <td>{{lancamento.valor |format_currency('BRL')}}</td>
                             <td>
-                                <span class="btn btn-danger btn-xs" onclick="deletarProdutov('{{produtovenda.id}}')">
+                                <span class="btn btn-danger btn-xs" onclick="deletarProdutov('{{lancamento.id}}')">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </span>
                             </td>

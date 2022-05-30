@@ -7,7 +7,6 @@
 
 {% block body %}
 <div class="container">
-
     <h3 style="color: green;">Lançar </h3>
     <br>
     <div class="row">
@@ -32,7 +31,40 @@
             <div id="tabelaLancamentosLoad"></div>
         </div>
     </div>  
+</div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <select class="form-control input-sm" id="mes" name="mes">
+                <!-- <option selected>Mês</option> -->
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option> 
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select class="form-control input-sm" id="ano" name="ano">
+                <!--<option selected>Mês</option> -->
+                {% for ano in anos %}
+                <option value="{{ano.ANO}}">{{ano.ANO}}</option>
+                {% endfor %} 
+            </select>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div id="container" style="width:100%; height:400px;"></div>
+    </div>
 </div>
 {% endblock %}
 
@@ -71,5 +103,113 @@
                 }
             });
         });
+</script>
+<script type="text/javascript">
+    var dataHoje = new Date();
+    let grafico;
+    var i = dataHoje.getMonth();
+    $('#mes').val('0'+(dataHoje.getMonth()+1)).trigger('change');
+    $('#ano').val(dataHoje.getFullYear()).trigger('change');
+    var index = $('#mes')[0].value; 
+    console.log('ak1');
+    console.log('in');
+       
+    function carrega(dados) {
+        $.ajax({
+            type:"POST",
+            data: dados,
+            url:"pesquisa-mes",
+            success:function(r){
+                var resp = JSON.parse(r);
+                var dias = resp.label;
+
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: $('#mes').val() + ' de ' + $('#ano').val()
+                    },
+                    subtitle: {
+                        text: 'Acompanhamento diário das vendas do mês'
+                    },
+                    xAxis: {
+                        categories: resp.label.map(date => {
+                        return Highcharts.dateFormat('%d', new Date(date).getTime());
+                        }),
+                        // categories: resp.label,
+                        crosshair: true,
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'R$'
+                        }
+                    },
+                    tooltip: {
+                        // headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        // pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        //     '',
+                        // footerFormat: '</table>',
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '',
+                        footerFormat: '</table>',
+                        /**/
+                        formatter: function () {
+                            return this.points.reduce(function (s, point) {
+                                return s + `<tr><td style="color:${point.series.color};padding:0">${point.series.name}: </td>` + `<td style="padding:0"><b> ${ point.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></td></tr>`; }, `<span style="font-size:10px"> ${this.x + ' de ' + $("#mes")[0].options[i].innerText } </span> <table>`);
+                        },
+                        /**/
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [
+                        {
+                        name: 'Faturamento diario',
+                        data: resp.data,
+                        }],
+                    credits: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: true
+                    },
+                    
+                });
+            }
+        });
+    };  
+    
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        dados={
+            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+        };
+        carrega(dados);
+    });
+</script>
+
+<script type="text/javascript">
+    $('#mes').change(function(){
+        dados={
+            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+        };
+        carrega(dados);
+        var index = $('#mes')[0].value; 
+        console.log('ak2', $('#mes')[0].options[parseInt(index-1)].innerText);
+    });
+
+    $('#ano').change(function(){
+        dados={
+            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+        };
+        carrega(dados);  
+    });
 </script>
 {% endblock %}
