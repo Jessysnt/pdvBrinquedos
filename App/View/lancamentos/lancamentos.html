@@ -32,8 +32,8 @@
         </div>
     </div>  
 </div>
-
-<div class="container">
+<br>
+<div class="container" id="grafico">
     <div class="row">
         <div class="col-sm-2">
             <select class="form-control input-sm" id="mes" name="mes">
@@ -105,6 +105,7 @@
         });
 </script>
 <script type="text/javascript">
+    $("#grafico").hide();
     var dataHoje = new Date();
     let grafico;
     var i = dataHoje.getMonth();
