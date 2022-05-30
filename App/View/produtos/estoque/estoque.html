@@ -58,21 +58,27 @@
         <div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  {% for i in 1..totalpaginas %}
-                  <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
-                  {% endfor %}
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
+                    {% if pagina > 1 %} 
+                    <li class="page-item">
+                        <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina-1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    {% endif %}
+        
+                    {% for i in 1..totalpaginas %}
+                    <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
+                    {% endfor %}
+        
+                    {% if totalpaginas > pagina %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina+1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
@@ -82,11 +88,17 @@
 
 {% block javascript %}
 <script type="text/javascript">      
+    $('.pagination li a').click(function(event){
+        event.preventDefault();
+        $('#tabela').load(event.currentTarget.href);
+        return false;
+    });
+
     $('#filtro-nome').keyup(function(e) {
         if(e.which == 13) {
             var nomeFiltro = $(this).val().toLowerCase();
-            $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
-            // $('html').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabela').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
         }
     });
 </script>
