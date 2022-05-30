@@ -39,10 +39,21 @@ class LancamentosController
         }
 
         $obLancamentoDAO = new LancamentoDAO();
-        $resp = $obLancamentoDAO->tabUsuario($busca, $pagina, $itensPag);
-        $total = $obLancamentoDAO->qntTotalUsuarios($busca);
+        $resp = $obLancamentoDAO->tabLancamento($busca, $pagina, $itensPag);
+        $total = $obLancamentoDAO->qntTotalLancamento($busca);
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
-        View::renderTemplate('/lancamentos/lancamento-tabela.html', ['lancamentos'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tab-usuario', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
+        View::renderTemplate('/lancamentos/lancamento-tabela.html', ['lancamentos'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/lancamento-tabela', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
+    }
+
+    public function dadosMes()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obLancamentoDAO = new LancamentoDAO();
+            $respMes = $obLancamentoDAO->somaEntreDatas($_POST['dtInicial']);
+            $return = ['label'=>array_column($respMes,'dia'),'data'=>array_map('floatval',array_column($respMes,'Total'))];
+            View::jsonResponse($return);
+        }
+        
     }
 }
