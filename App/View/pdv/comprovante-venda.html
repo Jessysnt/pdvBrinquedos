@@ -1,12 +1,66 @@
 {% extends "base.html" %}
 
 {% block stylesheet %}
+<style type="text/css">
+    @page {
+    margin-top: 0.3em;
+    margin-left: 0.6em;
+    }
+    body{
+    font-size: xx-small;
+    }
+</style>
+
 {% endblock %}
 
 <!-- {% block title %}Relatório do cliente{% endblock %} -->
 
 {% block body %}
+<div class="row">
+    <p>Data : {{resp.venda}}</p>
+    <p></p>
+</div>
+<div class="row">
+    <table style="border-collapse: collapse; border:1; width:145px;">
+        <thead>
+            <tr>
+              <th scope="col">Produto</th>
+              <th scope="col">Fatura</th>
+              <th scope="col">Total da Venda</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resp in resp %}
+            <tr>
+                <td>{{resp.item.replace(',', '<br>')}}</td>
+                <td>{{resp.total}}</td>
+            </tr>    
+            {% endfor %} 
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 
 {% block javascript %}
+<script type="text/javascript">
+    // var tbody = $('#vendasPeriodo').find('tbody');
+    // tbody.empty();
+    // resp.cliente.forEach(linha => {
+    //     tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+    // });
+
+    function file_get_contents_curl($url){
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        $dados = curl_exec($ch);
+        curl_close($ch);
+
+        return $dados;
+    }
+
+</script>
 {% endblock %}

@@ -8,6 +8,7 @@ use App\Repository\PdvDAO;
 use App\Repository\UsuarioDAO;
 use Core\View;
 use DateTimeZone;
+use Dompdf\Dompdf;
 
 class PdvController
 {
@@ -160,7 +161,24 @@ class PdvController
     {
         $obPdvDAO = new PdvDAO();
             $resp = $obPdvDAO->tabelaComprovante();
-            View::renderTemplate('/pdv/comprovante-venda.html', ['comprovante'=>$resp]); 
+            // Instanciamos um objeto da classe DOMPDF.
+$pdf = new Dompdf();
+ 
+// Definimos o tamanho do papel e orientação.
+$pdf->set_paper(array(0,0,125,250));
+ 
+// Carregar o conteúdo html.
+$pdf->load_html(utf8_decode('/pdv/comprovante-venda.html'));
+ 
+// Renderizar PDF.
+$pdf->render();
+
+//Limpeza
+ob_end_clean();
+ 
+// Enviamos pdf para navegador.
+$pdf->stream('relatorioVenda.pdf');
+            View::renderTemplate('/pdv/comprovante-venda.html', ['resp'=>$resp]); 
         
     }
 
