@@ -59,9 +59,7 @@
     var i = dataHoje.getMonth();
     $('#mes').val('0'+(dataHoje.getMonth()+1)).trigger('change');
     $('#ano').val(dataHoje.getFullYear()).trigger('change');
-    var index = $('#mes')[0].value; 
-    console.log('ak1');
-    console.log('in');
+    
        
     function carrega(dados) {
         $.ajax({
@@ -69,6 +67,7 @@
             data: dados,
             url:"pesquisa-mes",
             success:function(r){
+                // console.log(r);
                 var resp = JSON.parse(r);
                 var dias = resp.label;
 
@@ -77,7 +76,7 @@
                         type: 'column'
                     },
                     title: {
-                        text: $('#mes').val() + ' de ' + $('#ano').val()
+                        text: $('#mes option:selected').text() + ' de ' + $('#ano').val()
                     },
                     subtitle: {
                         text: 'Acompanhamento diário das vendas do mês'
@@ -141,6 +140,7 @@
             dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
         };
         carrega(dados);
+        console.log(dados);
     });
 </script>
 
@@ -150,8 +150,6 @@
             dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
         };
         carrega(dados);
-        var index = $('#mes')[0].value; 
-        console.log('ak2', $('#mes')[0].options[parseInt(index-1)].innerText);
     });
 
     $('#ano').change(function(){
