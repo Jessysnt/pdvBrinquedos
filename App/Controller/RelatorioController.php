@@ -38,4 +38,13 @@ class RelatorioController
             View::jsonResponse(['dados'=>$respComandas]);
         }
     }
+
+    public function fecharComanda()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $respComanda = $obRelatorioDAO->fecharComanda($_POST);
+            View::jsonResponse($respComanda);
+        }
+    }
 }

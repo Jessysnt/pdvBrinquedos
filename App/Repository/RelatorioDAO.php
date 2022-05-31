@@ -39,4 +39,10 @@ class RelatorioDAO extends Conexao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    public function fecharComanda($dado)
+    {
+        $stmt = static::getConexao()->prepare("UPDATE comandafatura SET comanda_aberta=0 WHERE id=:id");
+        $stmt->bindParam(':id', $dado['id'], PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
