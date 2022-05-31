@@ -5,7 +5,7 @@
 {% block stylesheet %}
 <style>
 	td {text-align: center;}
-    th {text-align: center;}
+  th {text-align: center;}
 </style>
 {% endblock %}
 
@@ -81,6 +81,8 @@
 			</thead>
 
 			<tbody>	
+        {% set nomeAcesso = {1:'Visualizar Cliente', 2:'Adicionar Cliente', 3:'Editar Cliente', 4:'Relatório do Cliente', 5:'Visualizar Colaboradore', 6:'Adicionar Colaboradore', 7:'Editar Colaboradore', 8:'Relatório do Colaboradore', 9:'Gestão de Produtos', 10:'Gestão de Categorias', 11:'Gestão de Produtos Lote', 12:'Estoque', 13:'Comanda', 14:'PDV', 15:'Relatório de Vendas', 16:'Relatório de Produtos', 17:'Relatório de Comandas'} %}
+
 				{% for usuario in usuarios %}
 				<tr>
 					<td>{{usuario.nome}}</td>
@@ -88,7 +90,8 @@
 					<td>{{usuario.cpf}}</td>
 					<td>{{usuario.email}}</td>
 					<td>{{usuario.cargo}}</td>
-					<td>{{dump(usuario.acessos) }}</td>
+          
+					<td> {% for acesso in usuario.acessos %} <span class="badge badge-secondary">{{ nomeAcesso[acesso] }}</span>  {% endfor %}</td>
 					{% if usuario.status == 1 %}
           <td><span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span></td>
           {% elseif usuario.status == 0 %}
