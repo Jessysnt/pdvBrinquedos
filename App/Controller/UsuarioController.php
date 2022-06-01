@@ -57,10 +57,10 @@ class UsuarioController
 
     public function obterUsuario()
     {
-        $obUsuario = new UsuarioDAO();
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $resp = $obUsuario->obterUsuario($_POST);
-            View::jsonResponse($resp);
+        $obUsuarioDAO = new UsuarioDAO();
+        if($_GET['usuario']){
+            $resp = $obUsuarioDAO->obterUsuario(intval($_GET["usuario"]));
+            View::renderTemplate('/usuario/usuario-editar.html', ['usuario'=>$resp]); 
         }
     }
 

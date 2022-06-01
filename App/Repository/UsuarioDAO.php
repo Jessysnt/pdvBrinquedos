@@ -98,12 +98,12 @@ class UsuarioDAO extends Conexao
         return $stmt->fetchObject('\App\Entity\Usuario');
     }
 
-    public function obterUsuario($dados)
+    public function obterUsuario($idUsuario)
     {
         $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE id=:id");
-        $stmt->bindParam(':id', $dados['idusuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $idUsuario, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchObject('\App\Entity\Usuario');
     }
 
     public function vendaUsuarioData($usuario)

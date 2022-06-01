@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h3>Editar Usuário</h3>
+    
+    <form id="frmUsuarioU">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Nome</label>
+                <input type="text" class="form-control" name="nome" id="nome" value="{{usuario.nome}}">
+                <label>Sobrenome</label>
+                <input type="text" class="form-control" name="sobrenome" id="sobrenome"value="{{usuario.sobrenome}}">
+                <label>CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Só números" onblur="validarCPF(this)" value="{{usuario.cpf}}">
+                <label>Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)" value="{{usuario.email}}">
+                <label>Senha</label>
+                <input type="password" class="form-control" name="senha" id="senha">
+                <br>
+                <div class="custom-control custom-switch">
+                    {% if usuario.status == 1 %}
+                    <input type="checkbox" class="custom-control-input" id="status" name="status" value="checked">
+                    {% else %}
+                    <input type="checkbox" class="custom-control-input" id="status" name="status" value="false">
+                    {% endif %}
+                    <label class="custom-control-label" for="status">{{usuario.status}}</label>
+                </div>
+                <br>
+                <span class="btn btn-primary btn-block" onclick="atualizarUsuario('{{usuario.id}}')" >Atualizar</span>
+            </div> 
+         
+            <div class="col-sm-4">
+                <div class="container">
+                    <label style="color: black;">Cargos</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="Administrador" value="Administrador" name="cargo">
+                        <label class="form-check-label" for="Administrador">Administrador</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="Gerente" value="Gerente" name="cargo">
+                        <label class="form-check-label" for="Gerente">Gerente</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="Supervisor" value="Supervisor" name="cargo">
+                        <label class="form-check-label" for="Supervisor">Supervisor de vendas</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="Caixa" value="Caixa" name="cargo">
+                        <label class="form-check-label" for="Caixa">Caixa</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="Vendedor" value="Vendedor" name="cargo">
+                        <label class="form-check-label" for="Vendedor">Vendedor</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="Estoque" value="Estoque" name="cargo">
+                        <label class="form-check-label" for="Estoque">Estoque</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" >
+                <label style="color: black;">Funções</label>
+                <br>
+                <div class="container">
+                    <label> Gestão de Cliente</label>
+                    <div class="container">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteVisualizar" name="acessos[]" value="1">
+                            <label class="form-check-label" for="clienteVisualizar">Visualizar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteAdicionar" name="acessos[]" value="2">
+                            <label class="form-check-label" for="clienteAdicionar">Adicionar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteEditar" name="acessos[]" value="3">
+                            <label class="form-check-label" for="clienteEditar">Editar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clienteRelatorio" name="acessos[]" value="4">
+                            <label class="form-check-label" for="clienteRelatorio">Relatório</label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <label> Gestão de Colaboradores</label>
+                    <div class="container">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioVusualizar" name="acessos[]" value="5">
+                            <label class="form-check-label" for="usuarioVusualizar">Visualizar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioAdicionar" name="acessos[]" value="6">
+                            <label class="form-check-label" for="usuarioAdicionar">Adicionar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioEditar" name="acessos[]" value="7">
+                            <label class="form-check-label" for="usuarioEditar">Editar</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="usuarioRelatorio" name="acessos[]" value="8">
+                            <label class="form-check-label" for="usuarioRelatorio">Relatório</label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="produto" name="acessos[]" value="9">
+                        <label class="form-check-label" for="produto">Gestão de Produtos</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="categoria" name="acessos[]" value="10">
+                        <label class="form-check-label" for="categoria">Gestão de Categorias</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="produtoLote" name="acessos[]" value="11">
+                        <label class="form-check-label" for="produtoLote">Gestão de Produtos Lote</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="estoqueVer" name="acessos[]" value="12">
+                        <label class="form-check-label" for="estoqueVer">Estoque</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="comanda" name="acessos[]" value="13">
+                        <label class="form-check-label" for="comanda">Comanda</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="pdv" name="acessos[]" value="14">
+                        <label class="form-check-label" for="estoque">PDV</label>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <label>Relatórios</label>
+                    <div class="container">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="15">
+                            <label class="form-check-label" for="relatorioVenda">Vendas</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioProduto" name="acessos[]" value="16">
+                            <label class="form-check-label" for="relatorioProduto">Produtos</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioComanda" name="acessos[]" value="17">
+                            <label class="form-check-label" for="relatorioComanda">Comandas</label>
+                        </div>
+                    </div>
+                </div>
+            </div>         
+        </div>
+    </form>       
+        
+    
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+
+<script type="text/javascript">
+    $('#Administrador').change(function(e) {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("Administrador");
+    });
+
+    $('#Gerente').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("Gerente");
+    });
+
+    $('#Supervisor').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("Supervisor");
+    });
+
+    $('#Caixa').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("Caixa");
+    });
+
+    $('#Vendedor').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("Vendedor");
+    });
+
+    $('#Estoque').change(function() {
+        if(!$(this)[0].checked){
+            var checkboxes = $(':checkbox[name="acessos[]"]');
+            checkboxes.prop('checked', false);
+            return false;
+        }
+        ativarCheckbox("Estoque");
+    });
+
+    function ativarCheckbox(cargo) {
+        var ativar = [];
+        switch (cargo) {
+            case "Administrador":
+                ativar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+                break;
+
+            case "Gerente":
+                ativar = [1,2,3,4,5,8,9,10,11,12,13,14,15,16,17];
+                break;
+
+            case "Supervisor":
+                ativar = [1,2,3,4,12,13];
+                break;
+
+            case "Caixa":
+                ativar = [1,2,3,11,12,13,14];
+                break;
+
+            case "Vendedor":
+                ativar = [1,2,3,12,13];
+                break;
+
+            case "Estoque":
+                ativar = [9,10,11,12];
+                break;
+        
+            default:
+                break;
+        }
+        var checkboxes = $(':checkbox[name="acessos[]"]');
+        $(checkboxes).each(function(){
+            $(this).prop('checked', false);
+            if(ativar.includes(parseInt($(this)[0].value))){
+                $(this).prop('checked', true);    
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function atualizarUsuario(idUsuario) {
+        serie=$('#frmUsuarioU').serialize();
+        if($('#status')[0].checked == true){
+        var status = 1;
+        }else{
+        var status = 0;
+        }
+        dados={
+            idUsuario: $('#idUsuario').val(),
+            nome: $('#nome').val(),
+            sobrenome: $('#sobrenome').val(),
+            email: $('#email').val(),
+            cargo: $('#cargo').val(),
+            status: status
+        };
+        console.log('dados', dados);
+        console.log('serie', serie);
+        return false;
+        $.ajax({
+              type:"POST",
+              data:dados,
+              url:"atz-usuario",
+              success:function(r){
+                  var resp = JSON.parse(r);
+                  if(resp){
+                      $('#tabela').load("tab-usuario");
+                      alertify.success("Editado com sucesso");
+                  }else{
+                      alertify.error("Não foi possível editar");
+                  }
+              }, error:function(e){
+                  console.log(e);
+              }
+        });
+    };
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#cpf").mask("000.000.000-00");
+
+    });
+    
+    function validarCPF(el){
+        if( !_cpf(el.value) ){
+            alertify.error("CPF inválido!");
+            // apaga o valor
+            el.value = "";
+        }
+    }
+
+    function validateEmail(email) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)){
+            return (true);
+        }
+        alertify.error("E-mail inválido!");
+        email.value = "";
+        return (false);
+    }
+</script>
+
+
+
+{% endblock %}
