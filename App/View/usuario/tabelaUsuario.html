@@ -11,45 +11,6 @@
 
 {% block body %}
 
-<!-- Modal -->
-<div class="modal fade" id="atualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Editar Usuário</h4>
-          </div>
-          <div class="modal-body">
-              <form id="frmUsuarioU">
-                  <input type="text" hidden="" id="idUsuario" name="idUsuario">
-                  <label>Nome</label>
-                  <input type="text" class="form-control input-sm" name="nomeU" id="nomeU">
-                  <label>Sobrenome</label>
-                  <input type="text" class="form-control input-sm" name="sobrenomeU" id="sobrenomeU">
-                  <label>Email</label>
-                  <input type="text" class="form-control input-sm" name="emailU" id="emailU">
-                  <label>Cargo</label>
-                  <select class="form-control input-sm" id="cargoU" name="cargoU">
-                      <option value="A">Selecionar Categoria</option>
-                      <option value="2">Gerente</option>
-                      <option value="3">Caixa</option>
-                      <option value="4">Vendedor</option>
-                      <option value="1">Administrador</option>
-                  </select><br>
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="statusU" name="statusU">
-                    <label class="custom-control-label" for="statusU">Ativo</label>
-                  </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-              <button id="btnAtualizaUsuario" type="button" class="btn btn-warning" data-dismiss="modal">Atualizar</button>
-
-          </div>
-      </div>
-  </div>
-</div>
-
 <div class="container" id="tabela">
 <a class="btn btn-primary" href="usuario-add" role="button">Novo Usuário</a>
 </br>
@@ -98,9 +59,9 @@
           <td><span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span></td>
           {% endif %}
 					<td>
-						<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarUsuario" onclick="adicionarDados('{{usuario.id}}')">
-							<span class="glyphicon glyphicon-pencil"></span>
-						</span>
+            <a class="btn btn-warning btn-xs" href="obt-usuario?usuario={{usuario.id}}" role="button">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
 					</td>
 					<td>
 						<span class="btn btn-danger btn-xs" onclick="deletarUsuario('{{usuario.id}}')">
@@ -172,25 +133,6 @@
 </script>
 
 <script type="text/javascript">
-  function adicionarDados(idusuario){
-      //alert(idusuario);
-      $.ajax({
-          type:"POST",
-          data:"idusuario=" + idusuario,
-          url:"obt-usuario",
-          success:function(r){
-              var resp = JSON.parse(r);
-              $('#idUsuario').val(resp['id']);
-              $('#nomeU').val(resp['nome']);
-              $('#sobrenomeU').val(resp['sobrenome']);
-              $('#emailU').val(resp['email']);
-              $('#cargoU').val(resp['cargo']);
-              if(resp['status'] == 1){
-                $('#statusU')[0].checked = true;
-              }
-          }
-      });
-  }
 
   function deletarUsuario(idusuario){
     alertify.confirm('Deseja excluir este usuario?', function(){ 
