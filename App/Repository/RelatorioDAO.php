@@ -38,11 +38,24 @@ class RelatorioDAO extends Conexao
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    public function fecharComanda($dado)
+
+    public function mostrarComanda($busca, $pagina, $itensPag)
     {
-        $stmt = static::getConexao()->prepare("UPDATE comandafatura SET comanda_aberta=0 WHERE id=:id");
-        $stmt->bindParam(':id', $dado['id'], PDO::PARAM_INT);
-        return $stmt->execute();
+        $offset = $itensPag*($pagina-1);
+        $stmt = static::getConexao()->prepare("SELECT * FROM lancamento  WHERE descricao LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function qntTotalComanda($busca)
+    {
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM lancamento WHERE descricao LIKE :busca LIMIT 1 ");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
 }
