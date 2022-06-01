@@ -49,6 +49,11 @@ class Usuario {
     private $acesso;
 
     /**
+     * @var string
+     */
+    private $status;
+
+    /**
      * @var DateTime
      */
     private $registro;
@@ -130,7 +135,7 @@ class Usuario {
         return $this;
     }
 
-    public function getAcesso(): ?int
+    public function getAcesso(): ?string
     {
         return $this->acesso;
     }
@@ -138,6 +143,18 @@ class Usuario {
     public function setAcesso(string $acesso): self
     {
         $this->acesso = $acesso;
+        
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
         
         return $this;
     }
