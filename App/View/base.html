@@ -47,11 +47,11 @@
               <li class="dropdown">
                 <a href="#" style="color: #045719" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-usd"></span> Gestão Comanda <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  {% if (session['usuario'].getCargo() == "1" or "2" or "3") %}
+                  {% if 14 in session['usuario'].getAcessos() %}
                   <li><a href="pdv" style="color: #045719"><span class="glyphicon glyphicon-usd"></span> PDV</a>
                   </li>
                   {% endif %}
-                  {% if (session['usuario'].getCargo() == "1" or "2" or "4") %}
+                  {% if 13 in session['usuario'].getAcessos() %}
                   <li><a href="comandas" style="color: #045719"><span class="glyphicon glyphicon-usd"></span> Abrir Comanda</a>
                   </li>
                   {% endif %}
@@ -61,7 +61,7 @@
               <li class="dropdown">
                 <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Gestão Produtos <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  {% if (session['usuario'].getCargo() == "1" or "2" or "3") %} 
+                  {% if 10 in session['usuario'].getAcessos() %} 
                   <li><a href="categorias">Categorias</a></li>
                   <!-- <li><a href="fornecedores">Fornecedores</a></li> -->
                   {% endif %}
@@ -74,20 +74,25 @@
               <li class="dropdown">
                 <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Relatórios <span class="caret"></span></a>
                 <ul class="dropdown-menu">
+                  {% if 16 in session['usuario'].getAcessos() %}
                   <li><a href="mais-vendidos">Produtos mais vendidos</a></li>
+                  {% elseif 17 in session['usuario'].getAcessos() %}
                   <li><a href="comanda-status">Comandas</a></li>
-                  <!-- <li><a href="comandas">Abrir Comanda</a></li> -->
-                  <!-- <li><a href="vendasRelatorios.php">Lista de Vendas</a></li> -->
+                  {% endif %}
                 </ul>
               </li>
               
+              <!-- {% if 16 in session['usuario'].getAcessos() %} -->
               <li><a href="lancamento" style="color: #255704"><span class="glyphicon glyphicon-usd"></span>Contas à pagar</a>
               </li>
+              <!-- {% endif %} -->
 
               <li class="dropdown" >
                 <a href="#" style="color: #a34202"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{ session['usuario'].getNome() }}   <span class="caret"></span></a>
                 <ul class="dropdown-menu">
+                  {% if 5 in session['usuario'].getAcessos() %}
                   <li> <a href="tab-usuario">Gestão Usuários</a></li>
+                  {% endif %}
                   <!-- {% if session['usuario'].getCargo() == "1" %}  -->
                   
                   <!-- <li> <a href="usuario-add">Gestão Usuários</a></li> -->
