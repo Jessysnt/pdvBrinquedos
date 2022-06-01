@@ -35,16 +35,19 @@
         </div>
         <div class="col-sm-2">
             <select class="form-control input-sm" id="ano" name="ano">
-                <!--<option selected>Mês</option> -->
                 {% for ano in anos %}
-                <option value="{{ano.ANO}}">{{ano.ANO}}</option>
+                    {% if ano.ANO == null %}
+                    <option value="{{dataHoje.getFullYear()}}">{{dataHoje.getFullYear()}}</option>
+                    {% else %}
+                    <option value="{{ano.ANO}}">{{ano.ANO}}</option>
+                    {% endif %}
                 {% endfor %} 
             </select>
         </div>
     </div>
     <br>
     <div>
-        <div id="container" style="width:100%; height:400px;"></div>
+        <div id="container" style="width:90%; height:400px;"></div>
     </div>
 
 </div>
