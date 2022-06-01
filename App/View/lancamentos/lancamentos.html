@@ -7,7 +7,43 @@
 
 {% block body %}
 <div class="container">
-    <h3 style="color: green; margin-top: -35px;" >Lançamento de Saída</h3>
+    <div class="row">
+        <!-- <div class="col-sm-2">
+            <select class="form-control input-sm" id="mes" name="mes">
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option> 
+            </select>
+        </div> -->
+        <div class="col-sm-2">
+            <select class="form-control input-sm" id="ano" name="ano">
+                <!--<option selected>Mês</option> -->
+                {% for ano in anos %}
+                <label>{{ano.ANO}}</label>
+                <option value="{{ano.ANO}}">{{ano.ANO}}</option>
+                {% endfor %} 
+            </select>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div id="container" style="width:80%; height:400px;"></div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <h3 style="color: green;">Lançar Entradas e Saídas</h3>
     <br>
     <div class="row">
         <div class="col-sm-4">
@@ -24,6 +60,13 @@
                     <label for="valor">Valor</label>
                     <input type="text" class="form-control" id="valor" name="valor">
                 </div>
+                <div class="form-group">
+                    <label for="valor">Saída/Entrada</label>
+                    <select class="form-control input-sm" id="saidaEntrada" name="saidaEntrada">
+                        <option value="saida">Saída</option>
+                        <option value="entrada">Entrada</option>
+                    </select>
+                </div>
                     <span type="submit" class="btn btn-primary btn-block" id="btnAdicionar">Adicionar</span>
             </form>
         </div>
@@ -31,40 +74,6 @@
             <div id="tabelaLancamentosLoad"></div>
         </div>
     </div>  
-</div>
-<br>
-<div class="container" id="grafico">
-    <div class="row">
-        <div class="col-sm-2">
-            <select class="form-control input-sm" id="mes" name="mes">
-                <!-- <option selected>Mês</option> -->
-                <option value="01">Janeiro</option>
-                <option value="02">Fevereiro</option>
-                <option value="03">Março</option>
-                <option value="04">Abril</option>
-                <option value="05">Maio</option>
-                <option value="06">Junho</option>
-                <option value="07">Julho</option>
-                <option value="08">Agosto</option>
-                <option value="09">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option> 
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <select class="form-control input-sm" id="ano" name="ano">
-                <!--<option selected>Mês</option> -->
-                {% for ano in anos %}
-                <option value="{{ano.ANO}}">{{ano.ANO}}</option>
-                {% endfor %} 
-            </select>
-        </div>
-    </div>
-    <br>
-    <div>
-        <div id="container" style="width:100%; height:400px;"></div>
-    </div>
 </div>
 {% endblock %}
 
@@ -105,7 +114,6 @@
         });
 </script>
 <script type="text/javascript">
-    $("#grafico").hide();
     var dataHoje = new Date();
     let grafico;
     var i = dataHoje.getMonth();
