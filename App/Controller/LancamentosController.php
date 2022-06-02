@@ -7,6 +7,11 @@ use Core\View;
 
 class LancamentosController
 {
+    public function tabelaVisual()
+    {
+        View::renderTemplate('/lancamentos/tabelas.html'); 
+    }
+
     public function formulario()
     {
         $obLancamentoDAO = new LancamentoDAO();

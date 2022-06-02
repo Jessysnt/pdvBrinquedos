@@ -71,7 +71,7 @@
 <script type="text/javascript">
 	$('.pagination li a').click(function(event){
         event.preventDefault();
-        $('#tabela').load(event.currentTarget.href);
+        $('#tabelaLancamentosLoad').load(event.currentTarget.href);
         return false;
     });
 
@@ -79,7 +79,7 @@
         if(e.which == 13) {
             var nomeFiltro = $(this).val().toLowerCase();
             // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
-            $('#tabela').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabelaLancamentosLoad').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
         }
     });
 </script>
