@@ -26,11 +26,13 @@
         </div> -->
         <div class="col-sm-2">
             <select class="form-control input-sm" id="ano" name="ano">
-                <!--<option selected>Mês</option> -->
-                {% for ano in anos %}
-                <label>{{ano.ANO}}</label>
-                <option value="{{ano.ANO}}">{{ano.ANO}}</option>
-                {% endfor %} 
+                {% if anos|length == 0 %}
+                    <option value="{{'now'|date('Y')}}">{{'now'|date('Y')}}</option>
+                    {% else %}
+                    {% for ano in anos %}
+                    <option value="{{ano.ANO}}">{{ano.ANO}}</option>
+                    {% endfor %} 
+                {% endif %}
             </select>
         </div>
     </div>
@@ -117,11 +119,8 @@
     var dataHoje = new Date();
     let grafico;
     var i = dataHoje.getMonth();
-    $('#mes').val('0'+(dataHoje.getMonth()+1)).trigger('change');
+    // $('#mes').val('0'+(dataHoje.getMonth()+1)).trigger('change');
     $('#ano').val(dataHoje.getFullYear()).trigger('change');
-    var index = $('#mes')[0].value; 
-    console.log('ak1');
-    console.log('in');
        
     function carrega(dados) {
         $.ajax({
@@ -137,7 +136,7 @@
                         type: 'column'
                     },
                     title: {
-                        text: $('#mes').val() + ' de ' + $('#ano').val()
+                        text: $('#ano').val()
                     },
                     subtitle: {
                         text: 'Acompanhamento diário das vendas do mês'
@@ -180,9 +179,14 @@
                     },
                     series: [
                         {
-                        name: 'Faturamento diario',
-                        data: resp.data,
-                        }],
+                        name: 'Entradas',
+                        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                        color: '#28a745'
+                        }, {
+                            name: 'Saidas',
+                        color: '#dc3545',
+                        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+                    }],
                     credits: {
                         enabled: false
                     },
@@ -210,8 +214,6 @@
             dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
         };
         carrega(dados);
-        var index = $('#mes')[0].value; 
-        console.log('ak2', $('#mes')[0].options[parseInt(index-1)].innerText);
     });
 
     $('#ano').change(function(){
