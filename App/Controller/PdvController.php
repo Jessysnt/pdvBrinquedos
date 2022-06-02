@@ -159,26 +159,7 @@ class PdvController
 
     public function impressaoVenda()
     {
-        $obPdvDAO = new PdvDAO();
-            $resp = $obPdvDAO->tabelaComprovante();
-            // Instanciamos um objeto da classe DOMPDF.
-$pdf = new Dompdf();
- 
-// Definimos o tamanho do papel e orientação.
-$pdf->set_paper(array(0,0,125,250));
- 
-// Carregar o conteúdo html.
-$pdf->load_html(utf8_decode('/pdv/comprovante-venda.html'));
- 
-// Renderizar PDF.
-$pdf->render();
-
-//Limpeza
-ob_end_clean();
- 
-// Enviamos pdf para navegador.
-$pdf->stream('relatorioVenda.pdf');
-            View::renderTemplate('/pdv/comprovante-venda.html', ['resp'=>$resp]); 
+        View::renderTemplate('/pdv/comprovante-venda.html'); 
         
     }
 
