@@ -11,15 +11,15 @@
         <div class="row">
             <div class="col-sm-4">
                 <label>Nome</label>
-                <input type="text" class="form-control input-sm" name="nome" id="nome">
+                <input type="text" class="form-control input-sm" name="nome" id="nome" required>
                 <label>Sobrenome</label>
-                <input type="text" class="form-control input-sm" name="sobrenome" id="sobrenome">
+                <input type="text" class="form-control input-sm" name="sobrenome" id="sobrenome" required>
                 <label>CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Só números" onblur="validarCPF(this)">
+                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Só números" onblur="validarCPF(this)" required>
                 <label>Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)">
+                <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)" required>
                 <label>Senha</label>
-                <input type="password" class="form-control" name="senha" id="senha">
+                <input type="password" class="form-control" name="senha" id="senha" required>
                 <br>
                 <!-- <label>Funções</label> -->
                 <!-- <select class="form-control input-sm" id="cargo" name="cargo">
@@ -36,7 +36,7 @@
                 <div class="container">
                     <label style="color: black;">Cargos</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Administrador" value="Administrador" name="cargo">
+                        <input class="form-check-input" type="radio" id="Administrador" value="Administrador" name="cargo" required>
                         <label class="form-check-label" for="Administrador">Administrador</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -278,9 +278,9 @@
     $(document).ready(function(){
         // $('#tabelaUsuariosLoad').load('tab-usuario');
         $('#adicionarUsuario').click(function(){
-            vazios=validarFormVazio('frmUsuario');
-            if(vazios > 0){
-                alertify.alert("Preencha os campos!!");
+            $('#frmUsuario')[0].reportValidity();
+            if(!$('#frmUsuario')[0].checkValidity()){
+                console.log('entrou if');
                 return false;
             }
             dados= $("#frmUsuario").serialize();
