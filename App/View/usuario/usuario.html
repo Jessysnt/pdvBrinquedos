@@ -49,15 +49,15 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" id="Caixa" value="Caixa" name="cargo">
-                        <label class="form-check-label" for="Caixa">Caixa</label>
+                        <label class="form-check-label" for="Caixa">Operador de Caixa</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" id="Vendedor" value="Vendedor" name="cargo">
                         <label class="form-check-label" for="Vendedor">Vendedor</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Estoque" value="Estoque" name="cargo">
-                        <label class="form-check-label" for="Estoque">Estoque</label>
+                        <input class="form-check-input" type="radio" id="Almoxarife" value="Almoxarife" name="cargo">
+                        <label class="form-check-label" for="Almoxarife">Almoxarife</label>
                     </div>
                 </div>
             </div>
@@ -225,13 +225,13 @@
         ativarCheckbox("Vendedor");
     });
 
-    $('#Estoque').change(function() {
+    $('#Almoxarife').change(function() {
         if(!$(this)[0].checked){
             var checkboxes = $(':checkbox[name="acessos[]"]');
             checkboxes.prop('checked', false);
             return false;
         }
-        ativarCheckbox("Estoque");
+        ativarCheckbox("Almoxarife");
     });
 
     function ativarCheckbox(cargo) {
@@ -257,7 +257,7 @@
                 ativar = [1,2,3,12,13];
                 break;
 
-            case "Estoque":
+            case "Almoxarife":
                 ativar = [9,10,11,12];
                 break;
         
