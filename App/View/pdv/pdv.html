@@ -806,20 +806,17 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 				$("#pagamentoDois").hide();
 				$("#valorDois").val('');
-				console.log('ak1');
 			}else if(valorUm < soma){
 				var valorDois = soma - valorUm;
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				console.log('ak2');
 			} else {
 				$("#pagamentoDois").hide();
 				$("#valorDois").val('');
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
-				console.log('ak3');
 			}
 		});
 
@@ -831,17 +828,14 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 				troco = valorVenda - soma;
 				$("#trocoUm").show();
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				console.log('ak4');
 			}else if(valorVenda == soma){
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
-				console.log('ak5');
 			}else if(valorDois == 0){
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").hide();
 				// $('#pgDois').val(null).trigger('change');
-				console.log('ak6');
 			}
 		});
 	};
@@ -866,6 +860,7 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			return false;
 		}else{
 			gravarComanda();
+			voltarFormulario();
 		}
 	}
 </script>
@@ -890,6 +885,16 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 					// gravarComanda();
 					alertify.confirm('Imprimir comprovante de compra? ', function(){
 						href="comprovante-venda";
+						let imprimir = document.getElementsByTagName('mat-dialog-content')[0];
+						var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+						mywindow.document.write('<html><head><title>Impressão</title>');
+						mywindow.document.write("<style> @font-face { font-family: 'Montserrat'; font-style: normal; font-weight: 200; font-display: swap; src: url(https://fonts.gstatic.com/s/montserrat/v24/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } @font-face { font-family: 'Roboto Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url(https://fonts.gstatic.com/s/robotomono/v21/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_AP2_ROW4.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } body{ font-family: 'Roboto Mono', 'Montserrat', sans-serif !important; max-width: 264.567px; font-size: 10px; } h2{ font-size: 13px; } table{ font-size: 8px; } small{ font-size: 6px; word-break: break-all; } .item-left{ text-align: left; } .letra{ height: 60px; } hr{ border-top: 1px dashed black; } p{ margin: 0 0 0px; } table { border-collapse: collapse; } .flex {display: flex !important;} .justify-content-between { justify-content: space-between !important; } .t-center {text-align: center !important;} .t-right {text-align: right !important;} h2 { font-family: 'Roboto Mono', Roboto, 'Helvetica Neue', sans-serif; letter-spacing: normal; margin: 0 0 16px} </style>");
+						mywindow.document.write('</head><body >');
+						mywindow.document.write(imprimir.innerHTML);
+						mywindow.document.write('</body></html>');
+
+						mywindow.print();
 						console.log('imprimir');
 					}, function(){ 
 						alertify.error('Cancelado !');
