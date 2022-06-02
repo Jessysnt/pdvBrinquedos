@@ -1,76 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Lançamentos{% endblock %}
+{% block title %}Fluxo{% endblock %}
 
 {% block stylesheet %}
 {% endblock %}
 
 {% block body %}
-
 <div class="container">
-    <h3 style="color: green;">Lançar Saídas</h3>
-    <br>
     <div class="row">
-        <div class="col-sm-4">
-            <form method="post" id="frmLancamento">
-                <div class="form-group">
-                    <label for="descricao">Descrição</label>
-                    <input type="text" class="form-control" id="descricao" name="descricao">
-                </div>
-                <div class="form-group">
-                    <label for="data">Data</label>
-                    <input type="date" class="form-control" id="data" name="data" >
-                </div>
-                <div class="form-group">
-                    <label for="valor">Valor</label>
-                    <input type="text" class="form-control" id="valor" name="valor">
-                </div>
-                    <span type="submit" class="btn btn-primary btn-block" id="btnAdicionar">Adicionar</span>
-            </form>
+        <!-- <div class="col-sm-2">
+            <select class="form-control input-sm" id="mes" name="mes">
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option> 
+            </select>
+        </div> -->
+        <div class="col-sm-2">
+            <select class="form-control input-sm" id="ano" name="ano">
+                {% if anos|length == 0 %}
+                    <option value="{{'now'|date('Y')}}">{{'now'|date('Y')}}</option>
+                    {% else %}
+                    {% for ano in anos %}
+                    <option value="{{ano.ANO}}">{{ano.ANO}}</option>
+                    {% endfor %} 
+                {% endif %}
+            </select>
         </div>
-        <div class="col-sm-6" style="margin-left: 50px;">
-            <div id="tabelaLancamentosLoad"></div>
-        </div>
-    </div>  
+    </div>
+    <br>
+    <div>
+        <div id="container" style="width:80%; height:400px;"></div>
+    </div>
 </div>
+
 {% endblock %}
 
 {% block javascript %}
 <script type="text/javascript">
     $("#valor").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
-    $('#tabelaLancamentosLoad').load("lancamento-tabela");
-
-    $('#btnAdicionar').click(function(){
-            vazios=validarFormVazio('frmUsuario');
-            if(vazios > 0){
-                alertify.alert("Preencha os campos!!");
-                return false;
-            }
-            // dados= $("#frmLancamento").serialize();
-            dados={
-                descricao: $('#descricao').val(),
-                data: $('#data').val(),
-                valor: $('#valor').maskMoney('unmasked')[0]
-            }
-            console.log(dados);
-            $.ajax({
-                type:"POST",
-                data:dados,
-                url:"lancamento",
-                success:function(r){
-                    console.log(r);
-                    var resp = JSON.parse(r);
-                    if(resp){
-                        $('#frmLancamento')[0].reset();
-                        $('#tabelaLancamentosLoad').load('lancamento-tabela');
-                        alertify.success("Adicionado com sucesso");
-                    }else{
-                        alertify.error("Falha ao adicionar :(");
-                    }
-                }
-            });
-        });
+    
 </script>
+
 <script type="text/javascript">
     var dataHoje = new Date();
     let grafico;
@@ -165,12 +144,12 @@
 </script>
 
 <script type="text/javascript">
-    $('#mes').change(function(){
-        dados={
-            dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
-        };
-        carrega(dados);
-    });
+    // $('#mes').change(function(){
+    //     dados={
+    //         dtInicial:$('#ano').val()+'-'+$('#mes').val()+'-'+'01'
+    //     };
+    //     carrega(dados);
+    // });
 
     $('#ano').change(function(){
         dados={
