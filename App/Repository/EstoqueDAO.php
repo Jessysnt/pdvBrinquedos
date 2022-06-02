@@ -34,7 +34,7 @@ class EstoqueDAO extends Conexao
         $stmt=static::getConexao()->prepare("UPDATE estoque SET quantotal=:quantotal, preco_ven=:precoVenda WHERE id=:idEstoque");
         $stmt->bindParam(':idEstoque', $dados['idEstoque'], PDO::PARAM_INT);
         $stmt->bindParam(':quantotal', $dados['quantotal'], PDO::PARAM_INT);
-        $stmt->bindParam(':precoVenda', $dados['precoVenda']['precoVenda'], PDO::PARAM_STR);            
+        $stmt->bindParam(':precoVenda', $dados['precoVenda'], PDO::PARAM_STR);            
         return $stmt->execute();
     }
 
