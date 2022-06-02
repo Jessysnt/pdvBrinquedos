@@ -35,13 +35,13 @@
         </div>
         <div class="col-sm-2">
             <select class="form-control input-sm" id="ano" name="ano">
-                {% for ano in anos %}
-                    {% if ano.ANO == null %}
-                    <option value="{{dataHoje.getFullYear()}}">{{dataHoje.getFullYear()}}</option>
+                {% if anos|length == 0 %}
+                    <option value="{{'now'|date('Y')}}">{{'now'|date('Y')}}</option>
                     {% else %}
+                    {% for ano in anos %}
                     <option value="{{ano.ANO}}">{{ano.ANO}}</option>
-                    {% endif %}
-                {% endfor %} 
+                    {% endfor %} 
+                {% endif %}
             </select>
         </div>
     </div>
