@@ -18,7 +18,7 @@ class LoginController extends Controller
                 $_SESSION['usuario'] = $resp;
                 View::jsonResponse($resp);
             }else{
-                View::jsonResponse(['Usuario nao encontrado']);
+                View::jsonResponse(false);
             }
         }
 

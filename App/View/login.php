@@ -3,6 +3,8 @@
 <head>
 	<title>Login</title>
 	<link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/lib/alertifyjs/css/alertify.css">
+    <link rel="stylesheet" type="text/css" href="assets/lib/alertifyjs/css/themes/default.css">
 	
 	<style>
 		.imglogo{
@@ -49,7 +51,8 @@
 
 	<script src="assets/lib/jquery-3.2.1.min.js"></script>
 	<script src="assets/js/funcoes.js"></script>
-
+	<script src="assets/lib/alertifyjs/alertify.js"></script>
+    <script src="assets/lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#entrarSistema').click(function(e){
@@ -65,13 +68,11 @@
 				data:dados,
 				url:"login",
 				success:function(r){
-					console.log(r);
 					var resp = JSON.parse(r);
 					if(resp){
 						window.location="painel";
 					}else{
-						alert(r);
-						alertify.error("Acesso Negado!!");
+						alertify.error('Acesso negado!');
 					}
 				}
 			});
