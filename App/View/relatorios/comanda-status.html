@@ -132,7 +132,7 @@
                     var tbody = $('#vendasPeriodo').find('tbody');
                     tbody.empty();
                     resp.dados.forEach(linha => {
-                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item}</td> <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span> </td></tr>`);
+                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item.replace(',', '<br>')}</td> <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span> </td></tr>`);
                     });
                 }else{
                     $('#vendasPeriodo').hide();
