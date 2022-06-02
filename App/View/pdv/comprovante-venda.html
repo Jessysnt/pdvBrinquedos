@@ -1,66 +1,119 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block stylesheet %}
-<style type="text/css">
-    @page {
-    margin-top: 0.3em;
-    margin-left: 0.6em;
-    }
-    body{
-    font-size: xx-small;
-    }
-</style>
+<head>
+    <style>
+        @font-face { 
+            font-family: 'Montserrat'; 
+            font-style: normal; 
+            font-weight: 200; 
+            font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/montserrat/v24/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2) format('woff2'); 
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; 
+        }
+        
+        @font-face { 
+            font-family: 'Roboto Mono'; 
+            font-style: normal; 
+            font-weight: 600; 
+            font-display: swap; 
+            src: url(https://fonts.gstatic.com/s/robotomono/v21/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_AP2_ROW4.woff2) format('woff2'); 
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; 
+        } 
+        
+        body{ 
+            font-family: 'Roboto Mono', 'Montserrat', sans-serif !important; 
+            max-width: 264.567px; font-size: 10px; 
+        } 
+        h2{ 
+            font-size: 13px; 
+        } 
+        table{ 
+            font-size: 8px; 
+        } 
+        small{ 
+            font-size: 6px; word-break: break-all; 
+        } 
+        .item-left{ 
+            text-align: left; } .letra{ height: 60px; 
+        } 
+        hr{ 
+            border-top: 1px dashed black; 
+        } 
+        p{
+            margin: 0 0 0px; 
+        } 
+        table { 
+            border-collapse: collapse; 
+        } 
+        .flex {
+            display: flex !important;
+        } 
+        .justify-content-between { 
+            justify-content: space-between !important; 
+        } 
+        .t-center {
+            text-align: center !important;
+        } 
+        .t-right {
+            text-align: right !important;
+        } 
+        h2 { 
+            font-family: 'Roboto Mono', Roboto, 'Helvetica Neue', sans-serif; 
+            letter-spacing: normal; 
+            margin: 0 0 16px
+        }
+    </style>
+</head>
 
-{% endblock %}
-
-<!-- {% block title %}Relatório do cliente{% endblock %} -->
-
-{% block body %}
-<div class="row">
-    <p>Data : {{resp.venda}}</p>
-    <p></p>
-</div>
-<div class="row">
-    <table style="border-collapse: collapse; border:1; width:145px;">
+<body>
+    <header>
+        <div style="text-align:center">
+            <strong >REINO MÁGICO : 4910487129047124</strong>
+            <p>Rua Estrela branca, 300</p>
+        </div>
+    </header>
+    <hr>
+    <div style="text-align:center">
+        <p>Extrato No. comandalinhaid</p>
+        <strong>COMPROVANTE DE VENDA</strong>
+    </div>
+    <hr>
+    <p class="flex justify-content-between"><span>Data Venda</span><span>Hora</span></p>
+    <p><strong>Cliente:</strong> Candanga</p>
+    <p>Cliente não informado.</p>
+    <hr>
+    <table>
         <thead>
             <tr>
-              <th scope="col">Produto</th>
-              <th scope="col">Fatura</th>
-              <th scope="col">Total da Venda</th>
+                <th class="item-left">Item</th>
+                <th class="item-left">Descrição</th>
+                <th class="item-left">QTD</th>
+                <th class="item-left">VL UNIT(R$)</th>
+                <th class="t-right">SUB Total(R$)</th>
             </tr>
         </thead>
         <tbody>
-            {% for resp in resp %}
-            <tr>
-                <td>{{resp.item.replace(',', '<br>')}}</td>
-                <td>{{resp.total}}</td>
-            </tr>    
-            {% endfor %} 
+            <tr for>
+                <td class="item-left"></td>
+                <td class="item-left"></td>
+                <td class="item-left"></td>
+                <td class="item-left"></td>
+                <td class="t-right"></td>
+            </tr>
         </tbody>
     </table>
-</div>
-{% endblock %}
+    <hr>
+    <p class="flex justify-content-between" if><span>Desconto:</span><span>R$20</span></p>
+    <div class="flex justify-content-between">
+        <h2>Total:</h2>
+        <h2>R$1000</h2>
+    </div>
+    <hr>
+    <footer style="text-align:center">
+        <p>Technology Partner Dotworld Technologies</p>
+        <p>www.dotworld.in</p>
+    </footer>
+</body>
 
-{% block javascript %}
-<script type="text/javascript">
-    // var tbody = $('#vendasPeriodo').find('tbody');
-    // tbody.empty();
-    // resp.cliente.forEach(linha => {
-    //     tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
-    // });
-
-    function file_get_contents_curl($url){
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
-
-        $dados = curl_exec($ch);
-        curl_close($ch);
-
-        return $dados;
-    }
-
-</script>
-{% endblock %}
+</html>
