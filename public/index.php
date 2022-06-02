@@ -96,7 +96,12 @@ $router->add('fornecedores', ['controller' => 'FornecedorController', 'action' =
 
 //Rotas do Painel
 $router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);
-$router->add('pesquisa-mes', ['controller' => 'PainelController', 'action' => 'dadosMes']);
+
+//Rotas do Dashboard
+$router->add('dashboard', ['controller' => 'DashboardController', 'action' => 'inicio']);
+$router->add('venda-mes', ['controller' => 'DashboardController', 'action' => 'painelAdm']);
+$router->add('pesquisa-mes', ['controller' => 'DashboardController', 'action' => 'dadosVendaMes']);
+$router->add('entrada-saida', ['controller' => 'DashboardController', 'action' => 'dadosEntradaSaida']);
 
 //Rotas de Relatorios
 $router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
