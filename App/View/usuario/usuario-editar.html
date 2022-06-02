@@ -10,24 +10,22 @@
     <form id="frmUsuarioU">
         <div class="row">
             <div class="col-sm-4">
+                <input type="text" hidden="" id="idUsuario" name="idUsuario" value="{{usuario.id}}">
                 <label>Nome</label>
-                <input type="text" class="form-control" name="nome" id="nome" value="{{usuario.nome}}">
+                <input type="text" class="form-control" name="nome" id="nome" value="{{usuario.nome}}" required>
                 <label>Sobrenome</label>
-                <input type="text" class="form-control" name="sobrenome" id="sobrenome"value="{{usuario.sobrenome}}">
+                <input type="text" class="form-control" name="sobrenome" id="sobrenome"value="{{usuario.sobrenome}}" required>
                 <label>CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Só números" onblur="validarCPF(this)" value="{{usuario.cpf}}">
+                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Só números" onblur="validarCPF(this)" value="{{usuario.cpf}}" required>
                 <label>Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)" value="{{usuario.email}}">
+                <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)" value="{{usuario.email}}" required>
                 <label>Senha</label>
                 <input type="password" class="form-control" name="senha" id="senha">
                 <br>
                 <div class="custom-control custom-switch">
-                    {% if usuario.status == 1 %}
-                    <input type="checkbox" class="custom-control-input" id="status" name="status" value="checked">
-                    {% else %}
-                    <input type="checkbox" class="custom-control-input" id="status" name="status" value="false">
-                    {% endif %}
-                    <label class="custom-control-label" for="status">{{usuario.status}}</label>
+                    
+                    <input type="checkbox" class="custom-control-input" id="status" name="status" {% if usuario.status == 1 %}checked{% endif %}>
+                    <label class="custom-control-label" for="status">Ativo</label>
                 </div>
                 <br>
                 <span class="btn btn-primary btn-block" onclick="atualizarUsuario('{{usuario.id}}')" >Atualizar</span>
@@ -37,27 +35,27 @@
                 <div class="container">
                     <label style="color: black;">Cargos</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Administrador" value="Administrador" name="cargo">
+                        <input class="form-check-input" type="radio" id="Administrador" value="Administrador" name="cargo" required {% if "Administrador" in usuario.getCargo() %}checked{% endif %}>
                         <label class="form-check-label" for="Administrador">Administrador</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Gerente" value="Gerente" name="cargo">
+                        <input class="form-check-input" type="radio" id="Gerente" value="Gerente" name="cargo" {% if "Gerente" in usuario.getCargo() %}checked{% endif %}>
                         <label class="form-check-label" for="Gerente">Gerente</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Supervisor" value="Supervisor" name="cargo">
+                        <input class="form-check-input" type="radio" id="Supervisor" value="Supervisor" name="cargo" {% if "Supervisor" in usuario.getCargo() %}checked{% endif %}>
                         <label class="form-check-label" for="Supervisor">Supervisor de vendas</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Caixa" value="Caixa" name="cargo">
+                        <input class="form-check-input" type="radio" id="Caixa" value="Caixa" name="cargo" {% if "Caixa" in usuario.getCargo() %}checked{% endif %}>
                         <label class="form-check-label" for="Caixa">Caixa</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Vendedor" value="Vendedor" name="cargo">
+                        <input class="form-check-input" type="radio" id="Vendedor" value="Vendedor" name="cargo" {% if "Vendedor" in usuario.getCargo() %}checked{% endif %}>
                         <label class="form-check-label" for="Vendedor">Vendedor</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="Estoque" value="Estoque" name="cargo">
+                        <input class="form-check-input" type="radio" id="Estoque" value="Estoque" name="cargo" {% if "Estoque" in usuario.getCargo() %}checked{% endif %}>
                         <label class="form-check-label" for="Estoque">Estoque</label>
                     </div>
                 </div>
@@ -69,19 +67,19 @@
                     <label> Gestão de Cliente</label>
                     <div class="container">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="clienteVisualizar" name="acessos[]" value="1">
+                            <input class="form-check-input" type="checkbox" id="clienteVisualizar" name="acessos[]" value="1" {% if 1 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="clienteVisualizar">Visualizar</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="clienteAdicionar" name="acessos[]" value="2">
+                            <input class="form-check-input" type="checkbox" id="clienteAdicionar" name="acessos[]" value="2" {% if 2 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="clienteAdicionar">Adicionar</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="clienteEditar" name="acessos[]" value="3">
+                            <input class="form-check-input" type="checkbox" id="clienteEditar" name="acessos[]" value="3" {% if 3 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="clienteEditar">Editar</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="clienteRelatorio" name="acessos[]" value="4">
+                            <input class="form-check-input" type="checkbox" id="clienteRelatorio" name="acessos[]" value="4" {% if 4 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="clienteRelatorio">Relatório</label>
                         </div>
                     </div>
@@ -91,19 +89,19 @@
                     <label> Gestão de Colaboradores</label>
                     <div class="container">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="usuarioVusualizar" name="acessos[]" value="5">
+                            <input class="form-check-input" type="checkbox" id="usuarioVusualizar" name="acessos[]" value="5" {% if 5 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="usuarioVusualizar">Visualizar</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="usuarioAdicionar" name="acessos[]" value="6">
+                            <input class="form-check-input" type="checkbox" id="usuarioAdicionar" name="acessos[]" value="6" {% if 6 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="usuarioAdicionar">Adicionar</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="usuarioEditar" name="acessos[]" value="7">
+                            <input class="form-check-input" type="checkbox" id="usuarioEditar" name="acessos[]" value="7" {% if 7 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="usuarioEditar">Editar</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="usuarioRelatorio" name="acessos[]" value="8">
+                            <input class="form-check-input" type="checkbox" id="usuarioRelatorio" name="acessos[]" value="8" {% if 8 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="usuarioRelatorio">Relatório</label>
                         </div>
                     </div>
@@ -111,42 +109,42 @@
                 <br>
                 <div class="container">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="produto" name="acessos[]" value="9">
+                        <input class="form-check-input" type="checkbox" id="produto" name="acessos[]" value="9" {% if 9 in usuario.getAcessos() %}checked{% endif %}>
                         <label class="form-check-label" for="produto">Gestão de Produtos</label>
                     </div>
                 </div>
                 <br>
                 <div class="container">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="categoria" name="acessos[]" value="10">
+                        <input class="form-check-input" type="checkbox" id="categoria" name="acessos[]" value="10" {% if 10 in usuario.getAcessos() %}checked{% endif %}>
                         <label class="form-check-label" for="categoria">Gestão de Categorias</label>
                     </div>
                 </div>
                 <br>
                 <div class="container">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="produtoLote" name="acessos[]" value="11">
+                        <input class="form-check-input" type="checkbox" id="produtoLote" name="acessos[]" value="11" {% if 11 in usuario.getAcessos() %}checked{% endif %}>
                         <label class="form-check-label" for="produtoLote">Gestão de Produtos Lote</label>
                     </div>
                 </div>
                 <br>
                 <div class="container">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="estoqueVer" name="acessos[]" value="12">
+                        <input class="form-check-input" type="checkbox" id="estoqueVer" name="acessos[]" value="12" {% if 12 in usuario.getAcessos() %}checked{% endif %}>
                         <label class="form-check-label" for="estoqueVer">Estoque</label>
                     </div>
                 </div>
                 <br>
                 <div class="container">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="comanda" name="acessos[]" value="13">
+                        <input class="form-check-input" type="checkbox" id="comanda" name="acessos[]" value="13" {% if 13 in usuario.getAcessos() %}checked{% endif %}>
                         <label class="form-check-label" for="comanda">Comanda</label>
                     </div>
                 </div>
                 <br>
                 <div class="container">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="pdv" name="acessos[]" value="14">
+                        <input class="form-check-input" type="checkbox" id="pdv" name="acessos[]" value="14" {% if 14 in usuario.getAcessos() %}checked{% endif %}>
                         <label class="form-check-label" for="estoque">PDV</label>
                     </div>
                 </div>
@@ -155,15 +153,15 @@
                     <label>Relatórios</label>
                     <div class="container">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="15">
+                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="15" {% if 15 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="relatorioVenda">Vendas</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="relatorioProduto" name="acessos[]" value="16">
+                            <input class="form-check-input" type="checkbox" id="relatorioProduto" name="acessos[]" value="16" {% if 16 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="relatorioProduto">Produtos</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="relatorioComanda" name="acessos[]" value="17">
+                            <input class="form-check-input" type="checkbox" id="relatorioComanda" name="acessos[]" value="17" {% if 17 in usuario.getAcessos() %}checked{% endif %}>
                             <label class="form-check-label" for="relatorioComanda">Comandas</label>
                         </div>
                     </div>
@@ -277,38 +275,30 @@
 
 <script type="text/javascript">
     function atualizarUsuario(idUsuario) {
-        serie=$('#frmUsuarioU').serialize();
-        if($('#status')[0].checked == true){
-        var status = 1;
-        }else{
-        var status = 0;
+        $('#frmUsuarioU')[0].reportValidity();
+        if(!$('#frmUsuarioU')[0].checkValidity()){
+            console.log('entrou if');
+            return false;
         }
-        dados={
-            idUsuario: $('#idUsuario').val(),
-            nome: $('#nome').val(),
-            sobrenome: $('#sobrenome').val(),
-            email: $('#email').val(),
-            cargo: $('#cargo').val(),
-            status: status
-        };
-        console.log('dados', dados);
-        console.log('serie', serie);
-        return false;
+        dados=$('#frmUsuarioU').serialize();
+        
         $.ajax({
               type:"POST",
               data:dados,
               url:"atz-usuario",
               success:function(r){
+                  console.log(r);
                   var resp = JSON.parse(r);
                   if(resp){
-                      $('#tabela').load("tab-usuario");
-                      alertify.success("Editado com sucesso");
+                        alertify.success("Editado com sucesso");
+                        window.location.href="tab-usuario";
                   }else{
                       alertify.error("Não foi possível editar");
                   }
-              }, error:function(e){
-                  console.log(e);
               }
+            //   , error:function(e){
+            //       console.log(e);
+            //   }
         });
     };
 </script>
