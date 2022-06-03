@@ -69,4 +69,18 @@ class RelatorioController
         // }
         
     }
+
+    public function colaboradoresVendas()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $datas=array(
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => $_POST['dtFinal']
+            );
+            $respVendasPeriodo = $obRelatorioDAO->vendasPeriodoColaboradores($datas);
+            View::jsonResponse(['maisVendidos'=>$respVendasPeriodo]);
+        }
+        View::renderTemplate('/relatorios/vendas-coladoradores.html'); 
+    }
 }

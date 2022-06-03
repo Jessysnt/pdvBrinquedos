@@ -109,6 +109,7 @@ $router->add('mais-vendidos-produto', ['controller' => 'RelatorioController', 'a
 $router->add('comanda-status', ['controller' => 'RelatorioController', 'action' => 'statusComandas']);
 $router->add('pesquisa-comanda', ['controller' => 'RelatorioController', 'action' => 'pesquisaComandas']);
 $router->add('fechar-comanda', ['controller' => 'RelatorioController', 'action' => 'fecharComanda']);
+$router->add('colaboradores-vendas', ['controller' => 'RelatorioController', 'action' => 'colaboradoresVendas']);
 
 //Rotas de lançamentos
 $router->add('lancamento', ['controller' => 'LancamentosController', 'action' => 'formulario']);

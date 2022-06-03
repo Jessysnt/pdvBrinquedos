@@ -38,7 +38,7 @@
                 <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
             </div>
             <div class="col-sm-3">
-                <span class="btn btn-primary btn-block" onclick="enviar('{{cliente.id}}')">Enviar</span>
+                <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
             </div>
             <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
@@ -46,13 +46,13 @@
     <br>
     <br>
     <div class="row">
-        <table id="tabelaProdutosTop" class="table table-bordered table-hover table-condensed">
+        <table id="tabelaVendedores" class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr>
                   <th scope="col"></th>
                   <th scope="col">Nome</th>
-                  <th scope="col">Quantidade Vendida</th>
-                  <th scope="col">Total Vendas</th>
+                  <th scope="col">Quantidade Vendidas</th>
+                  <th scope="col">Ticket Medio</th>
                   <th scope="col">Total Liquido</th>
                 </tr>
             </thead>
@@ -81,7 +81,7 @@
             $.ajax({
                 type:"POST",
                 data: dados,
-                url:"mais-vendidos",
+                url:"",
                 success:function(r){
                     // console.log('r', r);
                     var resp = jQuery.parseJSON(r);

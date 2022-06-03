@@ -59,5 +59,10 @@ class RelatorioDAO extends Conexao
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function vendasPeriodoColaboradores()
+    {
+        # code...
+    }
     
 }
