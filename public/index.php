@@ -105,7 +105,7 @@ $router->add('pesquisa-mes', ['controller' => 'DashboardController', 'action' =>
 $router->add('entrada-saida', ['controller' => 'DashboardController', 'action' => 'dadosEntradaSaida']);
 
 //Rotas de Relatorios
-$router->add('mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
+$router->add('mais-vendidos-produto', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
 $router->add('comanda-status', ['controller' => 'RelatorioController', 'action' => 'statusComandas']);
 $router->add('pesquisa-comanda', ['controller' => 'RelatorioController', 'action' => 'pesquisaComandas']);
 $router->add('fechar-comanda', ['controller' => 'RelatorioController', 'action' => 'fecharComanda']);
