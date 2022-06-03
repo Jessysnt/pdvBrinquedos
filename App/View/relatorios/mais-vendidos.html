@@ -81,7 +81,7 @@
             $.ajax({
                 type:"POST",
                 data: dados,
-                url:"mais-vendidos",
+                url:"mais-vendidos-produto",
                 success:function(r){
                     // console.log('r', r);
                     var resp = jQuery.parseJSON(r);
@@ -95,7 +95,7 @@
                         });
                     }else{
                         // $('#totalVendas').val('');
-                        // $('#totalLiquido').val('');
+                        $('#tabelaProdutosTop').hide();
                         alertify.error("Nao ha vendas nesse periodo");
                     }
                 }

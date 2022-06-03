@@ -9,6 +9,8 @@ class RelatorioDAO extends Conexao
 {
     public function maisVendidos($datas)
     {
+        $datas['dtInicial'] = $datas['dtInicial'].' 00:00:00';
+        $datas['dtFinal'] = $datas['dtFinal'].' 23:59:59';
         $stmt = static::getConexao()->prepare("SELECT p.nome, COUNT(cf.id) as totalVendas, SUM(lf.quantidade) as quantidadeVendida, SUM(lf.quantidade * lf.valor_unitario - (CASE WHEN lf.desconto IS NULL THEN 0 ELSE lf.desconto END)) as totalLiquido
         FROM comandafatura as cf
         INNER JOIN linhafatura as lf ON cf.id = lf.id_comanda_fatura
