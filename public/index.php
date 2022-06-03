@@ -74,6 +74,7 @@ $router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action'
 $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
 $router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
 $router->add('pesquisar-prod-est-codigo', ['controller' => 'ComandaController', 'action' => 'pesquisarProEstCod']);
+$router->add('pesquisar-select', ['controller' => 'ComandaController', 'action' => 'pesquisarIdProdEst']);
 $router->add('gravar-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
 $router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'numeroAberto']);
 $router->add('apaga-prods-comanda', ['controller' => 'ComandaController', 'action' => 'apagarProdutoComanda']);

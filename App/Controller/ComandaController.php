@@ -16,10 +16,10 @@ class ComandaController
         View::renderTemplate('/comandas/comanda.html');
     }
 
-    public function pesquisarProd()
+    public function pesquisarIdProdEst()
     {   
         $obProdutoDAO = new ProdutoDAO();
-        $prod = $obProdutoDAO->pesquisarProdutos($_GET['term']);
+        $prod = $obProdutoDAO->pesquisarProdutoEstoque($_GET['term']);
         View::jsonResponse(['results'=>$prod]);
     }
 

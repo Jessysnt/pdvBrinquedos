@@ -129,43 +129,15 @@ class ProdutoDAO extends Conexao
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // public function deletarProduto($idproduto){
-    //     $c= new conectar();
-    //     $conexao=$c->conexao();
-
-    //     $idimagem=self::obterIdImg($idproduto);
-
-    //     $sql="DELETE from produtos 
-    //             where id_produto='$idproduto'";
-    //     $result=mysqli_query($conexao,$sql);
-
-    //     if($result){
-    //         $url=self::obterUrlImagem($idimagem);
-
-    //         $sql="DELETE from imagens 
-    //                 where id_imagem='$idimagem'";
-    //         $result=mysqli_query($conexao,$sql);
-    //             if($result){
-    //                 if(unlink($url)){
-    //                     return 1;
-    //                 }
-    //             }
-    //     }
-    // }
-
-    // public function obterIdImg($idProduto){
-    //     $stmt=static::getConexao()->prepare("SELECT id_imagem FROM produtos WHERE id_produto='$idProduto'");
-    //     $result=mysqli_query($conexao,$sql);
-
-    //     return mysqli_fetch_row($result)[0];
-    // }
-
-    // public function obterUrlImagem($idImg){
-    //     $stmt=static::getConexao()->prepare("SELECT url FROM imagens WHERE id_imagem='$idImg'");
-
-    //     $result=mysqli_query($conexao,$sql);
-
-    //     return mysqli_fetch_row($result)[0];
-    // }
+    /**
+     * Pesquisa produto para trazer na comanda 
+     */
+    public function pesquisarProdutoEstoque($nomeparcial)
+    {
+        $stmt = static::getConexao()->prepare("SELECT pro.id, pro.nome AS 'text' FROM produto AS pro INNER JOIN estoque AS es ON pro.id = es.id_produto WHERE nome LIKE :nome");
+        $stmt->bindValue(':nome', '%'.$nomeparcial.'%');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
