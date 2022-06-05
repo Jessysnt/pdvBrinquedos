@@ -79,6 +79,12 @@
                     },
                     yAxis: {
                         min: 0,
+                        tickInterval: 500,
+                        labels: {
+                        formatter: function() {
+                        return this.value + ',00';
+                        }
+                    },
                         title: {
                             text: 'R$'
                         }

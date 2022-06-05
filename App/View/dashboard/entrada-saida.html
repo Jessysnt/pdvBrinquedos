@@ -6,22 +6,6 @@
     <div class="responsive">
         <div class="row">
             <div class="col-sm-2">
-                <select class="form-control input-sm" id="mesS" name="mesS">
-                    <option value="01">Janeiro</option>
-                    <option value="02">Fevereiro</option>
-                    <option value="03">Março</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Maio</option>
-                    <option value="06">Junho</option>
-                    <option value="07">Julho</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Setembro</option>
-                    <option value="10">Outubro</option>
-                    <option value="11">Novembro</option>
-                    <option value="12">Dezembro</option> 
-                </select>
-            </div>
-            <div class="col-sm-2">
                 <select class="form-control input-sm" id="anoS" name="anoS">
                     {% if anos|length == 0 %}
                         <option value="{{'now'|date('Y')}}">{{'now'|date('Y')}}</option>
@@ -51,16 +35,15 @@
 
 <script type="text/javascript">
     var dataHoje = new Date();
-    var i = dataHoje.getMonth();
-    $('#mesS').val('0'+(dataHoje.getMonth()+1)).trigger('change');
     $('#anoS').val(dataHoje.getFullYear()).trigger('change');
        
     function carregaEntradaSaida(dados) {
         $.ajax({
             type:"POST",
             data: dados,
-            url:"pesquisa-mes",
+            url:"pesquisa-ano-entrada-saida",
             success:function(r){
+                console.log(r);
                 var resp = JSON.parse(r);
                 var dias = resp.label;
 
@@ -72,7 +55,7 @@
                         text: $('#anoS').val()
                     },
                     subtitle: {
-                        text: 'Acompanhamento diário das vendas do mês'
+                        text: 'Acompanhamento das vendas do ano'
                     },
                     xAxis: {
                         categories: resp.label.map(date => {
@@ -135,23 +118,16 @@
     
     document.addEventListener('DOMContentLoaded', function () {
         dados={
-            dtInicial:$('#anoS').val()+'-'+$('#mesS').val()+'-'+'01'
+            dtInicial:$('#anoS').val()
         };
         carregaEntradaSaida(dados);
     });
 </script>
 
 <script type="text/javascript">
-    $('#mesS').change(function(){
-        dados={
-            dtInicial:$('#ano').val()+'-'+$('#mesS').val()+'-'+'01'
-        };
-        carrega(dados);
-    });
-
     $('#anoS').change(function(){
         dados={
-            dtInicial:$('#anoS').val()+'-'+$('#mesS').val()+'-'+'01'
+            dtInicial:$('#anoS').val()
         };
         carregaEntradaSaida(dados);  
     });
