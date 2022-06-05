@@ -56,7 +56,7 @@
                 <div class="card text-white bg-secondary col-sm-3" >
                     <div class="card-body">
                         <h5 class="card-title">Total liquido</h5>
-                        <p class="card-text" >{{usuario.totalLiquido }}</p>
+                        <p class="card-text" >{{usuario.totalLiquido | format_currency('BRL') }}</p>
                     </div>
                 </div>
             </div>
@@ -136,9 +136,10 @@
                         });
                         
                     }else{
-                        $('#totalVendas').val('');
-                        $('#totalLiquido').val('');
-                        alertify.error("Nao ha vendas nesse periodo");
+                        $('#totalVendas').val('R$ 0,0');
+                        $('#totalLiquido').val('R$ 0,0');
+                        $('#vendasPeriodo').hide();
+                        alertify.error("Não ha vendas nesse periodo");
                     }
                 }
             });
