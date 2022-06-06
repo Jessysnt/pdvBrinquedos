@@ -94,6 +94,10 @@ $router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action
 
 //Rotas de Fornecedor
 $router->add('fornecedores', ['controller' => 'FornecedorController', 'action' => 'fornecedor']);
+$router->add('tabela-fornecedor', ['controller' => 'FornecedorController', 'action' => 'tabelaFornecedor']);
+$router->add('obter-fornecedor', ['controller' => 'FornecedorController', 'action' => 'obterFornecedor']);
+$router->add('atualizar-fornecedor', ['controller' => 'FornecedorController', 'action' => 'atualizarFornecedor']);
+$router->add('apagar-fornecedor', ['controller' => 'FornecedorController', 'action' => 'apagarFornecedor']);
 
 //Rotas do Painel
 $router->add('painel', ['controller' => 'PainelController', 'action' => 'painel']);

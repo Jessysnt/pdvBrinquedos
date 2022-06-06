@@ -1,0 +1,252 @@
+{% block stylesheet %}
+<style>
+	td {text-align: center;}
+    th {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<!-- Modal -->
+<div class="modal fade" id="atualizarFornecedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Atualizar Fornecedor</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmFornecedorAtualizar">
+                    <input type="text" hidden="" id="idfornecedor" name="idfornecedor">
+                    <label for="razao_social">Razao Social</label>
+                    <input type="text" class="form-control" id="razao_social" name="razao_social">
+                    <label for="nome">Nome Fantasia</label>
+                    <input type="text" class="form-control" id="fantasia" name="fantasia">
+					<label for="cnpj">CNPJ</label>
+                    <input type="text" class="form-control" id="cnpj" name="cnpj">
+					<label for="email">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com">
+					<label for="telefone">Telefone</label>
+                    <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Só números">
+					<label for="rua">Rua</label>
+                    <input type="text" class="form-control" id="rua" placeholder="Rua ..." name="rua">
+					<label for="numero">Numero</label>
+                    <input type="text" class="form-control" id="numero" name="numero" placeholder="nº 0">
+					<label for="bairro">Bairro</label>
+                    <input type="text" class="form-control" name="bairro" id="bairro">
+					<label for="cep">CEP</label>
+                    <input type="text" class="form-control" id="cep" name="cep" placeholder="Só números">
+					<label for="cidade">Cidade</label>
+                    <input type="text" class="form-control" id="cidade" name="cidade">
+					<label for="estado">Estado</label>
+					<select id="estado" class="form-control" name="estado">
+						<option selected>Escolher...</option>
+						<option value="AC">Acre</option>
+						<option value="AL">Alagoas</option>
+						<option value="AP">Amapá</option>
+						<option value="AM">Amazonas</option>
+						<option value="BA">Bahia</option>
+						<option value="CE">Ceará</option>
+						<option value="DF">Distrito Federal</option>
+						<option value="ES">Espírito Santo</option>
+						<option value="GO">Goiás</option>
+						<option value="MA">Maranhão</option>
+						<option value="MT">Mato Grosso</option>
+						<option value="MS">Mato Grosso do Sul</option>
+						<option value="MG">Minas Gerais</option>
+						<option value="PA">Pará</option>
+						<option value="PB">Paraíba</option>
+						<option value="PR">Paraná</option>
+						<option value="PE">Pernambuco</option>
+						<option value="PI">Piauí</option>
+						<option value="RJ">Rio de Janeiro</option>
+						<option value="RN">Rio Grande do Norte</option>
+						<option value="RS">Rio Grande do Sul</option>
+						<option value="RO">Rondônia</option>
+						<option value="RR">Roraima</option>
+						<option value="SC">Santa Catarina</option>
+						<option value="SP">São Paulo</option>
+						<option value="SE">Sergipe</option>
+						<option value="TO">Tocantins</option>
+					</select>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAtualizaFornecedor" class="btn btn-warning" data-dismiss="modal">Salvar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Tabela-->
+<div class="table-responsive">
+</br>
+	<caption><label>Fornecedores</label></caption> 
+		</br>
+
+	<table class="table table-hover table-condensed table-bordered"  id="lista">
+
+	 	<div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome Fantasia"/></div></br>
+	 	</br>
+
+		<thead>	
+		 	<tr>
+		 		<th>Razao Social</th>
+		 		<th>Nome Fantasia</th>
+				<th>CNPJ</th>
+		 		<th>E-mail</th>
+		 		<th>Telefone</th>
+				<th>Endereço</th>
+		 		<th>Cidade</th>
+
+		 		<th>Editar</th>
+		 		<th>Excluir</th>
+		 	</tr>
+			 
+ 		</thead>
+
+ 		<tbody>	
+			{% for fornecedor in fornecedores %}
+		 	<tr>
+				<td>{{fornecedor.razao_social}}</td>
+				<td>{{fornecedor.nome}}</td>
+				<td>{{fornecedor.cnpj}}</td>
+				<td>{{fornecedor.email}}</td>
+				<td>{{fornecedor.telefone}}</td>
+				<td>{{fornecedor.getEndereco()}}</td>
+				<td>{{fornecedor.getCidadeEstado()}}</td>
+		 		<td>
+					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarFornecedor" onclick="editarFornecedor('{{fornecedor.id}}')">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</span>
+				</td>
+				<td>
+					<span class="btn btn-danger btn-xs" onclick="deletarFornecedor('{{fornecedor.id}}')">
+						<span class="glyphicon glyphicon-remove"></span>
+					</span>
+				</td>
+		 	</tr>
+			{% endfor %} 
+	 	</tbody>
+	</table>
+	<div>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				{% if pagina > 1 %} 
+			  <li class="page-item">
+				<a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina-1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Previous">
+				  <span aria-hidden="true">&laquo;</span>
+				  <span class="sr-only">Previous</span>
+				</a>
+			  </li>
+			  {% endif %}
+	
+			  {% for i in 1..totalpaginas %}
+			  <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
+			  {% endfor %}
+	
+			  {% if totalpaginas > pagina %}
+			  <li class="page-item">
+				<a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina+1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Next">
+				  <span aria-hidden="true">&raquo;</span>
+				  <span class="sr-only">Next</span>
+				</a>
+			  </li>
+			  {% endif %}
+			</ul>
+		</nav>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	$('.pagination li a').click(function(event){
+        event.preventDefault();
+        $('#tabelaFornecedorLoad').load(event.currentTarget.href);
+        return false;
+    });
+
+    $('#filtro-nome').keyup(function(e) {
+        if(e.which == 13) {
+            var nomeFiltro = $(this).val().toLowerCase();
+            // $(location).attr('href', '{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+            $('#tabelaFornecedorLoad').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
+        }
+    });
+</script>
+
+<script type="text/javascript">
+	$("#telefone").mask("(00)00000-0000");
+    $("#cep").mask("00000-000");
+
+    function editarFornecedor(idfornecedor){
+        $.ajax({
+            type:"POST",
+            data:"idfornecedor=" + idfornecedor,
+            url:"obter-fornecedor",
+            success:function(r){
+                var resp = JSON.parse(r);
+                $('#idfornecedor').val(resp['id']);
+                $('#razao_social').val(resp['razao_social']);
+                $('#fantasia').val(resp['fantasia']);
+                $('#email').val(resp['email']);
+                $('#telefone').val(resp['telefone']);
+                $('#rua').val(resp['rua']);
+                $('#cnpj').val(resp['cnpj']);
+                $('#numero').val(resp['numero']);
+                $('#bairro').val(resp['bairro']);
+                $('#cep').val(resp['cep']);
+                $('#cidade').val(resp['cidade']);
+                $('#estado').val(resp['estado']);
+            }
+        });
+    }
+
+
+    function deletarFornecedor(id){
+        alertify.confirm('Deseja excluir esta fornecedor?', function(){
+            $.ajax({
+                type:"POST",
+                data:"idfornecedor=" + id,
+                url:"apagar-fornecedor",
+                success:function(r){
+                    if(r==1){
+                        $('#tabelaFornecedorLoad').load("tabela-fornecedor");
+                        alertify.success("Excluido com sucesso!!");
+                    }else{
+                        alertify.error("Não se pode eliminar");
+                    }
+                }
+            });
+        }, function(){
+            alertify.error('Cancelado !')
+        });
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btnAtualizaFornecedor').click(function(){
+            dados=$('#frmFornecedorAtualizar').serialize();
+            $.ajax({
+                type:"POST",
+                data:dados,
+                url:"atualizar-fornecedor",
+                success:function(r){
+                    if(r==1){
+                        $('#tabelaFornecedorLoad').load("tabela-fornecedor");
+                        alertify.success("Atualizado com Sucesso :)");
+                    }else{
+                        alertify.error("Não foi possível atualizar :(");
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
