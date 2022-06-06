@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 17-Maio-2022 às 03:52
+-- Tempo de geração: 06-Jun-2022 às 04:39
 -- Versão do servidor: 10.4.22-MariaDB
 -- versão do PHP: 7.4.27
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `lojab`
 --
+CREATE DATABASE IF NOT EXISTS `lojab` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `lojab`;
 
 -- --------------------------------------------------------
 
@@ -71,6 +73,7 @@ CREATE TABLE `comandafatura` (
   `valor_total2` decimal(10,2) DEFAULT NULL,
   `vzs_cartao` int(11) DEFAULT NULL,
   `bandeira_cartao` varchar(100) DEFAULT NULL,
+  `desconto` decimal(10,2) DEFAULT NULL,
   `data_registro` datetime DEFAULT NULL,
   `data_finalizacao` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -91,19 +94,24 @@ CREATE TABLE `estoque` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `fornecedores`
+-- Estrutura da tabela `fornecedor`
 --
 
-CREATE TABLE `fornecedores` (
-  `id_fornecedor` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `nome` varchar(100) NOT NULL,
-  `fantasia` varchar(100) NOT NULL,
-  `endereco` varchar(150) NOT NULL,
+CREATE TABLE `fornecedor` (
+  `id` int(11) NOT NULL,
+  `razao_social` varchar(200) NOT NULL,
+  `fantasia` varchar(200) NOT NULL,
+  `cnpj` varchar(18) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `telefone` varchar(100) NOT NULL,
-  `cnpj` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `telefone` varchar(14) NOT NULL,
+  `rua` varchar(200) NOT NULL,
+  `numero` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `bairro` varchar(100) NOT NULL,
+  `cidade` varchar(150) NOT NULL,
+  `cep` varchar(9) NOT NULL,
+  `estado` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `id_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -121,6 +129,19 @@ CREATE TABLE `imagem` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `lancamento`
+--
+
+CREATE TABLE `lancamento` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(150) NOT NULL,
+  `data` date NOT NULL,
+  `valor` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `linhafatura`
 --
 
@@ -131,19 +152,6 @@ CREATE TABLE `linhafatura` (
   `quantidade` int(11) DEFAULT NULL,
   `valor_unitario` decimal(10,2) DEFAULT NULL,
   `desconto` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `pagamentos`
---
-
-CREATE TABLE `pagamentos` (
-  `id_pagamento` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `nome_pagamento` varchar(100) NOT NULL,
-  `dataCaptura` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -184,33 +192,20 @@ CREATE TABLE `produtovenda` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `lancamento`
---
-
-CREATE TABLE `lancamento` (
-  `id` int(11) NOT NULL,
-  `descricao` varchar(150) NOT NULL,
-  `data` date NOT NULL,
-  `valor` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `usuario`
 --
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
-  `nome` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `sobrenome` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `cpf` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `senha` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `cargo` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `acesso` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `registro` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` tinyint(4) NOT NULL DEFAULT 1
+  `nome` varchar(150) NOT NULL,
+  `sobrenome` varchar(150) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `senha` varchar(200) NOT NULL,
+  `cargo` varchar(150) NOT NULL,
+  `acesso` varchar(100) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `registro` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -243,15 +238,21 @@ ALTER TABLE `estoque`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `fornecedores`
+-- Índices para tabela `fornecedor`
 --
-ALTER TABLE `fornecedores`
-  ADD PRIMARY KEY (`id_fornecedor`);
+ALTER TABLE `fornecedor`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `imagem`
 --
 ALTER TABLE `imagem`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `lancamento`
+--
+ALTER TABLE `lancamento`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -263,12 +264,6 @@ ALTER TABLE `linhafatura`
   ADD KEY `fk_linhafatura_produto_idx` (`id_produto`);
 
 --
--- Índices para tabela `pagamentos`
---
-ALTER TABLE `pagamentos`
-  ADD PRIMARY KEY (`id_pagamento`);
-
---
 -- Índices para tabela `produto`
 --
 ALTER TABLE `produto`
@@ -278,12 +273,6 @@ ALTER TABLE `produto`
 -- Índices para tabela `produtovenda`
 --
 ALTER TABLE `produtovenda`
-  ADD PRIMARY KEY (`id`);
-
---
--- Índices para tabela `lancamento`
---
-ALTER TABLE `lancamento`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -321,10 +310,10 @@ ALTER TABLE `estoque`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `fornecedores`
+-- AUTO_INCREMENT de tabela `fornecedor`
 --
-ALTER TABLE `fornecedores`
-  MODIFY `id_fornecedor` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `fornecedor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `imagem`
@@ -333,16 +322,16 @@ ALTER TABLE `imagem`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de tabela `lancamento`
+--
+ALTER TABLE `lancamento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de tabela `linhafatura`
 --
 ALTER TABLE `linhafatura`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `pagamentos`
---
-ALTER TABLE `pagamentos`
-  MODIFY `id_pagamento` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
@@ -354,12 +343,6 @@ ALTER TABLE `produto`
 -- AUTO_INCREMENT de tabela `produtovenda`
 --
 ALTER TABLE `produtovenda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `lancamento`
---
-ALTER TABLE `lancamento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
