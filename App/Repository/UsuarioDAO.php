@@ -129,7 +129,7 @@ class UsuarioDAO extends Conexao
     public function verificaPermissaoDesconto($dados)
     {
         $senha = sha1($dados['senha']);
-        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE cpf=:cpf AND senha=:senha");
+        $stmt = static::getConexao()->prepare("SELECT id, cargo FROM usuario WHERE cpf=:cpf AND senha=:senha AND cargo in ('Administrador', 'Gerente', 'Supervisor')");
         $stmt->bindParam(':cpf', $dados['cpf'], PDO::PARAM_STR);
         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
         // return $stmt->fetchAll(PDO::FETCH_ASSOC);
