@@ -25,7 +25,7 @@
 					<div class="col-sm-5">
 						<div class="form-group">
 							<label>Digite o CPF</label>
-							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
+							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" >
 								<option value="" readonly="true">Só números</option>
 								<!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
 							</select>
@@ -185,6 +185,28 @@
 		$('#btnLimparComanda').show();
 		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
+
+	function desabilitarCampos() {
+		$("#clienteCpf").prop("disabled", true);
+		$("#nomeClienteComanda").prop("disabled", true);
+		$("#codigo").prop("disabled", true);
+		$("#descricaoV").prop("disabled", true);
+		$("#produtoVenda").prop("disabled", true);
+		$("#quantidadeV").prop("disabled", true);
+		$("#precoV").prop("disabled", true);
+		$("#quantV").prop("disabled", true);
+		$("#anonimo").prop("disabled", true);
+		$("#vzsCartaoUm").hide();
+		$("#vzsCartaoDois").hide();
+		$("#pagamentoDois").hide();
+		$("#pgDois").hide();
+		$("#valorUm").prop("disabled", true);
+		$("#pgUm").prop("disabled", true);
+		$("#sub").hide();
+		$('#gravarComanda').hide();
+		$('#btAddTemp').hide();
+		$('#btnLimparComanda').hide();
+	}
 
 	/**
 	* JSON para enviar a comanda
@@ -430,8 +452,8 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarComanda').click(function() {
-		if(!$('#gravarComanda')[0].checkValidity()){
-			console.log('entrou if');
+		if(!$('#frmComanda')[0].checkValidity()){
+			alertify.error('Preencha a comanda.')
 			return false;
 		}
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
@@ -457,12 +479,15 @@
 				data: dados,
 				url:"gravar-comanda",
 				success:function(r){
-					console.log('respostaGravou1',r);
-					if(r){	
+					
+					var resp = JSON.parse(r);
+					console.log('respostaGravou1',resp);
+					if(resp){	
 						$('#codigo').val('');
 						$('#clienteCpf').val(null).trigger('change');
 						$('#nomeClienteComanda').val('');
 						apagarForm();
+						desabilitarCampos();
 						alertify.success("Comanda criada com sucesso!!");
 					}else{
 						alertify.error("Falha ao Adicionar");
