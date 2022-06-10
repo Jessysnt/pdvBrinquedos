@@ -37,7 +37,7 @@ class ProdutoVendaDAO extends Conexao
 
     public function atualizarProdutoV($dados)
     {
-        $stmt=static::getConexao()->prepare("UPDATE produto SET id_produto=:idProduto, lote=:lote, quantidade=:quantidade, preco_comp=:precoCompU, preco_ven=:precoVenU, editado=:editado WHERE id=:id");
+        $stmt=static::getConexao()->prepare("UPDATE produto SET id_produto=:idProduto, lote=:lote, quantidade=:quantidade, preco_comp=:precoCompU, preco_ven=:precoVenU WHERE id=:id");
         $stmt->bindParam(':id', $dados['idprodvU'], PDO::PARAM_INT);
         $stmt->bindParam(':idProduto', $dados['idProdutoU'], PDO::PARAM_INT);
         $stmt->bindParam(':lote', $dados['loteU'], PDO::PARAM_STR);
