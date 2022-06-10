@@ -110,4 +110,11 @@ class ProdutoController
         }
     }
 
+    public function pesquisarProd()
+    {
+        $obProdutoDAO = new ProdutoDAO();
+        $prod = $obProdutoDAO->pesquisarProdutos($_GET['term']);
+        View::jsonResponse(['results'=>$prod]);
+    }
+
 }

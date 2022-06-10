@@ -27,7 +27,7 @@ class ProdutoVendaController
             $idusuario=$_SESSION['usuario']->getId();
             $dadosP=array(
                 'idUsuario'=>$idusuario,
-                'idProduto'=>$_POST['produtoSelect'],
+                'idProduto'=>$_POST['idProduto'],
                 'lote'=>$_POST['lote'],
                 'quantotal'=>$_POST['quantidade'],
                 'precoComp'=>$_POST['comp'],
@@ -36,7 +36,7 @@ class ProdutoVendaController
             $resp=$obProdVendaDAO->adicionarProdVenda($dadosP);
             
             if($resp){
-                $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['produtoSelect']);
+                $obEstoque = $obEstoqueDAO->retornaProdEst($_POST['idProduto']);
                 if($obEstoque){
                     $obEstoque->acrescentaQuantidade($_POST['quantidade']);
                     $dados=array(
@@ -48,7 +48,7 @@ class ProdutoVendaController
                     View::jsonResponse(['resp'=>true]);
                 }else{
                     $dados=array(
-                        'idProduto'=>$_POST['produtoSelect'],
+                        'idProduto'=>$_POST['idProduto'],
                         'quantotal'=>$_POST['quantidade'],
                         'precoVenda'=>$_POST['ven']
                     );
