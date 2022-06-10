@@ -6,24 +6,23 @@
 {% endblock %}
 
 {% block body %}
-
-<div class="container">
-    <h3>Abrir Comanda</h3>
-
-    <section class="direita">
-		<div class="row">
+<div class="container" style="margin-top: -45px;">
+	<h3 style="color: green;">Abrir Comanda</h3>
+    
+	<div class="row">
+		<div class="col-sm-6">
 			<form method="post" id="frmComanda">
 				<div class="row" id="grupoNumero">
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label for="numeroComanda">Número Comanda</label>
-							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
+							<input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####" required>
 							<input type="submit" id="sub">
 						</div>
 					</div>
 				</div>
 				<div class="row" id="grupoCpf">
-					<div class="col-sm-4">
+					<div class="col-sm-5">
 						<div class="form-group">
 							<label>Digite o CPF</label>
 							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
@@ -46,36 +45,54 @@
 				<br>
 
 				<div class="row">
-					<div class="col-sm-6">
-						<div class="form-group">
+                    <div class="col-sm-5">
+                        <div class="form-group">
 							<label>Código</label>
 							<input type="textbox" class="form-control input-sm" id="codigo" name="codigo" data-nome="" data-id="">
 						</div>
-						<div class="form-group">
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
 							<label>Produto</label>
 							<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
 								<option value="">Selecionar</option>
 								<!--<option value="{{produto.id}}">{{produto.nome}}</option>--> 
 							</select>
 						</div>
-						<div class="form-group">
-							<label>Descrição</label>
-							<textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
-						</div>
-						<div class="form-group">
+                    </div>
+                </div>
+
+				<div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
 							<label>Quantidade Estoque</label>
 							<input readonly="" type="text" class="form-control input-sm" id="quantidadeV" name="quantidadeV">
 						</div>
-						<div class="form-group">
+                    </div>
+                </div>
+
+				<div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
 							<label>Preço</label>
 							<input readonly="" type="text" class="form-control input-sm" id="precoV" name="precoV">
-						</div>	
-						<div class="form-group">
+						</div>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <div class="form-group">
 							<label>Quantidade Vendida</label>
 							<input type="number" class="form-control input-sm" id="quantV" name="quantV">
 						</div>
-					</div>
-				</div>
+                    </div>
+                </div>
+
 				<div class="row">
 					<div class="col-sm-3">
 						<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Adicionar</span>
@@ -86,42 +103,38 @@
 				</div>
 			</form>	
 		</div>
-	</section>
-    
-
-	<section class="esquerda">
-		<div class="row">
-			<table id="tabelaComanda" class="table table-bordered table-hover table-condensed" style="text-align: center;">
-				<thead>
-					<tr>
-					  <th scope="col">Nome</th>
-					  <th scope="col">Descrição</th>
-					  <th scope="col">Quantidade</th>
-					  <th scope="col">Preço</th>
-					  <th scope="col">Subtotal</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="3"></td>
-						<th>Total</th>
-						<td id="valorTotal">R$ 0,00</td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-3">
-				<span class="btn btn-success" id="gravarComanda">Enviar</span>
+		<div class="col-sm-6">
+            <div class="row">
+				<table id="tabelaComanda" class="table table-bordered table-hover table-condensed" style="text-align: center;">
+					<thead>
+						<tr>
+						  <th scope="col">Nome</th>
+						  <th scope="col">Descrição</th>
+						  <th scope="col">Quantidade</th>
+						  <th scope="col">Preço</th>
+						  <th scope="col">Subtotal</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3"></td>
+							<th>Total</th>
+							<td id="valorTotal">R$ 0,00</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
-		</div>
-
-	</section>
-	
+			<br>
+			<div class="row">
+				<div class="col-sm-3">
+					<span class="btn btn-success" id="gravarComanda">Enviar</span>
+				</div>
+			</div>
+		</div>	
+	</div>
 </div>
 
 {% endblock %}
@@ -149,6 +162,9 @@
 		$("#valorUm").prop("disabled", true);
 		$("#pgUm").prop("disabled", true);
 		$("#sub").hide();
+		$('#gravarComanda').hide();
+		$('#btAddTemp').hide();
+		$('#btnLimparComanda').hide();
 	});
 
 	function habilitarCampos(){
@@ -164,6 +180,9 @@
 		$("#quantV").val(1);
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
+		$('#gravarComanda').show();
+		$('#btAddTemp').show();
+		$('#btnLimparComanda').show();
 		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
 
@@ -411,6 +430,10 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarComanda').click(function() {
+		if(!$('#gravarComanda')[0].checkValidity()){
+			console.log('entrou if');
+			return false;
+		}
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
 			var dados={
 				cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
