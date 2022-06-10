@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="row" id="grupoCpf">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
 						<div class="form-group">
 							<label>Digite o CPF</label>
 							<select class="form-control input-sm" id="clienteCpf" name="clienteCpf" required>
@@ -59,7 +59,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-5">
 						<div class="form-group">
 							<label>Nome </label>
 							<input readonly="" type="text" class="form-control input-sm" id="nomeClienteComanda" name="nomeClienteComanda">
@@ -74,13 +74,13 @@
                 <br>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <div class="form-group">
 							<label>Código</label>
 							<input type="textbox" class="form-control input-sm" id="codigo" name="codigo" data-nome="" data-id="">
 						</div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <div class="form-group">
 							<label>Produto</label>
 							<select class="form-control input-sm" id="produtoVenda" name="produtoVenda">
@@ -91,13 +91,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <div class="form-group">
                             <label>Descrição</label>
                             <textarea readonly="" id="descricaoV" name="descricaoV" class="form-control input-sm"></textarea>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <div class="form-group">
 							<label>Quantidade Estoque</label>
 							<input readonly="" type="text" class="form-control input-sm" id="quantidadeV" name="quantidadeV">
@@ -106,14 +106,14 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <div class="form-group">
 							<label>Preço</label>
 							<input readonly="" type="text" class="form-control input-sm" id="precoV" name="precoV">
 						</div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <div class="form-group">
 							<label>Quantidade Vendida</label>
 							<input type="number" class="form-control input-sm" id="quantV" name="quantV">
@@ -322,9 +322,8 @@
 </script>
 
 <script type="text/javascript">
-var valorUm = $('#valorUm').maskMoney('unmasked')[0];
+// var valorUm = $('#valorUm').maskMoney('unmasked')[0];
     $('#finalizarVenda').click(function () {
-        console.log(valorUm);
         if($('#valorUm').maskMoney('unmasked')[0]){
             $("#clienteCpf").prop("disabled", true);
             $("#nomeClienteComanda").prop("disabled", true);
@@ -508,6 +507,7 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 		});
 		total.html(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 		valorPagar(soma);
+		descontoVenda(soma);
 	}
 
 	/**
@@ -597,6 +597,8 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 		
 	function gravarComanda() {
 		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
+		var valorTotal = $('#valorTotal').maskMoney('unmasked')[0];
+		console.log('valorTotal', valorTotal);
 		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
 			if($('#pgUm').val() != ""){
 				if((vtDois > 0  && $('#pgDois').val()) || vtDois == 0 ){
@@ -622,7 +624,8 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 						apagarForm();
 					});
 					console.log('dados', dados);
-
+					console.log('parou ak');
+					return false;
 					$.ajax({
 						type:"POST",
 						data: dados,
@@ -862,6 +865,7 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 		comanda.linhas.forEach(linha => {
 			totalLinha += linha.quantV*linha.precoV;
 		});
+		
 		valorUm = $('#valorUm').maskMoney('unmasked')[0];
 		valorDois = $('#valorDois').maskMoney('unmasked')[0];
 		var somaCampos = valorUm + valorDois;
@@ -880,6 +884,13 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			voltarFormulario();
 		}
 	}
+
+	function descontoVenda(soma) {
+
+		var desconto = 0.0;
+		desconto = soma - (valorUm + valorDois);
+		console.log('desconto', soma);
+	}
 </script>
 
 <script type="text/javascript">
@@ -891,17 +902,18 @@ var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			return false;
 		}
 		dados=$('#permissaoSenha').serialize();
+		console.log('permissaoSenha', dados);
 		$.ajax({
 			type:"POST",
 			data:dados,
 			url:"permissao-desconto",
 			success:function(r){
-				console.log(r);
-				if(true){
+				var resp = JSON.parse(r);
+				if(resp){
 					$('#permissaoSenha')[0].reset();
 					gravarComanda();
 				}else{
-					alert(r);
+					$('#permissaoSenha')[0].reset();
 					alertify.error("Acesso Negado!!");
 				}
 			}
