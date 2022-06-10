@@ -70,7 +70,7 @@ $router->add('estoque', ['controller' => 'EstoqueController', 'action' => 'estoq
 
 //Rotas de Comandas
 $router->add('comandas', ['controller' => 'ComandaController', 'action' => 'telaInicial']);
-$router->add('pesquisar-produto', ['controller' => 'ComandaController', 'action' => 'pesquisarProd']);
+$router->add('pesquisar-produto', ['controller' => 'ProdutoController', 'action' => 'pesquisarProd']);
 $router->add('pesquisar-cliente', ['controller' => 'ComandaController', 'action' => 'pesquisarCli']);
 $router->add('pesquisar-prod-est', ['controller' => 'ComandaController', 'action' => 'pesquisarProEst']);
 $router->add('pesquisar-prod-est-codigo', ['controller' => 'ComandaController', 'action' => 'pesquisarProEstCod']);

@@ -66,8 +66,8 @@
             <form method="post" id="frmProdutov" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="nome">Brinquedo</label>
-                    <select class="form-control input-sm" id="produtoSelect" name="produtoSelect" >
-                        <option value="A">Selecionar</option>
+                    <select class="form-control input-sm" id="produtoSelect" name="produtoSelect" required>
+                        <option value="">Selecionar</option>
                         <!-- {% for produto in produtos %}
                         <option value="{{produto.id}}">{{produto.nome}}</option>
                         {% endfor %} -->
@@ -79,20 +79,20 @@
                 </div> -->
                 <div class="form-group">
                     <label for="lote">Lote</label>
-                    <input type="text" class="form-control" id="lote" name="lote">
+                    <input type="text" class="form-control" id="lote" name="lote" required>
                 </div>
                 <div class="form-group">
                     <label for="quantidade">Quantidade un</label>
-                    <input type="number" class="form-control" id="quantidade" name="quantidade">
+                    <input type="number" class="form-control" id="quantidade" name="quantidade" required>
                 </div>
                 <div class="form-group">
                     <label for="comp">Preço comprado</label>
                     <!--<input type="text" class="form-control" id="comp" name="comp"> -->
-                    <input type="text" class="form-control" id="comp" name="comp" >
+                    <input type="text" class="form-control" id="comp" name="comp" required>
                 </div>
                 <div class="form-group">
                     <label for="ven">Preço vendido</label>
-                    <input type="text" class="form-control" id="ven" name="ven">
+                    <input type="text" class="form-control" id="ven" name="ven" required>
                 </div>
                 <span type="submit" class="btn btn-primary btn-block" id="btnAddProdutov">Adicionar</span>                
             </form>
@@ -163,20 +163,38 @@
         $('#tabelaProdvLoad').load("tab-prod-vend");
 
         $('#btnAddProdutov').click(function(){
-            vazios=validarFormVazio('frmProdutov');
-            if(vazios > 0){
-                alertify.alert("Preencha os Campos!!");
+            // vazios=validarFormVazio('frmProdutov');
+            // if(vazios > 0){
+            //     alertify.alert("Preencha os Campos!!");
+            //     return false;
+            // }
+            $('#frmProdutov')[0].reportValidity();
+            if(!$('#frmProdutov')[0].checkValidity()){
+                console.log('entrou if');
                 return false;
             }
+
+           if($('#quantidade').val() == 0){
+            alertify.error("Preencha quantidade valida!");
+                return false;
+           }
 
             var precoCompra = $('#comp').maskMoney('unmasked')[0];
 			var precoVenda = $('#ven').maskMoney('unmasked')[0];
             if(precoCompra > precoVenda){
-                alertify.error("Valor de venda menor que o valor da compra!!");
+                alertify.error("Valor de venda menor que o valor da compra!");
                 return false;
             }
-            dados=$('#frmProdutov').serialize();
-            var formData = new FormData(document.getElementById("frmProdutov"));
+
+            let dados={
+                idProduto: $('#produtoSelect').val(),
+                lote: $('#lote').val(),
+                quantidade: $('#quantidade').val(),
+                comp: $('#comp').maskMoney('unmasked')[0],
+                ven: $('#ven').maskMoney('unmasked')[0]
+            }
+            // dados=$('#frmProdutov').serialize();
+           
             $.ajax({
                 type: "POST",
                 data: dados,
