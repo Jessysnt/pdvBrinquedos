@@ -43,7 +43,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="numeroComanda" style="color: rgb(0, 19, 128);" >Número Comanda</label>
-                            <input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####">
+                            <input type="text" class="form-control input-sm" id="numeroComanda" name="numeroComanda" pattern="REINO[0-9]{4}" title="REINO####" data-id="">
                             <input type="submit" id="sub">
                         </div>
                     </div>
@@ -191,6 +191,9 @@
                         <div>
                             <input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
                         </div>
+						<div>
+							<input type="text" id="descontoValor">
+						</div>
                     </div>
                 </div>	
     
@@ -273,6 +276,7 @@
 		$("#sub").hide();
         $("#btAddTemp").hide();
 		$("#botoesComandaAtiva").hide();
+		$("#descontoValor").hide();
 	});
 
 	function habilitarCampos(){
@@ -426,6 +430,7 @@
 					if(r != 'false' && r != 'fechadafalse'){
 						var resp = JSON.parse(r);
                         comanda = resp;
+						$('#numeroComanda').attr('data-id', parseInt(comanda.id));
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
 						clienteComanda(comanda.id_cliente);
@@ -507,7 +512,6 @@
 		});
 		total.html(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 		valorPagar(soma);
-		descontoVenda(soma);
 	}
 
 	/**
@@ -610,6 +614,7 @@
 						pg_forma2: $('#pgDois').val(),
 						valor_total2: $('#valorDois').maskMoney('unmasked')[0],
 						vzs_cartao: $('#vzsCartao').val(),
+						desconto: (parseFloat($('#descontoValor').val())!=null?(parseFloat($('#descontoValor').val())):null),
 						linhas:[]
 					};
 					comanda.linhas.forEach(linha =>{
@@ -624,7 +629,19 @@
 						apagarForm();
 					});
 					console.log('dados', dados);
-					console.log('parou ak');
+					console.log('parou ak1');
+					
+					var idComanda = $('#numeroComanda').attr('data-id');
+					console.log('parou ak2', idComanda);			
+								alertify.confirm('Imprimir comprovante de compra? ', function(){
+									href=`comprovante-venda?venda=${idComanda}`;
+									var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
+									mywindow.print();
+									console.log('imprimir');
+								}, function(){ 
+									alertify.error('Cancelado !');
+								});
+							
 					return false;
 					$.ajax({
 						type:"POST",
@@ -635,13 +652,12 @@
 							var resp = JSON.parse(r);
 							// console.log('respostaGravou2',resp);
 							if(resp.resp == true){	
-								// console.log('resp',resp.resp);
 								$('#codigo').val('');
 								$('#clienteCpf').val(null).trigger('change');
 								$('#nomeClienteComanda').val('');
 								apagarForm();
 								alertify.confirm('Imprimir comprovante de compra? ', function(){
-									href="comprovante-venda";
+									href="comprovante-venda?id=";
 									var mywindow = window.open(href="comprovante-venda", 'PRINT', 'height=400,width=600');
 									mywindow.print();
 									console.log('imprimir');
@@ -842,7 +858,7 @@
 
 		$('#valorDois').change(function(){
 			valorDois = $('#valorDois').maskMoney('unmasked')[0];
-			valorUm = $('#valorUm').maskMoney('unmasked')[0];
+			// valorUm = $('#valorUm').maskMoney('unmasked')[0];
 			var valorVenda = valorUm + valorDois;
 			if(soma < valorVenda){
 				troco = valorVenda - soma;
@@ -855,20 +871,21 @@
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").hide();
+				descontoVenda(soma);
 				// $('#pgDois').val(null).trigger('change');
 			}
 		});
 	};
+	
 
 	function valorRestante() {
 		var totalLinha = 0.0;
 		comanda.linhas.forEach(linha => {
 			totalLinha += linha.quantV*linha.precoV;
 		});
-		
-		valorUm = $('#valorUm').maskMoney('unmasked')[0];
-		valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		var somaCampos = valorUm + valorDois;
+		let valorUm = $('#valorUm').maskMoney('unmasked')[0];
+		let valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		let somaCampos = valorUm + valorDois;
 		var dezPorcento = totalLinha - (totalLinha * 0.1);
 		if(dezPorcento > somaCampos){
 			alertify.confirm('Desconto maior que o permitido! ', function(){
@@ -886,10 +903,10 @@
 	}
 
 	function descontoVenda(soma) {
-
-		var desconto = 0.0;
-		desconto = soma - (valorUm + valorDois);
-		console.log('desconto', soma);
+		let valorUm = $('#valorUm').maskMoney('unmasked')[0];
+		let valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		var desconto = soma - (valorUm + valorDois);
+		$('#descontoValor').val(desconto.toLocaleString('BRL'));
 	}
 </script>
 
@@ -902,7 +919,6 @@
 			return false;
 		}
 		dados=$('#permissaoSenha').serialize();
-		console.log('permissaoSenha', dados);
 		$.ajax({
 			type:"POST",
 			data:dados,

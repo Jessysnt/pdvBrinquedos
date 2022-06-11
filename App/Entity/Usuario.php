@@ -169,36 +169,11 @@ class Usuario {
         return $this->nome.' '.$this->sobrenome;
     }
 
-    // public function getCargoNome(): ?string
-    // {
-    //     switch ($this->cargo) {
-    //         case '1':
-    //             return 'Administrador';
-    //             break;
-    //         case '2':
-    //             return 'Gerente';
-    //             break;
-    //         case '3':
-    //             return 'Caixa';
-    //             break;
-    //         case '4':
-    //             return 'Vendedor';
-    //             break;
-    //         default:
-    //             return 'Cargo não encontrado.';
-    //             break;
-    //     }
-    // }
-
-
     public function getAcessos()
     {
         $var = array_map('intval', explode(', ',$this->acesso));
         array_unshift($var, 0) ;
         return  $var;
     }
-
-
-
 
 }

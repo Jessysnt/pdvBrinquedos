@@ -9,6 +9,7 @@ use App\Repository\UsuarioDAO;
 use Core\View;
 use DateTimeZone;
 use Dompdf\Dompdf;
+use PDO;
 
 class PdvController
 {
@@ -155,8 +156,16 @@ class PdvController
 
     public function impressaoVenda()
     {
-        View::renderTemplate('/pdv/comprovante-venda.html'); 
-        
+        $obPdvDAO = new PdvDAO();
+        if($_GET['venda']){
+            $respDAO = $obPdvDAO->tabelaComprovanteVendaId(intval($_GET["venda"]));
+            $str = print_r($respDAO, true) ;
+            $result = explode(' ', $str, -1) ;
+            View::renderTemplate('/pdv/comprovante-venda.html', ['comprovante'=>$result]); 
+        }else{
+            $resp = $obPdvDAO->tabelaComprovanteVenda();
+            View::renderTemplate('/pdv/comprovante-venda.html', ['comprovante'=>false]); 
+        }
     }
 
 }
