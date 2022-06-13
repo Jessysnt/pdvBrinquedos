@@ -157,7 +157,7 @@
                         $('#totalGeral').hide();
                         $('#totalDatas').show();
                         $('#totalVendas').val(resp.dados['totalVendas']);
-                        $('#ticketMedio').val(resp.dados['ticketMedio'].toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                        $('#ticketMedio').val(parseFloat(resp.dados['ticketMedio']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
                         $('#totalLiquido').val(parseFloat(resp.dados['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
                         $('#vendasPeriodo').show();

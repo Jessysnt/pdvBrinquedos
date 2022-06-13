@@ -107,7 +107,7 @@ class UsuarioDAO extends Conexao
     {
         $usuario['dtInicial'] = $usuario['dtInicial'].' 00:00:00';
         $usuario['dtFinal'] = $usuario['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(v.total) as totalLiquido, SUM(v.total) / COUNT(DISTINCT v.id) as ticketMedio), SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END)/COUNT(DISTINCT id) AS ticketMedio FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_vendedor=:idVendedor");
+        $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END)/COUNT(DISTINCT id) AS ticketMedio FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_vendedor=:idVendedor");
         $stmt->bindParam(':idVendedor', $usuario['idUsuario'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $usuario['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $usuario['dtFinal'], PDO::PARAM_STR);
