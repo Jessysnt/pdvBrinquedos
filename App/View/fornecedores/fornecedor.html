@@ -6,6 +6,82 @@
 {% endblock %}
 
 {% block body %}
+
+<!-- Modal -->
+<div class="modal fade" id="atualizarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Atualizar Fornecedor</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmFornecedorAtualizar">
+                    <input type="text" hidden="" id="idfornecedorU" name="idfornecedorU" required>
+                    <label for="razao_socialU">Razao Social</label>
+                    <input type="text" class="form-control" id="razao_socialU" name="razao_socialU" required>
+                    <label for="fantasiaU">Nome Fantasia</label>
+                    <input type="text" class="form-control" id="fantasiaU" name="fantasiaU" required>
+					<label for="cnpjU">CNPJ</label>
+                    <input type="text" class="form-control" id="cnpjU" name="cnpjU" onblur="validarCNPJ(this)" required>
+					<label for="emailU">E-mail</label>
+                    <input type="email" class="form-control" id="emailU" name="emailU" placeholder="nome@exemplo.com" onblur="validateEmail(this)" required>
+					<label for="telefoneU">Telefone</label>
+                    <input type="text" class="form-control" id="telefoneU" name="telefoneU" placeholder="Só números" required>
+					<label for="ruaU">Rua</label>
+                    <input type="text" class="form-control" id="ruaU" placeholder="Rua ..." name="ruaU" required>
+					<label for="numeroU">Numero</label>
+                    <input type="text" class="form-control" id="numeroU" name="numeroU" placeholder="nº 0" required>
+					<label for="bairroU">Bairro</label>
+                    <input type="text" class="form-control" name="bairroU" id="bairroU" required>
+					<label for="cepU">CEP</label>
+                    <input type="text" class="form-control" id="cepU" name="cepU" placeholder="Só números" required>
+					<label for="cidadeU">Cidade</label>
+                    <input type="text" class="form-control" id="cidadeU" name="cidadeU" required>
+					<label for="estadoU">Estado</label>
+					<select id="estadoU" class="form-control" name="estadoU" required>
+						<option selected>Escolher...</option>
+						<option value="AC">Acre</option>
+						<option value="AL">Alagoas</option>
+						<option value="AP">Amapá</option>
+						<option value="AM">Amazonas</option>
+						<option value="BA">Bahia</option>
+						<option value="CE">Ceará</option>
+						<option value="DF">Distrito Federal</option>
+						<option value="ES">Espírito Santo</option>
+						<option value="GO">Goiás</option>
+						<option value="MA">Maranhão</option>
+						<option value="MT">Mato Grosso</option>
+						<option value="MS">Mato Grosso do Sul</option>
+						<option value="MG">Minas Gerais</option>
+						<option value="PA">Pará</option>
+						<option value="PB">Paraíba</option>
+						<option value="PR">Paraná</option>
+						<option value="PE">Pernambuco</option>
+						<option value="PI">Piauí</option>
+						<option value="RJ">Rio de Janeiro</option>
+						<option value="RN">Rio Grande do Norte</option>
+						<option value="RS">Rio Grande do Sul</option>
+						<option value="RO">Rondônia</option>
+						<option value="RR">Roraima</option>
+						<option value="SC">Santa Catarina</option>
+						<option value="SP">São Paulo</option>
+						<option value="SE">Sergipe</option>
+						<option value="TO">Tocantins</option>
+					</select>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAtualizaFornecedor" class="btn btn-warning" data-dismiss="modal">Salvar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Formulario-->
 <div class="container">
     <h3 style="color: rgb(17, 41, 77); margin-top: -35px;">Fornecedores de Briquedos</h3>
     <br>
@@ -14,53 +90,53 @@
             <form id="frmFornecedor">
                 <div class="form-group">
                     <label for="razao_social">Razao Social</label>
-                    <input type="text" class="form-control" id="razao_social" name="razao_social">
+                    <input type="text" class="form-control" id="razao_social" name="razao_social" required>
                 </div>
                 <div class="form-group">
                     <label for="fantasia">Nome Fantasia</label>
-                    <input type="text" class="form-control" id="fantasia" name="fantasia">
+                    <input type="text" class="form-control" id="fantasia" name="fantasia" required>
                 </div>
                 <div class="form-group">
                     <label for="cnpj">CNPJ</label>
-                    <input type="text" class="form-control" id="cnpj" name="cnpj">
+                    <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="Só números" onblur="validarCNPJ(this)" required>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" onblur="validateEmail(this)" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="telefone">Telefone</label>
-                        <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Só números">
+                        <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Só números" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="rua">Rua</label>
-                    <input type="text" class="form-control" id="rua" placeholder="Rua ..." name="rua">
+                    <input type="text" class="form-control" id="rua" placeholder="Rua ..." name="rua" required>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label for="numero">Numero</label>
-                        <input type="text" class="form-control" id="numero" name="numero" placeholder="nº 0">
+                        <input type="text" class="form-control" id="numero" name="numero" placeholder="nº 0" required>
                     </div>
                     <div class="form-group col-md-5">
                         <label for="bairro">Bairro</label>
-                        <input type="text" class="form-control" id="bairro" name="bairro">
+                        <input type="text" class="form-control" id="bairro" name="bairro" required>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="cep">CEP</label>
-                        <input type="text" class="form-control" id="cep" name="cep" placeholder="Só números">
+                        <input type="text" class="form-control" id="cep" name="cep" placeholder="Só números" required>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="cidade">Cidade</label>
-                        <input type="text" class="form-control" id="cidade" name="cidade">
+                        <input type="text" class="form-control" id="cidade" name="cidade" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="estado">Estado</label>
-                        <select id="estado" class="form-control" name="estado">
+                        <select id="estado" class="form-control" name="estado" required>
                             <option selected>Escolher...</option>
                             <option value="AC">Acre</option>
                             <option value="AL">Alagoas</option>
@@ -109,28 +185,133 @@
 <script type="text/javascript">
     $("#telefone").mask("(00)00000-0000");
     $("#cep").mask("00000-000");
+    $("#cnpj").mask("00.000.000/0000-00");
+    $("#telefoneU").mask("(00)00000-0000");
+    $("#cepU").mask("00000-000");
+
+    function validarCNPJ(el){
+        if( !_cnpj(el.value) ){
+            alertify.error("CNPJ inválido!");
+            // apaga o valor
+            el.value = "";
+        }
+    }
+
+    function validateEmail(email) {
+         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)){
+            return (true);
+          }
+        alertify.error("E-mail inválido!");
+        email.value = "";
+        return (false);
+    }
+
+
     $(document).ready(function(){
         $('#tabelaFornecedorLoad').load("tabela-fornecedor");
         $('#btnAdicionarFornecedor').click(function(){
-            vazios=validarFormVazio('frmFornecedor');
-            if(vazios > 0){
-                alertify.alert("Preencha os Campos!!");
+            $('#frmFornecedor')[0].reportValidity();
+            if(!$('#frmFornecedor')[0].checkValidity()){
+                console.log('entrou if');
                 return false;
             }
             dados=$('#frmFornecedor').serialize();
+            console.log(dados);
+            
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"fornecedor",
+                url:"adicionar-fornecedor",
                 success:function(r){
                     console.log(r);
-                    if(r){
+                    var resp = JSON.parse(r);
+                    if(resp){
                         //limpar formulário
                         $('#frmFornecedor')[0].reset();
                         $('#tabelaFornecedorLoad').load("tabela-fornecedor");
                         alertify.success("Fornecedor adicionada com sucesso!");
                     }else{
                         alertify.error("Não foi possível adicionar o fornecedor");
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    function editarFornecedor(idfornecedor){
+		// console.log(idfornecedor);
+        $.ajax({
+            type:"POST",
+            data:"idfornecedor=" + idfornecedor,
+            url:"obter-fornecedor",
+            success:function(r){
+                var resp = JSON.parse(r);
+				console.log(resp);
+                $('#idfornecedorU').val(resp['id']);
+                $('#razao_socialU').val(resp['razao_social']);
+                $('#fantasiaU').val(resp['fantasia']);
+                $('#emailU').val(resp['email']);
+                $('#telefoneU').val(resp['telefone']);
+                $('#ruaU').val(resp['rua']);
+                $('#cnpjU').val(resp['cnpj']);
+                $('#numeroU').val(resp['numero']);
+                $('#bairroU').val(resp['bairro']);
+                $('#cepU').val(resp['cep']);
+                $('#cidadeU').val(resp['cidade']);
+				$('#estadoU').val(resp['estado']).trigger('change')
+            }
+        });
+    }
+
+
+    function deletarFornecedor(id){
+        alertify.confirm('Deseja excluir esta fornecedor?', function(){
+            $.ajax({
+                type:"POST",
+                data:"idfornecedor=" + id,
+                url:"apagar-fornecedor",
+                success:function(r){
+					var resp = JSON.parse(r);
+                    if(resp){
+                        $('#tabelaFornecedorLoad').load("tabela-fornecedor");
+                        alertify.success("Excluido com sucesso!!");
+                    }else{
+                        alertify.error("Não se pode eliminar");
+                    }
+                }
+            });
+        }, function(){
+            alertify.error('Cancelado !')
+        });
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btnAtualizaFornecedor').click(function(){
+			$('#frmFornecedorAtualizar')[0].reportValidity();
+            if(!$('#frmFornecedorAtualizar')[0].checkValidity()){
+                console.log('entrou if');
+                return false;
+            }
+            dados=$('#frmFornecedorAtualizar').serialize();
+			console.log('dados', dados);
+            $.ajax({
+                type:"POST",
+                data:dados,
+                url:"atualizar-fornecedor",
+                success:function(r){
+					console.log(r);
+					var resp = JSON.parse(r);
+                    if(resp){
+                        $('#tabelaFornecedorLoad').load("tabela-fornecedor");
+                        alertify.success("Atualizado com Sucesso :)");
+                    }else{
+                        alertify.error("Não foi possível atualizar :(");
                     }
                 }
             });

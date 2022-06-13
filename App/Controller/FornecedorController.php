@@ -46,7 +46,7 @@ class FornecedorController
     {
         $obFornecedorDAO = new FornecedorDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $resp = $obFornecedorDAO->obterFornecedor($_POST);
+            $resp = $obFornecedorDAO->obterFornecedor(intval($_POST["idfornecedor"]));
             View::jsonResponse($resp);
         }
     }
@@ -55,7 +55,21 @@ class FornecedorController
     {
         $obFornecedorDAO = new FornecedorDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $resp = $obFornecedorDAO->atualizaFornecedor($_POST);
+            $fornecedor = array(
+                'id' => intval($_POST['idfornecedorU']),
+                'razao_social' => $_POST['razao_socialU'],
+                'fantasia' => $_POST['fantasiaU'],
+                'cnpj' => $_POST['cnpjU'],
+                'email' => $_POST['emailU'],
+                'telefone' => $_POST['telefoneU'],
+                'rua' => $_POST['ruaU'],
+                'numero' => $_POST['numeroU'],
+                'bairro' => $_POST['bairroU'],
+                'cep' => $_POST['cepU'],
+                'cidade' => $_POST['cidadeU'],
+                'estado' => $_POST['estadoU']
+            );
+            $resp = $obFornecedorDAO->atualizaFornecedor($fornecedor);
             View::jsonResponse($resp);
         }
     }
@@ -64,7 +78,7 @@ class FornecedorController
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obFornecedorDAO = new FornecedorDAO();
-            $resp = $obFornecedorDAO->apagarFornecedor($_POST["idfornecedor"]);
+            $resp = $obFornecedorDAO->apagarFornecedor(intval($_POST["idfornecedor"]));
             View::jsonResponse($resp);
         }
     }

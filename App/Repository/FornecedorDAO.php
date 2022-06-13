@@ -14,7 +14,7 @@ class FornecedorDAO extends Conexao
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_CLASS,'\App\Entity\Fornecedor');
     }
 
     public function qntTotalFornecedor($busca)
@@ -37,8 +37,8 @@ class FornecedorDAO extends Conexao
         $stmt->bindParam(':rua', $dados['rua'], PDO::PARAM_STR);
         $stmt->bindParam(':numero', $dados['numero'], PDO::PARAM_STR);
         $stmt->bindParam(':bairro', $dados['bairro'], PDO::PARAM_STR);
-        $stmt->bindParam(':cidade', $dados['cidade'], PDO::PARAM_STR);
         $stmt->bindParam(':cep', $dados['cep'], PDO::PARAM_STR);
+        $stmt->bindParam(':cidade', $dados['cidade'], PDO::PARAM_STR);
         $stmt->bindParam(':estado', $dados['estado'], PDO::PARAM_STR);
         $stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
         return $stmt->execute();
@@ -47,16 +47,16 @@ class FornecedorDAO extends Conexao
     public function obterFornecedor($fornecedor)
     {
         $stmt = static::getConexao()->prepare("SELECT * FROM fornecedor WHERE id=:id");
-        $stmt->bindParam(':id', $fornecedor['idfornecedor'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $fornecedor, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function atualizaFornecedor($fornecedor)
     {
-        $stmt=static::getConexao()->prepare("UPDATE fornecedor SET razao_social=:social, fantasia=:fantasia, cnpj=:cnpj, email=:email, telefone=:telefone, rua=:rua, numero=:numero, bairro=:bairro, cidade=:cidade, cep=:cep, estado=:estado WHERE id=:id");
-        $stmt->bindParam(':id', $fornecedor['idfornecedor'], PDO::PARAM_INT);
-        $stmt->bindParam(':social', $fornecedor['razao_social'], PDO::PARAM_STR);
+        $stmt=static::getConexao()->prepare("UPDATE fornecedor SET razao_social=:razao_social, fantasia=:fantasia, cnpj=:cnpj, email=:email, telefone=:telefone, rua=:rua, numero=:numero, bairro=:bairro, cep=:cep,cidade=:cidade, estado=:estado WHERE id=:id");
+        $stmt->bindParam(':id', $fornecedor['id'], PDO::PARAM_INT);
+        $stmt->bindParam(':razao_social', $fornecedor['razao_social'], PDO::PARAM_STR);
         $stmt->bindParam(':fantasia', $fornecedor['fantasia'], PDO::PARAM_STR);
         $stmt->bindParam(':cnpj', $fornecedor['cnpj'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $fornecedor['email'], PDO::PARAM_STR);
@@ -64,8 +64,8 @@ class FornecedorDAO extends Conexao
         $stmt->bindParam(':rua', $fornecedor['rua'], PDO::PARAM_STR);
         $stmt->bindParam(':numero', $fornecedor['numero'], PDO::PARAM_STR);
         $stmt->bindParam(':bairro', $fornecedor['bairro'], PDO::PARAM_STR);
-        $stmt->bindParam(':cidade', $fornecedor['cidade'], PDO::PARAM_STR);
         $stmt->bindParam(':cep', $fornecedor['cep'], PDO::PARAM_STR);
+        $stmt->bindParam(':cidade', $fornecedor['cidade'], PDO::PARAM_STR);
         $stmt->bindParam(':estado', $fornecedor['estado'], PDO::PARAM_STR);
         return $stmt->execute();
     }
