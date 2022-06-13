@@ -35,7 +35,7 @@
     <br>
 
     <div class="row">
-        <div class="col-sm-11">
+        <div class="col-sm-12">
             <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160)">
                 <div class="card-body">
                     <h4>Informaçoes do cliente</h4>
@@ -49,40 +49,72 @@
     
     <br>
     <br>
-
+    
     <div id="totalGeral">
         <div class="row">
-            <div class="card-deck">
-                <div class="card text-white bg-secondary col-sm-3" style="margin-right: 10px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Total de vendas</h5>
-                        <p class="card-text" >{{cliente.totalVendas}}</p>
+            <div class="col-sm-4">
+                <div class="card-deck">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de vendas</h5>
+                            <p class="card-text" >{{cliente.totalVendas}}</p>
+                        </div>
                     </div>
                 </div>
-                <!-- <div class="card col-sm-3"></div> -->
-                <div class="card text-white bg-secondary col-sm-3" >
-                    <div class="card-body">
-                        <h5 class="card-title">Total liquido</h5>
-                        <p class="card-text" >{{cliente.totalLiquido}}</p>
+            </div>
+            <div class="col-sm-4">
+                <div class="card-deck">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title">Ticket Medio</h5>
+                            <p class="card-text" >{{cliente.ticketMedio | format_currency('BRL')}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card-deck">
+                    <div class="card text-white bg-secondary" >
+                        <div class="card-body">
+                            <h5 class="card-title">Total liquido</h5>
+                            <p class="card-text" >{{cliente.totalLiquido | format_currency('BRL')}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+   
+
     <div id="totalDatas">
         <div class="row">
-            <div class="card-deck">
-                <div class="card text-white bg-secondary col-sm-3" style="margin-right: 10px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Total de vendas</h5>
-                        <input id="totalVendas" class="card text-white bg-secondary" style="border: transparent;"> 
+            <div class="col-sm-4">
+                <div class="card-deck">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de vendas</h5>
+                            <input id="totalVendas" class="card text-white bg-secondary" style="border: transparent;"> 
+                        </div>
                     </div>
                 </div>
-                <!-- <div class="card col-sm-3"></div> -->
-                <div class="card text-white bg-secondary col-sm-3" >
-                    <div class="card-body">
-                        <h5 class="card-title">Total liquido</h5>
-                        <input id="totalLiquido" class="card text-white bg-secondary" style="border: transparent;"> 
+            </div>
+            <div class="col-sm-4">
+                <div class="card-deck">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de vendas</h5>
+                            <input id="ticketMedio" class="card text-white bg-secondary" style="border: transparent;"> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card-deck">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total liquido</h5>
+                            <input id="totalLiquido" class="card text-white bg-secondary" style="border: transparent;"> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,6 +169,7 @@
                         $('#totalGeral').hide();
                         $('#totalDatas').show();
                         $('#totalVendas').val(resp.dados['totalVendas']);
+                        $('#ticketMedio').val(resp.dados['ticketMedio'].toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
                         $('#totalLiquido').val(parseFloat(resp.dados['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
                         $('#vendasPeriodo').show();
@@ -146,7 +179,8 @@
                             tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
                         });
                     }else{
-                        $('#totalVendas').val('R$ 0,0');
+                        $('#totalVendas').val('');
+                        $('#ticketMedio').val('R$ 0,0');
                         $('#totalLiquido').val('R$ 0,0');
                         $('#vendasPeriodo').hide();
                         alertify.error("Não ha vendas nesse periodo");

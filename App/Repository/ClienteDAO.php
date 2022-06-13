@@ -29,7 +29,7 @@ class ClienteDAO extends Conexao
     {
         $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido FROM cliente AS c
         LEFT JOIN comandafatura AS cf ON cf.id_cliente = c.id
-        WHERE c.id = :id AND c.status=1");
+        WHERE c.id = :id AND c.status=1 AND cf.comanda_aberta=0");
         $stmt->bindParam(':id', $idCliente, PDO::PARAM_INT);
         $stmt->execute(); 
         return $stmt->fetchObject('\App\Entity\Cliente');
@@ -103,13 +103,16 @@ class ClienteDAO extends Conexao
         return $stmt->execute();
 	}
 
+    /**
+     * Cliente na tela de relatorio
+     */
     public function vendaClienteData($cliente)
     {
         // die(var_dump($cliente));
         // COUNT(DISTINCT v.id) as totalVendas, SUM(v.total) as totalLiquido, SUM(v.total) / COUNT(DISTINCT v.id) as ticketMedio") 
         $cliente['dtInicial'] = $cliente['dtInicial'].' 00:00:00';
         $cliente['dtFinal'] = $cliente['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_cliente=:idCliente");
+        $stmt = static::getConexao()->prepare("SELECT COUNT(DISTINCT id) as totalVendas, SUM(v.total) as totalLiquido, SUM(v.total) / COUNT(DISTINCT v.id) as ticketMedio), SUM(CASE WHEN data_finalizacao IS NOT NULL THEN CASE WHEN valor_total2 IS NOT NULL THEN (valor_total1 + valor_total2) ELSE valor_total1 END ELSE 0 END) AS totalLiquido FROM comandafatura WHERE data_finalizacao BETWEEN :dtInicial AND :dtFinal AND id_cliente=:idCliente");
         $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $cliente['dtFinal'], PDO::PARAM_STR);
