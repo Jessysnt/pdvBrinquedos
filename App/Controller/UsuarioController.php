@@ -113,7 +113,7 @@ class UsuarioController
             );
             $respVendasGeral = $obUsuarioDAO->vendaUsuarioData($usuario);
             $respVendasPeriodo = $obUsuarioDAO->vendaUsuarioPeriodo($usuario);
-            View::jsonResponse(['vendaTotal'=>$respVendasGeral, 'vendaPeriodo'=>$respVendasPeriodo]);
+            View::jsonResponse(['dados'=>$respVendasGeral, 'usuario'=>$respVendasPeriodo]);
         }
     }
     
