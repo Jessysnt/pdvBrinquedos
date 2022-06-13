@@ -31,6 +31,12 @@ class DashboardController
 
     public function dadosEntradaSaida()
     {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $obDashboardDAO = new DashboardDAO();
+            $respAno= $obDashboardDAO->vendasAno($_POST['dtInicial']);
+            $return = ['label'=>array_column($respAno,'mes'),'data'=>array_map('floatval',array_column($respAno,'Total'))];
+            View::jsonResponse($return);
+        }
         View::renderTemplate('/dashboard/entrada-saida.html');
     }
 }
