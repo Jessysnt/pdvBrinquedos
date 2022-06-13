@@ -3,16 +3,40 @@
 {% block title %}Categorias{% endblock %}
 
 {% block body %}
+<!-- Modal -->
+<div class="modal fade" id="atualizarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Atualizar Categoria</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmCategoriaU">
+                    <input type="text" hidden="" id="idCategoriaU" name="idCategoriaU" required>
+                    <label for="categoriaU">Razao Social</label>
+                    <input type="text" class="form-control" id="categoriaU" name="categoriaU" required>
+                    <label>Descrição</label>
+                    <input type="text" class="form-control input-sm" name="descricaoU" id="descricaoU">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAtualizaCategoria" class="btn btn-warning" data-dismiss="modal">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!--Formulario-->                    
 <div class="container">
     <h1>Classificação dos Briquedos</h1>
     <div class="row">
         <div class="col-sm-4">
             <form id="frmCategorias">
                 <label>Faixa Etária</label>
-                <input type="text" class="form-control input-sm" name="categoria" id="categoria">
+                <input type="text" class="form-control input-sm" name="categoria" id="categoria" required>
                 <label>Descrição</label>
-                <input type="text" class="form-control input-sm" name="descricao" id="descricao">
+                <input type="text" class="form-control input-sm" name="descricao" id="descricao" required>
                 <p></p>
                 <span class="btn btn-primary" id="btnAdicionarCategoria">Adicionar</span>
             </form>
@@ -30,18 +54,13 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-
         $('#tabelaCategoriaLoad').load("tabela-categoria");
-
         $('#btnAdicionarCategoria').click(function(){
-
-            vazios=validarFormVazio('frmCategorias');
-            
-            if(vazios > 0){
-                alertify.alert("Preencha os Campos!!");
+            $('#frmCategorias')[0].reportValidity();
+            if(!$('#frmCategorias')[0].checkValidity()){
+                console.log('entrou if');
                 return false;
             }
-
             dados=$('#frmCategorias').serialize();
             //alert(dados);
             $.ajax({
@@ -49,11 +68,10 @@
                 data:dados,
                 url:"categorias",
                 success:function(r){
-                    // console.log(r);
-                    if(r){
+                    var resp = JSON.parse(r);
+                    if(resp == true){
                         //limpar formulário
                         $('#frmCategorias')[0].reset();
-
                         $('#tabelaCategoriaLoad').load("tabela-categoria");
                         alertify.success("Classificação adicionada com sucesso!");
                     }else{
@@ -71,15 +89,20 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btnAtualizaCategoria').click(function(){
-
+            $('#frmCategoriaU')[0].reportValidity();
+            if(!$('#frmCategoriaU')[0].checkValidity()){
+                console.log('entrou if');
+                return false;
+            }
             dados=$('#frmCategoriaU').serialize();
             $.ajax({
                 type:"POST",
                 data:dados,
-                url:"../procedimentos/categorias/atualizarCategorias.php",
+                url:"atualizar-categoria",
                 success:function(r){
-                    if(r==1){
-                        $('#tabelaCategoriaLoad').load("categorias/tabelaCategorias.php");
+                    var resp = JSON.parse(r);
+                    if(resp == true){
+                        $('#tabelaCategoriaLoad').load("tabela-categoria");
                         alertify.success("Atualizado com Sucesso :)");
                     }else{
                         alertify.error("Não foi possível atualizar :(");
@@ -94,22 +117,30 @@
 
 <script type="text/javascript">
 
-    function adicionarDado(idCategoria,categoria,descricao){
-        $('#idcategoria').val(idCategoria);
-        $('#categoriaU').val(categoria);
-        $('#descricaoU').val(descricao);
+    function editarCategoria(idcategoria) {
+        $.ajax({
+            type:"POST",
+            data:"idcategoria=" + idcategoria,
+            url:"obter-categoria",
+            success:function(r){
+                var resp = JSON.parse(r);
+                $('#idCategoriaU').val(resp['id']);
+                $('#categoriaU').val(resp['categoria']);
+                $('#descricaoU').val(resp['descricao']);
+            }
+        });
     }
-
 
     function deletarCategoria(idcategoria){
         alertify.confirm('Deseja excluir esta categoria?', function(){
             $.ajax({
                 type:"POST",
                 data:"idcategoria=" + idcategoria,
-                url:"../procedimentos/categorias/deletarCategorias.php",
+                url:"apagar-categoria",
                 success:function(r){
-                    if(r==1){
-                        $('#tabelaCategoriaLoad').load("categorias/tabelaCategorias.php");
+                    var resp = JSON.parse(r);
+                    if(resp == true){
+                        $('#tabelaCategoriaLoad').load("tabela-categoria");
                         alertify.success("Excluido com sucesso!!");
                     }else{
                         alertify.error("Não se pode eliminar");

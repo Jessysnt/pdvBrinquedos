@@ -140,4 +140,14 @@ class ProdutoDAO extends Conexao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Verifica se a categoria esta cadastrada no produto
+     */
+    public function categoriaProduto($categoria)
+    {
+        $stmt = static::getConexao()->prepare("SELECT * FROM produto WHERE id_categoria=:idcategoria");
+        $stmt->bindParam(':idcategoria', $categoria, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

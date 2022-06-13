@@ -64,7 +64,7 @@
 				<td>{{categoria.categoria}}</td>
             	<td>{{categoria.descricao}}</td>
 		 		<td>
-					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarCategoria" onclick="adicionarDados('{{categoria.id}}')">
+					<span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizarModal" onclick="editarCategoria('{{categoria.id}}')">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</span>
 				</td>
@@ -122,36 +122,5 @@
             $('#tabelaCategoriaLoad').load('{{route}}?itensPag={{itensPag}}&pagina=1&busca='+nomeFiltro);
         }
     });
-</script>
-
-<script type="text/javascript">
-
-    function adicionarDado(idCategoria,categoria,descricao){
-        $('#idcategoria').val(idCategoria);
-        $('#categoriaU').val(categoria);
-        $('#descricaoU').val(descricao);
-    }
-
-
-    function deletarCategoria(idcategoria){
-        alertify.confirm('Deseja excluir esta categoria?', function(){
-            $.ajax({
-                type:"POST",
-                data:"idcategoria=" + idcategoria,
-                url:"../procedimentos/categorias/deletarCategorias.php",
-                success:function(r){
-                    if(r==1){
-                        $('#tabelaCategoriaLoad').load("categorias/tabelaCategorias.php");
-                        alertify.success("Excluido com sucesso!!");
-                    }else{
-                        alertify.error("Não se pode eliminar");
-                    }
-                }
-            });
-        }, function(){
-            alertify.error('Cancelado !')
-        });
-    }
-
 </script>
 {% endblock %}
