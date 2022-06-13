@@ -216,8 +216,6 @@
                 return false;
             }
             dados=$('#frmFornecedor').serialize();
-            console.log(dados);
-            
             $.ajax({
                 type:"POST",
                 data:dados,
@@ -242,14 +240,12 @@
 <script type="text/javascript">
 
     function editarFornecedor(idfornecedor){
-		// console.log(idfornecedor);
         $.ajax({
             type:"POST",
             data:"idfornecedor=" + idfornecedor,
             url:"obter-fornecedor",
             success:function(r){
                 var resp = JSON.parse(r);
-				console.log(resp);
                 $('#idfornecedorU').val(resp['id']);
                 $('#razao_socialU').val(resp['razao_social']);
                 $('#fantasiaU').val(resp['fantasia']);
@@ -275,7 +271,7 @@
                 url:"apagar-fornecedor",
                 success:function(r){
 					var resp = JSON.parse(r);
-                    if(resp){
+                    if(resp == true){
                         $('#tabelaFornecedorLoad').load("tabela-fornecedor");
                         alertify.success("Excluido com sucesso!!");
                     }else{
@@ -307,7 +303,7 @@
                 success:function(r){
 					console.log(r);
 					var resp = JSON.parse(r);
-                    if(resp){
+                    if(resp == true){
                         $('#tabelaFornecedorLoad').load("tabela-fornecedor");
                         alertify.success("Atualizado com Sucesso :)");
                     }else{

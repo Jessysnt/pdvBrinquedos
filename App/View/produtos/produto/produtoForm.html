@@ -112,7 +112,6 @@
                 data:"id=" + idproduto,
                 url:"produto-apagar",
                 success:function(r){
-                    // console.log(r);
                     var resp = JSON.parse(r);
                     if(resp == true){
                         $('#tabelaProdutosLoad').load("tab-produto");
