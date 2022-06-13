@@ -91,6 +91,8 @@ $router->add('comprovante-venda', ['controller' => 'PdvController', 'action' => 
 //Rotas de Categoria
 $router->add('categorias', ['controller' => 'CategoriaController', 'action' => 'categoriaAdd']);
 $router->add('tabela-categoria', ['controller' => 'CategoriaController', 'action' => 'tabelaCategorias']);
+$router->add('atualizar-categoria', ['controller' => 'CategoriaController', 'action' => 'atualizarCategoria']);
+$router->add('obter-categoria', ['controller' => 'CategoriaController', 'action' => 'obterCategoria']);
 
 //Rotas de Fornecedor
 $router->add('adicionar-fornecedor', ['controller' => 'FornecedorController', 'action' => 'fornecedor']);

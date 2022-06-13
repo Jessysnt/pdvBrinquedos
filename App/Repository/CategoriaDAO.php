@@ -9,13 +9,10 @@ class CategoriaDAO extends Conexao
     public function cadastrarCategoria($dados)
     {
         $idUsuario=$_SESSION['usuario']->getId();
-
         $stmt = static::getConexao()->prepare("INSERT INTO categoria (id_usuario, categoria, descricao) VALUES (:idUsuario, :categoria, :descricao)");
-        
         $stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
         $stmt->bindParam(':categoria', $dados['categoria'], PDO::PARAM_STR);
         $stmt->bindParam(':descricao', $dados['descricao'], PDO::PARAM_STR);
-
         return $stmt->execute();
     }
 
@@ -48,5 +45,29 @@ class CategoriaDAO extends Conexao
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function atualizaCategoria($categoria)
+    {
+        $stmt = static::getConexao()->prepare("UPDATE categoria SET categoria=:categoria, descricao=:descricao WHERE id=:id");
+        $stmt->bindParam(':id', $categoria['id'], PDO::PARAM_INT);
+        $stmt->bindParam(':categoria', $categoria['categoria'], PDO::PARAM_STR);
+        $stmt->bindParam(':descricao', $categoria['descricao'], PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+
+    public function obterCategoria($idcategoria)
+    {
+        $stmt = static::getConexao()->prepare("SELECT * FROM categoria WHERE id=:id");
+        $stmt->bindParam(':id', $idcategoria, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function apagarCategoria($categoria)
+    {
+        $stmt = static::getConexao()->prepare("DELETE FROM categoria WHERE id=:id");
+        $stmt->bindParam(':id', $idcategoria, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
