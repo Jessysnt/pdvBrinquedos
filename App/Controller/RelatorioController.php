@@ -79,8 +79,8 @@ class RelatorioController
                 'dtFinal' => $_POST['dtFinal']
             );
             $respVendasPeriodo = $obRelatorioDAO->vendasPeriodoColaboradores($datas);
-            View::jsonResponse(['maisVendidos'=>$respVendasPeriodo]);
+            View::jsonResponse(['colaboradores'=>$respVendasPeriodo]);
         }
-        View::renderTemplate('/relatorios/vendas-coladoradores.html'); 
+        View::renderTemplate('/relatorios/vendas-colaboradores.html'); 
     }
 }
