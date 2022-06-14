@@ -38,7 +38,7 @@
                 <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
             </div>
             <div class="col-sm-3">
-                <span class="btn btn-primary btn-block" onclick="enviar('{{cliente.id}}')">Enviar</span>
+                <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
             </div>
             <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
         </div>
@@ -83,9 +83,7 @@
                 data: dados,
                 url:"mais-vendidos-produto",
                 success:function(r){
-                    // console.log('r', r);
                     var resp = jQuery.parseJSON(r);
-                    console.log('r', resp.maisVendidos);
                     if(resp.maisVendidos != 0){
                         $('#tabelaProdutosTop').show();
                         var tbody = $('#tabelaProdutosTop').find('tbody');
