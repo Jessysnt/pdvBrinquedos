@@ -62,7 +62,7 @@ class RelatorioDAO extends Conexao
 
     public function vendasPeriodoColaboradores()
     {
-        # code...
+        
     }
     
 }

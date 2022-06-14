@@ -68,19 +68,11 @@ class ProdutoController
         $obProduto = new ProdutoDAO();
         $resp = $obProduto->mostrarProduto($busca, $pagina, $itensPag);
         $total = $obProduto->qntTotalProduto($busca);
-
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
         View::renderTemplate('/produtos/produto/tabelaProduto.html', ['produtos'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tab-produto', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
     }
-
-    // public function pesquisarCategoria()
-    // {   
-    //     $obCategoriaDAO = new CategoriaDAO();
-    //     $categoria = $obCategoriaDAO->pesquisarCategorias();
-    //     View::renderTemplate('/produtos/produto/produtoForm.html', ['categorias'=>$categoria]);
-    // }
-
+    
     /**
      * Tras o produto para a modal de atualizar
      */

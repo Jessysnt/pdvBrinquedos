@@ -58,4 +58,30 @@ class ProdutoVendaDAO extends Conexao
         $stmt->bindParam(':id', $idLote, PDO::PARAM_INT);
 		return $stmt->execute();
     }
+
+    /**
+     * Tras os produtos para as paginas tabela
+     */
+    public function mostrarProduto($busca, $pagina, $itensPag)
+    {
+        $offset = $itensPag*($pagina-1);
+        
+        $stmt = static::getConexao()->prepare("SELECT pv.id, pro.id, pro.nome, pro.codigo, pv.lote, pv.quantidade, pv.preco_comp, pv.preco_ven FROM produtovenda as pv INNER JOIN produto AS pro ON pv.id_produto=pro.id WHERE pro.nome LIKE :busca ORDER BY status desc LIMIT :itensPag OFFSET :offset");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Verifica quando produtos ha cadastrado para exibir a paginaçao
+     */
+    public function qntTotalProduto($busca)
+    {
+        $stmt = static::getConexao()->prepare("SELECT count(pv.id) AS total FROM produtovenda as pv INNER JOIN produto AS pro ON pv.id_produto=pro.id WHERE pro.nome LIKE :busca LIMIT 10 ");
+        $stmt->bindValue(':busca', '%'.$busca.'%');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

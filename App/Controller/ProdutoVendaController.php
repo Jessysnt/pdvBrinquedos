@@ -66,9 +66,26 @@ class ProdutoVendaController
 
     public function tabelaProdutoVenda()
     {
+        $busca= "";
+        $pagina= 1;
+        $itensPag= 10;
+
+        if(isset($_GET['busca'])){
+            $busca = $_GET['busca'];
+        }
+        if(isset($_GET['pagina'])){
+            $pagina = $_GET['pagina'];
+        }
+        if(isset($_GET['itensPag'])){
+            $itensPag = $_GET['itensPag'];
+        }
+
         $obProdutoVenda = new ProdutoVendaDAO();
-        $resp = $obProdutoVenda->produtoVendaTabela();
-        View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtosVenda'=>$resp]); 
+        $resp = $obProdutoVenda->mostrarProduto($busca, $pagina, $itensPag);
+        $total = $obProdutoVenda->qntTotalProduto($busca);
+        $totalpaginas =  ceil($total['total'] / $itensPag);
+
+        View::renderTemplate('/produtos/produto-venda/tabelaProdutoVenda.html', ['produtosVenda'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/tab-prod-vend', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
     }
 
     public function obterProdutoV()
