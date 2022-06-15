@@ -74,7 +74,7 @@ class RelatorioDAO extends Conexao
         FROM usuario AS u
         INNER JOIN comandafatura AS cf ON cf.id_vendedor=u.id
         WHERE u.status=1 AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal
-        GROUP BY u.id");
+        GROUP BY u.id ORDER BY totalLiquido DESC");
         $stmt->bindParam(':dtInicial', $datas['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $datas['dtFinal'], PDO::PARAM_STR);
         $stmt->execute();
