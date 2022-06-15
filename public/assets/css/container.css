@@ -12,3 +12,7 @@
 	margin-top: 150px;
 	margin-left: auto;
 }
+
+table tbody tr td, table tbody tr th {
+	vertical-align: middle !important;
+}
