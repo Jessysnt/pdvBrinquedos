@@ -629,7 +629,16 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarVenda').click(function() {
-		descontoVenda();
+		var descontoValor = $('#descontoValor').maskMoney('unmasked')[0];
+		
+		var valorUm =  $('#valorUm').maskMoney('unmasked')[0];
+		console.log('valorUm', valorUm);
+		var valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		console.log('valorDois', valorDois);
+		if(descontoValor){
+			console.log('descontoValor', descontoValor);
+			descontoVenda();
+		}
 	});	
 		
 		
@@ -953,7 +962,7 @@
 		valorPagar(valorUm);
 		var valorDois = $('#valorDois').maskMoney('unmasked')[0];
 		var dezPorcento = (valorUm + valorDois)*0.1;
-		valorRestante(dezPorcento);
+		// valorRestante(dezPorcento);
 		// if(descontoValor > dezPorcento){
 		// 	console.log('eh maior');
 		// 	alertify.confirm('Desconto maior que o permitido! ', function(){
