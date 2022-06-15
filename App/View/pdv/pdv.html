@@ -18,9 +18,9 @@
 			<div class="modal-body">
 				<form id="permissaoSenha">
 					<label>CPF</label>
-					<input type="text" class="form-control input-sm" name="cpf" id="cpf">
+					<input type="text" class="form-control input-sm" name="cpf" id="cpf" required>
 					<label>Senha</label>
-					<input type="password" class="form-control" name="senha" id="senha">
+					<input type="password" class="form-control" name="senha" id="senha" required>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -166,9 +166,16 @@
                     </div>
                 </div>    
             </div>
-            <br>
+            
+			
             <div id="formasPagamentos">
-
+				<div class="row">
+					<div class="col-sm-4">
+						<label>Desconto</label>
+						<input type="text" class="form-control" id="descontoValor" onchange="descontoVenda()" name="descontoValor" required>
+					</div>
+				</div>
+				<br>
                 <div class="row">
                     <div class="col-sm-4">
                         <label>1ª Forma de pagamento</label>
@@ -189,20 +196,33 @@
                     <div class="col-sm-4">
                         <label>Valor a pagar</label>
                         <div>
-                            <input type="text" class="form-control input-sm" id="valorUm" name="valorUm">
+                            <input type="text" class="form-control" id="valorUm" name="valorUm">
                         </div>
-						<div>
-							<input type="text" id="descontoValor">
-						</div>
                     </div>
-                </div>	
-    
+                </div>
+				<br>
+				<div class="row" id="maisPagamento">
+					<div class="col">
+						<button type="button" class="glyphicon glyphicon-plus" aria-label="Mais" onclick="maisPagamento()">
+							<span aria-hidden="true"></span>
+						  </button>
+					</div>
+				</div>
+				<br>
+				<div class="row" id="menosPagamento">
+					<div class="col">
+						<button type="button" class="glyphicon glyphicon-minus" aria-label="Mais" onclick="menosPagamento()">
+							<span aria-hidden="true"></span>
+						  </button>
+					</div>
+				</div>		
+				<br>
                 <div id="pagamentoDois">
                     <div class="row">
                         <div class="col-sm-4">
                             <label>2ª Forma de pagamento</label>
                             <div>
-                                <select class="form-control input-sm" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
+                                <select class="form-control" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
                                     <option value="" readonly="true">Selecionar</option>
                                     <option value="1" >Dinheiro</option>
                                     <option value="2">Pix</option>
@@ -215,7 +235,7 @@
                         <div class="col-sm-4">
                             <label>Valor a pagar</label>
                             <div>
-                                <input type="text" class="form-control input-sm" id="valorDois" name="valorDois">
+                                <input type="text" class="form-control" id="valorDois" name="valorDois">
                             </div>
                         </div>
                     </div>
@@ -225,7 +245,7 @@
                 <div class="row" id="trocoUm">
                     <div class="col-sm-4">
                         <label>Troco</label>
-                        <input type="text" readonly="" class="form-control input-sm" name="trocoUmDinheiro" id="trocoUmDinheiro">
+                        <input type="text" readonly="" class="form-control" name="trocoUmDinheiro" id="trocoUmDinheiro">
                     </div>
                 </div>	
                 <br>
@@ -241,9 +261,7 @@
                         </div>
                     </div>    
                 </div>
-
             </div>            
-               
         </div>
 
     </div>
@@ -298,7 +316,7 @@
 		$("#valorDois").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 		$("#trocoUmDinheiro").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 		$("#trocoUmDinheiro").prop("disabled", true);
-        $("#btAddTemp").show();
+		$("#descontoValor").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:','});
 	};
 
 	function vezesCartao(){
@@ -341,6 +359,8 @@
             $("#formasPagamentos").show();
             $("#botoesComandaAtiva").hide();
             $("#frmComanda").hide();
+			$("#descontoValor").show();
+			$("#menosPagamento").hide();
         }else{
             alertify.error("Não possui produtos!");
         }  
@@ -357,6 +377,20 @@
         $("#frmComanda").show();
         habilitarCampos();
     });
+
+	function maisPagamento() {
+		console.log();
+		$("#maisPagamento").hide();
+		$("#pagamentoDois").show();
+		$("#menosPagamento").show();
+		$("#valorDois").val('R$0,00');
+	}
+
+	function menosPagamento() {
+		$("#maisPagamento").show();
+		$("#pagamentoDois").hide();
+		$("#menosPagamento").hide();
+	}
 </script>
 
 <script type="text/javascript">
@@ -468,7 +502,7 @@
 				data:"codigo=" + $('#codigo').val(),
 				url:"pesquisar-prod-est-codigo",
 				success:function(r){
-					console.log('resposta',r);
+					// console.log('resposta',r);
 					var resp = JSON.parse(r);
 					if(resp.length > 0){
 						$('#codigo').attr('data-id', parseInt(resp[0]['id']));
@@ -595,93 +629,93 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarVenda').click(function() {
-		valorRestante();
+		descontoVenda();
 	});	
 		
 		
 	function gravarComanda() {
 		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
-		var valorTotal = $('#valorTotal').maskMoney('unmasked')[0];
-		console.log('valorTotal', valorTotal);
-		if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() != ""){
-			if($('#pgUm').val() != ""){
-				if((vtDois > 0  && $('#pgDois').val()) || vtDois == 0 ){
-					var dados={
-						cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
-						numero: (comanda.numero!=null?(comanda.numero):null),
-						pg_forma1: $('#pgUm').val(),
-						valor_total1: $('#valorUm').maskMoney('unmasked')[0],
-						pg_forma2: $('#pgDois').val(),
-						valor_total2: $('#valorDois').maskMoney('unmasked')[0],
-						vzs_cartao: $('#vzsCartao').val(),
-						desconto: (parseFloat($('#descontoValor').val())!=null?(parseFloat($('#descontoValor').val())):null),
-						linhas:[]
-					};
-					comanda.linhas.forEach(linha =>{
-						var novaLinha = {
-							id_produto: parseInt(linha.produtoVenda),
-							quantidade: parseInt(linha.quantV),
-							quant_estoque: linha.quantidadeV,
-							valor_unitario: parseFloat(linha.precoV)
-						};
-						dados.linhas.push(novaLinha);
-						// console.log('dados.Gravar',dados.linhas);
-						apagarForm();
-					});
-					console.log('dados', dados);
-					console.log('parou ak1');
-					
-					var idComanda = $('#numeroComanda').attr('data-id');
-					console.log('parou ak2', idComanda);			
-								alertify.confirm('Imprimir comprovante de compra? ', function(){
-									href=`comprovante-venda?venda=${idComanda}`;
-									var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
-									mywindow.print();
-									console.log('imprimir');
-								}, function(){ 
-									alertify.error('Cancelado !');
-								});
-							
-					return false;
-					$.ajax({
-						type:"POST",
-						data: dados,
-						url:"gravar-venda",
-						success:function(r){
-							console.log('respostaGravou1',r);
-							var resp = JSON.parse(r);
-							// console.log('respostaGravou2',resp);
-							if(resp.resp == true){	
-								$('#codigo').val('');
-								$('#clienteCpf').val(null).trigger('change');
-								$('#nomeClienteComanda').val('');
-								apagarForm();
-								alertify.confirm('Imprimir comprovante de compra? ', function(){
-									href="comprovante-venda?id=";
-									var mywindow = window.open(href="comprovante-venda", 'PRINT', 'height=400,width=600');
-									mywindow.print();
-									console.log('imprimir');
-								}, function(){ 
-									alertify.error('Cancelado !');
-								});
-								alertify.success("Venda efetuada!!");
-							}else{
-								alertify.error("Falha ao Adicionar");
-							}
-						}
-					});
-				}else{
-					alertify.alert("Preencha a segunda forma de pagamento!");
-					$("#botoesComandaAtiva").show();
-					habilitarCampos();
-				}
-			}else{alertify.alert("Preencher forma de pagamento!");}
+		if((vtDois > 0  && $('#pgDois').val() != "") || vtDois == 0 ){
+			console.log('vtDois', vtDois);
+			console.log('pgDois', $('#pgDois').val());
+			$("#formasPagamentos").show();
+			alertify.alert("Preencha a segunda forma de pagamento!");
 
-		}else{
+		}else if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() == ""){
 			alertify.alert("Preencher o CPF!");
-			$("#botoesComandaAtiva").show();
+			voltarFormulario();
 			habilitarCampos();
-		} 
+
+		}else if($('#pgUm').val() == ""){
+			alertify.alert("Preencher forma de pagamento!"); 
+		}else{
+			var dados={
+				cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
+				numero: (comanda.numero!=null?(comanda.numero):null),
+				pg_forma1: $('#pgUm').val(),
+				valor_total1: $('#valorUm').maskMoney('unmasked')[0],
+				pg_forma2: $('#pgDois').val(),
+				valor_total2: $('#valorDois').maskMoney('unmasked')[0],
+				vzs_cartao: $('#vzsCartao').val(),
+				desconto: parseFloat($('#descontoValor').val()),
+				// desconto: (parseFloat($('#descontoValor').val())!=NaN?(parseFloat($('#descontoValor').val())):null),
+				linhas:[]
+			};
+			comanda.linhas.forEach(linha =>{
+				var novaLinha = {
+					id_produto: parseInt(linha.produtoVenda),
+					quantidade: parseInt(linha.quantV),
+					quant_estoque: linha.quantidadeV,
+					valor_unitario: parseFloat(linha.precoV)
+				};
+				dados.linhas.push(novaLinha);
+				// console.log('dados.Gravar',dados.linhas);
+				apagarForm();
+			});
+			console.log('dados', dados);
+			console.log('parou ak1');
+			
+			// var idComanda = $('#numeroComanda').attr('data-id');
+			// console.log('parou ak2', idComanda);			
+			// 			alertify.confirm('Imprimir comprovante de compra? ', function(){
+			// 				href=`comprovante-venda?venda=${idComanda}`;
+			// 				var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
+			// 				mywindow.print();
+			// 				console.log('imprimir');
+			// 			}, function(){ 
+			// 				alertify.error('Cancelado !');
+			// 			});
+					
+			return false;
+			$.ajax({
+				type:"POST",
+				data: dados,
+				url:"gravar-venda",
+				success:function(r){
+					// console.log('respostaGravou1',r);
+					console.log('parou ak2');
+					var resp = JSON.parse(r);
+					console.log('respostaGravou2',resp);
+					if(resp.resp == true){	
+						$('#codigo').val('');
+						$('#clienteCpf').val(null).trigger('change');
+						$('#nomeClienteComanda').val('');
+						apagarForm();
+						alertify.confirm('Imprimir comprovante de compra? ', function(){
+							href="comprovante-venda?id=";
+							var mywindow = window.open(href="comprovante-venda", 'PRINT', 'height=400,width=600');
+							mywindow.print();
+							console.log('imprimir');
+						}, function(){ 
+							alertify.error('Cancelado !');
+						});
+						alertify.success("Venda efetuada!!");
+					}else{
+						alertify.error("Falha ao Adicionar");
+					}
+				}
+			});	
+		}		
 	};	
 </script>
 
@@ -712,6 +746,7 @@
             success:function(r){
                 var resp = JSON.parse(r);
                 if(resp.length > 0){
+					$("#btAddTemp").show();
                     $('#descricaoV').val(resp[0]['descricao']);
                     $('#quantidadeV').val(resp[0]['quantotal']);
                     $('#precoV').val(resp[0]['preco_ven'].toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
@@ -840,16 +875,15 @@
 				$("#trocoUm").show();
 				var troco = valorUm - soma;
 				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				$("#pagamentoDois").hide();
+				// $("#pagamentoDois").hide();
 				$("#valorDois").val('');
 			}else if(valorUm < soma){
 				var valorDois = soma - valorUm;
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
-				$("#pagamentoDois").show();
 				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			} else {
-				$("#pagamentoDois").hide();
+				// $("#pagamentoDois").hide();
 				$("#valorDois").val('');
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
@@ -871,53 +905,90 @@
 				$("#trocoUm").hide();
 				$("#trocoUmDinheiro").val('');
 				$("#pagamentoDois").hide();
-				descontoVenda(soma);
 				// $('#pgDois').val(null).trigger('change');
 			}
 		});
 	};
 	
 
-	function valorRestante() {
+	function valorRestante(dezPorcento) {
+		console.log('valorRestante1', dezPorcento);
+		let valorUm = $('#valorDois').maskMoney('unmasked')[0];
+		console.log('valorRestante2', valorUm);
+		let valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		console.log('valorRestante3', valorDois);
+		// var totalLinha = 0.0;
+		// comanda.linhas.forEach(linha => {
+		// 	totalLinha += linha.quantV*linha.precoV;
+		// });
+		// let valorUm = $('#valorUm').maskMoney('unmasked')[0];
+		// let valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		// let somaCampos = valorUm + valorDois;
+		// var dezPorcento = totalLinha - (totalLinha * 0.1);
+		// if(dezPorcento > somaCampos){
+			
+				// alertify.confirm('Desconto maior que o permitido! ', function(){
+				// 	$("#permissao").modal({
+				// 		show: true
+				// 	});
+				// }, function(){ 
+				// 	alertify.error('Cancelado !');
+				// });
+				// return false;
+			
+		// }else{
+		// 	gravarComanda();
+		// 	// voltarFormulario();
+		// }
+	}
+
+	function descontoVenda() {
 		var totalLinha = 0.0;
 		comanda.linhas.forEach(linha => {
 			totalLinha += linha.quantV*linha.precoV;
 		});
-		let valorUm = $('#valorUm').maskMoney('unmasked')[0];
-		let valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		let somaCampos = valorUm + valorDois;
-		var dezPorcento = totalLinha - (totalLinha * 0.1);
-		if(dezPorcento > somaCampos){
-			alertify.confirm('Desconto maior que o permitido! ', function(){
-				$("#permissao").modal({
-					show: true
-				});
-			}, function(){ 
-				alertify.error('Cancelado !');
-			});
-			return false;
-		}else{
-			gravarComanda();
-			voltarFormulario();
-		}
-	}
-
-	function descontoVenda(soma) {
-		let valorUm = $('#valorUm').maskMoney('unmasked')[0];
-		let valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		var desconto = soma - (valorUm + valorDois);
-		$('#descontoValor').val(desconto.toLocaleString('BRL'));
+		var descontoValor = $('#descontoValor').maskMoney('unmasked')[0];
+		var valorUm = totalLinha - descontoValor;
+		$('#valorUm').val(valorUm.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+		valorPagar(valorUm);
+		var valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		var dezPorcento = (valorUm + valorDois)*0.1;
+		valorRestante(dezPorcento);
+		// if(descontoValor > dezPorcento){
+		// 	console.log('eh maior');
+		// 	alertify.confirm('Desconto maior que o permitido! ', function(){
+		// 		$("#permissao").modal({
+		// 			show: true
+		// 		});
+		// 	}, function(){ 
+		// 		alertify.error('Cancelado !');
+		// 	});
+		// }else{
+		// 	console.log('gravarvenda');
+		// }
+		// let valorUm = $('#valorUm').maskMoney('unmasked')[0];
+		// let valorDois = $('#valorDois').maskMoney('unmasked')[0];
+		// var desconto = soma - (valorUm + valorDois);
+		
+		console.log('descontoValor', descontoValor);
+		console.log('dezPorcento', dezPorcento);
+		// $('#descontoValor').val(desconto.toLocaleString('BRL'));
 	}
 </script>
 
 <script type="text/javascript">
 	$('#permitirDesconto').click(function(e) {
 		e.preventDefault();
-		vazios=validarFormVazio('permissaoSenha');
-		if(vazios > 0){
-			alert("Preencha os campos!!");
+		// vazios=validarFormVazio('permissaoSenha');
+		// if(vazios > 0){
+		// 	alert("Preencha os campos!!");
+		// 	return false;
+		// }
+		$('#permissaoSenha')[0].reportValidity();
+        if(!$('#permissaoSenha')[0].checkValidity()){
+			console.log('entrou if');
 			return false;
-		}
+        }
 		dados=$('#permissaoSenha').serialize();
 		$.ajax({
 			type:"POST",

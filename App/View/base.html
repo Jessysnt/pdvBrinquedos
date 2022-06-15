@@ -77,13 +77,14 @@
                 <ul class="dropdown-menu">
                   {% if 16 in session['usuario'].getAcessos() %}
                   <li><a href="mais-vendidos-produto">Produtos mais vendidos</a></li>
+                  <li><a href="colaboradores-vendas">Vendas Colaboradores</a></li>
                   {% endif %}
                   {% if 17 in session['usuario'].getAcessos() %}
                   <li><a href="comanda-status">Comandas</a></li>
                   {% endif %}
-                  {% if 18 in session['usuario'].getAcessos() %}
-                  <li><a href="colaboradores-vendas">Vendas Colaboradores</a></li>
-                  {% endif %}
+                  <!-- {% if 18 in session['usuario'].getAcessos() %}
+                  
+                  {% endif %} -->
                 </ul>
               </li>
               

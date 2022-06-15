@@ -92,7 +92,6 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
         }
         $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
-        // die(var_dump($respComandaFatura));
         $result = $stmt->execute(); 
 
         if($result == true){
@@ -109,11 +108,12 @@ class PdvDAO extends Conexao
      */
     public function gravarComandaFaturaSemNumero($respComandaFatura)
     {
+        // die(var_dump($respComandaFatura));
         $bd = static::getConexao();
 
         $sqlCliente = ['',''];
         if(array_key_exists('cliente', $respComandaFatura)){
-            $sqlCliente = [', id_cliente',', :idCliente'];
+            $sqlCliente = [', id_cliente',', :cliente'];
         }
 
         $sqlFormaPgDois = ['',''];
@@ -131,12 +131,17 @@ class PdvDAO extends Conexao
             $sqlVzsCartao = [', vzs_cartao',', :vzsCartao'];
         }
 
-        $sql = "INSERT INTO comandafatura (id_caixa$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0], comanda_aberta, data_finalizacao) VALUES (:idCaixa$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1], :comanda_aberta, :dataFinalizacao)";
+        $sqlDesconto = ['',''];
+        if(array_key_exists('desconto', $respComandaFatura)){
+            $sqlDesconto = [', desconto',', :desconto'];
+        }
+
+        $sql = "INSERT INTO comandafatura (id_caixa$sqlCliente[0], pg_forma1, valor_total1$sqlFormaPgDois[0]$sqlValorTotalDois[0]$sqlVzsCartao[0]$sqlDesconto[0], comanda_aberta, data_finalizacao) VALUES (:idCaixa$sqlCliente[1], :formaPgUm, :valorTotalUm$sqlFormaPgDois[1]$sqlValorTotalDois[1]$sqlVzsCartao[1]$sqlDesconto[1], :comanda_aberta, :dataFinalizacao)";
 
         $stmt=$bd->prepare($sql);
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
         if(array_key_exists('cliente', $respComandaFatura)){
-            $stmt->bindParam(':idCliente', $respComandaFatura['id_cliente'], PDO::PARAM_INT);
+            $stmt->bindParam(':cliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
         }
         $stmt->bindParam(':formaPgUm', $respComandaFatura['formaPgUm'], PDO::PARAM_INT);
         $stmt->bindParam(':valorTotalUm', $respComandaFatura['valorTotalUm'], PDO::PARAM_STR);
@@ -148,6 +153,9 @@ class PdvDAO extends Conexao
         }
         if(array_key_exists('vzsCartao', $respComandaFatura)){
             $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
+        }
+        if(array_key_exists('desconto', $respComandaFatura)){
+            $stmt->bindParam(':desconto', $respComandaFatura['desconto'], PDO::PARAM_STR);
         }
         $stmt->bindValue(':comanda_aberta', 0);
         $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
