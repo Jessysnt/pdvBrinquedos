@@ -73,7 +73,7 @@ class RelatorioDAO extends Conexao
         $stmt = static::getConexao()->prepare("SELECT u.id, CONCAT(u.nome,' ',u.sobrenome) AS nome, COUNT(DISTINCT cf.id) as totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id) AS ticketMedio
         FROM usuario AS u
         INNER JOIN comandafatura AS cf ON cf.id_vendedor=u.id
-        WHERE u.status=1 AND cf.data_finalizacao BETWEEN ':dtInicial' AND ':dtFinal'
+        WHERE u.status=1 AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal
         GROUP BY u.id");
         $stmt->bindParam(':dtInicial', $datas['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $datas['dtFinal'], PDO::PARAM_STR);

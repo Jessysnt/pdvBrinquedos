@@ -45,7 +45,7 @@
     </form>
     <br>
     <br>
-    <!-- <div class="row">
+    <div class="row">
         <table id="tabelaVendedores" class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr>
@@ -60,7 +60,7 @@
                 
             </tbody>
         </table>
-    </div> -->
+    </div>
     
 
 </div>
@@ -83,15 +83,14 @@
                 data: dados,
                 url:"colaboradores-vendas",
                 success:function(r){
-                    console.log('r', r);
                     var resp = jQuery.parseJSON(r);
-                    console.log('r', resp.maisVendidos);
-                    if(resp.maisVendidos != 0){
+                    // console.log('r', resp.colaboradores);
+                    if(resp.colaboradores != 0){
                         $('#tabelaVendedores').show();
                         var tbody = $('#tabelaVendedores').find('tbody');
                         tbody.empty();
-                        resp.maisVendidos.forEach((linha, index) => {
-                            tbody.append(`<tr> <th>${index+1}º</th> <th>${linha.nome}</th> <td>${linha.totalVendas}</td>  <td>${linha.ticketMedio}</td> <td>${parseFloat(linha.totalLiquido).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+                        resp.colaboradores.forEach((linha, index) => {
+                            tbody.append(`<tr> <th>${index+1}º</th> <th>${linha.nome}</th> <td>${linha.totalVendas}</td>  <td>${parseFloat(linha.ticketMedio).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <td>${parseFloat(linha.totalLiquido).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
                         });
                     }else{
                         $('#tabelaVendedores').hide();
