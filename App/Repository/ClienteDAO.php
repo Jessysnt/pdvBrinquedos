@@ -29,7 +29,7 @@ class ClienteDAO extends Conexao
     {
         $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id) as ticketMedio FROM cliente AS c
         LEFT JOIN comandafatura AS cf ON cf.id_cliente = c.id
-        WHERE c.id = :id AND c.status=1 AND cf.comanda_aberta=0");
+        WHERE c.id = :id AND cf.data_finalizacao IS NOT NULL");
         $stmt->bindParam(':id', $idCliente, PDO::PARAM_INT);
         $stmt->execute(); 
         return $stmt->fetchObject('\App\Entity\Cliente');

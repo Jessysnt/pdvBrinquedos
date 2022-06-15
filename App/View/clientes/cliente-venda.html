@@ -76,7 +76,7 @@
                 <div class="card-deck">
                     <div class="card text-white bg-secondary" >
                         <div class="card-body">
-                            <h5 class="card-title">Total liquido</h5>
+                            <h5 class="card-title">Total Líquido</h5>
                             <p class="card-text" >{{cliente.totalLiquido | format_currency('BRL')}}</p>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                 <div class="card-deck">
                     <div class="card text-white bg-secondary">
                         <div class="card-body">
-                            <h5 class="card-title">Total de vendas</h5>
+                            <h5 class="card-title">Ticket Medio</h5>
                             <input id="ticketMedio" class="card text-white bg-secondary" style="border: transparent;"> 
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                 <div class="card-deck">
                     <div class="card text-white bg-secondary">
                         <div class="card-body">
-                            <h5 class="card-title">Total liquido</h5>
+                            <h5 class="card-title">Total Líquido</h5>
                             <input id="totalLiquido" class="card text-white bg-secondary" style="border: transparent;"> 
                         </div>
                     </div>
@@ -171,7 +171,6 @@
                         $('#totalVendas').val(resp.dados['totalVendas']);
                         $('#ticketMedio').val(parseFloat(resp.dados['ticketMedio']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
                         $('#totalLiquido').val(parseFloat(resp.dados['totalLiquido']).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-
                         $('#vendasPeriodo').show();
                         var tbody = $('#vendasPeriodo').find('tbody');
                         tbody.empty();

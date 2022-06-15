@@ -2,6 +2,11 @@
 
 {% block title %}Venda Usuário{% endblock %}
 
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="assets/css/container.css">
+{% endblock %}
+
+
 {% block body %}
 
 <div class="container">
@@ -69,7 +74,7 @@
                 <div class="card-deck">
                     <div class="card text-white bg-secondary">
                         <div class="card-body">
-                            <h5 class="card-title">Total liquido</h5>
+                            <h5 class="card-title">Total Liquido</h5>
                             <p class="card-text" >{{usuario.totalLiquido | format_currency('BRL') }}</p>
                         </div>
                     </div>
@@ -104,7 +109,7 @@
                 <div class="card-deck">
                     <div class="card text-white bg-secondary">
                         <div class="card-body">
-                            <h5 class="card-title">Total liquido</h5>
+                            <h5 class="card-title">Total Liquido</h5>
                             <input id="totalLiquido" class="card text-white bg-secondary" style="border: transparent;"> 
                         </div>
                     </div>
