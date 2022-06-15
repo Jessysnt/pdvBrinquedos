@@ -92,13 +92,9 @@
 						</div>
                     </div>
                 </div>
-
 				<div class="row">
-					<div class="col-sm-3">
+					<div class="col-sm-5" style="vertical-align: middle;">
 						<span type="submit" class="btn btn-primary btn-block" id="btAddTemp">Adicionar</span>
-					</div>
-					<div class="col-sm-3">
-						<span class="btn btn-danger" id="btnLimparComanda">Limpar Comanda</span>
 					</div>
 				</div>
 			</form>	
@@ -128,11 +124,17 @@
 				</table>
 			</div>
 			<br>
-			<div class="row">
-				<div class="col-sm-3">
-					<span class="btn btn-success" id="gravarComanda">Enviar</span>
-				</div>
-			</div>
+			<div id="botoesComandaAtiva">
+                <div class="row" >
+                    <div class="col-sm-4">
+                        <span class="btn btn-danger" id="btnLimparComanda" style="margin-right: 20px;">Limpar Comanda</span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span type="submit" class="btn btn-success" name="gravarComanda" id="gravarComanda" >Enviar</span>
+                    </div>
+                </div>    
+            </div>
 		</div>	
 	</div>
 </div>
@@ -162,9 +164,8 @@
 		$("#valorUm").prop("disabled", true);
 		$("#pgUm").prop("disabled", true);
 		$("#sub").hide();
-		$('#gravarComanda').hide();
 		$('#btAddTemp').hide();
-		$('#btnLimparComanda').hide();
+		$('#botoesComandaAtiva').hide();
 	});
 
 	function habilitarCampos(){
@@ -181,7 +182,7 @@
 		$("#valorUm").prop("disabled", false);
 		$("#pgUm").prop("disabled", false);
 		$('#gravarComanda').show();
-		$('#btAddTemp').show();
+		$('#botoesComandaAtiva').show();
 		$('#btnLimparComanda').show();
 		// $("#valorUm").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
 	};
@@ -527,6 +528,7 @@
 				success:function(r){
 					var resp = JSON.parse(r);
 					if(resp.length > 0){
+						$("#btAddTemp").show();
 						$('#descricaoV').val(resp[0]['descricao']);
 						$('#quantidadeV').val(resp[0]['quantotal']);
 						$('#precoV').val(resp[0]['preco_ven']);	
