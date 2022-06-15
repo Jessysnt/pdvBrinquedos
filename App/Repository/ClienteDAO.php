@@ -27,7 +27,8 @@ class ClienteDAO extends Conexao
      */
     public function exibirCliente($idCliente)
     {
-        $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id) as ticketMedio FROM cliente AS c
+        $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, NVL(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END),0) AS totalLiquido, NVL(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id),0) as ticketMedio
+        FROM cliente AS c
         LEFT JOIN comandafatura AS cf ON cf.id_cliente = c.id
         WHERE c.id = :id AND cf.data_finalizacao IS NOT NULL");
         $stmt->bindParam(':id', $idCliente, PDO::PARAM_INT);
