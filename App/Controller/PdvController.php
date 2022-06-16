@@ -164,14 +164,14 @@ class PdvController
         $obPdvDAO = new PdvDAO();
         if($_GET['venda']){
             $respDAO = $obPdvDAO->tabelaComprovanteVendaId(intval($_GET["venda"]));
-            $itens = $respDAO['item'];
-            $itemTotal = explode(',', $respDAO['totalItem'], -1) ;
+            // $itens = $respDAO['item'];
+            $itemTotal = explode(',', $respDAO['itemTotal'], -1) ;
             // foreach ($itens as $item => $value) {
             //     $ ;
             // }
             // $str = print_r($respDAO, true) ;
-            $result = explode(' ', $itens, -1) ;
-            View::renderTemplate('/pdv/comprovante-venda.html', ['item'=>$result, 'comprovante'=>$respDAO, 'itemTotal'=>$itemTotal]); 
+            $result = explode(' ', $respDAO['item'], -1) ;
+            View::renderTemplate('/pdv/comprovante-venda.html', ['itens'=>$result, 'comprovante'=>$respDAO, 'itemTotal'=>$itemTotal]); 
         }else{
             $resp = $obPdvDAO->tabelaComprovanteVenda();
             View::renderTemplate('/pdv/comprovante-venda.html', ['comprovante'=>false]); 

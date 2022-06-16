@@ -97,13 +97,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr for>
+            {% for item in itens %}
+            <tr>
                 <td class="item-left">{{i+1}}</td>
-                <td class="item-left">{{item.2}}</td>
+                <td class="item-left">{{dump(item)}}</td>
                 <td class="item-left">{{item.0}}</td>
                 <td class="item-left">{{item.4}}</td>
-                <td class="t-right">{{itemTotal.0}}</td>
+                <!-- <td class="t-right">{{itemTotal.0}}</td> -->
             </tr>
+            {% endfor %}
         </tbody>
     </table>
     <hr>
