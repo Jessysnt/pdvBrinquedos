@@ -75,13 +75,16 @@
     </header>
     <hr>
     <div style="text-align:center">
-        <p>Extrato No. {{dump(comprovante)}}</p>
+        <p>Extrato No. {{comprovante.id}}</p>
         <strong>COMPROVANTE DE VENDA</strong>
     </div>
     <hr>
     <p class="flex justify-content-between"><span>Data Venda</span><span>Hora</span></p>
-    <p><strong>Cliente:</strong> Candanga</p>
+    {% if comprovante.cliente != null %}
+    <p><strong>Cliente:</strong> {{comprovante.cliente}}</p>
+    {% else %}
     <p>Cliente não informado.</p>
+    {% endif %}
     <hr>
     <table>
         <thead>
@@ -95,25 +98,27 @@
         </thead>
         <tbody>
             <tr for>
-                <td class="item-left"></td>
-                <td class="item-left"></td>
-                <td class="item-left"></td>
-                <td class="item-left"></td>
-                <td class="t-right"></td>
+                <td class="item-left">{{i+1}}</td>
+                <td class="item-left">{{item.2}}</td>
+                <td class="item-left">{{item.0}}</td>
+                <td class="item-left">{{item.4}}</td>
+                <td class="t-right">{{itemTotal.0}}</td>
             </tr>
         </tbody>
     </table>
     <hr>
-    <p class="flex justify-content-between" if><span>Desconto:</span><span>R$20</span></p>
+    {% if comprovante.desconto != null %}
+    <p class="flex justify-content-between" ><span>Desconto:</span><span>{{comprovante.desconto | format_currency('BRL')}}</span></p>
+    {% endif %}
     <div class="flex justify-content-between">
         <h2>Total:</h2>
-        <h2>R$1000</h2>
+        <h2>{{comprovante.total | format_currency('BRL')}}</h2>
     </div>
     <hr>
-    <footer style="text-align:center">
+    <!-- <footer style="text-align:center">
         <p>Technology Partner Dotworld Technologies</p>
         <p>www.dotworld.in</p>
-    </footer>
+    </footer> -->
 </body>
 
 </html>
