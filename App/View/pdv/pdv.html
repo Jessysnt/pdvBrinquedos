@@ -154,7 +154,14 @@
                     </tfoot>
                 </table>
             </div>
-            <br>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-8" id="desc">
+					<label style="text-align: left;">Desconto</label>
+					<input type="text" class="form-control" id="descontoValor" name="descontoValor" required>
+				</div>
+			</div>
+			<br>
+			<br>
             <div id="botoesComandaAtiva">
                 <div class="row" >
                     <div class="col-sm-4">
@@ -164,18 +171,10 @@
                     <div class="col-sm-4">
                         <span type="submit" class="btn btn-success" name="finalizarVenda" id="finalizarVenda" >Finalizar Venda</span>
                     </div>
-                </div>    
+                </div> 
             </div>
             
-			
             <div id="formasPagamentos">
-				<div class="row">
-					<div class="col-sm-4">
-						<label>Desconto</label>
-						<input type="text" class="form-control" id="descontoValor" onchange="descontoVenda()" name="descontoValor" required>
-					</div>
-				</div>
-				<br>
                 <div class="row">
                     <div class="col-sm-4">
                         <label>1ª Forma de pagamento</label>
@@ -200,7 +199,6 @@
                         </div>
                     </div>
                 </div>
-				<br>
 				<div class="row" id="maisPagamento">
 					<div class="col">
 						<button type="button" class="glyphicon glyphicon-plus" aria-label="Mais" onclick="maisPagamento()">
@@ -208,7 +206,6 @@
 						  </button>
 					</div>
 				</div>
-				<br>
 				<div class="row" id="menosPagamento">
 					<div class="col">
 						<button type="button" class="glyphicon glyphicon-minus" aria-label="Mais" onclick="menosPagamento()">
@@ -255,7 +252,6 @@
                         <div class="col-sm-4">
                             <span class="btn btn-primary" id="voltarFormulario" >Voltar</span>
                         </div>
-    
                         <div class="col-sm-4">
                             <span type="submit" class="btn btn-success" name="gravarVenda" id="gravarVenda" >GRAVAR</span>
                         </div>
@@ -294,7 +290,7 @@
 		$("#sub").hide();
         $("#btAddTemp").hide();
 		$("#botoesComandaAtiva").hide();
-		$("#descontoValor").hide();
+		$("#desc").hide();
 	});
 
 	function habilitarCampos(){
@@ -344,37 +340,62 @@
 </script>
 
 <script type="text/javascript">
-// var valorUm = $('#valorUm').maskMoney('unmasked')[0];
+
     $('#finalizarVenda').click(function () {
-        if($('#valorUm').maskMoney('unmasked')[0]){
-            $("#clienteCpf").prop("disabled", true);
-            $("#nomeClienteComanda").prop("disabled", true);
-            $("#codigo").prop("disabled", true);
-            $("#descricaoV").prop("disabled", true);
-            $("#produtoVenda").prop("disabled", true);
-            $("#quantidadeV").prop("disabled", true);
-            $("#precoV").prop("disabled", true);
-            $("#quantV").prop("disabled", true);
-            $("#anonimo").prop("disabled", true);
-            $("#formasPagamentos").show();
-            $("#botoesComandaAtiva").hide();
-            $("#frmComanda").hide();
-			$("#descontoValor").show();
-			$("#menosPagamento").hide();
-        }else{
-            alertify.error("Não possui produtos!");
-        }  
+		if(comanda.linhas.length > 0){
+			if(getVerificaDesconto() > getTotal()){
+				console.log('chama modal');
+				alertify.confirm('Desconto maior que o permitido! ', function(){
+					$("#permissao").modal({
+						show: true
+					});
+				}, function(){ 
+					alertify.error('Cancelado !');
+				});
+			}
+			else if($('#anonimo')[0].checked == false && $('#nomeClienteComanda').val() == ""){
+				alertify.alert("Preencher o CPF!");
+			}
+			else{
+				finalizacaoPagamentos();
+			}
+		}else{
+			alertify.error("Não possui produtos!");
+		}
     });
+
+	function finalizacaoPagamentos() {
+		$("#clienteCpf").prop("disabled", true);
+		$("#nomeClienteComanda").prop("disabled", true);
+		$("#codigo").prop("disabled", true);
+		$("#descricaoV").prop("disabled", true);
+		$("#produtoVenda").prop("disabled", true);
+		$("#quantidadeV").prop("disabled", true);
+		$("#precoV").prop("disabled", true);
+		$("#quantV").prop("disabled", true);
+		$("#anonimo").prop("disabled", true);
+		$("#formasPagamentos").show();
+		$("#botoesComandaAtiva").hide();
+		$("#frmComanda").hide();
+		$("#menosPagamento").hide();
+		$("#desc").hide();
+		$('#valorUm').focus();
+		$('#valorUm').val(getTotal().toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));	  
+	}
 
     function voltarFormulario() {
         $("#formasPagamentos").hide();
         $("#frmComanda").show();
+		$("#valorDois").val('');
     }
 
     $('#voltarFormulario').click(function () {
         $("#botoesComandaAtiva").show();
         $("#formasPagamentos").hide();
         $("#frmComanda").show();
+		$("#desc").show();
+		$("#valorDois").val('');
+		$("#valorUm").val('');
         habilitarCampos();
     });
 
@@ -383,7 +404,12 @@
 		$("#maisPagamento").hide();
 		$("#pagamentoDois").show();
 		$("#menosPagamento").show();
-		$("#valorDois").val('R$0,00');
+		if($("#valorUm").maskMoney('unmasked')[0] < getTotal()){
+			var valorDoisP = getTotal() - $("#valorUm").maskMoney('unmasked')[0];
+			$("#valorDois").val(valorDoisP.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+		}else{
+			$("#valorDois").val('R$0,00');
+		}
 	}
 
 	function menosPagamento() {
@@ -468,6 +494,7 @@
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
 						clienteComanda(comanda.id_cliente);
+						$('#desc').show();
 						habilitarCampos();
 						$('#valorUm').focus();
                         console.log(comanda);
@@ -512,6 +539,7 @@
 						$('#precoV').val(resp[0]['preco_ven']);
 						$('#btAddTemp').click(); 
 						$('#valorUm').focus();
+						$('#desc').show();
 					}else{
 						alertify.error('Produto nao encontrado.');
 					}
@@ -545,7 +573,31 @@
 			soma += linha.quantV*linha.precoV;
 		});
 		total.html(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-		valorPagar(soma);
+	}
+
+	/**
+	 * Faz a soma do subtotal
+	 */
+	 function getTotal() {
+		var soma = 0.0;
+		comanda.linhas.forEach(linha => {
+			soma += linha.quantV*linha.precoV;
+		});
+		var desconto = $('#descontoValor').maskMoney('unmasked')[0];
+		return soma - desconto;
+	}
+
+	/**
+	 * Verificar desconto
+	 */
+	 function getVerificaDesconto() {
+		var soma = 0.0;
+		comanda.linhas.forEach(linha => {
+			soma += linha.quantV*linha.precoV;
+		});
+		var dezPorcento = soma - (soma*0.1);
+		console.log('getVerificaDesconto',dezPorcento);
+		return dezPorcento;
 	}
 
 	/**
@@ -566,7 +618,7 @@
 		$('#codigo').attr('data-id', "");
 		$('#codigo').attr('data-nome', "");
 		$('#grupoCpf').show();
-		$('#pgUm').val(null).trigger('change');
+		$('#pgUm').val(1).trigger('change');
 		$('#pgDois').val(null).trigger('change');
 		$('#pagamentoDois').hide();
 		$('#valorDois').val("");
@@ -629,33 +681,47 @@
 	* Cria a comanda ENVIAR PARA O BANCO
 	*/
 	$('#gravarVenda').click(function() {
-		var descontoValor = $('#descontoValor').maskMoney('unmasked')[0];
-		
-		var valorUm =  $('#valorUm').maskMoney('unmasked')[0];
-		console.log('valorUm', valorUm);
+		var valorUm = $('#valorUm').maskMoney('unmasked')[0];
 		var valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		console.log('valorDois', valorDois);
-		if(descontoValor){
-			console.log('descontoValor', descontoValor);
-			descontoVenda();
+		var somaCampos = valorUm + valorDois;
+		getVerificaDesconto();
+		// valorPagar();
+		if(valorUm < getTotal() && valorDois == 0.0){
+			var faltante = getTotal() - valorUm;
+			alertify.error('Valor total ainda não finalizado: ' + faltante.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+			console.log('faltante', faltante.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+		}
+		else if(valorUm > getTotal() && valorDois == 0.0){
+			var troco = valorUm - getTotal();
+			console.log('troco', troco);
+			$("#trocoUm").show();
+			$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+			$("#valorDois").val('');
+		}
+		else if(somaCampos < getTotal()){
+			alertify.error('Valor total ainda não finalizado');
+		}
+		else if(somaCampos == getTotal()){
+			var vtDois = $('#valorDois').maskMoney('unmasked')[0];
+			console.log('valor doin', vtDois);
+			if((vtDois > 0  && $('#pgDois').val() == "") ){
+				alertify.alert("Preencha a segunda forma de pagamento!");
+				console.log('gravar');
+			}else{
+				gravarComanda();
+			}
+		}
+		else if(somaCampos > getTotal()){
+			var troco = valorUm - getTotal();
+			$("#trocoUm").show();
+			$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 		}
 	});	
 		
+	
 		
 	function gravarComanda() {
-		var vtDois = $('#valorDois').maskMoney('unmasked')[0];
-		if((vtDois > 0  && $('#pgDois').val() != "") || vtDois == 0 ){
-			console.log('vtDois', vtDois);
-			console.log('pgDois', $('#pgDois').val());
-			$("#formasPagamentos").show();
-			alertify.alert("Preencha a segunda forma de pagamento!");
-
-		}else if($('#anonimo')[0].checked || $('#nomeClienteComanda').val() == ""){
-			alertify.alert("Preencher o CPF!");
-			voltarFormulario();
-			habilitarCampos();
-
-		}else if($('#pgUm').val() == ""){
+		if($('#pgUm').val() == ""){
 			alertify.alert("Preencher forma de pagamento!"); 
 		}else{
 			var dados={
@@ -666,7 +732,7 @@
 				pg_forma2: $('#pgDois').val(),
 				valor_total2: $('#valorDois').maskMoney('unmasked')[0],
 				vzs_cartao: $('#vzsCartao').val(),
-				desconto: parseFloat($('#descontoValor').val()),
+				desconto: $('#descontoValor').maskMoney('unmasked')[0],
 				// desconto: (parseFloat($('#descontoValor').val())!=NaN?(parseFloat($('#descontoValor').val())):null),
 				linhas:[]
 			};
@@ -684,16 +750,16 @@
 			console.log('dados', dados);
 			console.log('parou ak1');
 			
-			// var idComanda = $('#numeroComanda').attr('data-id');
-			// console.log('parou ak2', idComanda);			
-			// 			alertify.confirm('Imprimir comprovante de compra? ', function(){
-			// 				href=`comprovante-venda?venda=${idComanda}`;
-			// 				var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
-			// 				mywindow.print();
-			// 				console.log('imprimir');
-			// 			}, function(){ 
-			// 				alertify.error('Cancelado !');
-			// 			});
+			var idComanda = $('#numeroComanda').attr('data-id');
+			console.log('parou ak2', idComanda);			
+						alertify.confirm('Imprimir comprovante de compra? ', function(){
+							href=`comprovante-venda?venda=${idComanda}`;
+							var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
+							mywindow.print();
+							console.log('imprimir');
+						}, function(){ 
+							alertify.error('Cancelado !');
+						});
 					
 			return false;
 			$.ajax({
@@ -759,6 +825,7 @@
                     $('#descricaoV').val(resp[0]['descricao']);
                     $('#quantidadeV').val(resp[0]['quantotal']);
                     $('#precoV').val(resp[0]['preco_ven'].toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+					$('#desc').show();
                 }
             }
         });
@@ -852,140 +919,6 @@
 </script>
 
 <script type="text/javascript">
-    /**
-     * Ao perder o foco, testa o padrão do campo
-    */
-    $('#numeroComanda').focusout(function(e) {
-        if(!e.target.validity.valid){
-            $('#frmComanda')[0].reportValidity();
-        }
-    });
-    
-    $('#numeroComanda').keyup(function(e) {
-        if(e.which == 13){
-            e.preventDefault();
-        }
-    });
-</script>
-
-<script type="text/javascript">
-	// $('#pgUm').click(function(){
-	// 	console.log('ak2');
-	// 	if($('#pgUm').val == 1){
-	// 		console.log('ak2');
-	// 	}
-	// });
-
-	function valorPagar(soma){
-		$('#valorUm').val(soma.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-		$('#valorUm').change(function(){
-			var valorUm = $('#valorUm').maskMoney('unmasked')[0];
-			if(valorUm > soma){
-				$("#trocoUm").show();
-				var troco = valorUm - soma;
-				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-				// $("#pagamentoDois").hide();
-				$("#valorDois").val('');
-			}else if(valorUm < soma){
-				var valorDois = soma - valorUm;
-				$("#trocoUm").hide();
-				$("#trocoUmDinheiro").val('');
-				$('#valorDois').val(valorDois.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-			} else {
-				// $("#pagamentoDois").hide();
-				$("#valorDois").val('');
-				$("#trocoUm").hide();
-				$("#trocoUmDinheiro").val('');
-			}
-		});
-
-		$('#valorDois').change(function(){
-			valorDois = $('#valorDois').maskMoney('unmasked')[0];
-			// valorUm = $('#valorUm').maskMoney('unmasked')[0];
-			var valorVenda = valorUm + valorDois;
-			if(soma < valorVenda){
-				troco = valorVenda - soma;
-				$("#trocoUm").show();
-				$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-			}else if(valorVenda == soma){
-				$("#trocoUm").hide();
-				$("#trocoUmDinheiro").val('');
-			}else if(valorDois == 0){
-				$("#trocoUm").hide();
-				$("#trocoUmDinheiro").val('');
-				$("#pagamentoDois").hide();
-				// $('#pgDois').val(null).trigger('change');
-			}
-		});
-	};
-	
-
-	function valorRestante(dezPorcento) {
-		console.log('valorRestante1', dezPorcento);
-		let valorUm = $('#valorDois').maskMoney('unmasked')[0];
-		console.log('valorRestante2', valorUm);
-		let valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		console.log('valorRestante3', valorDois);
-		// var totalLinha = 0.0;
-		// comanda.linhas.forEach(linha => {
-		// 	totalLinha += linha.quantV*linha.precoV;
-		// });
-		// let valorUm = $('#valorUm').maskMoney('unmasked')[0];
-		// let valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		// let somaCampos = valorUm + valorDois;
-		// var dezPorcento = totalLinha - (totalLinha * 0.1);
-		// if(dezPorcento > somaCampos){
-			
-				// alertify.confirm('Desconto maior que o permitido! ', function(){
-				// 	$("#permissao").modal({
-				// 		show: true
-				// 	});
-				// }, function(){ 
-				// 	alertify.error('Cancelado !');
-				// });
-				// return false;
-			
-		// }else{
-		// 	gravarComanda();
-		// 	// voltarFormulario();
-		// }
-	}
-
-	function descontoVenda() {
-		var totalLinha = 0.0;
-		comanda.linhas.forEach(linha => {
-			totalLinha += linha.quantV*linha.precoV;
-		});
-		var descontoValor = $('#descontoValor').maskMoney('unmasked')[0];
-		var valorUm = totalLinha - descontoValor;
-		$('#valorUm').val(valorUm.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-		valorPagar(valorUm);
-		var valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		var dezPorcento = (valorUm + valorDois)*0.1;
-		// valorRestante(dezPorcento);
-		// if(descontoValor > dezPorcento){
-		// 	console.log('eh maior');
-		// 	alertify.confirm('Desconto maior que o permitido! ', function(){
-		// 		$("#permissao").modal({
-		// 			show: true
-		// 		});
-		// 	}, function(){ 
-		// 		alertify.error('Cancelado !');
-		// 	});
-		// }else{
-		// 	console.log('gravarvenda');
-		// }
-		// let valorUm = $('#valorUm').maskMoney('unmasked')[0];
-		// let valorDois = $('#valorDois').maskMoney('unmasked')[0];
-		// var desconto = soma - (valorUm + valorDois);
-		
-		console.log('descontoValor', descontoValor);
-		console.log('dezPorcento', dezPorcento);
-		// $('#descontoValor').val(desconto.toLocaleString('BRL'));
-	}
-</script>
-
-<script type="text/javascript">
 	$('#permitirDesconto').click(function(e) {
 		e.preventDefault();
 		// vazios=validarFormVazio('permissaoSenha');
@@ -1007,7 +940,7 @@
 				var resp = JSON.parse(r);
 				if(resp){
 					$('#permissaoSenha')[0].reset();
-					gravarComanda();
+					finalizacaoPagamentos();
 				}else{
 					$('#permissaoSenha')[0].reset();
 					alertify.error("Acesso Negado!!");
