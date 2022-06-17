@@ -105,7 +105,7 @@
     });
 
     $('#enviar').click(function(){
-        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value || $('#dtInicial')[0].value == $('#dtFinal')[0].value){
             var dados={
                 dtInicial: $('#dtInicial')[0].value,
                 dtFinal: $('#dtFinal')[0].value
