@@ -44,7 +44,8 @@
             margin: 0 0 0px; 
         } 
         table { 
-            border-collapse: collapse; 
+            border-collapse: collapse;
+            margin: 0 0 0px;
         } 
         .flex {
             display: flex !important;
@@ -79,7 +80,7 @@
         <strong>COMPROVANTE DE VENDA</strong>
     </div>
     <hr>
-    <p class="flex justify-content-between"><span>Data Venda</span><span>Hora</span></p>
+    <p class="flex justify-content-between"><span>{{horaData.0}}</span><span>{{horaData.1}}</span></p>
     {% if comprovante.cliente != null %}
     <p><strong>Cliente:</strong> {{comprovante.cliente}}</p>
     {% else %}
@@ -93,6 +94,7 @@
                 <th class="item-left">Descrição</th>
                 <th class="item-left">QTD</th>
                 <th class="item-left">VL UNIT(R$)</th>
+                <th></th>
                 <th class="t-right">SUB Total(R$)</th>
             </tr>
         </thead>
@@ -100,16 +102,17 @@
             {% for item in itens %}
             <tr>
                 <td class="item-left">{{i+1}}</td>
-                <td class="item-left">{{dump(item)}}</td>
+                <td class="item-left">{{item.1}}</td>
                 <td class="item-left">{{item.0}}</td>
-                <td class="item-left">{{item.4}}</td>
-                <!-- <td class="t-right">{{itemTotal.0}}</td> -->
+                <td class="item-left">{{item.2}}</td>
+                <th></th>
+                <td class="t-right">{{item.3}}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <hr>
-    {% if comprovante.desconto != null %}
+    {% if comprovante.desconto != 0.0 %}
     <p class="flex justify-content-between" ><span>Desconto:</span><span>{{comprovante.desconto | format_currency('BRL')}}</span></p>
     {% endif %}
     <div class="flex justify-content-between">
