@@ -163,18 +163,25 @@ class PdvController
     {
         $obPdvDAO = new PdvDAO();
         if($_GET['venda']){
-            $respDAO = $obPdvDAO->tabelaComprovanteVendaId(intval($_GET["venda"]));
-            // $itens = $respDAO['item'];
-            $itemTotal = explode(',', $respDAO['itemTotal'], -1) ;
-            // foreach ($itens as $item => $value) {
-            //     $ ;
-            // }
-            // $str = print_r($respDAO, true) ;
-            $result = explode(' ', $respDAO['item'], -1) ;
-            View::renderTemplate('/pdv/comprovante-venda.html', ['itens'=>$result, 'comprovante'=>$respDAO, 'itemTotal'=>$itemTotal]); 
+            $respDAOId = $obPdvDAO->tabelaComprovanteVendaId(intval($_GET["venda"]));
+            $arrayFinal = [];
+            $arraySimples = explode(',', $respDAOId['item']);
+            foreach ($arraySimples as $linha) {
+                $value = explode(';', $linha);
+                array_push($arrayFinal, $value);
+            }
+            $horaData = explode(' - ', $respDAOId['venda']);
+            View::renderTemplate('/pdv/comprovante-venda.html', ['itens'=>$arrayFinal, 'comprovante'=>$respDAOId, 'horaData'=>$horaData]); 
         }else{
-            $resp = $obPdvDAO->tabelaComprovanteVenda();
-            View::renderTemplate('/pdv/comprovante-venda.html', ['comprovante'=>false]); 
+            $respDAO = $obPdvDAO->tabelaComprovanteVenda();
+            $arrayFinal = [];
+            $arraySimples = explode(',', $respDAO['item']);
+            foreach ($arraySimples as $linha) {
+                $value = explode(';', $linha);
+                array_push($arrayFinal, $value);
+            }
+            $horaData = explode(' - ', $respDAO['venda']);
+            View::renderTemplate('/pdv/comprovante-venda.html', ['itens'=>$arrayFinal, 'comprovante'=>$respDAO, 'horaData'=>$horaData]); 
         }
     }
 

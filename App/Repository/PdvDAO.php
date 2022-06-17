@@ -71,8 +71,13 @@ class PdvDAO extends Conexao
             $sqlVzsCartao = [' vzs_cartao=',':vzsCartao, '];
         }
 
+        $sqlDesconto = ['',''];
+        if(array_key_exists('desconto', $respComandaFatura)){
+            $sqlDesconto = [' desconto=',':desconto, '];
+        }
+
         $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]$sqlDesconto[0]$sqlDesconto[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
         
         $stmt=$bd->prepare($sql);
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
@@ -90,6 +95,9 @@ class PdvDAO extends Conexao
         }
         if(array_key_exists('vzsCartao', $respComandaFatura)){
             $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
+        }
+        if(array_key_exists('desconto', $respComandaFatura)){
+            $stmt->bindParam(':desconto', $respComandaFatura['desconto'], PDO::PARAM_STR);
         }
         $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
         $result = $stmt->execute(); 
@@ -207,7 +215,7 @@ class PdvDAO extends Conexao
 
     public function tabelaComprovanteVendaId($idcomanda)
     {
-        $stmt = static::getConexao()->prepare("SELECT cf.id, cf.numero, date_format(cf.data_finalizacao, '%d-%m-%Y - %H:%i:%s') AS venda, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) WHEN cf.valor_total1 IS NULL THEN SUM(lf.quantidade * lf.valor_unitario) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,' ',p.nome,' ',lf.valor_unitario, ' ')) AS item, GROUP_CONCAT(lf.quantidade * lf.valor_unitario) AS itemTotal, CONCAT(c.nome, ' ',c.sobrenome) AS cliente, CONCAT(u.nome, ' ',u.sobrenome) AS vendedor, COALESCE(cf.desconto, 0) AS desconto
+        $stmt = static::getConexao()->prepare("SELECT cf.id, cf.numero, date_format(cf.data_finalizacao, '%d-%m-%Y - %H:%i:%s') AS venda, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) WHEN cf.valor_total1 IS NULL THEN SUM(lf.quantidade * lf.valor_unitario) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,';',p.nome,';',lf.valor_unitario, ';', lf.quantidade*lf.valor_unitario)) as item, CONCAT(c.nome, ' ',c.sobrenome) AS cliente, CONCAT(u.nome, ' ',u.sobrenome) AS vendedor, COALESCE(cf.desconto, 0) AS desconto
         FROM comandafatura AS cf
         INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
         INNER JOIN produto AS p ON lf.id_produto = p.id
@@ -227,15 +235,15 @@ class PdvDAO extends Conexao
         $resp = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($resp['id']){
-            $stmt = static::getConexao()->prepare("SELECT cf.id, cf.numero, date_format(cf.data_finalizacao, '%d-%m-%Y - %H:%i:%s') as venda, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) WHEN cf.valor_total1 IS NULL THEN SUM(lf.quantidade * lf.valor_unitario) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario)) as item, CONCAT(c.nome, ' ',c.sobrenome) as cliente, CONCAT(u.nome, ' ',u.sobrenome) as vendedor
+            $stmt = static::getConexao()->prepare("SELECT cf.id, cf.numero, date_format(cf.data_finalizacao, '%d-%m-%Y - %H:%i:%s') AS venda, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) WHEN cf.valor_total1 IS NULL THEN SUM(lf.quantidade * lf.valor_unitario) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,';',p.nome,';',lf.valor_unitario, ';', lf.quantidade*lf.valor_unitario)) as item, CONCAT(c.nome, ' ',c.sobrenome) AS cliente, CONCAT(u.nome, ' ',u.sobrenome) AS vendedor, COALESCE(cf.desconto, 0) AS desconto
             FROM comandafatura AS cf
             INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
             INNER JOIN produto AS p ON lf.id_produto = p.id
-            LEFT JOIN cliente as c ON cf.id_cliente = c.id
-            LEFT JOIN usuario as u ON cf.id_vendedor = u.id
+            LEFT JOIN cliente AS c ON cf.id_cliente = c.id
+            LEFT JOIN usuario AS u ON cf.id_vendedor = u.id
             WHERE  cf.id = :idVenda
-            GROUP BY cf.id ");
-            $stmt->bindParam(':idVenda', $$resp['id'], PDO::PARAM_INT);
+            GROUP BY cf.id");
+            $stmt->bindParam(':idVenda', $resp['id'], PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch();
         }
