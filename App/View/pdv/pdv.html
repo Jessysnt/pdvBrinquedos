@@ -183,7 +183,7 @@
                                 <option value="1" >Dinheiro</option>
                                 <option value="2">Pix</option>
                                 <option value="3">Debito</option>
-                                <option value="4">Credito</option>
+                                <option value="4">Crédito</option>
                                 <!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
                             </select>
                         </div>
@@ -487,6 +487,7 @@
 				data: "numero=" + $('#numeroComanda').val(),
 				url: "obter-dados-numero",
 				success:function(r){
+					$('#numeroComanda').attr('data-id', "");
 					if(r != 'false' && r != 'fechadafalse'){
 						var resp = JSON.parse(r);
                         comanda = resp;
@@ -494,6 +495,7 @@
                         itensSoma($('#tabelaComanda'));
 		                atualizarTabela($('#tabelaComanda'));
 						clienteComanda(comanda.id_cliente);
+						$('#descontoValor').val('');
 						$('#desc').show();
 						habilitarCampos();
 						$('#valorUm').focus();
@@ -596,7 +598,6 @@
 			soma += linha.quantV*linha.precoV;
 		});
 		var dezPorcento = soma - (soma*0.1);
-		console.log('getVerificaDesconto',dezPorcento);
 		return dezPorcento;
 	}
 
@@ -622,6 +623,8 @@
 		$('#pgDois').val(null).trigger('change');
 		$('#pagamentoDois').hide();
 		$('#valorDois').val("");
+		$('#valorUm').val("");
+		$('#descontoValor').val("");
 	}
 
 	/**
@@ -685,36 +688,44 @@
 		var valorDois = $('#valorDois').maskMoney('unmasked')[0];
 		var somaCampos = valorUm + valorDois;
 		getVerificaDesconto();
-		// valorPagar();
-		if(valorUm < getTotal() && valorDois == 0.0){
-			var faltante = getTotal() - valorUm;
+		var total = getTotal().toFixed(2);
+		if(valorUm < parseFloat(total) && valorDois == 0.0){
+			var faltante = parseFloat(total) - valorUm;
 			alertify.error('Valor total ainda não finalizado: ' + faltante.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			console.log('faltante', faltante.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 		}
-		else if(valorUm > getTotal() && valorDois == 0.0){
-			var troco = valorUm - getTotal();
+		else if(valorUm > parseFloat(total) && valorDois == 0.0){
+			var troco = valorUm - parseFloat(total);
 			console.log('troco', troco);
 			$("#trocoUm").show();
 			$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 			$("#valorDois").val('');
+			alertify.confirm('Finalizar venda? ', function(){
+				gravarComanda();
+			}, function(){ 
+				alertify.error('Cancelado !');
+			});
 		}
-		else if(somaCampos < getTotal()){
+		else if(somaCampos < total){
 			alertify.error('Valor total ainda não finalizado');
 		}
-		else if(somaCampos == getTotal()){
+		else if(somaCampos == parseFloat(total)){
 			var vtDois = $('#valorDois').maskMoney('unmasked')[0];
-			console.log('valor doin', vtDois);
 			if((vtDois > 0  && $('#pgDois').val() == "") ){
 				alertify.alert("Preencha a segunda forma de pagamento!");
-				console.log('gravar');
 			}else{
 				gravarComanda();
 			}
 		}
-		else if(somaCampos > getTotal()){
-			var troco = valorUm - getTotal();
+		else if(somaCampos > parseFloat(total)){
+			var troco = valorUm - parseFloat(total);
 			$("#trocoUm").show();
 			$("#trocoUmDinheiro").val(troco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+			alertify.confirm('Finalizar venda? ', function(){
+				gravarComanda();
+			}, function(){ 
+				alertify.error('Cancelado !');
+			});
 		}
 	});	
 		
@@ -748,39 +759,25 @@
 				apagarForm();
 			});
 			console.log('dados', dados);
-			console.log('parou ak1');
-			
-			var idComanda = $('#numeroComanda').attr('data-id');
-			console.log('parou ak2', idComanda);			
-						alertify.confirm('Imprimir comprovante de compra? ', function(){
-							href=`comprovante-venda?venda=${idComanda}`;
-							var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
-							mywindow.print();
-							console.log('imprimir');
-						}, function(){ 
-							alertify.error('Cancelado !');
-						});
-					
-			return false;
+
 			$.ajax({
 				type:"POST",
 				data: dados,
 				url:"gravar-venda",
 				success:function(r){
-					// console.log('respostaGravou1',r);
-					console.log('parou ak2');
 					var resp = JSON.parse(r);
-					console.log('respostaGravou2',resp);
 					if(resp.resp == true){	
 						$('#codigo').val('');
 						$('#clienteCpf').val(null).trigger('change');
 						$('#nomeClienteComanda').val('');
 						apagarForm();
+						voltarFormulario();
+						$('#descontoValor').val('');
+						var idComanda = $('#numeroComanda').attr('data-id');			
 						alertify.confirm('Imprimir comprovante de compra? ', function(){
-							href="comprovante-venda?id=";
-							var mywindow = window.open(href="comprovante-venda", 'PRINT', 'height=400,width=600');
+							href=`comprovante-venda?venda=${idComanda}`;
+							var mywindow = window.open(href=`comprovante-venda?venda=${idComanda}`, 'PRINT', 'height=400,width=600');
 							mywindow.print();
-							console.log('imprimir');
 						}, function(){ 
 							alertify.error('Cancelado !');
 						});
