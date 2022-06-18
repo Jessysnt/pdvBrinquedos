@@ -40,6 +40,9 @@ class DashboardDAO extends Conexao
     //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     // }
 
+    /**
+     * Entradas(com vendas) e saidas buscada pelo ano.. grafico dashboard
+     */
     public function vendasAno($dtInicial)
     {
         $stmt = static::getConexao()->prepare("SELECT date_format(a.dia,'%Y-%m') AS mes, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) + SUM(CASE WHEN l.valor > 0 THEN l.valor ELSE 0 END) as entradas, SUM(CASE WHEN l.valor < 0 THEN ABS(l.valor) ELSE 0 END) as saidas, (SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) + SUM(CASE WHEN l.valor > 0 THEN l.valor ELSE 0 END)) - (SUM(CASE WHEN l.valor < 0 THEN ABS(l.valor) ELSE 0 END)) AS saldo FROM (SELECT last_day('2022-12-01') - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY AS dia from (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a cross join (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b cross join (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS c ) AS a
