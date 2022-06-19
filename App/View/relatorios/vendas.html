@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Comandas{% endblock %}
+
+{% block stylesheet %}
+<style>
+	td {text-align: center;}
+    th {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="container" id="tabela">
+    <div class="row">
+        <form id="frmRelatorioVenda">
+            <div class="row">  
+                <div class="col-sm-3">
+                    <label>Data Inicial</label>
+                </div>
+                <div class="col-sm-3">
+                    <label>Data Final</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+                </div>
+                <div class="col-sm-3">
+                    <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+                </div>
+                <div class="col-sm-3">
+                    <span class="btn btn-primary btn-block" id="enviar">Enviar</span>
+                </div>
+                <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+            </div>
+        </form>
+    </div>
+    <br>
+    <div id="vendasPeriodo" >
+        <div class="row">
+            <div class="table-responsive" >
+                <caption><label>Comandas</label></caption> 
+                    <br>
+                <table class="table table-hover table-condensed table-bordered"  id="lista">
+                    <!-- <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+                    <br> -->
+                    <thead>	
+                        <tr>
+                            <th>Data Abertura</th>
+                            <th>Comanda</th>
+                            <th>Vendedor</th>
+                            <th>Cliente</th>
+                            <th>Itens</th>
+        
+                            <th>Status</th>
+                            <th>Fechar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if pagina > 1 %} 
+                    <li class="page-item">
+                        <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina-1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    {% endif %}
+        
+                    {% for i in 1..totalpaginas %}
+                    <li class="page-item"><a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{i}}{{busca != ''?'&busca='~busca:''}}">{{i}}</a></li>
+                    {% endfor %}
+        
+                    {% if totalpaginas > pagina %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{route}}?itensPag={{itensPag}}&pagina={{pagina+1}}{{busca != ''?'&busca='~busca:''}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+
+    
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	 $(document).ready(function(){
+        $('#vendasPeriodo').hide();
+    });
+
+    $('#enviar').click(function(){
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value || $('#dtInicial')[0].value == $('#dtFinal')[0].value){
+            var dados={
+                dtInicial: $('#dtInicial')[0].value,
+                dtFinal: $('#dtFinal')[0].value
+            }
+            carrega(dados);
+            // console.log(dados);
+        }else{
+            alertify.error("Datas invalidas!");
+        }
+    });
+        
+        
+    function carrega(dados) {
+        $.ajax({
+            type:"POST",
+            data: dados,
+            url:"pesquisar-vendas",
+            success:function(r){
+                console.log('r',r);
+                var resp = jQuery.parseJSON(r);
+                // console.log(resp);
+                if(resp.dados.length > 0){
+                    $('#vendasPeriodo').show();
+                    var tbody = $('#vendasPeriodo').find('tbody');
+                    tbody.empty();
+                    resp.dados.forEach(linha => {
+                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item.replace(',', '<br>')}</td> <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span> </td></tr>`);
+                    });
+                }else{
+                    $('#vendasPeriodo').hide();
+                    alertify.error('Não há comandas');
+                }
+            } 
+        });
+    }    
+</script>
+
+
+{% endblock %}
