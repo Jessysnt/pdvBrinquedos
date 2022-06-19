@@ -83,4 +83,18 @@ class RelatorioController
         }
         View::renderTemplate('/relatorios/vendas-colaboradores.html'); 
     }
+
+    public function verLancamentoVenda()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $datas=array(
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => $_POST['dtFinal']
+            );
+            $resp = $obRelatorioDAO->lancamentoVenda($datas);
+            View::jsonResponse(['relatorio'=>$resp]);
+        }
+        View::renderTemplate('/relatorios/status-anual.html');
+    }
 }

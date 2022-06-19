@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Lançamentos e vendas{% endblock %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160); text-align: center; color: rgb(8, 5, 10);">
+                <div class="card-body">
+                    <h4>Relatório de vendas e lançamentos</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <form id="frmLancamentoVendas">
+        <div class="row">  
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+            </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+        </div>
+    </form>
+    <br>
+    <br>
+    <div class="row">
+        <table id="tabelaRelatorio" class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                  <th scope="col">Mês</th>
+                  <th scope="col">Vendas</th>
+                  <th scope="col">Entradas lançadas</th>
+                  <th scope="col">Saídas lançadas</th>
+                  <th scope="col">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function(){
+        $('#tabelaRelatorio').hide();
+    });
+
+    function enviar() {
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value || $('#dtInicial')[0].value == $('#dtFinal')[0].value){
+            var dados={
+                dtInicial: $('#dtInicial')[0].value,
+                dtFinal: $('#dtFinal')[0].value
+            }
+            $.ajax({
+                type:"POST",
+                data: dados,
+                url:"status-anual",
+                success:function(r){
+                    console.log(r);
+                    var resp = jQuery.parseJSON(r);
+                    if(resp.relatorio != 0){
+                        $('#tabelaRelatorio').show();
+                        var tbody = $('#tabelaRelatorio').find('tbody');
+                        tbody.empty();
+                        resp.relatorio.forEach((linha, index) => {
+                            tbody.append(`<tr> <td>${linha.mes}</td> <td>${parseFloat(linha.venda).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>  <td>${parseFloat(linha.entrada).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <td>${parseFloat(linha.saida).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <th>${parseFloat(linha.saldo).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</th> </tr>`);
+                        });
+                    }else{
+                        $('#tabelaRelatorio').hide();
+                        alertify.error("Nao ha vendas nesse periodo");
+                    }
+                }
+            });
+        }else{
+            alertify.error("Datas invalidas!");
+        }
+    }
+
+</script>
+{% endblock %}
