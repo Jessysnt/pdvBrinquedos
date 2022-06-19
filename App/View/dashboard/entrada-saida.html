@@ -43,9 +43,7 @@
             data: dados,
             url:"pesquisa-ano-entrada-saida",
             success:function(r){
-                
                 var resp = JSON.parse(r);
-                console.log('entrada-saida',resp);
                 var dias = resp.label;
 
                 Highcharts.chart('entradaSaida', {
