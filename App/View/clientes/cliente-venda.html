@@ -8,32 +8,6 @@
 {% block body %}
 
 <div class="container">
-
-    <form id="frmRelatorioCliente">
-        <div class="row">  
-            <div class="col-sm-3">
-                <label>Data Inicial</label>
-            </div>
-            <div class="col-sm-3">
-                <label>Data Final</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial">
-            </div>
-            <div class="col-sm-3">
-                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
-            </div>
-            <div class="col-sm-3">
-                <span class="btn btn-primary btn-block" onclick="enviar('{{cliente.id}}')">Enviar</span>
-            </div>
-            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
-        </div>
-    </form>
-    <br>
-    <br>
-
     <div class="row">
         <div class="col-sm-12">
             <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160)">
@@ -46,8 +20,6 @@
             </div>
         </div>
     </div>
-    
-    <br>
     <br>
     
     <div id="totalGeral">
@@ -84,7 +56,31 @@
             </div>
         </div>
     </div>
-   
+
+    <form id="frmRelatorioCliente">
+        <br>
+        <div class="row">  
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+            </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar('{{cliente.id}}')">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+        </div>
+    </form>
+    <br>
 
     <div id="totalDatas">
         <div class="row">
@@ -128,6 +124,7 @@
                     <tr>
                       <th scope="col">Data </th>
                       <th scope="col">Fatura</th>
+                      <th scope="col">Desconto</th>
                       <th scope="col">Total da Venda</th>
                     </tr>
                 </thead>
@@ -151,20 +148,22 @@
 
 
     function enviar(idCliente) {
-        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value || $('#dtInicial')[0].value == $('#dtFinal')[0].value){
             var dados={
                 idCliente: idCliente,
                 dtInicial: $('#dtInicial')[0].value,
                 dtFinal: $('#dtFinal')[0].value
             }
             console.log(dados);
+            
             $.ajax({
                 type:"POST",
                 data: dados,
                 url:"cliente-relatorio-venda",
                 success:function(r){
                     var resp = jQuery.parseJSON(r);
-                    console.log(resp.cliente);
+                    console.log(resp);
+                    // console.log(resp.cliente);
                     if(resp.dados['totalLiquido'] != null){
                         $('#totalGeral').hide();
                         $('#totalDatas').show();
@@ -175,7 +174,7 @@
                         var tbody = $('#vendasPeriodo').find('tbody');
                         tbody.empty();
                         resp.cliente.forEach(linha => {
-                            tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
+                            tbody.append(`<tr> <th>${linha.data}</th> <td>${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.desconto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <td>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> </tr>`);
                         });
                     }else{
                         $('#totalVendas').val('');
@@ -191,6 +190,23 @@
         }
     }
     
+</script>
+
+<script>
+    $(document).ready(function(){
+    //     size_li = $("#vendasPeriodo li").size();
+    //     x=3;
+    //     $('#vendasPeriodo li:lt('+x+')').show();
+    //     var heightVal = $('#vendasPeriodo').height();
+    //     $('#vendasPeriodo').css('max-height', heightVal);
+    //     $('#vendasPeriodo').bind('mouseover',function(){
+    //         $('#vendasPeriodo').css('overflow-y', 'auto');
+    //     });
+    //     $("#vendasPeriodo").scroll(function() {
+    //         x= (x+3 <= size_li) ? x+3 : size_li;
+    //         $('#vendasPeriodo li:lt('+x+')').show();
+    //     });
+    });
 </script>
 {% endblock %}
 

@@ -27,7 +27,7 @@ class ClienteDAO extends Conexao
      */
     public function exibirCliente($idCliente)
     {
-        $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, NVL(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END),0) AS totalLiquido, NVL(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id),0) as ticketMedio
+        $stmt = static::getConexao()->prepare("SELECT c.id, c.cpf, c.nome, c.sobrenome, c.telefone, COUNT(DISTINCT cf.id) as totalVendas, COALESCE(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END),0) AS totalLiquido, COALESCE(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id),0) as ticketMedio
         FROM cliente AS c
         LEFT JOIN comandafatura AS cf ON cf.id_cliente = c.id
         WHERE c.id = :id AND cf.data_finalizacao IS NOT NULL");
@@ -71,7 +71,7 @@ class ClienteDAO extends Conexao
 
     public function qntTotalClientes($busca)
     {
-        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM cliente WHERE nome LIKE :busca LIMIT 10 ");
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM cliente WHERE nome LIKE :busca ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -105,7 +105,7 @@ class ClienteDAO extends Conexao
 	}
 
     /**
-     * Cliente na tela de relatorio
+     * Cliente na tela de relatorio para os cards
      */
     public function vendaClienteData($cliente)
     {
@@ -121,22 +121,39 @@ class ClienteDAO extends Conexao
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function vendaCliente($cliente)
+    /**
+     * Cliente na tela de relatorio entre as datas escolhidas
+     */
+    public function vendaCliente($cliente, $pagina, $itensPag)
     {
+        $offset = $itensPag*($pagina-1);
         $cliente['dtInicial'] = $cliente['dtInicial'].' 00:00:00';
         $cliente['dtFinal'] = $cliente['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d-%m-%Y') as data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario,' desc.:', COALESCE(lf.desconto, 0))) as item
+        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d-%m-%Y') AS data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario)) AS item, COALESCE(cf.desconto, 0) AS desconto
         FROM comandafatura AS cf
         INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
         INNER JOIN produto AS p ON lf.id_produto = p.id
         WHERE cf.id_cliente =:idCliente AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal
-        GROUP BY cf.id ORDER BY data ASC");
+        GROUP BY cf.id ORDER BY data ASC LIMIT :itensPag OFFSET :offset");
         $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
         $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $cliente['dtFinal'], PDO::PARAM_STR);
+        $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function qntTotal($cliente)
+    {
+        $cliente['dtInicial'] = $cliente['dtInicial'].' 00:00:00';
+        $cliente['dtFinal'] = $cliente['dtFinal'].' 23:59:59';
+        $stmt = static::getConexao()->prepare("SELECT count(cf.id) AS total FROM cliente AS c INNER JOIN comandafatura AS cf ON cf.id_cliente=c.id WHERE c.id=:idCliente AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal");
+        $stmt->bindParam(':idCliente', $cliente['idCliente'], PDO::PARAM_INT);
+        $stmt->bindParam(':dtInicial', $cliente['dtInicial'], PDO::PARAM_STR);
+        $stmt->bindParam(':dtFinal', $cliente['dtFinal'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
 }

@@ -72,7 +72,7 @@ class UsuarioDAO extends Conexao
 
     public function qntTotalUsuarios($busca)
     {
-        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM usuario WHERE nome LIKE :busca LIMIT 10 ");
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM usuario WHERE nome LIKE :busca ");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);

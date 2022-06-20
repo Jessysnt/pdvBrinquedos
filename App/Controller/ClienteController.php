@@ -91,9 +91,21 @@ class ClienteController
                 'dtInicial' => $_POST['dtInicial'],
                 'dtFinal' => $_POST['dtFinal']
             );
+            $pagina= 1;
+            $itensPag= 3;
+            if(isset($_GET['pagina'])){
+                $pagina = $_GET['pagina'];
+            }
+            if(isset($_GET['itensPag'])){
+                $itensPag = $_GET['itensPag'];
+            }
+
             $respVendasGeral = $obClienteDAO->vendaClienteData($cliente);
-            $respVendasProdutos = $obClienteDAO->vendaCliente($cliente);
-            View::jsonResponse(['dados'=>$respVendasGeral, 'cliente'=>$respVendasProdutos]);
+            $respVendasProdutos = $obClienteDAO->vendaCliente($cliente, $pagina, $itensPag);
+            $total = $obClienteDAO->qntTotal($cliente);
+            $totalpaginas =  ceil($total['total'] / $itensPag);
+
+            View::jsonResponse(['dados'=>$respVendasGeral, 'cliente'=>$respVendasProdutos, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/cliente-relatorio-venda', 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
         }
     }
 }

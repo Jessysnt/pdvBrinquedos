@@ -23,31 +23,6 @@
         </div>
     </div>
     <br>
-
-    <form id="frmRelatorioUsuario">
-        <div class="row">  
-            <div class="col-sm-3">
-                <label>Data Inicial</label>
-            </div>
-            <div class="col-sm-3">
-                <label>Data Final</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial">
-            </div>
-            <div class="col-sm-3">
-                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal">
-            </div>
-            <div class="col-sm-3">
-                <span class="btn btn-primary btn-block" onclick="enviar('{{usuario.id}}')">Enviar</span>
-            </div>
-            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
-        </div>
-    </form>
-    <br>
-    <br>
     <div id="totalGeral">
         <div class="row">
             <div class="col-sm-4">
@@ -82,6 +57,32 @@
             </div>
         </div>
     </div>
+
+    <form id="frmRelatorioUsuario">
+        <br>
+        <div class="row">  
+            <div class="col-sm-3">
+                <label>Data Inicial</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Data Final</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+            </div>
+            <div class="col-sm-3">
+                <span class="btn btn-primary btn-block" onclick="enviar('{{usuario.id}}')">Enviar</span>
+            </div>
+            <!-- <a class="btn btn-primary"  role="button">Enviar</a> -->
+        </div>
+        <br>
+    </form>
+    
 
     <div id="totalDatas">
         <div class="row">
@@ -144,7 +145,7 @@
     });
 
     function enviar(idUsuario) {
-        if($('#dtInicial').val() == null || $('#dtInicial')[0].value < $('#dtFinal')[0].value){
+        if($('#dtInicial')[0].value < $('#dtFinal')[0].value || $('#dtInicial')[0].value == $('#dtFinal')[0].value){
             var dados={
                 idUsuario: idUsuario,
                 dtInicial: $('#dtInicial')[0].value,
