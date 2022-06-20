@@ -37,7 +37,7 @@
         </form>
     </div>
     <br>
-    <div id="vendasPeriodo" >
+    <div id="comandasPeriodo" >
         <div class="row">
             <div class="table-responsive" >
                 <caption><label>Comandas</label></caption> 
@@ -127,15 +127,15 @@
                 // console.log('r',r);
                 var resp = jQuery.parseJSON(r);
                 // console.log(resp);
-                if(resp.dados.length > 0){
-                    $('#vendasPeriodo').show();
-                    var tbody = $('#vendasPeriodo').find('tbody');
+                if(resp.comandas.length > 0){
+                    $('#comandasPeriodo').show();
+                    var tbody = $('#comandasPeriodo').find('tbody');
                     tbody.empty();
-                    resp.dados.forEach(linha => {
+                    resp.comandas.forEach(linha => {
                         tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item.replace(',', '<br>')}</td> <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span> </td></tr>`);
                     });
                 }else{
-                    $('#vendasPeriodo').hide();
+                    $('#comandasPeriodo').hide();
                     alertify.error('Não há comandas');
                 }
             } 

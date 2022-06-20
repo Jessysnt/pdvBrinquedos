@@ -112,11 +112,12 @@ $router->add('pesquisa-ano-entrada-saida', ['controller' => 'DashboardController
 
 //Rotas de Relatorios
 $router->add('mais-vendidos-produto', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidos']);
-$router->add('comanda-status', ['controller' => 'RelatorioController', 'action' => 'statusComandas']);
-$router->add('pesquisa-comanda', ['controller' => 'RelatorioController', 'action' => 'pesquisaComandas']);
+$router->add('comanda-status', ['controller' => 'RelatorioController', 'action' => 'pesquisaComandas']);
+$router->add('pesquisa-comanda', ['controller' => 'RelatorioController', 'action' => 'comanda']);
 $router->add('fechar-comanda', ['controller' => 'RelatorioController', 'action' => 'fecharComanda']);
 $router->add('colaboradores-vendas', ['controller' => 'RelatorioController', 'action' => 'colaboradoresVendas']);
 $router->add('status-anual', ['controller' => 'RelatorioController', 'action' => 'verLancamentoVenda']);
+$router->add('pesquisar-vendas', ['controller' => 'RelatorioController', 'action' => 'vendaPeriodo']);
 
 //Rotas de lançamentos
 $router->add('lancamento', ['controller' => 'LancamentosController', 'action' => 'formulario']);

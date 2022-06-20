@@ -79,11 +79,12 @@
                   <li><a href="mais-vendidos-produto">Produtos mais vendidos</a></li>
                   {% endif %}
                   {% if 17 in session['usuario'].getAcessos() %}
-                  <li><a href="comanda-status">Comandas</a></li>
+                  <li><a href="pesquisa-comanda">Comandas</a></li>
                   {% endif %}
                   {% if 18 in session['usuario'].getAcessos() %}
                   <li><a href="colaboradores-vendas">Vendas Colaboradores</a></li>
                   <li><a href="status-anual">Lançamentos e vendas</a></li>
+                  <li><a href="pesquisar-vendas">Vendas</a></li>
                   {% endif %}
                 </ul>
               </li>

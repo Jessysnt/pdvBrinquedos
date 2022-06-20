@@ -11,7 +11,17 @@
 
 {% block body %}
 
-<div class="container" id="tabela">
+<div class="container" >
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160); text-align: center; color: rgb(8, 5, 10);">
+                <div class="card-body">
+                    <h4>Relatório de vendas</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="row">
         <form id="frmRelatorioVenda">
             <div class="row">  
@@ -47,14 +57,13 @@
                     <br> -->
                     <thead>	
                         <tr>
-                            <th>Data Abertura</th>
+                            <th>Data da venda</th>
                             <th>Comanda</th>
-                            <th>Vendedor</th>
                             <th>Cliente</th>
+                            <th>Vendedor</th>
                             <th>Itens</th>
-        
-                            <th>Status</th>
-                            <th>Fechar</th>
+                            <th>Desconto</th>
+                            <th>Valor pago</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,7 +72,7 @@
                 </table>
             </div>
         </div>
-        <div>
+        <!-- <div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     {% if pagina > 1 %} 
@@ -89,7 +98,7 @@
                     {% endif %}
                 </ul>
             </nav>
-        </div>
+        </div> -->
     </div>
     
 
@@ -124,19 +133,18 @@
             data: dados,
             url:"pesquisar-vendas",
             success:function(r){
-                console.log('r',r);
                 var resp = jQuery.parseJSON(r);
                 // console.log(resp);
-                if(resp.dados.length > 0){
+                if(resp.venda.length > 0){
                     $('#vendasPeriodo').show();
                     var tbody = $('#vendasPeriodo').find('tbody');
                     tbody.empty();
-                    resp.dados.forEach(linha => {
-                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item.replace(',', '<br>')}</td> <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span> </td></tr>`);
+                    resp.venda.forEach(linha => {
+                        tbody.append(`<tr> <th>${linha.fechamento}</th> <td>${linha.numero}</td> <td>${linha.cliente!='-'?linha.cliente:'Não há cliente'}</td> <td>${linha.vendedor}</td> <td> ${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.desconto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <th>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</th> </tr>`);
                     });
                 }else{
                     $('#vendasPeriodo').hide();
-                    alertify.error('Não há comandas');
+                    alertify.error('Não há vendas');
                 }
             } 
         });

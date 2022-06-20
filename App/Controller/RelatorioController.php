@@ -21,7 +21,7 @@ class RelatorioController
         View::renderTemplate('/relatorios/mais-vendidos.html'); 
     }
 
-    public function statusComandas()
+    public function statusComanda()
     {
         $busca= "";
         $pagina= 1;
@@ -37,16 +37,20 @@ class RelatorioController
             $itensPag = $_GET['itensPag'];
         }
 
-        $obRelatorioDAO = new RelatorioDAO();
-        $resp = $obRelatorioDAO->mostrarComanda($busca, $pagina, $itensPag);
-        $total = $obRelatorioDAO->qntTotalComanda($busca);
+        $datas=array(
+            'dtInicial' => $_POST['dtInicial'],
+            'dtFinal' => $_POST['dtFinal']
+        );
 
+        $obRelatorioDAO = new RelatorioDAO();
+        $resp = $obRelatorioDAO->mostrarComanda($datas, $pagina, $itensPag);
+        $total = $obRelatorioDAO->qntTotalComanda();
         $totalpaginas =  ceil($total['total'] / $itensPag);
 
-        View::renderTemplate('/relatorios/comanda-status.html', ['comandas'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/comanda-status', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
+        View::renderTemplate('/relatorios/comanda-status.html', ['comanda'=>$resp, 'total'=>intval($total['total']), 'totalpaginas'=>$totalpaginas, 'route'=>'/comanda-status', 'busca'=>$busca, 'itensPag'=>$itensPag, 'pagina'=>intval($pagina)]);
     }
 
-    public function pesquisaComandas()
+    public function comanda()
     {
         $obRelatorioDAO = new RelatorioDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -54,20 +58,10 @@ class RelatorioController
                 'dtInicial' => $_POST['dtInicial'],
                 'dtFinal' => $_POST['dtFinal']
             );
-            $respComandas = $obRelatorioDAO->vendaComandas($datas);
-            View::jsonResponse(['dados'=>$respComandas]);
+            $respComanda = $obRelatorioDAO->vendaComandas($datas);
+            View::jsonResponse(['comandas'=>$respComanda]);
         }
-    }
-
-    public function dadosMesAno()
-    {
-        // $obRelatorioDAO = new RelatorioDAO();
-        // if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        //     $respMes = $obRelatorioDAO->mesAno($_POST['dtInicial']);
-        //     $return = ['label'=>array_column($respMes,'dia'),'data'=>array_map('floatval',array_column($respMes,'Total'))];
-        //     View::jsonResponse($return);
-        // }
-        
+        View::renderTemplate('/relatorios/comanda-status.html'); 
     }
 
     public function colaboradoresVendas()
@@ -96,5 +90,19 @@ class RelatorioController
             View::jsonResponse(['relatorio'=>$resp]);
         }
         View::renderTemplate('/relatorios/status-anual.html');
+    }
+
+    public function vendaPeriodo()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $datas=array(
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => $_POST['dtFinal']
+            );
+            $respVenda = $obRelatorioDAO->vendaPeriodo($datas);
+            View::jsonResponse(['venda'=>$respVenda]);
+        }
+        View::renderTemplate('/relatorios/vendas.html');
     }
 }

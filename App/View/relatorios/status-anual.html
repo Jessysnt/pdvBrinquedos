@@ -77,7 +77,6 @@
                 data: dados,
                 url:"status-anual",
                 success:function(r){
-                    console.log(r);
                     var resp = jQuery.parseJSON(r);
                     if(resp.relatorio != 0){
                         $('#tabelaRelatorio').show();
