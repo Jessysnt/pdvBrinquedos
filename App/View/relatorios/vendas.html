@@ -34,10 +34,10 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+                    <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
                 </div>
                 <div class="col-sm-3">
-                    <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+                    <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
                 </div>
                 <div class="col-sm-3">
                     <span class="btn btn-primary btn-block" id="enviar">Enviar</span>
@@ -48,9 +48,15 @@
     </div>
     <br>
     <div id="vendasPeriodo" >
+        <div class="row" >
+            <span class="btn btn-success" onclick="download()" style="float: right;">
+                <span class="glyphicon glyphicon-save-file"></span>
+            </span>
+        </div>
+        <br>
         <div class="row">
             <div class="table-responsive" >
-                <caption><label>Comandas</label></caption> 
+                <!-- <caption><label>Comandas</label></caption>  -->
                     <br>
                 <table class="table table-hover table-condensed table-bordered"  id="lista">
                     <!-- <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
@@ -140,7 +146,7 @@
                     var tbody = $('#vendasPeriodo').find('tbody');
                     tbody.empty();
                     resp.venda.forEach(linha => {
-                        tbody.append(`<tr> <th>${linha.fechamento}</th> <td>${linha.numero}</td> <td>${linha.cliente!='-'?linha.cliente:'Não há cliente'}</td> <td>${linha.vendedor}</td> <td> ${linha.item.replace(',', '<br>')}</td> <td>${parseFloat(linha.desconto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <th>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</th> </tr>`);
+                        tbody.append(`<tr> <th>${linha.fechamento}</th> <td>${linha.numero}</td> <td>${linha.cliente!='-'?linha.cliente:'Não há cliente'}</td> <td>${linha.vendedor}</td> <td> ${linha.item.replace(/,/g, '<br>')}</td> <td>${parseFloat(linha.desconto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <th>${parseFloat(linha.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</th> </tr>`);
                     });
                 }else{
                     $('#vendasPeriodo').hide();
@@ -149,6 +155,28 @@
             } 
         });
     }    
+
+    function download() {
+        var dados={
+            dtInicial: $('#dtInicial')[0].value,
+            dtFinal: $('#dtFinal')[0].value
+        }
+        var req = new XMLHttpRequest();
+        req.open("POST", "pdf-vendas", true);
+        req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        req.responseType = "blob";
+
+        req.onload = function (event) {
+            var blob = req.response;
+            console.log(blob.size);
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="Vendas_" + new Date() + ".pdf";
+            link.click();
+        };
+
+        req.send(`dtInicial=${dados.dtInicial}&dtFinal=${dados.dtFinal}`);
+    }
 </script>
 
 

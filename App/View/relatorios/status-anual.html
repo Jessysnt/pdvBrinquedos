@@ -28,10 +28,10 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+                <input type="date" class="form-control" name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
             </div>
             <div class="col-sm-3">
-                <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+                <input type="date" class="form-control" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
             </div>
             <div class="col-sm-3">
                 <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
@@ -40,6 +40,12 @@
         </div>
     </form>
     <br>
+    
+    <div class="row" id="download">
+        <span class="btn btn-success" onclick="download()" style="float: right;">
+            <span class="glyphicon glyphicon-save-file"></span>
+        </span>
+    </div>
     <br>
     <div class="row">
         <table id="tabelaRelatorio" class="table table-bordered table-hover table-condensed">
@@ -64,6 +70,7 @@
 <script>
     $(document).ready(function(){
         $('#tabelaRelatorio').hide();
+        $('#download').hide();
     });
 
     function enviar() {
@@ -80,6 +87,7 @@
                     var resp = jQuery.parseJSON(r);
                     if(resp.relatorio != 0){
                         $('#tabelaRelatorio').show();
+                        $('#download').show();
                         var tbody = $('#tabelaRelatorio').find('tbody');
                         tbody.empty();
                         resp.relatorio.forEach((linha, index) => {
@@ -94,6 +102,29 @@
         }else{
             alertify.error("Datas invalidas!");
         }
+    }
+
+    function download() {
+        var dados={
+            dtInicial: $('#dtInicial')[0].value,
+            dtFinal: $('#dtFinal')[0].value
+        }
+        var req = new XMLHttpRequest();
+        req.open("GET", `pdf-status-anual?dtInicial=${dados.dtInicial}&dtFinal=${dados.dtFinal}`, true);
+        req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        req.responseType = "blob";
+
+        req.onload = function (event) {
+            var blob = req.response;
+            var d = new Date();
+            var mes = d.getMonth() + 1; 
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="Vendas_lançamentos_" + d.getDate() + '-' + mes + ".pdf";
+            link.click();
+        };
+
+        req.send();
     }
 
 </script>

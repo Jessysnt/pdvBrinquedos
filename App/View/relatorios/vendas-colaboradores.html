@@ -13,8 +13,6 @@
             <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160); text-align: center; color: rgb(8, 5, 10);">
                 <div class="card-body">
                     <h4>Relatório de vendas</h4>
-                    <!-- <h4 style="color: rgb(56, 109, 179);">{{ usuario.getNomeCompleto() }}</h4> -->
-                    <!-- <p class="card-text">Cargo: {{ usuario.getCargoNome() }}</p> -->
                 </div>
             </div>
         </div>
@@ -32,10 +30,10 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d')}}">
+                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
             </div>
             <div class="col-sm-3">
-                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d')}}">
+                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
             </div>
             <div class="col-sm-3">
                 <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>

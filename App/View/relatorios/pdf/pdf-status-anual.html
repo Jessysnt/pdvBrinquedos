@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    <table class="table table-hover table-condensed table-bordered"  id="lista">
+        <!-- <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+        <br> -->
+        <thead>	
+            <tr>
+                <th>Mês</th>
+                <th>Vendas</th>
+                <th>Entradas lançadas</th>
+                <th>Saídas lançadas</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venda in vendas %}
+            <tr>
+                <!-- <td>{{dump(venda)}}</td> -->
+                <td>{{venda.mes}}</td>
+                <td>{{venda.venda | format_currency('BRL')}}</td>
+                <td>{{venda.entrada | format_currency('BRL')}}</td>
+                <td>{{venda.saida | format_currency('BRL')}}</td>
+                <td>{{venda.saldo | format_currency('BRL')}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>

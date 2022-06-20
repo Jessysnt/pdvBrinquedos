@@ -123,6 +123,11 @@ $router->add('pesquisar-vendas', ['controller' => 'RelatorioController', 'action
 $router->add('lancamento', ['controller' => 'LancamentosController', 'action' => 'formulario']);
 $router->add('lancamento-tabela', ['controller' => 'LancamentosController', 'action' => 'tabelaLancamentos']);
 
+//Rotas impressao pdf
+$router->add('pdf-vendas', ['controller' => 'RelatorioController', 'action' => 'vendasPdf']);
+$router->add('pdf-status-anual', ['controller' => 'RelatorioController', 'action' => 'verLancamentoVendaPdf']);
+$router->add('pdf-mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidosPdf']);
+
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 $router->add('{controller}/{action}');

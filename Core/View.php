@@ -59,4 +59,32 @@ class View
 
         echo $twig->render($template, $args);
     }
+
+    /**
+     * Renderizar um template usando Twig
+     *
+     * @param string $template  O arquivo de template Twig
+     * @param array $args   Um array de associação de dados para exibir na view (opcional)
+     *
+     * @return void
+     */
+    public static function renderTemplateHtml($template, $args = [])
+    {
+        static $twig = null;
+
+        if ($twig === null) {
+            $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/View');            
+            if (\App\Config::SHOW_ERRORS) {
+                $twig = new \Twig\Environment($loader,['debug' => true]);
+                $twig->addExtension(new \Twig\Extension\DebugExtension());
+                $twig->addExtension(new \Twig\Extra\Intl\IntlExtension());
+                $twig->addGlobal('session', $_SESSION);
+            } else {
+                $twig = new \Twig\Environment($loader);
+                $twig->addGlobal('session', $_SESSION);
+            }
+        }
+
+        return $twig->render($template, $args);
+    }
 }

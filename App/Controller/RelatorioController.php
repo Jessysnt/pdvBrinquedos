@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\RelatorioDAO;
 use Core\View;
+use mikehaertl\wkhtmlto\Pdf;
 
 class RelatorioController
 {
@@ -104,5 +105,72 @@ class RelatorioController
             View::jsonResponse(['venda'=>$respVenda]);
         }
         View::renderTemplate('/relatorios/vendas.html');
+    }
+
+    public function vendasPdf()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            
+            $datas=array(
+                'dtInicial' => $_POST['dtInicial'],
+                'dtFinal' => $_POST['dtFinal']
+            );
+            $respVenda = $obRelatorioDAO->vendaPeriodoPdf($datas);
+            
+            foreach ($respVenda as $key => $venda) {
+                $arraySimples = explode(',', $venda['item']);
+                $respVenda[$key]['itemArray'] = $arraySimples;
+            }
+            // foreach ($respVenda as $key => $venda) {
+            //     $arrayFinal = [];
+            //     $arraySimples = explode(',', $venda['item']);
+            //     foreach ($arraySimples as $linha) {
+            //         $value = explode(';', $linha);
+            //         array_push($arrayFinal, $value);
+            //     }
+            //     $respVenda[$key]['itemArray'] = $arrayFinal;
+            // }
+            
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas.html', ['vendas'=>$respVenda]);
+            $pdf = new Pdf($html);
+            $pdf->setOptions(['encoding'=>'UTF-8']);
+            header('Content-type: application/pdf');
+            $pdf->send('vendas.pdf');
+        }
+    }
+
+    public function verLancamentoVendaPdf()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $obRelatorioDAO = new RelatorioDAO();
+            $datas=array(
+                'dtInicial' => $_GET['dtInicial'],
+                'dtFinal' => $_GET['dtFinal']
+            );
+            $respVendaLancamento = $obRelatorioDAO->lancamentoVenda($datas);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-status-anual.html', ['vendas'=>$respVendaLancamento]);
+            $pdf = new Pdf($html);
+            $pdf->setOptions(['encoding'=>'UTF-8']);
+            header('Content-type: application/pdf');
+            $pdf->send('vendas-lancamento.pdf');
+        }
+    }
+
+    public function produtosMaisVendidosPdf()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $datas=array(
+                'dtInicial' => $_GET['dtInicial'],
+                'dtFinal' => $_GET['dtFinal']
+            );
+            $respBrinquedoPeriodo = $obRelatorioDAO->maisVendidos($datas);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-status-anual.html', ['brinquedos'=>$respBrinquedoPeriodo]);
+            $pdf = new Pdf($html);
+            $pdf->setOptions(['encoding'=>'UTF-8']);
+            header('Content-type: application/pdf');
+            $pdf->send('brinquedos.pdf');
+        }
     }
 }

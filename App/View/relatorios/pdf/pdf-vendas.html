@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    
+
+    <table class="table table-hover table-condensed table-bordered"  id="lista">
+        <!-- <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
+        <br> -->
+        <thead>	
+            <tr>
+                <th>Data da venda</th>
+                <th>Comanda</th>
+                <th>Cliente</th>
+                <th>Vendedor</th>
+                <th>Itens</th>
+                <th>Desconto</th>
+                <th>Valor pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venda in vendas %}
+            <tr>
+                <td>{{venda.fechamento}}</td>
+                <td>{{venda.numero}}</td>
+                <td>{{venda.cliente}}</td>
+                <td>{{venda.vendedor}}</td>
+                <td>{% for item in venda.itemArray %} {{item}} <br> {% endfor %}</td>
+                <td>{{venda.desconto | format_currency('BRL')}}</td>
+                <td>{{venda.total | format_currency('BRL')}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
