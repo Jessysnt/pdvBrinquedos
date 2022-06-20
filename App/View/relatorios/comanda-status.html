@@ -11,9 +11,19 @@
 
 {% block body %}
 
-<div class="container" id="tabela">
+<div class="container" >
     <div class="row">
-        <form id="frmRelatorioCliente">
+        <div class="col-sm-12">
+            <div class="card " style="border-radius: 1rem; border-color: rgb(134, 47, 160); text-align: center; color: rgb(8, 5, 10);">
+                <div class="card-body">
+                    <h4>Comandas</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <form id="frmRelatorioComanda">
             <div class="row">  
                 <div class="col-sm-3">
                     <label>Data Inicial</label>
@@ -101,7 +111,7 @@
 {% block javascript %}
 <script type="text/javascript">
 	 $(document).ready(function(){
-        $('#vendasPeriodo').hide();
+        $('#comandasPeriodo').hide();
     });
 
     $('#enviar').click(function(){
