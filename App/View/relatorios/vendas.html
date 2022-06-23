@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Comandas{% endblock %}
+{% block title %}Relatório de vendas{% endblock %}
 
 {% block stylesheet %}
 <style>
@@ -169,9 +169,11 @@
         req.onload = function (event) {
             var blob = req.response;
             console.log(blob.size);
+            var d = new Date();
+            var mes = d.getMonth() + 1; 
             var link=document.createElement('a');
             link.href=window.URL.createObjectURL(blob);
-            link.download="Vendas_" + new Date() + ".pdf";
+            link.download="Vendas_" + d.getDate() + '-' + mes + ".pdf";
             link.click();
         };
 
