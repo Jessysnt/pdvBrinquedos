@@ -9,15 +9,12 @@ class PainelController
 {
     public function painel()
     {
-        $id_usuario=$_SESSION['usuario']->getAcessos();
-        if($id_usuario = 16){
+        $usuario=$_SESSION['usuario']->getAcessos();
+        if($usuario == 16){
             View::renderTemplate('/painel/inicio-adm.html');
         }else{
             View::renderTemplate('/painel/inicio.html');
         }
-        // $painelDAO = new PainelDAO();
-        // $respAno = $painelDAO->vendasMesAno();
-        // View::renderTemplate('/painel/inicio.html', ['anos'=>$respAno]);
     }
 
     public function dadosMes()
