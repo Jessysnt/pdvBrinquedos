@@ -30,10 +30,10 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <input type="date" class="form-control input-sm " name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
+                <input type="date" class="form-control " name="dtInicial" id="dtInicial" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
             </div>
             <div class="col-sm-3">
-                <input type="date" class="form-control input-sm" name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
+                <input type="date" class="form-control " name="dtFinal" id="dtFinal" value="{{'now' | date('Y-m-d', 'America/Sao_Paulo')}}">
             </div>
             <div class="col-sm-3">
                 <span class="btn btn-primary btn-block" onclick="enviar()">Enviar</span>
@@ -42,6 +42,11 @@
         </div>
     </form>
     <br>
+    <div class="row" id="download">
+        <span class="btn btn-success" onclick="download()" style="float: right;">
+            <span class="glyphicon glyphicon-save-file"></span>
+        </span>
+    </div>
     <br>
     <div class="row">
         <table id="tabelaProdutosTop" class="table table-bordered table-hover table-condensed">
@@ -68,6 +73,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
             $('#tabelaProdutosTop').hide();
+            $('#download').hide();
         });
 
     function enviar() {
@@ -84,6 +90,7 @@
                     var resp = jQuery.parseJSON(r);
                     if(resp.maisVendidos != 0){
                         $('#tabelaProdutosTop').show();
+                        $('#download').show();
                         var tbody = $('#tabelaProdutosTop').find('tbody');
                         tbody.empty();
                         resp.maisVendidos.forEach((linha, index) => {
@@ -114,6 +121,7 @@
 
         req.onload = function (event) {
             var blob = req.response;
+            console.log(blob.size);
             var d = new Date();
             var mes = d.getMonth() + 1; 
             var link=document.createElement('a');

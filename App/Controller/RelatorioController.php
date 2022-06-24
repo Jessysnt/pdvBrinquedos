@@ -166,7 +166,7 @@ class RelatorioController
                 'dtFinal' => $_GET['dtFinal']
             );
             $respBrinquedoPeriodo = $obRelatorioDAO->maisVendidos($datas);
-            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-status-anual.html', ['brinquedos'=>$respBrinquedoPeriodo]);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-mais-vendidos.html', ['brinquedos'=>$respBrinquedoPeriodo]);
             $pdf = new Pdf($html);
             $pdf->setOptions(['encoding'=>'UTF-8']);
             header('Content-type: application/pdf');

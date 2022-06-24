@@ -23,10 +23,10 @@
             {% for brinquedo in brinquedos %}
             <tr>
                 <td>{{i+1}}</td>
-                <td>{{venda.nome}}</td>
-                <td>{{venda.quantidadeVendida}}</td>
-                <td>{{venda.totalVendas}}</td>
-                <td>{{venda.totalLiquido | format_currency('BRL')}}</td>
+                <td>{{brinquedo.nome}}</td>
+                <td>{{brinquedo.quantidadeVendida}}</td>
+                <td>{{brinquedo.totalVendas}}</td>
+                <td>{{brinquedo.totalLiquido | format_currency('BRL')}}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -90,7 +90,7 @@
                         $('#download').show();
                         var tbody = $('#tabelaRelatorio').find('tbody');
                         tbody.empty();
-                        resp.relatorio.forEach((linha, index) => {
+                        resp.relatorio.forEach((linha) => {
                             tbody.append(`<tr> <td>${linha.mes}</td> <td>${parseFloat(linha.venda).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>  <td>${parseFloat(linha.entrada).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <td>${parseFloat(linha.saida).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td> <th>${parseFloat(linha.saldo).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</th> </tr>`);
                         });
                     }else{
