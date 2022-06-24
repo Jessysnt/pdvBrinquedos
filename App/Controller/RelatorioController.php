@@ -173,4 +173,21 @@ class RelatorioController
             $pdf->send('brinquedos.pdf');
         }
     }
+
+    public function colaboradoresVendasPdf()
+    {
+        $obRelatorioDAO = new RelatorioDAO();
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $datas=array(
+                'dtInicial' => $_GET['dtInicial'],
+                'dtFinal' => $_GET['dtFinal']
+            );
+            $respVendaColaborador = $obRelatorioDAO->vendasPeriodoColaboradores($datas);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas-colaboradores.html', ['vendas'=>$respVendaColaborador]);
+            $pdf = new Pdf($html);
+            $pdf->setOptions(['encoding'=>'UTF-8']);
+            header('Content-type: application/pdf');
+            $pdf->send('colaboradores.pdf');
+        }
+    }
 }

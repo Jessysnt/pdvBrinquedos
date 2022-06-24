@@ -127,6 +127,7 @@ $router->add('lancamento-tabela', ['controller' => 'LancamentosController', 'act
 $router->add('pdf-vendas', ['controller' => 'RelatorioController', 'action' => 'vendasPdf']);
 $router->add('pdf-status-anual', ['controller' => 'RelatorioController', 'action' => 'verLancamentoVendaPdf']);
 $router->add('pdf-mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidosPdf']);
+$router->add('pdf-colaboradores-vendas', ['controller' => 'RelatorioController', 'action' => 'colaboradoresVendasPdf']);
 
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
