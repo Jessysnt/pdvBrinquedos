@@ -16,10 +16,12 @@ class LancamentosController
     {
         $obLancamentoDAO = new LancamentoDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id_usuario=$_SESSION['usuario']->getId();
             $obLancamento=array(
                 'descricao' => $_POST['descricao'],
                 'data' => $_POST['data'],
-                'valor' => $_POST['valor']
+                'valor' => $_POST['valor'],
+                'usuario' => $id_usuario
             ); 
             $result = $obLancamentoDAO->adicionarLancamento($obLancamento);
             View::jsonResponse($result);

@@ -92,10 +92,19 @@ class RelatorioDAO extends Conexao
     {
         $datas['dtInicial'] = $datas['dtInicial'].' 00:00:00';
         $datas['dtFinal'] = $datas['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT date_format(a.dia,'%m-%Y') AS mes, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS venda, SUM(CASE WHEN l.valor > 0 THEN l.valor ELSE 0 END) as entrada, SUM(CASE WHEN l.valor < 0 THEN ABS(l.valor) ELSE 0 END) as saida, (SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) + SUM(CASE WHEN l.valor > 0 THEN l.valor ELSE 0 END)) - (SUM(CASE WHEN l.valor < 0 THEN ABS(l.valor) ELSE 0 END)) AS saldo FROM (SELECT last_day(:dtFinal) - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY AS dia from (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a cross join (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b cross join (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS c ) AS a
+        $stmt = static::getConexao()->prepare("SELECT date_format(t.dia,'%m/%Y') AS mes, SUM(t.venda) AS venda, SUM(t.entrada) AS entrada, SUM(t.saida) AS saida,
+        SUM((t.entrada + t.venda) - t.saida) AS saldo
+        FROM(SELECT vd.*,
+        SUM(CASE WHEN l.valor > 0 THEN l.valor ELSE 0 END) as entrada,
+        SUM(CASE WHEN l.valor < 0 THEN ABS(l.valor) ELSE 0 END) as saida  
+        FROM(SELECT a.dia as dia , 
+        SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS venda 
+        FROM (SELECT last_day(:dtFinal) - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY AS dia from (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a cross join (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b cross join (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS c ) AS a
         LEFT JOIN comandafatura as cf ON a.dia = date_format(cf.data_finalizacao,'%Y-%m-%d')
-        LEFT JOIN lancamento as l ON l.data =  date_format(cf.data_finalizacao,'%Y-%m-%d')
         WHERE a.dia between :dtInicial AND :dtFinal
+        GROUP BY a.dia ORDER BY a.dia desc) as vd
+        LEFT JOIN lancamento as l ON vd.dia = date_format(l.data, '%Y-%m-%d')
+        GROUP BY vd.dia ORDER BY vd.dia desc) as t
         GROUP BY mes ORDER BY mes");
         $stmt->bindParam(':dtInicial', $datas['dtInicial'], PDO::PARAM_STR);
         $stmt->bindParam(':dtFinal', $datas['dtFinal'], PDO::PARAM_STR);

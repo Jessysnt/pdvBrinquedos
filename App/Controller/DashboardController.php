@@ -38,7 +38,7 @@ class DashboardController
                 'data'=>$_POST['dtInicial'].'-12-01'
             );
             $respAno= $obDashboardDAO->vendasAno($datas);
-            $return = ['label'=>array_column($respAno,'mes'),'entrada'=>array_map('floatval',array_column($respAno,'entradas')), 'saida'=>array_map('floatval',array_column($respAno,'saidas')), 'saldo'=>array_map('floatval',array_column($respAno,'saldo'))];
+            $return = ['label'=>array_column($respAno,'mes'),'entrada'=>array_map('floatval',array_column($respAno,'entrada')), 'saida'=>array_map('floatval',array_column($respAno,'saida')), 'saldo'=>array_map('floatval',array_column($respAno,'saldo'))];
             View::jsonResponse($return);
         }
         View::renderTemplate('/dashboard/entrada-saida.html');

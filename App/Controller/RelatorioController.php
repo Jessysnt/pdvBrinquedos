@@ -134,7 +134,6 @@ class RelatorioController
             
             $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas.html', ['vendas'=>$respVenda]);
             $pdf = new Pdf($html);
-            $pdf->binary = 'C:\Program Files\wkhtmltopdf\bin';
             $pdf->setOptions(['encoding'=>'UTF-8']);
             header('Content-type: application/pdf');
             $pdf->send('vendas.pdf');

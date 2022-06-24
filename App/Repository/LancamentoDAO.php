@@ -27,10 +27,11 @@ class LancamentoDAO extends Conexao
 
     public function adicionarLancamento($dados)
     {
-        $stmt = static::getConexao()->prepare("INSERT INTO lancamento (descricao, data, valor) VALUES (:descricao, :data, :valor)");
+        $stmt = static::getConexao()->prepare("INSERT INTO lancamento (descricao, data, valor, id_usuario) VALUES (:descricao, :data, :valor, :usuario)");
         $stmt->bindParam(':descricao', $dados['descricao'], PDO::PARAM_STR);
         $stmt->bindParam(':data', $dados['data'], PDO::PARAM_STR);
         $stmt->bindParam(':valor', $dados['valor'], PDO::PARAM_STR);
+        $stmt->bindParam(':usuario', $dados['usuario'], PDO::PARAM_STR);
         return $stmt->execute();
     }
 
