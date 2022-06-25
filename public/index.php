@@ -78,6 +78,7 @@ $router->add('pesquisar-select', ['controller' => 'ComandaController', 'action' 
 $router->add('gravar-comanda', ['controller' => 'ComandaController', 'action' => 'gravarComanda']);
 $router->add('ver-aberto', ['controller' => 'ComandaController', 'action' => 'numeroAberto']);
 $router->add('apaga-prods-comanda', ['controller' => 'ComandaController', 'action' => 'apagarProdutoComanda']);
+$router->add('finaliza-comanda', ['controller' => 'ComandaController', 'action' => 'finalizarComanda']);
 
 //Rotas do PDV
 $router->add('pdv', ['controller' => 'PdvController', 'action' => 'telaInicial']);

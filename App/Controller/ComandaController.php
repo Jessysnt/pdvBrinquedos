@@ -119,15 +119,19 @@ class ComandaController
     public function apagarProdutoComanda()
     {
         $obComandaDAO = new ComandaDAO();
-
         if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
-
             parse_str(file_get_contents("php://input"), $post);
-
             $respDeletarProduto = $obComandaDAO->deletarProdutoComanda($post['id_comanda_fatura']);
-            
             View::jsonResponse($respDeletarProduto);
-            
+        }
+    }
+
+    public function finalizarComanda()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $obComandaDAO = new ComandaDAO();
+            $resp = $obComandaDAO->fecharComanda($_GET['comanda']);
+            View::jsonResponse($resp);
         }
     }
     

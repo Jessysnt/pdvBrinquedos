@@ -27,7 +27,7 @@ class RelatorioDAO extends Conexao
         // $offset = $itensPag*($pagina-1);
         $datas['dtInicial'] = $datas['dtInicial'].' 00:00:00';
         $datas['dtFinal'] = $datas['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT cf.id, cf.numero, cf.comanda_aberta, date_format(cf.data_registro, '%d-%m-%Y') as abertura, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) WHEN cf.valor_total1 IS NULL THEN SUM(lf.quantidade * lf.valor_unitario) ELSE cf.valor_total1 END ) AS total, COALESCE(cf.desconto, 0) AS desconto, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario)) as item, date_format(cf.data_finalizacao, '%d-%m-%Y') as fechamento,  CONCAT(c.nome, ' ',c.sobrenome) as cliente, CONCAT(u.nome,' ',u.sobrenome) as vendedor
+        $stmt = static::getConexao()->prepare("SELECT cf.id, cf.numero, cf.comanda_aberta, date_format(cf.data_registro, '%d/%m/%Y') as abertura, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) WHEN cf.valor_total1 IS NULL THEN SUM(lf.quantidade * lf.valor_unitario) ELSE cf.valor_total1 END ) AS total, COALESCE(cf.desconto, 0) AS desconto, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario)) as item, date_format(cf.data_finalizacao, '%d/%m/%Y') as fechamento,  CONCAT(c.nome, ' ',c.sobrenome) as cliente, CONCAT(u.nome,' ',u.sobrenome) as vendedor
         FROM comandafatura AS cf
         INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
         INNER JOIN produto AS p ON lf.id_produto = p.id

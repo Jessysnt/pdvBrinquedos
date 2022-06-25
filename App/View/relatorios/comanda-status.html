@@ -136,13 +136,16 @@
             success:function(r){
                 // console.log('r',r);
                 var resp = jQuery.parseJSON(r);
-                // console.log(resp);
+                console.log(resp);
                 if(resp.comandas.length > 0){
                     $('#comandasPeriodo').show();
                     var tbody = $('#comandasPeriodo').find('tbody');
                     tbody.empty();
                     resp.comandas.forEach(linha => {
-                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item.replace(/,/g, '<br>')}</td> <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> <td><span class="btn btn-warning btn-xs" onclick="fecharComanda(${linha.id})"><span class="glyphicon glyphicon-pencil"></span></span> </td></tr>`);
+                        tbody.append(`<tr> <th>${linha.abertura}</th> <td>${linha.numero}</td> <td>${linha.vendedor}</td><td>${linha.cliente!=null?linha.cliente:'Não há cliente'}</td> <td> ${linha.item.replace(/,/g, '<br>')}</td> 
+                        <td>${linha.comanda_aberta == 1 ? '<span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span>':'<span class="glyphicon glyphicon-ok-circle" style="color: #045719"></span>'} </td> 
+                        <td>${linha.comanda_aberta == 1 ? '<span class="btn btn-warning btn-xs" onclick="fecharComanda(linha.id)"><span class="glyphicon glyphicon-pencil"></span></span>' : ''} </td>
+                         </tr>`);
                     });
                 }else{
                     $('#comandasPeriodo').hide();
@@ -150,7 +153,24 @@
                 }
             } 
         });
-    }    
+    }   
+
+    function fecharComanda() {
+        console.log();
+            return false;
+        alertify.confirm('Deseja fechar a comanda? ', function(){
+            
+            $.ajax({
+				type:"GET",
+				url:`finaliza-comanda`,
+                success:function(r){
+
+                }
+            });
+        }, function(){ 
+            alertify.error('Cancelado !');
+        });
+    } 
 </script>
 
 
