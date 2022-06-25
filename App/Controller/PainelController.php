@@ -10,7 +10,7 @@ class PainelController
     public function painel()
     {
         $usuario=$_SESSION['usuario']->getAcessos();
-        if($usuario == 16){
+        if(in_array(16, $usuario)){
             View::renderTemplate('/painel/inicio-adm.html');
         }else{
             View::renderTemplate('/painel/inicio.html');
