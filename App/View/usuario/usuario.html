@@ -154,16 +154,24 @@
                     <label>Relatórios</label>
                     <div class="container">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="15">
-                            <label class="form-check-label" for="relatorioVenda">Vendas</label>
+                            <input class="form-check-input" type="checkbox" id="relatorioComanda" name="acessos[]" value="15">
+                            <label class="form-check-label" for="relatorioComanda">Comandas</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="relatorioProduto" name="acessos[]" value="16">
-                            <label class="form-check-label" for="relatorioProduto">Produtos</label>
+                            <label class="form-check-label" for="relatorioProduto">Produtos mais vendidos</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="relatorioComanda" name="acessos[]" value="17">
-                            <label class="form-check-label" for="relatorioComanda">Comandas</label>
+                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="17">
+                            <label class="form-check-label" for="relatorioVenda">Vendas Colaboradores</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="18">
+                            <label class="form-check-label" for="relatorioVenda">Lançamentos e vendas</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="relatorioVenda" name="acessos[]" value="19">
+                            <label class="form-check-label" for="relatorioVenda">Vendas</label>
                         </div>
                     </div>
                 </div>
@@ -238,7 +246,7 @@
         var ativar = [];
         switch (cargo) {
             case "Administrador":
-                ativar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+                ativar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
                 break;
 
             case "Gerente":
