@@ -44,7 +44,9 @@
 </div>
 
 <div class="container" id="tabela">
+    {% if 2 in session['usuario'].getAcessos() %}
     <a class="btn btn-primary" href="cliente-add" role="button">Novo Cliente</a>
+    {% endif %}
     <!-- <div class="row">
         <ul class="nav nav-tabs nav-justified">
             <li role="presentation" ><a href="cliente-add">Cadastro</a></li>
@@ -67,15 +69,19 @@
     
             <thead>	
                  <tr>
-                     <th>Nome</th>
-                     <th>Sobrenome</th>
-                     <th>E-mail</th>
-                     <th>Telefone</th>
-                     <th>CPF</th>
-    
-                     <th>Editar</th>
-                     <!-- <th>Excluir</th> -->
-                     <th>Visualizar</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>CPF</th>
+                
+                    {% if 3 in session['usuario'].getAcessos() %} 
+                    <th>Editar</th>
+                    {% endif %}
+                    <!-- <th>Excluir</th> -->
+                    {% if 4 in session['usuario'].getAcessos() %} 
+                    <th>Visualizar</th>
+                    {% endif %}
                  </tr>
                  
              </thead>
@@ -88,21 +94,25 @@
                     <td>{{cliente.email}}</td>
                     <td>{{cliente.telefone}}</td>
                     <td>{{cliente.cpf}}</td>
+                    {% if 3 in session['usuario'].getAcessos() %} 
                     <td>
                         <span class="btn btn-warning btn-xs" data-toggle="modal" data-target="#atualizaCliente" onclick="editarCliente('{{cliente.id}}')">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </span>
                     </td>
+                    {% endif %}
                     <!-- <td>
                         <span class="btn btn-danger btn-xs" onclick="inativarCliente('{{cliente.id}}')">
                             <span class="glyphicon glyphicon-remove"></span>
                         </span>
                     </td> -->
+                    {% if 4 in session['usuario'].getAcessos() %} 
                     <td>
                         <a class="btn btn-primary btn-xs" href="cliente-venda?cliente={{cliente.id}}" role="button">
                           <span class="glyphicon glyphicon-list-alt"></span>
                         </a>
                     </td>
+                    {% endif %}
                  </tr>
                 {% endfor %} 
              </tbody>

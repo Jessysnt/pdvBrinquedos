@@ -12,7 +12,9 @@
 {% block body %}
 
 <div class="container" id="tabela">
+  {% if 6 in session['usuario'].getAcessos() %}
 <a class="btn btn-primary" href="usuario-add" role="button">Novo Usuário</a>
+{% endif %}
 </br>
 	<div class="table-responsive">
 	</br>
@@ -34,9 +36,13 @@
 					<th>Funções</th>
 
 					<th>Status</th>
+          {% if 7 in session['usuario'].getAcessos() %}
 					<th>Editar</th>
 					<th>Inativar</th>
+          {% endif %}
+          {% if 8 in session['usuario'].getAcessos() %}
 					<th>Visualizar</th>
+          {% endif %}
 				</tr>
 				
 			</thead>
@@ -58,6 +64,7 @@
           {% elseif usuario.status == 0 %}
           <td><span class="glyphicon glyphicon-remove-circle" style="color: #751d1d"></span></td>
           {% endif %}
+          {% if 7 in session['usuario'].getAcessos() %}
 					<td>
             <a class="btn btn-warning btn-xs" href="obt-usuario?usuario={{usuario.id}}" role="button">
               <span class="glyphicon glyphicon-pencil"></span>
@@ -68,11 +75,14 @@
 							<span class="glyphicon glyphicon-remove"></span>
 						</span>
 					</td>
+          {% endif %}
+          {% if 8 in session['usuario'].getAcessos() %}
           <td>
             <a class="btn btn-primary btn-xs" href="usuario-venda?usuario={{usuario.id}}" role="button">
               <span class="glyphicon glyphicon-list-alt"></span>
             </a>
           </td>
+          {% endif %}
 				</tr>
 				{% endfor %}
 			</tbody>
