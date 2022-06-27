@@ -77,14 +77,23 @@ class UsuarioController
     {
         $obUsuarioDAO = new UsuarioDAO();
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            if($_POST['status'] == 'on'){
+                $status = 1;
+            }else{
+                $status = 0;
+            }
             $obUsuario=array(
                 'id'=>intval($_POST['idUsuario']),
-                'nomeU'=>$_POST['nomeU'],
-                'sobrenomeU'=>$_POST['sobrenomeU'],
-                'emailU'=>$_POST['emailU'],
-                'cargoU'=>$_POST['cargoU'],
-                'statusU'=>intval($_POST['statusU']) 
+                'nome'=>$_POST['nome'],
+                'sobrenome'=>$_POST['sobrenome'],
+                'email'=>$_POST['email'],
+                'cargo'=>$_POST['cargo'],
+                'acessos' => implode(', ', $_POST['acessos']),
+                'status'=>$status
             );
+            if($_POST['senha'] == ""){
+                unset($obUsuario['senha']);
+            }
             $resp = $obUsuarioDAO->atualizarUsuario($obUsuario);
             View::jsonResponse($resp);
         }

@@ -133,10 +133,10 @@ class ComandaDAO extends Conexao
 		return $stmt->execute();
     }
 
-    public function fecharComanda(Type $var = null)
+    public function fecharComanda($comanda)
     {
         $stmt=static::getConexao()->prepare("UPDATE comandafatura SET comanda_aberta=0 WHERE id = :comanda");
-        $stmt->bindParam(':comanda', $post, PDO::PARAM_INT);
+        $stmt->bindParam(':comanda', $comanda, PDO::PARAM_INT);
 		return $stmt->execute();
     }
 }

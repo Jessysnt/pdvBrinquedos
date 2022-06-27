@@ -42,13 +42,22 @@ class UsuarioDAO extends Conexao
 
     public function atualizarUsuario($dados)
     {   
-        $stmt=static::getConexao()->prepare("UPDATE usuario SET nome=:nome, sobrenome=:sobrenome, email=:email, cargo=:cargo, status=:statusU WHERE id=:id");
+        $sqlSenha = ['',''];
+        if(array_key_exists('senha', $dados)){
+            $senha = sha1($dados['senha']);
+            $sqlSenha = [', senha','=:senha'];
+        }
+        $stmt=static::getConexao()->prepare("UPDATE usuario SET nome=:nome, sobrenome=:sobrenome, email=:email, cargo=:cargo, acesso=:acesso, status=:status$sqlSenha[0]$sqlSenha[1] WHERE id=:id");
         $stmt->bindParam(':id', $dados['id'], PDO::PARAM_INT);
-        $stmt->bindParam(':nome', $dados['nomeU'], PDO::PARAM_STR);
-        $stmt->bindParam(':sobrenome', $dados['sobrenomeU'], PDO::PARAM_STR);
-        $stmt->bindParam(':email', $dados['emailU'], PDO::PARAM_STR);
-        $stmt->bindParam(':cargo', $dados['cargoU'], PDO::PARAM_INT);   
-        $stmt->bindParam(':statusU', $dados['statusU'], PDO::PARAM_INT);        
+        $stmt->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
+        $stmt->bindParam(':sobrenome', $dados['sobrenome'], PDO::PARAM_STR);
+        $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
+        $stmt->bindParam(':cargo', $dados['cargo'], PDO::PARAM_STR);   
+        $stmt->bindValue(':acesso', $dados['acessos']);
+        $stmt->bindParam(':status', $dados['status'], PDO::PARAM_INT);   
+        if(array_key_exists('senha', $dados)){
+            $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+        }     
         return $stmt->execute();
 	}
 
@@ -62,7 +71,7 @@ class UsuarioDAO extends Conexao
     public function tabUsuario($busca, $pagina, $itensPag)
     {
         $offset = $itensPag*($pagina-1);
-        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE nome LIKE :busca ORDER BY status desc LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE nome LIKE :busca OR sobrenome LIKE :busca ORDER BY cargo, status desc LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -72,7 +81,7 @@ class UsuarioDAO extends Conexao
 
     public function qntTotalUsuarios($busca)
     {
-        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM usuario WHERE nome LIKE :busca ");
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM usuario WHERE nome LIKE :busca OR sobrenome LIKE :busca");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -83,7 +92,7 @@ class UsuarioDAO extends Conexao
      */
     public function exibirUsuario($idUsuario)
     {
-        $stmt = static::getConexao()->prepare("SELECT u.id, u.nome, u.sobrenome, u.cargo, COUNT(DISTINCT cf.id) AS totalVendas, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END) AS totalLiquido, SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id) AS ticketMedio
+        $stmt = static::getConexao()->prepare("SELECT u.id, u.nome, u.sobrenome, u.cargo, COALESCE(COUNT(DISTINCT cf.id),0) AS totalVendas, COALESCE(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END),0) AS totalLiquido, COALESCE(SUM(CASE WHEN cf.data_finalizacao IS NOT NULL THEN CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ELSE 0 END)/COUNT(DISTINCT cf.id),0) AS ticketMedio
         FROM usuario AS u
         LEFT JOIN comandafatura AS cf ON cf.id_vendedor = u.id
         WHERE u.id=:id AND cf.data_finalizacao IS NOT NULL");
