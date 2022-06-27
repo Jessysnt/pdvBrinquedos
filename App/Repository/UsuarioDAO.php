@@ -119,7 +119,7 @@ class UsuarioDAO extends Conexao
     {
         $usuario['dtInicial'] = $usuario['dtInicial'].' 00:00:00';
         $usuario['dtFinal'] = $usuario['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d-%m-%Y') as data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, c.id, c.nome, c.sobrenome FROM comandafatura AS cf
+        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d/%m/%Y') as data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, c.id, c.nome, c.sobrenome FROM comandafatura AS cf
         LEFT JOIN cliente AS c ON cf.id_cliente = c.id
         WHERE cf.id_vendedor = :idVendedor AND cf.data_finalizacao BETWEEN :dtInicial AND :dtFinal ORDER BY data ASC");
         $stmt->bindParam(':idVendedor', $usuario['idUsuario'], PDO::PARAM_INT);

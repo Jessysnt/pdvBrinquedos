@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
+    <style>
+        body{ 
+            font-family: 'Roboto Mono', 'Montserrat', sans-serif !important; 
+        } 
+        table { 
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 90%;
+            margin-bottom: 20px;
+        } 
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+        hr{ 
+            border-top: 1px dashed black; 
+        } 
+        td {
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
+    <header>
+        <div class="row">
+            <!-- <div class="col-sm">
+                <img src="../../../../public/assets/img/logo2.png" width="150" height="100">
+            </div> -->
+            <div class="col-sm">
+                <h2>Reino Mágico</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <h4>{{datas.dtInicial | format_datetime('short', 'none', locale='en')}} - {{datas.dtFinal | format_datetime('short', 'none', locale='en')}}</h4>
+            </div>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-sm">
+            <h3 style="color: rgb(29, 36, 77); text-align: center;">Relatório Lançamentos e Vendas</h3>
+        </div>
+    </div>
+    <br>
     <table class="table table-hover table-condensed table-bordered"  id="lista">
         <!-- <div ><input class="col-sm-6" id="filtro-nome" placeholder="Nome"/></div></br>
         <br> -->
@@ -20,7 +69,6 @@
         <tbody>
             {% for venda in vendas %}
             <tr>
-                <!-- <td>{{dump(venda)}}</td> -->
                 <td>{{venda.mes}}</td>
                 <td>{{venda.venda | format_currency('BRL')}}</td>
                 <td>{{venda.entrada | format_currency('BRL')}}</td>

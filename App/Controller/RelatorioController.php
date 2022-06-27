@@ -132,7 +132,7 @@ class RelatorioController
             //     $respVenda[$key]['itemArray'] = $arrayFinal;
             // }
             
-            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas.html', ['vendas'=>$respVenda]);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas.html', ['vendas'=>$respVenda, 'datas'=>$datas]);
             $pdf = new Pdf($html);
             $pdf->setOptions(['encoding'=>'UTF-8']);
             header('Content-type: application/pdf');
@@ -149,7 +149,7 @@ class RelatorioController
                 'dtFinal' => $_GET['dtFinal']
             );
             $respVendaLancamento = $obRelatorioDAO->lancamentoVenda($datas);
-            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-status-anual.html', ['vendas'=>$respVendaLancamento]);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-status-anual.html', ['vendas'=>$respVendaLancamento, 'datas'=>$datas]);
             $pdf = new Pdf($html);
             $pdf->setOptions(['encoding'=>'UTF-8']);
             header('Content-type: application/pdf');
@@ -166,7 +166,7 @@ class RelatorioController
                 'dtFinal' => $_GET['dtFinal']
             );
             $respBrinquedoPeriodo = $obRelatorioDAO->maisVendidos($datas);
-            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-mais-vendidos.html', ['brinquedos'=>$respBrinquedoPeriodo]);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-mais-vendidos.html', ['brinquedos'=>$respBrinquedoPeriodo, 'datas'=>$datas]);
             $pdf = new Pdf($html);
             $pdf->setOptions(['encoding'=>'UTF-8']);
             header('Content-type: application/pdf');
@@ -183,7 +183,7 @@ class RelatorioController
                 'dtFinal' => $_GET['dtFinal']
             );
             $respVendaColaborador = $obRelatorioDAO->vendasPeriodoColaboradores($datas);
-            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas-colaboradores.html', ['vendas'=>$respVendaColaborador]);
+            $html = View::renderTemplateHtml('/relatorios/pdf/pdf-vendas-colaboradores.html', ['vendas'=>$respVendaColaborador, 'datas'=>$datas]);
             $pdf = new Pdf($html);
             $pdf->setOptions(['encoding'=>'UTF-8']);
             header('Content-type: application/pdf');

@@ -129,7 +129,7 @@ class ClienteDAO extends Conexao
         $offset = $itensPag*($pagina-1);
         $cliente['dtInicial'] = $cliente['dtInicial'].' 00:00:00';
         $cliente['dtFinal'] = $cliente['dtFinal'].' 23:59:59';
-        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d-%m-%Y') AS data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario)) AS item, COALESCE(cf.desconto, 0) AS desconto
+        $stmt = static::getConexao()->prepare("SELECT cf.id, date_format(cf.data_finalizacao, '%d/%m/%Y') AS data, (CASE WHEN cf.valor_total2 IS NOT NULL THEN (cf.valor_total1 + cf.valor_total2) ELSE cf.valor_total1 END ) AS total, GROUP_CONCAT(CONCAT(lf.quantidade,'x ',p.nome,' val.:',lf.valor_unitario)) AS item, COALESCE(cf.desconto, 0) AS desconto
         FROM comandafatura AS cf
         INNER JOIN linhafatura AS lf ON cf.id = lf.id_comanda_fatura
         INNER JOIN produto AS p ON lf.id_produto = p.id
