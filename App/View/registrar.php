@@ -28,7 +28,7 @@
 							<label>Senha</label>
 							<input type="password" class="form-control" name="senha" id="senha">
 							<input type="text" class="form-control" name="cargo" id="cargo" value="Administrador">
-							<input class="form-control" id="acessos" name="acessos[]" value="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17">
+							<input class="form-control" id="acessos" name="acessos[]" value="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19">
 							<p></p>
 							<span class="btn btn-primary" id="registro">Registrar</span>
 							<a href="index.php" class="btn btn-default" style="margin-left: 20px;">Voltar Login</a>

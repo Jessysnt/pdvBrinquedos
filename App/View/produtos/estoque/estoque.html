@@ -10,14 +10,18 @@
  {% endblock %}
 
 {% block body %}
-<div class="container">
-    <div id="tabelaClientesLoad">
-        <h1>Produtos</h1>
+<div class="container" style="margin-top: -45px;">
+    <div id="tabelaEstoque">
+        <h1>Estoque</h1>
         <div class="row">
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation" ><a href="produto-form">Cadastrar Produtos</a></li>
-                <li role="presentation" ><a href="produto-venda">Preço para venda</a></li>
-                <li role="presentation" class="active"><a href="estoque">Estoque</a></li>
+                {% if 10 in session['usuario'].getAcessos() %} 
+                <li role="presentation" style="color: #12099b;"><a href="produto-form">Cadastrar Produtos</a></li>
+                {% endif %}
+                {% if 11 in session['usuario'].getAcessos() %} 
+                <li role="presentation" style="color: #12099b;"><a href="produto-venda">Preço para venda</a></li>
+                {% endif %}
+                <li role="presentation" class="active" style="color: #090111;"><a href="estoque">Estoque</a></li>
             </ul>
         </div>	
         </br>

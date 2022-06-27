@@ -55,8 +55,10 @@
     
     <div class="row">
         <ul class="nav nav-tabs nav-justified">
-            <li role="presentation" ><a href="produto-form">Cadastrar Produtos</a></li>
-            <li role="presentation" class="active"><a href="produto-venda">Preço para venda</a></li>
+            {% if 10 in session['usuario'].getAcessos() %} 
+            <li role="presentation"><a href="produto-form">Cadastrar Produtos</a></li>
+            {% endif %}
+            <li role="presentation" class="active" style="color: #090111;"><a href="produto-venda">Preço para venda</a></li>
             <li role="presentation"><a href="estoque">Estoque</a></li>
         </ul>
     </div>	

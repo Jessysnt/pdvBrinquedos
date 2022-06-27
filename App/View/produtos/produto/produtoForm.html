@@ -41,14 +41,12 @@
 </div>
 
 <!--Formulario-->
-<div class="container">
-    <h1>Produtos</h1>
+<div class="container" style="margin-top: -45px;">
+    <h2>Produtos</h2>
     <div class="row">
         <ul class="nav nav-tabs nav-justified">
-            {% if (session['usuario'].getCargo() == "1" or "3") %}
             <li role="presentation" class="active"><a href="produto-form">Cadastrar Produtos</a></li>
             <li role="presentation"><a href="produto-venda">Preço para venda</a></li>
-            {% endif %}
             <li role="presentation"><a href="estoque">Estoque</a></li>
         </ul>
     </div>	

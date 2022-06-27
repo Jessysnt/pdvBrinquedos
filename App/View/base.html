@@ -49,6 +49,7 @@
                   <!-- <li><a class="dropdown-item" href="cliente-add" ><span ></span> Clientes</a></li> -->
                 <!-- </ul>
               </li> -->
+              {% if 13 in session['usuario'].getAcessos() %}
               <li class="dropdown">
                 <a href="#" style="color: #045719" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-usd"></span> Gestão Comanda <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -62,6 +63,7 @@
                   {% endif %}
                 </ul>
               </li>
+              {% endif %}
               
               <li class="dropdown">
                 <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Gestão Produtos <span class="caret"></span></a>
@@ -74,27 +76,33 @@
                 </ul>
               </li>
               
+              {% if 15 in session['usuario'].getAcessos() %}
               <li class="dropdown">
                 <a href="#" style="color: #0d02a3" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span> Relatórios <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   {% if 16 in session['usuario'].getAcessos() %}
                   <li><a href="mais-vendidos-produto">Produtos mais vendidos</a></li>
                   {% endif %}
+                  {% if 15 in session['usuario'].getAcessos() %}
+                  <li><a href="pesquisa-comanda">Comandas Status</a></li>
+                  {% endif %}
                   {% if 17 in session['usuario'].getAcessos() %}
-                  <li><a href="pesquisa-comanda">Comandas</a></li>
+                  <li><a href="colaboradores-vendas">Vendas dos Colaboradores</a></li>
                   {% endif %}
                   {% if 18 in session['usuario'].getAcessos() %}
-                  <li><a href="colaboradores-vendas">Vendas Colaboradores</a></li>
                   <li><a href="status-anual">Lançamentos e vendas</a></li>
-                  <li><a href="pesquisar-vendas">Vendas</a></li>
+                  {% endif %}
+                  {% if 19 in session['usuario'].getAcessos() %}
+                  <li><a href="pesquisar-vendas">Vendas itens</a></li>
                   {% endif %}
                 </ul>
               </li>
-              
-              <!-- {% if 16 in session['usuario'].getAcessos() %} -->
+              {% endif %}
+
+              {% if 19 in session['usuario'].getAcessos() %}
               <li><a href="lancamento" style="color: #255704"><span class="glyphicon glyphicon-usd"></span>Lançamentos</a>
               </li>
-              <!-- {% endif %} -->
+              {% endif %}
 
               <li class="dropdown" >
                 <a href="#" style="color: #a34202"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{ session['usuario'].getNome() }}   <span class="caret"></span></a>
