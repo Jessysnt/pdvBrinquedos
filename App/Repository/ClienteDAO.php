@@ -61,7 +61,7 @@ class ClienteDAO extends Conexao
     public function tabClientes($busca, $pagina, $itensPag)
     {
         $offset = $itensPag*($pagina-1);
-        $stmt = static::getConexao()->prepare("SELECT * FROM cliente WHERE nome LIKE :busca AND status=1 LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT * FROM cliente WHERE nome LIKE :busca OR sobrenome LIKE :busca LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -71,7 +71,7 @@ class ClienteDAO extends Conexao
 
     public function qntTotalClientes($busca)
     {
-        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM cliente WHERE nome LIKE :busca ");
+        $stmt = static::getConexao()->prepare("SELECT count(id) AS total FROM cliente WHERE nome LIKE :busca OR sobrenome LIKE :busca");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
