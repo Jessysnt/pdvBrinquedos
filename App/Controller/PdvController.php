@@ -60,7 +60,8 @@ class PdvController
                 'valorTotalUm' => $_POST['valor_total1'],
                 'formaPgDois' => intval($_POST['pg_forma2']),
                 'valorTotalDois' => $_POST['valor_total2'],
-                'vzsCartao' => intval($_POST['vzs_cartao']),
+                'vzsCartao1' => intval($_POST['vzs_cartao1']),
+                'vzsCartao2' => intval($_POST['vzs_cartao2']),
                 'desconto' => $_POST['desconto'],
                 'dataFinalizacao' => $datetime
             );
@@ -75,8 +76,11 @@ class PdvController
                 unset($comandaFatura['formaPgDois']);
                 unset($comandaFatura['valorTotalDois']);
             }
-            if($_POST['vzs_cartao'] == ""){
-                unset($comandaFatura['vzsCartao']);
+            if($_POST['vzs_cartao1'] == ""){
+                unset($comandaFatura['vzsCartao1']);
+            }
+            if($_POST['vzs_cartao2'] == ""){
+                unset($comandaFatura['vzsCartao2']);
             }
             if($_POST['desconto'] == 'NaN'){
                 unset($comandaFatura['desconto']);
@@ -87,6 +91,8 @@ class PdvController
             }else{
                 $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);
             }
+
+            $deleteLinhaFatura=$obPdvDAO->deletarLinhaFatura($respComandaFatura);
             
             if($respComandaFatura > 0){
                 foreach($_POST['linhas'] as $row) {

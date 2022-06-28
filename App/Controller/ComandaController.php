@@ -69,6 +69,8 @@ class ComandaController
             }
             
             $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
+
+            $deleteLinhaFatura=$obComandaDAO->deletarLinhaFatura($respComandaFatura);
             
             if($respComandaFatura > 0){
                 foreach($_POST['linhas'] as $row) {
@@ -78,10 +80,11 @@ class ComandaController
                         'quantidade'=>$row['quantidade'],
                         'valor_unitario'=>$row['valor_unitario'],
                     );
-                    $obComandaDAO->gravarLinhaFatura($linhaFatura);
+                    $obComandaDAO->gravarLinhaFaturaInsert($linhaFatura);
                 }
                 View::jsonResponse(['resp'=>true]);
             }
+            
         }
     }
 
@@ -128,9 +131,10 @@ class ComandaController
 
     public function finalizarComanda()
     {
-        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $obComandaDAO = new ComandaDAO();
-            $resp = $obComandaDAO->fecharComanda($_GET['comanda']);
+            $respLinha = $obComandaDAO->fecharLinhaFatura($_POST['comanda']);
+            $resp = $obComandaDAO->fecharComanda($_POST['comanda']);
             View::jsonResponse($resp);
         }
     }

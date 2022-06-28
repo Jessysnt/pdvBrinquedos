@@ -116,7 +116,7 @@
                     <div class="col-sm-5">
                         <div class="form-group">
 							<label>Quantidade Vendida</label>
-							<input type="number" class="form-control input-sm" id="quantV" name="quantV">
+							<input type="number" class="form-control input-sm" id="quantV" name="quantV" min="1">
 						</div>
                     </div>
                 </div>
@@ -182,15 +182,15 @@
                             <select class="form-control input-sm" id="pgUm" name="pgUm" required onchange="vezesCartao(value)">
                                 <option value="1" >Dinheiro</option>
                                 <option value="2">Pix</option>
-                                <option value="3">Debito</option>
+                                <option value="3">Débito</option>
                                 <option value="4">Crédito</option>
                                 <!-- <option value="{{produto.id}}">{{cliente.cpf}}</option> -->
                             </select>
                         </div>
                     </div>
-                    <div id="vzsCartaoUm" class="col-sm-4">
+                    <div id="vzsUm" class="col-sm-4">
                         <label>x no cartão</label>
-                        <input type="number" class="form-control input-sm" name="vzsCartaoUm" id="vzsCartao">
+                        <input type="number" class="form-control input-sm" name="vzsCartaoUm" id="vzsCartaoUm" min="1">
                     </div>				
                     <div class="col-sm-4">
                         <label>Valor a pagar</label>
@@ -220,15 +220,18 @@
                             <label>2ª Forma de pagamento</label>
                             <div>
                                 <select class="form-control" id="pgDois" name="pgDois" required onchange="vezesCartao(value)">
-                                    <option value="" readonly="true">Selecionar</option>
+                                    <option value="" >Selecione</option>
                                     <option value="1" >Dinheiro</option>
                                     <option value="2">Pix</option>
-                                    <option value="3">Debito</option>
-                                    <!-- <option value="4">Credito</option> -->
+                                    <option value="3">Débito</option>
+                                    <option value="4">Crédito</option>
                                 </select>
                             </div>
                         </div>
-                        
+                        <div id="vzsDois" class="col-sm-4">
+							<label>x no cartão</label>
+							<input type="number" class="form-control input-sm" name="vzsCartaoDois" id="vzsCartaoDois" min="1">
+						</div>
                         <div class="col-sm-4">
                             <label>Valor a pagar</label>
                             <div>
@@ -279,8 +282,8 @@
 		$("#precoV").prop("disabled", true);
 		$("#quantV").prop("disabled", true);
 		$("#anonimo").prop("disabled", true);
-		$("#vzsCartaoUm").hide();
-		$("#vzsCartaoDois").hide();
+		$("#vzsUm").hide();
+		$("#vzsDois").hide();
 		$("#pagamentoDois").hide();
 		$("#pgDois").hide();
 		$("#trocoUm").hide();
@@ -318,14 +321,14 @@
 	function vezesCartao(){
 		if($('#pgUm').val() == 4){
 			$("#vzsCartao").prop("disabled", false);
-			$("#vzsCartaoUm").show();
+			$("#vzsUm").show();
 		}else{
-			$("#vzsCartaoUm").hide();
+			$("#vzsUm").hide();
 		}
 		if($('#pgDois').val() == 4){
-			$("#vzsCartaoDois").show();
+			$("#vzsDois").show();
 		}else{
-			$("#vzsCartaoDois").hide();
+			$("#vzsDois").hide();
 		}
 	};
 
@@ -473,6 +476,12 @@
 
     $("#pgUm").select2();
     $("#pgDois").select2();
+	$("#quantV").on('keypress',function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+			return false;
+		}
+	});
 </script>
 
 <script type="text/javascript">
@@ -635,29 +644,30 @@
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
-		if(dados.id_comanda_fatura){
-			$.ajax({
-				type:"DELETE",
-				data: dados,
-				url:"apaga-prod-comanda",
-				success:function(r){
-					if(r == true){
-						// console.log('r',r);
-						tbody.remove();
-						delete comanda.linhas[i-1];
-						itensSoma($('#tabelaComanda'));
-						atualizarTabela($('#tabelaComanda'));
-					}else{
-						alertify.error("Não foi possível excluir");	
-					}
-				}
-			});
-		}else{
+		// if(dados.id_comanda_fatura){
+		// 	$.ajax({
+		// 		type:"DELETE",
+		// 		data: dados,
+		// 		url:"apaga-prod-comanda",
+		// 		success:function(r){
+		// 			console.log(r);
+		// 			if(r == true){
+		// 				// console.log('r',r);
+		// 				tbody.remove();
+		// 				delete comanda.linhas[i-1];
+		// 				itensSoma($('#tabelaComanda'));
+		// 				atualizarTabela($('#tabelaComanda'));
+		// 			}else{
+		// 				alertify.error("Não foi possível excluir");	
+		// 			}
+		// 		}
+		// 	});
+		// }else{
 			tbody.remove();
 			delete comanda.linhas[i-1];
 			itensSoma($('#tabelaComanda'));
 			atualizarTabela($('#tabelaComanda'));
-		}
+		// }
 	}
 
 	/**
@@ -742,7 +752,8 @@
 				valor_total1: $('#valorUm').maskMoney('unmasked')[0],
 				pg_forma2: $('#pgDois').val(),
 				valor_total2: $('#valorDois').maskMoney('unmasked')[0],
-				vzs_cartao: $('#vzsCartao').val(),
+				vzs_cartao1: $('#vzsCartaoUm').val(),
+				vzs_cartao2: $('#vzsCartaoDois').val(),
 				desconto: $('#descontoValor').maskMoney('unmasked')[0],
 				// desconto: (parseFloat($('#descontoValor').val())!=NaN?(parseFloat($('#descontoValor').val())):null),
 				linhas:[]
@@ -759,7 +770,7 @@
 				apagarForm();
 			});
 			console.log('dados', dados);
-
+			
 			$.ajax({
 				type:"POST",
 				data: dados,

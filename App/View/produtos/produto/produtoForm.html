@@ -56,20 +56,20 @@
             <form id="frmProdutos" method="post">
 
                 <label>Nome</label>
-                <input type="text" class="form-control input-sm" id="nome" name="nome">
+                <input type="text" class="form-control" id="nome" name="nome" required>
                 <label>Código</label>
-                <input type="text" class="form-control input-sm" id="codigo" name="codigo">
+                <input type="text" class="form-control" id="codigo" name="codigo" required>
                 <label>Descrição</label>
-                <input type="text" class="form-control input-sm" id="descricao" name="descricao">
+                <input type="text" class="form-control" id="descricao" name="descricao" required>
                 <label>Categoria</label>
-                <select class="form-control input-sm" id="categoria" name="categoria" >
+                <select class="form-control" id="categoria" name="categoria" required>
                     <option value="">Selecionar</option>
                     {% for categoria in categorias %}
                     <option value="{{categoria.id}}">{{categoria.categoria}}</option>
                     {% endfor %}
                 </select>
                 <label>Imagem</label>
-                <input type="file" id="imagem" name="imagem">
+                <input type="file" id="imagem" name="imagem" required>
                 <p></p>
                 <span type="submit" id="btnAddProduto" class="btn btn-primary btn-block">Adicionar</span>
             </form>
@@ -86,6 +86,12 @@
 {% block javascript %}
 
 <script type="text/javascript">
+    $('#codigo').on('keypress',function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+        }
+    });
+
     function atualizarProduto(idproduto){
         //alert(idproduto);
         $.ajax({
@@ -152,9 +158,14 @@
         $('#tabelaProdutosLoad').load("tab-produto");
 
         $('#btnAddProduto').click(function(){
-            vazios=validarFormVazio('frmProdutos');
-            if(vazios > 0){
-                alertify.alert("Preencha todos os campos!!");
+            // vazios=validarFormVazio('frmProdutos');
+            // if(vazios > 0){
+            //     alertify.alert("Preencha todos os campos!!");
+            //     return false;
+            // }
+            $('#frmProdutos')[0].reportValidity();
+            if(!$('#frmProdutos')[0].checkValidity()){
+                console.log('entrou if');
                 return false;
             }
             var formData = new FormData(document.getElementById("frmProdutos"));

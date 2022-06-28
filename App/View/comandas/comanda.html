@@ -351,6 +351,13 @@
 			});
 		}
 	});
+
+	$("#quantV").on('keypress',function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+			return false;
+		}
+	});
 </script>
 
 <script type="text/javascript">
@@ -408,25 +415,25 @@
 			id_comanda_fatura: parseInt(comanda.id)
 		};
 		var tbody = $('#tabelaComanda').find('tr')[i];
-		if(dados.id_comanda_fatura){
-			$.ajax({
-				type:"DELETE",
-				data: dados,
-				url:"apaga-prods-comanda",
-				success:function(r){
-					// console.log('r',r);
-					tbody.remove();
-					delete comanda.linhas[i-1];
-					itensSoma($('#tabelaComanda'));
-					atualizarTabela($('#tabelaComanda'));
-				}
-			});
-		}else{
+		// if(dados.id_comanda_fatura){
+		// 	$.ajax({
+		// 		type:"DELETE",
+		// 		data: dados,
+		// 		url:"apaga-prods-comanda",
+		// 		success:function(r){
+		// 			// console.log('r',r);
+		// 			tbody.remove();
+		// 			delete comanda.linhas[i-1];
+		// 			itensSoma($('#tabelaComanda'));
+		// 			atualizarTabela($('#tabelaComanda'));
+		// 		}
+		// 	});
+		// }else{
 			tbody.remove();
 			delete comanda.linhas[i-1];
 			itensSoma($('#tabelaComanda'));
 			atualizarTabela($('#tabelaComanda'));
-		}
+		// }
 	}
 
 	/**
@@ -480,9 +487,9 @@
 				data: dados,
 				url:"gravar-comanda",
 				success:function(r){
-					
+					console.log('respostaGravou1',r);
 					var resp = JSON.parse(r);
-					console.log('respostaGravou1',resp);
+					console.log('respostaGravou2',resp);
 					if(resp){	
 						$('#codigo').val('');
 						$('#clienteCpf').val(null).trigger('change');

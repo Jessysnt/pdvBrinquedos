@@ -16,12 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(150) NOT NULL,
+  `sobrenome` varchar(150) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `senha` varchar(200) NOT NULL,
+  `cargo` varchar(150) NOT NULL,
+  `acesso` varchar(100) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  `registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--
 -- Table structure for table `categoria`
 --
 
 DROP TABLE IF EXISTS `categoria`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `categoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` int(11) NOT NULL,
@@ -39,8 +55,6 @@ CREATE TABLE `categoria` (
 --
 
 DROP TABLE IF EXISTS `cliente`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` int(11) NOT NULL,
@@ -56,54 +70,7 @@ CREATE TABLE `cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `comandafatura`
---
 
-DROP TABLE IF EXISTS `comandafatura`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `comandafatura` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `comanda_aberta` tinyint(4) NOT NULL DEFAULT '1',
-  `numero` varchar(100) DEFAULT NULL,
-  `id_cliente` int(11) DEFAULT NULL,
-  `id_vendedor` int(11) DEFAULT NULL,
-  `id_caixa` int(11) DEFAULT NULL,
-  `pg_forma1` int(11) DEFAULT NULL,
-  `valor_total1` decimal(10,2) DEFAULT NULL,
-  `pg_forma2` int(11) DEFAULT NULL,
-  `valor_total2` decimal(10,2) DEFAULT NULL,
-  `vzs_cartao` int(11) DEFAULT NULL,
-  `bandeira_cartao` varchar(100) DEFAULT NULL,
-  `desconto` decimal(10,2) DEFAULT NULL,
-  `data_registro` datetime DEFAULT NULL,
-  `data_finalizacao` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_idx` (`id_cliente`),
-  KEY `fk_comandafatura_caixa_idx` (`id_vendedor`),
-  CONSTRAINT `fk_comandafatura_caixa` FOREIGN KEY (`id_vendedor`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_comandafatura_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `estoque`
---
-
-DROP TABLE IF EXISTS `estoque`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `estoque` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_produto` int(11) NOT NULL,
-  `quantotal` int(11) NOT NULL,
-  `preco_ven` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_estoque_produto_idx` (`id_produto`),
-  CONSTRAINT `fk_estoque_produto` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `fornecedor`
@@ -245,8 +212,6 @@ CREATE TABLE `produtovenda` (
 --
 
 DROP TABLE IF EXISTS `usuario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(150) NOT NULL,
@@ -260,8 +225,49 @@ CREATE TABLE `usuario` (
   `registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `comandafatura`
+--
+
+DROP TABLE IF EXISTS `comandafatura`;
+CREATE TABLE `comandafatura` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comanda_aberta` tinyint(4) NOT NULL DEFAULT '1',
+  `numero` varchar(100) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
+  `id_vendedor` int(11) DEFAULT NULL,
+  `id_caixa` int(11) DEFAULT NULL,
+  `pg_forma1` int(11) DEFAULT NULL,
+  `valor_total1` decimal(10,2) DEFAULT NULL,
+  `pg_forma2` int(11) DEFAULT NULL,
+  `valor_total2` decimal(10,2) DEFAULT NULL,
+  `vzs_cartao` int(11) DEFAULT NULL,
+  `bandeira_cartao` varchar(100) DEFAULT NULL,
+  `desconto` decimal(10,2) DEFAULT NULL,
+  `data_registro` datetime DEFAULT NULL,
+  `data_finalizacao` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_idx` (`id_cliente`),
+  KEY `fk_comandafatura_caixa_idx` (`id_vendedor`),
+  CONSTRAINT `fk_comandafatura_caixa` FOREIGN KEY (`id_vendedor`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comandafatura_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `estoque`
+--
+
+DROP TABLE IF EXISTS `estoque`;
+CREATE TABLE `estoque` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_produto` int(11) NOT NULL,
+  `quantotal` int(11) NOT NULL,
+  `preco_ven` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_estoque_produto_idx` (`id_produto`),
+  CONSTRAINT `fk_estoque_produto` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -31,7 +31,7 @@ class CategoriaDAO extends Conexao
     {
         $offset = $itensPag*($pagina-1);
         // die(var_dump($offset));
-        $stmt = static::getConexao()->prepare("SELECT * FROM categoria WHERE categoria LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT * FROM categoria WHERE categoria LIKE :busca OR descricao LIKE :busca LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);

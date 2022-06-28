@@ -13,7 +13,7 @@ class EstoqueDAO extends Conexao
     {
         $offset = $itensPag*($pagina-1);
         // die(var_dump($offset));
-        $stmt = static::getConexao()->prepare("SELECT pro.nome, pro.descricao,es.quantotal, es.preco_ven, es.id FROM estoque AS es INNER JOIN produto AS pro ON es.id_produto=pro.id WHERE pro.nome LIKE :busca LIMIT :itensPag OFFSET :offset");
+        $stmt = static::getConexao()->prepare("SELECT pro.nome, pro.descricao,es.quantotal, es.preco_ven, es.id FROM estoque AS es INNER JOIN produto AS pro ON es.id_produto=pro.id WHERE pro.nome LIKE :busca OR  pro.descricao LIKE :busca LIMIT :itensPag OFFSET :offset");
         $stmt->bindValue(':busca', '%'.$busca.'%');
         $stmt->bindParam(':itensPag', $itensPag, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);

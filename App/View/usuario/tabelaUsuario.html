@@ -29,7 +29,6 @@
 			<thead>	
 				<tr>
 					<th>Nome</th>
-					<th>Sobrenome</th>
 					<th>CPF</th>
 					<th>Email</th>
 					<th>Cargo</th>
@@ -52,8 +51,7 @@
 
 				{% for usuario in usuarios %}
 				<tr>
-					<td>{{usuario.nome}}</td>
-					<td>{{usuario.sobrenome}}</td>
+					<td>{{usuario.nome}} {{usuario.sobrenome}}</td>
 					<td>{{usuario.cpf}}</td>
 					<td>{{usuario.email}}</td>
 					<td>{{usuario.cargo}}</td>

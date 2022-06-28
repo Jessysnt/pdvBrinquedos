@@ -173,7 +173,7 @@
                 var mes = d.getMonth() + 1;
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
-                link.download="Vendas_" + d.getDate() + '-' + ".pdf";
+                link.download="Vendas_" + d.getDate() + '-' + mes +".pdf";
                 link.click();
             };
 

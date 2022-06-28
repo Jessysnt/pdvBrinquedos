@@ -70,32 +70,22 @@ class ComandaDAO extends Conexao
         }
     }
 
-    public function gravarLinhaFatura($linhaFatura)
+    public function gravarLinhaFaturaInsert($linhaFatura)
     {
-        $stmt=static::getConexao()->prepare("SELECT id_produto FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
+        $stmt=static::getConexao()->prepare("INSERT INTO linhafatura (id_comanda_fatura, id_produto, quantidade, valor_unitario) VALUES (:id_comanda_fatura, :id_produto, :quantidade, :valor_unitario)");
         $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
         $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-        $stmt->execute();
-        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
+        $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
+        return $stmt->execute();
         
-        if($resp != false){
-            if($resp['id_produto'] == $linhaFatura['id_produto']){
-                $stmt=static::getConexao()->prepare("UPDATE linhafatura SET quantidade =:quantidade, valor_unitario =:valor_unitario WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
-                $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
-                $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-                $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
-                $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
-                return $stmt->execute();
-            }
-        }
-        if($resp == false){
-            $stmt=static::getConexao()->prepare("INSERT INTO linhafatura (id_comanda_fatura, id_produto, quantidade, valor_unitario) VALUES (:id_comanda_fatura, :id_produto, :quantidade, :valor_unitario)");
-            $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
-            $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-            $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
-            $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
-            return $stmt->execute();
-        }
+    }
+
+    public function deletarLinhaFatura($comandafatura)
+    {
+        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura");
+        $stmt->bindParam(':id_comanda_fatura', $comandafatura, PDO::PARAM_INT);
+		return $stmt->execute();
     }
 
     /**
@@ -135,7 +125,14 @@ class ComandaDAO extends Conexao
 
     public function fecharComanda($comanda)
     {
-        $stmt=static::getConexao()->prepare("UPDATE comandafatura SET comanda_aberta=0 WHERE id = :comanda");
+        $stmt=static::getConexao()->prepare("DELETE FROM comandafatura WHERE id = :comanda");
+        $stmt->bindParam(':comanda', $comanda, PDO::PARAM_INT);
+		return $stmt->execute();
+    }
+
+    public function fecharLinhaFatura($comanda)
+    {
+        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :comanda");
         $stmt->bindParam(':comanda', $comanda, PDO::PARAM_INT);
 		return $stmt->execute();
     }

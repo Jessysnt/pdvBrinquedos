@@ -66,9 +66,14 @@ class PdvDAO extends Conexao
             $sqlValorTotalDois = [' valor_total2=',':valorTotalDois, '];
         }
 
-        $sqlVzsCartao = ['',''];
-        if(array_key_exists('vzsCartao', $respComandaFatura)){
-            $sqlVzsCartao = [' vzs_cartao=',':vzsCartao, '];
+        $sqlVzsCartao1 = ['',''];
+        if(array_key_exists('vzsCartao1', $respComandaFatura)){
+            $sqlVzsCartao1 = [' vzs_cartao1=',':vzsCartao1, '];
+        }
+
+        $sqlVzsCartao2 = ['',''];
+        if(array_key_exists('vzsCartao2', $respComandaFatura)){
+            $sqlVzsCartao2 = [' vzs_cartao2=',':vzsCartao2, '];
         }
 
         $sqlDesconto = ['',''];
@@ -77,7 +82,7 @@ class PdvDAO extends Conexao
         }
 
         $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao[0]$sqlVzsCartao[1]$sqlDesconto[0]$sqlDesconto[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao1[0]$sqlVzsCartao1[1]$sqlVzsCartao2[0]$sqlVzsCartao2[1]$sqlDesconto[0]$sqlDesconto[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
         
         $stmt=$bd->prepare($sql);
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
@@ -93,8 +98,11 @@ class PdvDAO extends Conexao
         if(array_key_exists('valorTotalDois', $respComandaFatura)){
             $stmt->bindParam(':valorTotalDois', $respComandaFatura['valorTotalDois'], PDO::PARAM_STR);
         }
-        if(array_key_exists('vzsCartao', $respComandaFatura)){
-            $stmt->bindParam(':vzsCartao', $respComandaFatura['vzsCartao'], PDO::PARAM_INT);
+        if(array_key_exists('vzsCartao1', $respComandaFatura)){
+            $stmt->bindParam(':vzsCartao1', $respComandaFatura['vzsCartao1'], PDO::PARAM_INT);
+        }
+        if(array_key_exists('vzsCartao2', $respComandaFatura)){
+            $stmt->bindParam(':vzsCartao2', $respComandaFatura['vzsCartao2'], PDO::PARAM_INT);
         }
         if(array_key_exists('desconto', $respComandaFatura)){
             $stmt->bindParam(':desconto', $respComandaFatura['desconto'], PDO::PARAM_STR);
@@ -247,5 +255,12 @@ class PdvDAO extends Conexao
             $stmt->execute();
             return $stmt->fetch();
         }
+    }
+
+    public function deletarLinhaFatura($comandafatura)
+    {
+        $stmt=static::getConexao()->prepare("DELETE FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura");
+        $stmt->bindParam(':id_comanda_fatura', $comandafatura, PDO::PARAM_INT);
+		return $stmt->execute();
     }
 }
