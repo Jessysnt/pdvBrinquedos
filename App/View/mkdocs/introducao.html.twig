@@ -1,0 +1,104 @@
+{% extends "mkdocs/base_mkdocs.html.twig" %}
+
+{% block titulo %}
+Introdução - Manual do Usuário
+{% endblock %}
+
+{% block subtitulo %}
+
+            
+              Introdução
+            
+          
+{% endblock %}
+
+{% block menuEsquerdo %}
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
+<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+</a>
+    Manual do Usuário
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_introducao') }}">
+        Introdução
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_inicio') }}">
+        Inicio
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+        Colaborador
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_categorias') }}">
+        Categorias
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+        Produtos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lote') }}">
+        Lote
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+        Estoque
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+        Cliente
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_abrir-comanda') }}">
+        Abrir Comanda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+        Pdv - Ponto De Venda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+        Lançamentos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_relatorios') }}">
+        Relatórios
+      </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block menuDireito %}
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<article class="md-content__inner md-typeset">
+<h1 id="introducao">INTRODUÇÃO</h1>
+<p>O sistema <strong>Reino Mágico</strong> foi criado para melhorar o fluxo da loja, conta com novas ferramentas pensadas para otimizar processos e contabilizar de forma precisa seus resultados.</p>
+<p>Neste conteúdo você encontrará o manual de utilização do sistema <strong>Reino Mágico</strong>, com demonstrativos na prática de como utilizá-lo.</p>
+</article>
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}

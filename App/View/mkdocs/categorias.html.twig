@@ -1,0 +1,140 @@
+{% extends "mkdocs/base_mkdocs.html.twig" %}
+
+{% block titulo %}
+Categorias - Manual do Usuário
+{% endblock %}
+
+{% block subtitulo %}
+
+            
+              Categorias
+            
+          
+{% endblock %}
+
+{% block menuEsquerdo %}
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
+<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+</a>
+    Manual do Usuário
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_introducao') }}">
+        Introdução
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_inicio') }}">
+        Inicio
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+        Colaborador
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Categorias
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_categorias') }}">
+        Categorias
+      </a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#editar-categoria">
+    Editar Categoria
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+        Produtos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lote') }}">
+        Lote
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+        Estoque
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+        Cliente
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_abrir-comanda') }}">
+        Abrir Comanda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+        Pdv - Ponto De Venda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+        Lançamentos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_relatorios') }}">
+        Relatórios
+      </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block menuDireito %}
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#editar-categoria">
+    Editar Categoria
+  </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<article class="md-content__inner md-typeset">
+<h1 id="categorias">CATEGORIAS</h1>
+<p><img alt="categoria" src="{{ asset('mkdocs/imagens/categoria-tela.png') }}"/></p>
+<p>O cadastramento da categoria é necessário para incluir os brinquedos no sistema. </p>
+<p>Preencha os campos, faixa etária e uma breve descrição. Clique em <strong>Adicionar</strong>, para ser salvo as informações.</p>
+<p>Note que ao lado do formulário há uma tabela, nela aparecerá a faixa etária cadastrada e sua descrição.</p>
+<p>Veja que na tabela há o campo <em>Editar</em> <img alt="editar" src="{{ asset('mkdocs/imagens/editar-caneta.png') }}">. Clicando nele será direcionado para edição da categoria.</img></p>
+<p>Também na tabela há a opção <em>Excluir</em> <img alt="inativar" src="{{ asset('mkdocs/imagens/excluir-x.png') }}"/>. Clicando nele irá excluir a categoria do sistema. </p>
+<h2 id="editar-categoria">Editar Categoria</h2>
+<p><img alt="editar-categoria" src="{{ asset('mkdocs/imagens/editar-categoria-tela.png') }}"/></p>
+<p>Uma modal é apresentada com as informações da categoria já cadastradas.</p>
+<p>Altere o campo que desejar e clique em <strong>Salvar</strong> <img alt="salvar" src="{{ asset('mkdocs/imagens/salvar-modal.png') }}"/>, para salvar as informações editadas.</p>
+</article>
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}

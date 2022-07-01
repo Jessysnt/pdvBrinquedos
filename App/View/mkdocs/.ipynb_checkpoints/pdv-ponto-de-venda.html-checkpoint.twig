@@ -1,0 +1,221 @@
+{% extends "mkdocs/base_mkdocs.html.twig" %}
+
+{% block titulo %}
+Pdv - Ponto De Venda - Manual do Usuário
+{% endblock %}
+
+{% block subtitulo %}
+
+            
+              Pdv - Ponto De Venda
+            
+          
+{% endblock %}
+
+{% block menuEsquerdo %}
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
+<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+</a>
+    Manual do Usuário
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_introducao') }}">
+        Introdução
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_inicio') }}">
+        Inicio
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+        Colaborador
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_categorias') }}">
+        Categorias
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+        Produtos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lote') }}">
+        Lote
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+        Estoque
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+        Cliente
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_abrir-comanda') }}">
+        Abrir Comanda
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Pdv - Ponto De Venda
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+        Pdv - Ponto De Venda
+      </a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cliente-nao-possui-comanda">
+    Cliente não possui comanda
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#desconto">
+    Desconto
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissao-de-desconto">
+    Permissão de desconto
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#duas-formas-de-pagamento">
+    Duas formas de pagamento
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#alterar">
+    Alterar
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#imprimir-comprovante-de-venda">
+    Imprimir comprovante de venda
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+        Lançamentos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_relatorios') }}">
+        Relatórios
+      </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block menuDireito %}
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cliente-nao-possui-comanda">
+    Cliente não possui comanda
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#desconto">
+    Desconto
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissao-de-desconto">
+    Permissão de desconto
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#duas-formas-de-pagamento">
+    Duas formas de pagamento
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#alterar">
+    Alterar
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#imprimir-comprovante-de-venda">
+    Imprimir comprovante de venda
+  </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<article class="md-content__inner md-typeset">
+<h1 id="pdv-ponto-de-venda">PDV - Ponto de venda</h1>
+<p><img alt="pdv-lançar-venda" src="{{ asset('mkdocs/imagens/pdv-lan%C3%A7ar-venda.png') }}"/></p>
+<p>A tela <strong>PDV (Lançar Venda)</strong> é onde se finaliza a comanda.</p>
+<p>Primeiro clique no campo <strong>Número Comanda</strong>, escaneie a comanda.</p>
+<p>As informações irão ser mostradas na tela.</p>
+<p>Clique em <strong>Finalizar Venda</strong>. <img alt="finalizar-venda" src="{{ asset('mkdocs/imagens/finalizar-venda.png') }}"/></p>
+<p>Abrirá a forma de pagamento a ser realizado.</p>
+<p>Selecione a opção desejada da forma de pagamento, no campo <em>1ª Forma de pagamento</em>. </p>
+<p>Clique em <strong>Gravar</strong> <img alt="gravar" src="{{ asset('mkdocs/imagens/gravar-venda.png') }}"/>, para finalizar a venda.</p>
+<h4 id="cliente-nao-possui-comanda">Cliente não possui comanda</h4>
+<p>Cliente escolhe o brinquedo e foi ao caixa, sem passar por um vendedor.</p>
+<p>No campo <strong>Número Comanda</strong> aperte <em>enter</em> pelo teclado.</p>
+<p>Irá desbloquear os campos para incluir cliente e briquedos, assim como na abertura de comanda.</p>
+<h4 id="desconto">Desconto</h4>
+<p>A venda será realizada com desconto.</p>
+<p>Abaixo da tabela de <em>Brinquedos</em> há o campo <strong>Desconto</strong>, nele coloque o valor (R$) a ser descontado na venda.</p>
+<p>Clique em <strong>Gravar</strong> <img alt="gravar" src="{{ asset('mkdocs/imagens/gravar-venda.png') }}"/>, para finalizar a venda.</p>
+<h4 id="permissao-de-desconto">Permissão de desconto</h4>
+<p>O valor a ser dado de desconto excede 10% do valor total da venda.</p>
+<p>O sistema irá emitir um aviso. <img alt="alerta-desconto" src="{{ asset('mkdocs/imagens/alerta-permissao.png') }}"/></p>
+<p>Clique em <strong>OK</strong> para dar continuidade e em <strong>Cancel</strong> para cancelar a ação. </p>
+<p>Clicou em <strong>OK</strong> , então aparecerá a modal para permitir o desconto.</p>
+<p><img alt="permitir-desconto" src="{{ asset('mkdocs/imagens/permitir-desconto.png') }}"/></p>
+<p>Os dados precisam ser preenchidos pelo Gerente.</p>
+<p>Clique em <strong>Enviar</strong>, para autorizar.</p>
+<p>Informações corretas, será direcionado para a forma de pagamento.</p>
+<h4 id="duas-formas-de-pagamento">Duas formas de pagamento</h4>
+<p>Cliente deseja pagar com duas formas de pagamento.</p>
+<p>Coloque o valor correspondente da primeira forma de pagamento.</p>
+<p>Clique no ícone <img alt="mais" src="{{ asset('mkdocs/imagens/mais-pagamento.png') }}"/>.  </p>
+<p>Selecione qual será a segunda forma de pagamento. </p>
+<p>O valor da segunda forma de pagamento já estará com o faltante da venda.</p>
+<p>Clique em <strong>Gravar</strong> <img alt="gravar" src="{{ asset('mkdocs/imagens/gravar-venda.png') }}"/>, para finalizar a venda.</p>
+<h4 id="alterar">Alterar</h4>
+<p>Esta nas formas de pagamento, porém precisa alterar algum brinquedo.</p>
+<p>Clique no botão <strong>Voltar</strong> <img alt="voltar" src="{{ asset('mkdocs/imagens/voltar.png') }}"/> .</p>
+<p>Será direcionado aos campos de venda, novamente.</p>
+<h2 id="imprimir-comprovante-de-venda">Imprimir comprovante de venda</h2>
+<p>Após clicar no botão <strong>Gravar</strong> . A venda será finalizada e o sistema emitira um alerta na tela, se deseja imprimir o comprovante de venda.</p>
+<p><img alt="imprimir-comprovante" src="{{ asset('mkdocs/imagens/alerta-imprimir.png') }}"/></p>
+<p>Clique em <strong>OK</strong> para imprimir o comprovante de venda ou clique em <strong>Cancel</strong> para cancelar a ação.</p>
+<p>Clicou em <strong>OK</strong> , abrirá uma nova janela onde estará o comprovante para impressão.</p>
+</article>
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}

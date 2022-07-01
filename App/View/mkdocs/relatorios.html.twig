@@ -1,0 +1,319 @@
+{% extends "mkdocs/base_mkdocs.html.twig" %}
+
+{% block titulo %}
+Relatórios - Manual do Usuário
+{% endblock %}
+
+{% block subtitulo %}
+
+            
+              Relatórios
+            
+          
+{% endblock %}
+
+{% block menuEsquerdo %}
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
+<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+</a>
+    Manual do Usuário
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_introducao') }}">
+        Introdução
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_inicio') }}">
+        Inicio
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+        Colaborador
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_categorias') }}">
+        Categorias
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+        Produtos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lote') }}">
+        Lote
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+        Estoque
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+        Cliente
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_abrir-comanda') }}">
+        Abrir Comanda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+        Pdv - Ponto De Venda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+        Lançamentos
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Relatórios
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_relatorios') }}">
+        Relatórios
+      </a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brinquedos-mais-vendidos">
+    Brinquedos mais vendidos
+  </a>
+<nav aria-label="Brinquedos mais vendidos" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#comandas">
+    Comandas
+  </a>
+<nav aria-label="Comandas" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#finalizar-comanda">
+    Finalizar comanda
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vendas-colaboradores">
+    Vendas Colaboradores
+  </a>
+<nav aria-label="Vendas Colaboradores" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf_1">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lancamento-e-vendas">
+    Lançamento e vendas
+  </a>
+<nav aria-label="Lançamento e vendas" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf_2">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vendas">
+    Vendas
+  </a>
+<nav aria-label="Vendas" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf_3">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block menuDireito %}
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brinquedos-mais-vendidos">
+    Brinquedos mais vendidos
+  </a>
+<nav aria-label="Brinquedos mais vendidos" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#comandas">
+    Comandas
+  </a>
+<nav aria-label="Comandas" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#finalizar-comanda">
+    Finalizar comanda
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vendas-colaboradores">
+    Vendas Colaboradores
+  </a>
+<nav aria-label="Vendas Colaboradores" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf_1">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lancamento-e-vendas">
+    Lançamento e vendas
+  </a>
+<nav aria-label="Lançamento e vendas" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf_2">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vendas">
+    Vendas
+  </a>
+<nav aria-label="Vendas" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relatorio-pdf_3">
+    Relatório PDF
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<article class="md-content__inner md-typeset">
+<h1 id="relatorios">Relatórios</h1>
+<p>A opção <strong>Relatórios</strong> no menu superior irá ter alguns relatórios que o sistema realiza. </p>
+<p>São eles:</p>
+<ul>
+<li>Brinquedos mais vendidos</li>
+<li>Comandas</li>
+<li>Vendas colaboradores</li>
+<li>Lançamentos e vendas</li>
+<li>Vendas</li>
+</ul>
+<h2 id="brinquedos-mais-vendidos">Brinquedos mais vendidos</h2>
+<p>Selecione período desejado, selecione uma <strong>Data Inicial</strong> e uma <strong>Data Final</strong>. </p>
+<p>Clique em <strong>Enviar</strong>.</p>
+<p><img alt="mais-vendidos" src="{{ asset('mkdocs/imagens/produtos-vendidos.png') }}"/></p>
+<p>Aparecerá uma lista dos brinquedos mais vendidos nesse período.  Com os campos, posição, nome do brinquedo, quantidade vendida, total de vendas, total liquido.</p>
+<h4 id="relatorio-pdf">Relatório PDF</h4>
+<p>Para realizar o download em PDF do relatório</p>
+<p>Clique no ícone <img alt="download" src="{{ asset('mkdocs/imagens/downlaod.png') }}"/></p>
+<p>O download será iniciado.</p>
+<h2 id="comandas">Comandas</h2>
+<p>A tela <strong>Comandas</strong> pode-se verificar o status das comandas. </p>
+<p>Selecione período desejado, selecione uma <strong>Data Inicial</strong> e uma <strong>Data Final</strong>. </p>
+<p>Clique em <strong>Enviar</strong>.</p>
+<p><img alt="comandas" src="{{ asset('mkdocs/imagens/comandas-relatorio.png') }}"/></p>
+<p>Aparecerá uma lista das comandas realizadas nesse período .</p>
+<p>Comandas com o status <img alt="comanda-finalizada" src="{{ asset('mkdocs/imagens/comanda-finalizada.png') }}"/>a comanda já foi finalizada.</p>
+<p>Comandas com o status <img alt="comanda-nao-fianlizada" src="{{ asset('mkdocs/imagens/comanda-nao-finalizada.png') }}"/>estão em aberto.</p>
+<h4 id="finalizar-comanda">Finalizar comanda</h4>
+<p>Cliente desistiu da compra e a comanda ficou em aberto.</p>
+<p>Clique no ícone <img alt="fechar" src="{{ asset('mkdocs/imagens/editar-caneta.png') }}"/>.</p>
+<h2 id="vendas-colaboradores">Vendas Colaboradores</h2>
+<p>A tela vendas de colaboradores mostra todos os colaboradores que realizaram vendas.</p>
+<p>Selecione período desejado, selecione uma <strong>Data Inicial</strong> e uma <strong>Data Final</strong>. </p>
+<p>Clique em <strong>Enviar</strong>.</p>
+<p><img alt="colaboradores-venda" src="{{ asset('mkdocs/imagens/vendas-colaboradores.png') }}"/></p>
+<p>Aparecerá uma lista dos colaboradores com vendas nesse período.  Com os campos, posição, nome do colaborador, quantidade vendida, ticket médio e  total liquido.</p>
+<h4 id="relatorio-pdf_1">Relatório PDF</h4>
+<p>Para realizar o download em PDF do relatório</p>
+<p>Clique no ícone <img alt="download" src="{{ asset('mkdocs/imagens/downlaod.png') }}"/></p>
+<p>O download será iniciado.</p>
+<h2 id="lancamento-e-vendas">Lançamento e vendas</h2>
+<p>A tela de <strong>Relatório de vendas e lançamentos</strong> é mostrado o saldo do mês.</p>
+<p>Selecione período desejado, selecione uma <strong>Data Inicial</strong> e uma <strong>Data Final</strong>. </p>
+<p>Clique em <strong>Enviar</strong>.</p>
+<p><img alt="lançamentos-vendas" src="{{ asset('mkdocs/imagens/vendas-lan%C3%A7amento.png') }}"/></p>
+<p>Aparecerá uma lista com os campos, mês, vendas realizadas, entradas de lançamentos, saída de lançamentos e  o saldo (soma a entrada com as vendas e subtrai as saídas).</p>
+<h4 id="relatorio-pdf_2">Relatório PDF</h4>
+<p>Para realizar o download em PDF do relatório</p>
+<p>Clique no ícone <img alt="download" src="{{ asset('mkdocs/imagens/downlaod.png') }}"/></p>
+<p>O download será iniciado.</p>
+<h2 id="vendas">Vendas</h2>
+<p>A tela <strong>Vendas</strong> apresenta todos as vendas realizada pelo período selecionado.</p>
+<p>Selecione período desejado, selecione uma <strong>Data Inicial</strong> e uma <strong>Data Final</strong>. </p>
+<p>Clique em <strong>Enviar</strong>.</p>
+<p><img alt="vendas" src="{{ asset('mkdocs/imagens/vendas-vendas.png') }}"/></p>
+<p>Aparecerá uma lista contendo as informações: data da venda, comanda (caso tenha), cliente (caso tenha), vendedor (caso tenha), itens da venda, desconto e o valor pago.</p>
+<h4 id="relatorio-pdf_3">Relatório PDF</h4>
+<p>Para realizar o download em PDF do relatório</p>
+<p>Clique no ícone <img alt="download" src="{{ asset('mkdocs/imagens/downlaod.png') }}"/></p>
+<p>O download será iniciado.</p>
+</article>
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}

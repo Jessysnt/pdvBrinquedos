@@ -1,0 +1,153 @@
+{% extends "mkdocs/base_mkdocs.html.twig" %}
+
+{% block titulo %}
+Lote - Manual do Usuário
+{% endblock %}
+
+{% block subtitulo %}
+
+            
+              Lote
+            
+          
+{% endblock %}
+
+{% block menuEsquerdo %}
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
+<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+</a>
+    Manual do Usuário
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_introducao') }}">
+        Introdução
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_inicio') }}">
+        Inicio
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+        Colaborador
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_categorias') }}">
+        Categorias
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+        Produtos
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Lote
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_lote') }}">
+        Lote
+      </a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#editar-lote">
+    Editar Lote
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inativar-lote">
+    Inativar lote
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+        Estoque
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+        Cliente
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_abrir-comanda') }}">
+        Abrir Comanda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+        Pdv - Ponto De Venda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+        Lançamentos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_relatorios') }}">
+        Relatórios
+      </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block menuDireito %}
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#editar-lote">
+    Editar Lote
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inativar-lote">
+    Inativar lote
+  </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<article class="md-content__inner md-typeset">
+<h1 id="lote">LOTE</h1>
+<p><img alt="preços" src="{{ asset('mkdocs/imagens/produtovenda-tabela.png') }}"/></p>
+<p>Na tela preço para venda é onde irá cadastrar um lote de brinquedos que irão aparecer nas telas <em>comanda</em> e <em>PDV</em>.</p>
+<p>Preencha os campos, lote, quantidade no lote, preço de compra, preço de venda e selecione um brinquedo que já foi cadastrado. 
+Clique em <strong>Adicionar</strong>, para cadastrar o lote no sistema. </p>
+<p>Note que ao lado do formulário há uma tabela, nela aparecerá os lotes já cadastrados.</p>
+<p>Veja que na tabela há o campo <em>Editar</em> <img alt="editar" src="{{ asset('mkdocs/imagens/editar-caneta.png') }}">. Clicando nele será direcionado para edição do lote.</img></p>
+<p>Também na tabela há a opção <em>Inativar</em> <img alt="inativar" src="{{ asset('mkdocs/imagens/excluir-x.png') }}"/>. Clicando nele irá inativar o lote do sistema. </p>
+<h2 id="editar-lote">Editar Lote</h2>
+<p><img alt="editar-lote" src="{{ asset('mkdocs/imagens/editar-produtovenda-tela.png') }}"/></p>
+<p>Uma modal é apresentada com as informações do lote já cadastradas.</p>
+<p>Altere o campo que desejar e clique em <strong>Atualizar</strong> <img alt="salvar" src="{{ asset('mkdocs/imagens/atualizar-modal-azul.png') }}"/>, para salvar as informações editadas.</p>
+<h2 id="inativar-lote">Inativar lote</h2>
+<p>A inativação do lote é possível quando não há nenhuma venda relacionada ao brinquedo cadastrado.</p>
+</article>
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}

@@ -1,0 +1,202 @@
+{% extends "mkdocs/base_mkdocs.html.twig" %}
+
+{% block titulo %}
+Abrir Comanda - Manual do Usuário
+{% endblock %}
+
+{% block subtitulo %}
+
+            
+              Abrir Comanda
+            
+          
+{% endblock %}
+
+{% block menuEsquerdo %}
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
+<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+</a>
+    Manual do Usuário
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_introducao') }}">
+        Introdução
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_inicio') }}">
+        Inicio
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+        Colaborador
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_categorias') }}">
+        Categorias
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+        Produtos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lote') }}">
+        Lote
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+        Estoque
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+        Cliente
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Abrir Comanda
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_abrir-comanda') }}">
+        Abrir Comanda
+      </a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cliente-sem-cadastro">
+    Cliente sem cadastro
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#editar-comanda-salva">
+    Editar comanda salva
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#retirar-um-brinquedo-da-lista-da-comanda">
+    Retirar um brinquedo da lista da comanda
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quantidade-de-brinquedos">
+    Quantidade de brinquedos
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#codigo-do-produto-nao-escaneia">
+    Código do produto não escaneia
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+        Pdv - Ponto De Venda
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+        Lançamentos
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="{{ path('mkdocs_relatorios') }}">
+        Relatórios
+      </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block menuDireito %}
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cliente-sem-cadastro">
+    Cliente sem cadastro
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#editar-comanda-salva">
+    Editar comanda salva
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#retirar-um-brinquedo-da-lista-da-comanda">
+    Retirar um brinquedo da lista da comanda
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quantidade-de-brinquedos">
+    Quantidade de brinquedos
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#codigo-do-produto-nao-escaneia">
+    Código do produto não escaneia
+  </a>
+</li>
+</ul>
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<article class="md-content__inner md-typeset">
+<h1 id="abrir-comanda">ABRIR COMANDA</h1>
+<p><img alt="abrir-comanda" src="{{ asset('mkdocs/imagens/comanda.png') }}"/></p>
+<p>Na tela <strong>Abrir Comanda</strong> é onde se inicia uma venda.</p>
+<p>Primeiro clique no campo <strong>Número Comanda</strong>, escaneie a comanda (fisica).
+Digite o CPF do cliente. É necessário que o cliente já esteja cadastrado no sistema.
+Escaneie o código do brinquedo.
+Clique em <strong>Enviar</strong>. <img alt="enviar" src="{{ asset('mkdocs/imagens/enviar-botao.png') }}"/></p>
+<h4 id="cliente-sem-cadastro">Cliente sem cadastro</h4>
+<p>Digitado o CPF e o cliente não foi encontrado. 
+Clique na opção <em>Anônimo</em>. 
+Depois em <em>Enviar</em>. 
+(Assim os itens ficaram salvos na comanda).</p>
+<p>Vá a tela cliente e verifique o cadastro do mesmo. </p>
+<p>Caso o cliente não tenha cadastro, clique em <strong>Novo Cliente</strong> e o adicione.</p>
+<p>Cadastrando o cliente, volte a tela <strong>Abrir Comanda</strong> para editar a comanda já salva.</p>
+<h4 id="editar-comanda-salva">Editar comanda salva</h4>
+<p>Escaneie a comanda que já possui itens salvos.</p>
+<p>Faça a alteração (brinquedos ou inclusão do cliente).</p>
+<p>Clique em <strong>Enviar</strong>. <img alt="enviar" src="{{ asset('mkdocs/imagens/enviar-botao.png') }}"/></p>
+<h4 id="retirar-um-brinquedo-da-lista-da-comanda">Retirar um brinquedo da lista da comanda</h4>
+<p>Ao estar incluindo brinquedos na lista da comanda e cliente desiste de compra-lo.</p>
+<p>Cliente no ícone <img alt="excluir" src="{{ asset('mkdocs/imagens/excluir-x.png') }}"/>. O brinquedo então será excluído. </p>
+<h4 id="quantidade-de-brinquedos">Quantidade de brinquedos</h4>
+<p>Caso o cliente deseja comprar mais brinquedo do mesmo modelo, antes de escanear o código:</p>
+<p>Vá na opção <em>quantidade vendida</em>. Altere a quantidade desejada.</p>
+<p>Escaneie o código do brinquedo.</p>
+<h4 id="codigo-do-produto-nao-escaneia">Código do produto não escaneia</h4>
+<p>O escaner não está funcionando, ou o código do brinquedo está com falha.</p>
+<p>No campo <strong>Produto</strong> comece a escrever o nome do brinquedo.
+Opções irão ser apresentadas para ser selecionadas.</p>
+<p>Clique no brinquedo respectivo.</p>
+<p>Irá aparecer as informações relacionadas, como descrição, preço, quantidade em estoque.</p>
+<p>Clique em <strong>Adicionar</strong> <img alt="adicionar" src="{{ asset('mkdocs/imagens/adicionar-botao.png') }}"/> . O brinquedo irá ser adicionado na lista de brinquedos da comanda.</p>
+</article>
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}
