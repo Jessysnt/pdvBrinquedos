@@ -16,69 +16,69 @@ Inicio - Manual do Usuário
 <nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
 <label class="md-nav__title" for="__drawer">
 <a aria-label="Manual do Usuário" class="md-nav__button md-logo" data-md-component="logo" href="." title="Manual do Usuário">
-<img alt="logo" src="{{ asset('mkdocs/imagens/logo2.png') }}"/>
+<img alt="logo" src="http://localhost/mkdocs/assets/imagens/logo2.png"/>
 </a>
     Manual do Usuário
   </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_introducao') }}">
+<a class="md-nav__link" href="introducao">
         Introdução
       </a>
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
-<a class="md-nav__link md-nav__link--active" href="{{ path('mkdocs_inicio') }}">
+<a class="md-nav__link md-nav__link--active" href="inicio">
         Inicio
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_colaborador') }}">
+<a class="md-nav__link" href="colaborador">
         Colaborador
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_categorias') }}">
+<a class="md-nav__link" href="categorias">
         Categorias
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_produtos') }}">
+<a class="md-nav__link" href="produtos">
         Produtos
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_lote') }}">
+<a class="md-nav__link" href="lote">
         Lote
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_estoque') }}">
+<a class="md-nav__link" href="estoque">
         Estoque
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_cliente') }}">
+<a class="md-nav__link" href="cliente">
         Cliente
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_abrir-comanda') }}">
+<a class="md-nav__link" href="abrir-comanda">
         Abrir Comanda
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_pdv-ponto-de-venda') }}">
+<a class="md-nav__link" href="pdv-ponto-de-venda">
         Pdv - Ponto De Venda
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_lancamentos') }}">
+<a class="md-nav__link" href="lancamentos">
         Lançamentos
       </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="{{ path('mkdocs_relatorios') }}">
+<a class="md-nav__link" href="relatorios">
         Relatórios
       </a>
 </li>
@@ -94,24 +94,51 @@ Inicio - Manual do Usuário
 {% block conteudo %}
 <article class="md-content__inner md-typeset">
 <h1 id="inicio">INICIO</h1>
-<p><img alt="inicio" src="{{ asset('mkdocs/imagens/inicio.png') }}"/></p>
+<p><img alt="inicio" src="http://localhost/mkdocs/assets/imagens/inicio.png"/></p>
 <p>Tela após realizar o <em>login</em>. Exibe o menu para navegação.</p>
 <p>Contendo as opções: </p>
 <ul>
 <li>
-<p>Cliente <img alt="cliente" src="{{ asset('mkdocs/imagens/cleinte.png') }}"> , para gerenciar um cliente.</img></p>
+<p>Cliente <img alt="cliente" src="http://localhost/mkdocs/assets/imagens/cleinte.png"> , para gerenciar um cliente.</img></p>
 </li>
 <li>
-<p>Gestão Comanda <img alt="comanda" src="{{ asset('mkdocs/imagens/gestao-comanda.png') }}"/> , onde tem os sub menus <em>PDV</em> e <em>Comanda</em> .</p>
+<p>Gestão Comanda <img alt="comanda" src="http://localhost/mkdocs/assets/imagens/gestao-comanda.png"/> , onde tem os sub menus <em>PDV</em> e <em>Comanda</em> .</p>
 </li>
-<li>Gestão Produtos <img alt="gestaoprodutos" src="{{ asset('mkdocs/imagens/gestao-produtos.png') }}"/> , onde contem os sub menus: <em>Categorias</em>, <em>Fornecedores</em> e <em>Produtos</em> (local para verificar estoque e cadastrar produtos).</li>
-<li>Relatórios <img alt="relatorios" src="{{ asset('mkdocs/imagens/relatorios.png') }}"/> , onde contem os sub menus: <em>Produtos mais vendidos</em>, <em>Comandas</em>, <em>Vendas</em>, <em>Vendas Colaboradores</em>, <em>Lançamentos e vendas</em> e <em>Comandas</em>.</li>
-<li>Lançamentos <img alt="lancamento" src="{{ asset('mkdocs/imagens/lan%C3%A7amentos.png') }}"/> , cadastrar entrada e saída.</li>
-<li>Clique no nome do colaborador, <img alt="gestaousuario" src="{{ asset('mkdocs/imagens/usuario-sair.png') }}"/>, aparecerá os sub menu: <em>Sair</em> (sair do sistema), <em>Gestão Usuário</em> (gerenciar usuários).</li>
+<li>Gestão Produtos <img alt="gestaoprodutos" src="http://localhost/mkdocs/assets/imagens/gestao-produtos.png"/> , onde contem os sub menus: <em>Categorias</em>, <em>Fornecedores</em> e <em>Produtos</em> (local para verificar estoque e cadastrar produtos).</li>
+<li>Relatórios <img alt="relatorios" src="http://localhost/mkdocs/assets/imagens/relatorios.png"/> , onde contem os sub menus: <em>Produtos mais vendidos</em>, <em>Comandas</em>, <em>Vendas</em>, <em>Vendas Colaboradores</em>, <em>Lançamentos e vendas</em> e <em>Comandas</em>.</li>
+<li>Lançamentos <img alt="lancamento" src="http://localhost/mkdocs/assets/imagens/lan%C3%A7amentos.png"/> , cadastrar entrada e saída.</li>
+<li>Clique no nome do colaborador, <img alt="gestaousuario" src="http://localhost/mkdocs/assets/imagens/usuario-sair.png"/>, aparecerá os sub menu: <em>Sair</em> (sair do sistema), <em>Gestão Usuário</em> (gerenciar usuários).</li>
 </ul>
 </article>
 {% endblock %}
 
 {% block rodape %}
-
+<nav aria-label="Rodapé" class="md-footer__inner md-grid">
+<a aria-label="Anterior: Introdução" class="md-footer__link md-footer__link--prev" href="introducao" rel="prev">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+</div>
+<div class="md-footer__title">
+<div class="md-ellipsis">
+<span class="md-footer__direction">
+                Anterior
+              </span>
+              Introdução
+            </div>
+</div>
+</a>
+<a aria-label="Próximo: Colaborador" class="md-footer__link md-footer__link--next" href="colaborador" rel="next">
+<div class="md-footer__title">
+<div class="md-ellipsis">
+<span class="md-footer__direction">
+                Próximo
+              </span>
+              Colaborador
+            </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"></path></svg>
+</div>
+</a>
+</nav>
 {% endblock %}

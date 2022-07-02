@@ -130,6 +130,19 @@ $router->add('pdf-status-anual', ['controller' => 'RelatorioController', 'action
 $router->add('pdf-mais-vendidos', ['controller' => 'RelatorioController', 'action' => 'produtosMaisVendidosPdf']);
 $router->add('pdf-colaboradores-vendas', ['controller' => 'RelatorioController', 'action' => 'colaboradoresVendasPdf']);
 
+//Rotas manual
+$router->add('manual/introducao', ['controller' => 'ManualController', 'action' => '_introducao']); 
+$router->add('manual/inicio', ['controller' => 'ManualController', 'action' => '_inicio']); 
+$router->add('manual/colaborador', ['controller' => 'ManualController', 'action' => '_colaborador']); 
+$router->add('manual/categorias', ['controller' => 'ManualController', 'action' => '_categorias']); 
+$router->add('manual/produtos', ['controller' => 'ManualController', 'action' => '_produtos']); 
+$router->add('manual/lote', ['controller' => 'ManualController', 'action' => '_lote']); 
+$router->add('manual/estoque', ['controller' => 'ManualController', 'action' => '_estoque']); 
+$router->add('manual/cliente', ['controller' => 'ManualController', 'action' => '_cliente']); 
+$router->add('manual/abrir-comanda', ['controller' => 'ManualController', 'action' => '_abrir_comanda']); 
+$router->add('manual/pdv-ponto-de-venda', ['controller' => 'ManualController', 'action' => '_pdv_ponto_de_venda']); 
+$router->add('manual/lancamentos', ['controller' => 'ManualController', 'action' => '_lancamentos']); 
+$router->add('manual/relatorios', ['controller' => 'ManualController', 'action' => '_relatorios']);
 
 // $router->add('nova', ['controller' => 'Home', 'action' => 'nova']);
 $router->add('{controller}/{action}');
