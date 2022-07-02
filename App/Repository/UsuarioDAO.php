@@ -13,7 +13,7 @@ class UsuarioDAO extends Conexao
     public function login($dados)
     {
         $senha = sha1($dados['senha']);
-        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE email=:email AND senha=:senha");
+        $stmt = static::getConexao()->prepare("SELECT * FROM usuario WHERE email=:email AND senha=:senha AND status=1");
         $stmt->bindParam(':email', $dados['email'], PDO::PARAM_STR);
         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
         $stmt->execute();
