@@ -202,6 +202,7 @@ Relatórios - Manual do Usuário
       Índice
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+{% if 16 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="#brinquedos-mais-vendidos">
     Brinquedos mais vendidos
@@ -216,6 +217,7 @@ Relatórios - Manual do Usuário
 </ul>
 </nav>
 </li>
+{% endif %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="#comandas">
     Comandas
@@ -230,6 +232,7 @@ Relatórios - Manual do Usuário
 </ul>
 </nav>
 </li>
+{% if 17 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="#vendas-colaboradores">
     Vendas Colaboradores
@@ -244,6 +247,8 @@ Relatórios - Manual do Usuário
 </ul>
 </nav>
 </li>
+{% endif %}
+{% if 18 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="#lancamento-e-vendas">
     Lançamento e vendas
@@ -258,6 +263,8 @@ Relatórios - Manual do Usuário
 </ul>
 </nav>
 </li>
+{% endif %}
+{% if 19 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="#vendas">
     Vendas
@@ -272,6 +279,7 @@ Relatórios - Manual do Usuário
 </ul>
 </nav>
 </li>
+{% endif %}
 </ul>
 </nav>
 {% endblock %}
