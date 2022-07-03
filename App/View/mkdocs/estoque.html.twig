@@ -31,57 +31,77 @@ Estoque - Manual do Usuário
         Inicio
       </a>
 </li>
+{% if 5 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="colaborador">
         Colaborador
       </a>
 </li>
+{% endif %}
+{% if 10 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="categorias">
         Categorias
       </a>
 </li>
+{% endif %}
+{% if 9 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="produtos">
         Produtos
       </a>
 </li>
+{% endif %}
+{% if 11 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="lote">
         Lote
       </a>
 </li>
+{% endif %}
+{% if 12 in session['usuario'].getAcessos() %}
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <a class="md-nav__link md-nav__link--active" href="estoque">
         Estoque
       </a>
 </li>
+{% endif %}
+{% if 1 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="cliente">
         Cliente
       </a>
 </li>
+{% endif %}
+{% if 13 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="abrir-comanda">
         Abrir Comanda
       </a>
 </li>
+{% endif %}
+{% if 14 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="pdv-ponto-de-venda">
         Pdv - Ponto De Venda
       </a>
 </li>
+{% endif %}
+{% if 19 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="lancamentos">
         Lançamentos
       </a>
 </li>
+{% endif %}
+{% if 15 in session['usuario'].getAcessos() %}
 <li class="md-nav__item">
 <a class="md-nav__link" href="relatorios">
         Relatórios
       </a>
 </li>
+{% endif %}
 </ul>
 </nav>
 {% endblock %}
