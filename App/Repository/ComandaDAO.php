@@ -29,9 +29,15 @@ class ComandaDAO extends Conexao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * 
-     */
+    public function verificaComanda($comandaFatura)
+    {
+        $stmt=static::getConexao()->prepare("SELECT id FROM comandafatura WHERE numero = :numero AND data_registro = :dataRegistro ");
+        $stmt->bindParam(':numero', $$comandaFatura['numero'], PDO::PARAM_STR);
+        $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
+        $stmt->execute();
+        $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function gravarComandaFatura($respComandaFatura)
     {
         $bd = static::getConexao();
@@ -40,34 +46,36 @@ class ComandaDAO extends Conexao
             $sqlCliente = [', id_cliente',', :idCliente'];
         }
 
-        $stmt=$bd->prepare("SELECT id FROM comandafatura WHERE numero = :numero");
+        $stmt=$bd->prepare("INSERT INTO comandafatura (id_vendedor, numero$sqlCliente[0], data_registro) VALUES (:idVendedor, :numero$sqlCliente[1], :dataRegistro)");;
+        $stmt->bindParam(':idVendedor', $respComandaFatura['id_vendedor'], PDO::PARAM_INT);
         $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
+        if(array_key_exists('cliente', $respComandaFatura)){
+            $stmt->bindParam(':idCliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
         $stmt->execute();
-        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($resp != false){
-            if($sqlCliente[0] != ""){
-                $stmt=static::getConexao()->prepare("UPDATE comandafatura SET id_cliente = :idCliente, data_registro = :dataRegistro WHERE id= :id");
-                $stmt->bindParam(':id', $resp['id'], PDO::PARAM_INT);
-                $stmt->bindParam(':idCliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
-                $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
-                $stmt->execute();
-            }
-            return $resp['id'];
-        }else{
-            // die(var_dump($respComandaFatura));
-            $sql = "INSERT INTO comandafatura (id_vendedor, numero$sqlCliente[0], data_registro) VALUES (:idVendedor, :numero$sqlCliente[1], :dataRegistro)";
-            $stmt=$bd->prepare($sql);
-            $stmt->bindParam(':idVendedor', $respComandaFatura['id_vendedor'], PDO::PARAM_INT);
-            $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
-            if(array_key_exists('cliente', $respComandaFatura)){
-                $stmt->bindParam(':idCliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
-            }
+        $resp = $bd->lastInsertId();
+        return $resp;
+    }
+
+    /**
+     * 
+     */
+    public function updateComandaFatura($respComandaFatura)
+    {
+        $sqlCliente = ['',''];
+        if(array_key_exists('cliente', $respComandaFatura)){
+            $sqlCliente = [', id_cliente',', :idCliente'];
+        }
+
+        if($sqlCliente[0] != ""){
+            $stmt=static::getConexao()->prepare("UPDATE comandafatura SET id_cliente = :idCliente, data_registro = :dataRegistro WHERE id= :id");
+            $stmt->bindParam(':id', $respComandaFatura['id'], PDO::PARAM_INT);
+            $stmt->bindParam(':idCliente', $respComandaFatura['cliente'], PDO::PARAM_INT);
             $stmt->bindValue(':dataRegistro', $respComandaFatura['dataRegistro']);
             $stmt->execute();
-            $resp = $bd->lastInsertId();
-            return $resp;
         }
+        return $respComandaFatura['id'];
     }
 
     public function gravarLinhaFaturaInsert($linhaFatura)

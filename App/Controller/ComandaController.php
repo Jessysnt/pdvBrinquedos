@@ -59,6 +59,7 @@ class ComandaController
             $datetime = date("Y-m-d H:i:s");
             
             $comandaFatura=array(
+                'id'=>$_POST['id'],
                 'id_vendedor'=>$id_usuario,
                 'numero' => $_POST['numero'],
                 'cliente' => $_POST['cliente'],
@@ -67,9 +68,15 @@ class ComandaController
             if($_POST['cliente'] == ""){
                 unset($comandaFatura['cliente']);
             }
+            if($_POST['id'] == ""){
+                unset($comandaFatura['id']);
+            }
+            if($_POST['id']){
+                $respComandaFatura=$obComandaDAO->updateComandaFatura($comandaFatura);
+            }else{
+                $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
+            }
             
-            $respComandaFatura=$obComandaDAO->gravarComandaFatura($comandaFatura);
-
             $deleteLinhaFatura=$obComandaDAO->deletarLinhaFatura($respComandaFatura);
             
             if($respComandaFatura > 0){
