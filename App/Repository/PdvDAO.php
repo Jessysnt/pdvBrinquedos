@@ -81,10 +81,9 @@ class PdvDAO extends Conexao
             $sqlDesconto = [' desconto=',':desconto, '];
         }
 
-        $LastUpdateID = "SELECT id FROM comandafatura WHERE numero = :numero";
-        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao1[0]$sqlVzsCartao1[1]$sqlVzsCartao2[0]$sqlVzsCartao2[1]$sqlDesconto[0]$sqlDesconto[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero";
-        
+        $sql = "UPDATE comandafatura SET $sqlCliente[0]$sqlCliente[1]pg_forma1=:formaPgUm, valor_total1=:valorTotalUm,$sqlFormaPgDois[0]$sqlFormaPgDois[1]$sqlValorTotalDois[0]$sqlValorTotalDois[1]$sqlVzsCartao1[0]$sqlVzsCartao1[1]$sqlVzsCartao2[0]$sqlVzsCartao2[1]$sqlDesconto[0]$sqlDesconto[1]comanda_aberta=0, id_caixa =:idCaixa, data_finalizacao=:dataFinalizacao WHERE numero = :numero AND id =:id";
         $stmt=$bd->prepare($sql);
+        $stmt->bindParam(':id', $respComandaFatura['id'], PDO::PARAM_INT);
         $stmt->bindParam(':idCaixa', $respComandaFatura['id_caixa'], PDO::PARAM_INT);
         $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
         if(array_key_exists('cliente', $respComandaFatura)){
@@ -108,15 +107,9 @@ class PdvDAO extends Conexao
             $stmt->bindParam(':desconto', $respComandaFatura['desconto'], PDO::PARAM_STR);
         }
         $stmt->bindValue(':dataFinalizacao', $respComandaFatura['dataFinalizacao']);
-        $result = $stmt->execute(); 
+        $stmt->execute(); 
 
-        if($result == true){
-            $stmt=$bd->prepare($LastUpdateID);
-            $stmt->bindParam(':numero', $respComandaFatura['numero'], PDO::PARAM_STR);
-            $stmt->execute();
-            $resp = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $resp['id'];
-        }
+        return $respComandaFatura['id'];
     }
 
     /**
@@ -185,30 +178,12 @@ class PdvDAO extends Conexao
      */
     public function gravarLinhaFatura($linhaFatura)
     {
-        $stmt=static::getConexao()->prepare("SELECT id_produto FROM linhafatura WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
-        $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
-        $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-        $stmt->execute();
-        $resp = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($resp != false){
-            if($resp['id_produto'] == $linhaFatura['id_produto']){
-                $stmt=static::getConexao()->prepare("UPDATE linhafatura SET quantidade =:quantidade, valor_unitario =:valor_unitario WHERE id_comanda_fatura = :id_comanda_fatura AND id_produto =:id_produto");
-                $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
-                $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
-                $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
-                $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
-                return $stmt->execute();
-            }
-        }
-        if($resp == false){
-            $stmt=static::getConexao()->prepare("INSERT INTO linhafatura (id_comanda_fatura, id_produto, quantidade, valor_unitario) VALUES (:id_comanda_fatura, :id_produto, :quantidade, :valor_unitario)");
+        $stmt=static::getConexao()->prepare("INSERT INTO linhafatura (id_comanda_fatura, id_produto, quantidade, valor_unitario) VALUES (:id_comanda_fatura, :id_produto, :quantidade, :valor_unitario)");
             $stmt->bindParam(':id_comanda_fatura', $linhaFatura['id_comanda_fatura'], PDO::PARAM_INT);
             $stmt->bindParam(':id_produto', $linhaFatura['id_produto'], PDO::PARAM_INT);
             $stmt->bindParam(':quantidade', $linhaFatura['quantidade'], PDO::PARAM_INT);
             $stmt->bindParam(':valor_unitario', $linhaFatura['valor_unitario'], PDO::PARAM_STR);
             return $stmt->execute();
-        }
     }
 
     /**

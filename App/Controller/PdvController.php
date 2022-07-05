@@ -54,6 +54,7 @@ class PdvController
 
             $comandaFatura=array(
                 'id_caixa'=> $id_usuario,
+                'id' => intval($_POST['id']),
                 'numero' => $_POST['numero'],
                 'cliente' => intval($_POST['cliente']),
                 'formaPgUm' => intval($_POST['pg_forma1']),
@@ -85,8 +86,11 @@ class PdvController
             if($_POST['desconto'] == 'NaN'){
                 unset($comandaFatura['desconto']);
             }
-            // die(var_dump($comandaFatura));
-            if($_POST['numero'] == ""){
+            if($_POST['id'] == ""){
+                unset($comandaFatura['id']);
+            }
+            
+            if($_POST['id'] == ""){
                 $respComandaFatura=$obPdvDAO->gravarComandaFaturaSemNumero($comandaFatura);
             }else{
                 $respComandaFatura=$obPdvDAO->gravarComandaFatura($comandaFatura);

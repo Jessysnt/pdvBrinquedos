@@ -746,6 +746,7 @@
 			alertify.alert("Preencher forma de pagamento!"); 
 		}else{
 			var dados={
+				id: (comanda.id!=null?(comanda.id):null),
 				cliente: (comanda.cliente!=null?parseInt(comanda.cliente):null),
 				numero: (comanda.numero!=null?(comanda.numero):null),
 				pg_forma1: $('#pgUm').val(),
@@ -766,11 +767,9 @@
 					valor_unitario: parseFloat(linha.precoV)
 				};
 				dados.linhas.push(novaLinha);
-				// console.log('dados.Gravar',dados.linhas);
 				apagarForm();
 			});
-			console.log('dados', dados);
-			
+			// console.log('dados', dados);
 			$.ajax({
 				type:"POST",
 				data: dados,
@@ -783,6 +782,7 @@
 						$('#nomeClienteComanda').val('');
 						apagarForm();
 						voltarFormulario();
+						$('#maisPagamento').show;
 						$('#descontoValor').val('');
 						var idComanda = $('#numeroComanda').attr('data-id');			
 						alertify.confirm('Imprimir comprovante de compra? ', function(){
