@@ -1,0 +1,1 @@
+**Nesta pasta ficam as fotos dos produtos cadastrados**
